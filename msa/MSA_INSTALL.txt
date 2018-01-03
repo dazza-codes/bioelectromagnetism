@@ -1,0 +1,87 @@
+
+
+      Magnetic/Electric Source Analysis
+      Copyright (C) 1997/1998 Robert Oostenveld
+
+
+Instructions for installation:
+------------------------------
+You should take care that you have the following prerequisites. You should have 
+an ANSI compatible c-compiler (eg. gcc) and the following files
+ * libnr.a 	the Numerical Recipes Library (preferably 2nd edition) 
+ * nr.h 	header file for Numerical Recipes
+ * nrutil.h 	header file for Numerical Recipes utilities 
+ * nrutil.c 	the Numerical Recipes utilities (2nd edition is obligatory!),
+		it is assumed that nrutil.o is included in libnr.a
+
+The Numerical Recipes header files and library should be on a location
+where the compiler can find them, for example in /usr/local/include and
+/usr/local/lib. If you have these files somewhere else you should modify
+the makefile to your specific location. For example if your nr.h and
+nrutil.h are in /home/yourname/numrec/include, and your libnr.a is in
+/home/yourname/numrec/lib you should change the lines in the Makefile
+with the INCPATH and LIBPATH to read
+  INCPATH = -Iinclude -I/home/yourname/numrec/include
+  LIBPATH = -Llib -L/home/yourname/numrec/lib
+
+You should modify the CC variable in the Makefile to reflect your compiler, 
+this could for example be any one of these:
+  CC = gcc
+  CC = /usr/bin/gcc 
+  CC = /usr/ucb/cc	(common for SunOS systems)
+  CC = /bin/cc		(common for HPUX systems?)
+
+Futhermore it may be neccesary to modify any of the other parameters in
+the Makefile.  Since I only use the GNU gcc compiler, I don't know which
+compiler flags should be used for another compiler. If the Makefile has
+been made suitable for your system, type
+  make
+and the library should compile.
+
+If you want to make any of the example programs, type
+  make "program"
+with of course instead of "program" the actual name of the example
+program. The example programs are rather lousy and more meant for testing
+purposes. The most interesting example is dipole_fit_demo. Of course
+you should remember that MSA is only a library and that you should do
+the actual programming of the usefull applications fitted to your data
+formats etc.
+
+If it does not work the way it should, please contact me via email on
+roberto@mbfys.kun.nl with the following information:
+ * what is the version (date) of your MSA code
+ * on what kind of system are you working (eg. linux, SunOS, Solaris, HPUX, AIX)
+ * which compiler are you using
+ * which version of make are you using
+and if possible include any of the error output
+
+
+Instructions for use:
+---------------------
+If you want to use the MSA library in your programs, they should include
+the msa.h header file and your program should be linked against libmsa.a.
+
+eg. the file your_program.c reads
+
+	#include <stdio.h>
+	#include <nrutil.h> /* neccesary if you want to use matrix() and vector() */
+	#include "msa.h"    /* contains the declaration of the MSA functions      */
+
+	int main(int argc, char *argv[]) {
+
+	  /* 
+		here comes your code, which in general will do something like
+
+		1) read your data
+	  	2) take care that everything is properly formatted 
+		3) call a MSA routine, eg. single_moving_dipole_fit() 
+		4) display the results on screen and/or write them to a file
+	  */
+
+	}
+
+and this is compiled with
+  gcc -I$(MSADIR)/include -I$(NUMRECDIR)/include -o yourprogram.o yourprogram.c 
+  gcc -L$(MSADIR)/lib -L$(NUMRECDIR)/lib -o yourprogram yourprogram.o -lmsa -lnr
+
+

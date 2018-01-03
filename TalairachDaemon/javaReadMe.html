@@ -1,0 +1,103 @@
+<html><head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+	<meta name="keywords" content="Talairach Daemon Client, neuroinformatics, brain mapping, Research Imaging Center, Atlas, coordinates, brain function, Peter Fox, Jack Lancaster">
+	<meta name="robots" content="all"><title>Talairach Daemon Client</title><!-- to correct the unsightly Flash of Unstyled Content. http://www.bluerobot.com/web/css/fouc.asp -->
+	
+	
+	
+<script language="JavaScript">
+<!--
+
+function SymError()
+{
+  return true;
+}
+
+window.onerror = SymError;
+
+//-->
+</script>
+
+<script type="text/javascript"></script>
+	<style type="text/css" media="screen">@import "../tdStyle.css";</style></head><body>
+
+	<a href="http://ric.uthscsa.edu/projects/tdc"><div id="header">
+	</div></a>
+    
+	<div id="content">
+        <p>The
+Talairach Daemon Client will read tab or space delimited records from
+text files containing lists of Talairach coordinates arranged in x-y-z
+order. Or, using the Single Point Processing dialog, one can input in a
+single coordinate to label. It will then look up the coordinate in the
+Talairach Daemon database for the Talairach label. There are options to
+search for the single point, search range or nearest gray matter. The
+output is written to a file which can be viewed in the program, a
+third-party text editor or imported into a third-party spreadsheet.</p>
+        
+        <h2>Installation</h2>
+        
+        <h3>Windows:</h3><br>
+        <p>NOTE: Your computer must have a <a href="http://java.sun.com/j2se/1.4.2/download.html">Java Virtual Machine</a> installed.</p>
+         <ol>
+         <li><a href="http://ric.uthscsa.edu/projects/tdc/downloads/win/TDClient.zip">Download</a> the software.
+         </li><li>Install by double-clicking on the installer file, tdc.pkg. 
+         </li></ol>
+
+        <h3>Macintosh:</h3>
+        <ol>
+        <li><a href="http://ric.uthscsa.edu/projects/tdc/downloads/mac/TalairachDaemonClient.pkg.zip">Download</a> the software.
+        </li><li>Double-click on the pkg file and following the installation instructions that follow.
+        </li></ol>
+        <p>NOTE:
+The default installation directory is the system Applications
+directory. You can also choose your installation directory during the
+installation process.</p>
+        
+        <h3>Solaris:</h3>
+        <ol>
+        <li><a href="http://ric.uthscsa.edu/projects/tdc/downloads/solaris/TalairachDaemonClient.zip">Download</a> the software.</li>
+        <li>Unzip the zip file.</li>
+        <li>To run the program, change your current directory to the installation directory and type "tdc" at the command-line.</li>
+        </ol>        
+        
+        <h2>Batch File Format</h2>
+Before you begin searching you must create a text file with a list of
+the x-y-z Talairach coordinates that you want to label. The file
+"test.txt" is an example of the required format. The current version of
+the TD Java Search client will read files containing up to 40,000
+records (x-y-z coordinates).<br>
+        
+        <h2>General Instructions</h2>
+        <b>Batch Processing:</b>
+         <ol>
+         <li>Once file(s) are created for batch processing, select your file(s) from the <b>File</b> menu. The number of coordinates will be printed in the information window.
+        </li><li>Press
+the "Process" button to begin. Several messages will be printed in the
+information window to inform you of the file loading progress. A
+progress bar is updated every 10th coordinate to give you an idea of
+how long it will take to retrieve all of the labels. As each label is
+retrieved it is appended to the output file along with the Talairach
+coordinates. The output file will be created dependent on the input
+file name (i.e. If your input file is test.txt, your output file will
+be test.td. Note the different extensions.) </li><li>When all labels have been retrieved you are given
+the option to view the result file in the program's text area. Also,
+the result file can be viewed by any text editor or import it into a
+spreadsheet. </li></ol>
+
+         <b>Single Point Processing:</b>
+         <ol>
+         <li>From the <b>Option</b> menu, choose "Single Point Processing".  A dialog will appear.
+        </li><li>Enter in your coordinates into the fields for x, y, and z.
+        </li><li>Choose your options for processing (i.e. Single Point, Range Search or Nearest Gray Matter)
+        </li><li>Choose
+your options for saving to a file. If you want to save to a file, you
+must check the checkbox and pick a file. The file will stay open for
+writing as long as the Single Point Processing dialog is open. Once it
+closes, the file is closed. If the dialog is opened again for
+processing, you would need to pick another file for the next set of
+processing or the program will write over the current file. </li><li>Click <b>Process</b> to process the point.
+        </li></ol>
+         
+    <div><!-- end of content -->
+</div></div></body></html>

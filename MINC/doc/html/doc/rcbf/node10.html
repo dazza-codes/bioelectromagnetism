@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Program Structure</TITLE>
+<META NAME="description" CONTENT="Program Structure">
+<META NAME="keywords" CONTENT="rcbf">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="rcbf.css">
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="node8.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html158"
+ HREF="node11.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html155"
+ HREF="node8.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html149"
+ HREF="node9.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html157"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html159"
+ HREF="node11.html">Annotated Program Listings</A>
+<B> Up:</B> <A NAME="tex2html156"
+ HREF="node8.html">MATLAB Implementation</A>
+<B> Previous:</B> <A NAME="tex2html150"
+ HREF="node9.html">Introduction</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00042000000000000000">
+Program Structure</A>
+</H2>
+
+<P>
+<BR>
+<DIV ALIGN="CENTER"><A NAME="413">&#160;</A>
+<TABLE WIDTH="50%">
+<CAPTION><STRONG>Figure 1:</STRONG>
+General program flow for rCBF analysis</CAPTION>
+<TR><TD><IMG
+ WIDTH="244" HEIGHT="341"
+ SRC="img23.gif"
+ ALT="\begin{figure}\centerline{\psfig{figure=flow.ps,height=3.0in}}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+<BR>
+<P>
+The diagram in figure 1 shows the general flow of performing rCBF
+analysis using MATLAB.  First, the blood data is prepared for
+analysis by performing delay and dispersion correction.  Next the
+lookup tables used in the analysis are calculated.  Finally, the
+actual images are generated through table lookup using the lookup
+tables computed in the previous step.
+
+<P>
+<BR>
+<DIV ALIGN="CENTER"><A NAME="417">&#160;</A>
+<TABLE WIDTH="50%">
+<CAPTION><STRONG>Figure 2:</STRONG>
+Structure of rcbf2</CAPTION>
+<TR><TD><IMG
+ WIDTH="415" HEIGHT="226"
+ SRC="img24.gif"
+ ALT="\begin{figure}\centerline{\psfig{figure=structure.ps,height=2.0in}}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+<BR>
+<P>
+Of course, the actual program implementation is slightly more complex
+than this.  Figure 2 shows the full structure of the <TT>rcbf2</TT>
+MATLAB function, which performs a full two-compartment rCBF analysis.
+All of the main functions that are called by <TT>rcbf2</TT> are shown.
+The <TT>resampleblood</TT> function returns the blood data to
+<TT>rcbf2</TT> in an evenly sampled time domain (sampled every 1/2second).  This blood data is then passed to <TT>correctblood</TT>,
+which performs dispersion correction, and then delay correction by
+calling <TT>fit_b_curve</TT>.  Finally, useful lookup tables are
+calculated by <TT>findintconvo</TT>.
+
+<P>
+<BR><HR>
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

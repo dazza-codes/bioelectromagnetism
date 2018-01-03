@@ -1,0 +1,1652 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0041)http://www.math.mcgill.ca/keith/fmristat/ -->
+<HTML><HEAD><TITLE>BICstat</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252"><!-- Changed by: Keith Worsley, 21-Oct-2002 --><!-- <BODY bgcolor=white> -->
+<META content="MSHTML 6.00.2800.1276" name=GENERATOR></HEAD>
+<BODY>
+<CENTER>
+<H1>fmristat<BR>A general statistical analysis for fMRI data</H1><BR></CENTER>
+<CENTER>
+<H2><A href="http://www.math.mcgill.ca/keith/fmristat/index4.htm">Previous 
+version of fmristat</A> </H2><BR></CENTER>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD><A 
+      href="http://www.math.mcgill.ca/keith/fmristat/figs/figdelayexp.jpg"><IMG 
+      alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figdelayexp.jpg" 
+      border=0></A>
+      <P></P>
+    <TD><B>Keith J. Worsley</B><BR><A 
+      href="mailto:worsley@math.mcgill.ca">worsley@math.mcgill.ca</A><BR><A 
+      href="http://www.math.mcgill.ca/keith">Go to my web page in Maths + Stats 
+      </A><BR><BR><EM>Updated 2 September 2003 </EM></TR></TBODY></TABLE>
+<H2>All matlab programs are in the <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox">toolbox </A>directory 
+(previous version <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox_old">here</A>) - you need 
+to copy ALL the files to be able to read and write ANALYZE and MINC formatted 
+files. 
+<P>If you are using MINC formated files you will need the extra tools in the <A 
+href="http://www.bic.mni.mcgill.ca/users/fmorales">emma</A> toolbox. Installing 
+<A href="http://www.bic.mni.mcgill.ca/users/fmorales">emma</A> is a bit tricky. 
+In the zipped file that you download, there are 3 .dll files and 3 .exe files - 
+these must be moved to a directory in the Windows or Linux path, e.g. 
+matlab/bin/win32 directory. Also you must create a directory c:/tmp or /tmp for 
+<A href="http://www.bic.mni.mcgill.ca/users/fmorales">emma</A> to use as scratch 
+space. 
+<P><A href="http://www.math.mcgill.ca/keith/fmristat/toolbox/example.m">Example 
+</A>contains all the matlab commands for the example used here.
+<P><A href="http://www.math.mcgill.ca/keith/fmristat/data">Data </A>contains all 
+the fMRI data for the <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/example.m">example </A>if 
+you want to duplicate the analysis. </H2>Contents:<BR>
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#intro">Summary of 
+method</A> 
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#latest">The latest 
+release of fmristat</A> 
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#pca">Looking at the fMRI 
+data using pca_image</A> 
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#plotting">Plotting the 
+hemodynamic response function (hrf) using fmridesign </A>
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#making">Making the design 
+matrices using fmridesign </A>
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#analysing">Analysing one 
+run with fmrilm </A>
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#look">Visualizing the 
+results using view_slices, glass_brain and blob_brain</A> 
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#ftest">F-tests</A> 
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#linear">A linear effect 
+of temperature </A>
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#combining">Combining 
+runs/sessions/subjects with multistat</A> 
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#fixed">Fixed and random 
+effects</A> 
+<LI><A 
+href="http://www.math.mcgill.ca/keith/fmristat/#thresholding">Thresholding the 
+tstat image with stat_threshold and fdr_threshold</A> 
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#resels">Finding the exact 
+resels of a search region with mask_resels</A> 
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#locating">Locating peaks 
+and clusters with locmax</A> 
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#summary">Producing an SPM 
+style summary with stat_summary</A> 
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#confregion">Confidence 
+regions for the spatial location of local maxima using conf_region</A> 
+<LI><A 
+href="http://www.math.mcgill.ca/keith/fmristat/#conjunctions">Conjunctions</A> 
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#extracting">Extracting 
+values from a minc file using extract</A> 
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#time">Estimating the time 
+course of the response </A>
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#delay">Estimating the 
+delay </A>
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#effic">Efficiency and 
+choosing the best design</A> 
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#connect">Effective 
+connectivity of all voxels with a reference </A>
+<LI><A href="http://www.math.mcgill.ca/keith/fmristat/#arp">Higher order 
+autoregressive models </A>
+<HR>
+<A name=intro></A>
+<H1>Summary of method</H1>The fMRI data was first converted to percentage of 
+whole volume. The statistical analysis of the percentages was based on a linear 
+model with correlated errors. The design matrix of the linear model was first 
+convolved with a hemodynamic response function modeled as a difference of two 
+gamma functions timed to coincide with the acquisition of each slice. Temporal 
+drift was removed by adding a cubic spline in the frame times to the design 
+matrix (one covariate per 2 minutes of scan time), and spatial drift was removed 
+by adding a covariate in the whole volume average. The correlation structure was 
+modeled as an autoregressive process of degree 1. At each voxel, the 
+autocorrelation parameter was estimated from the least squares residuals using 
+the Yule-Walker equations, after a bias correction for correlations induced by 
+the linear model. The autocorrelation parameter was first regularized by spatial 
+smoothing, then used to `whiten' the data and the design matrix. The linear 
+model was then re-estimated using least squares on the whitened data to produce 
+estimates of effects and their standard errors. 
+<P>In a second step, runs, sessions and subjects were combined using a mixed 
+effects linear model for the effects (as data) with fixed effects standard 
+deviations taken from the previous analysis. This was fitted using ReML 
+implemented by the EM algorithm. A random effects analysis was performed by 
+first estimating the the ratio of the random effects variance to the fixed 
+effects variance, then regularizing this ratio by spatial smoothing with a 
+Gaussian filter. The variance of the effect was then estimated by the smoothed 
+ratio multiplied by the fixed effects variance. The amount of smoothing was 
+chosen to achieve 100 effective degrees of freedom.
+<P>The resulting T statistic images were thresholded using the minimum given by 
+a Bonferroni correction and random field theory, taking into account the 
+non-isotropic spatial correlation of the errors.
+<P>References
+<P></P>
+<LI>Liao, C., Worsley, K.J., Poline, J-B., Aston, J.A.D., Duncan, G.H., Evans, 
+A.C. (2002). <A 
+href="http://www.math.mcgill.ca/keith/delay/delay_abstract.html">Estimating the 
+delay of the fMRI response. </A><I>NeuroImage,</I> <B>16</B>:593-606. <A 
+href="http://www.math.mcgill.ca/keith/delay/zhizhi3.ppt">POSTER (PowerPoint) 
+</A>
+<P></P>
+<LI>Worsley, K.J., Liao, C., Aston, J., Petre, V., Duncan, G.H., Morales, F., 
+Evans, A.C. (2002). <A 
+href="http://www.math.mcgill.ca/keith/fmristat_paper/fmristat_abstract.html">A 
+general statistical analysis for fMRI data. </A><I>NeuroImage,</I> 
+<B>15</B>:1-15. <A 
+href="http://www.math.mcgill.ca/keith/HBM2000/Poster.ppt">POSTER (PowerPoint) 
+</A>
+<P>
+<H2><A href="http://www.math.mcgill.ca/keith/fmristat/fmristat.ppt">PowerPoint 
+presentation of fMRIstat </A></H2>
+<HR>
+<A name=latest></A>
+<H1>The latest release of fmristat</H1>2 September, 2003: Darn it, more little 
+bugs fixed ... 
+<P>1 July, 2003: Complete revision of most functions, including bug fixes for 
+dealing with ANALYZE format files:<BR><A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">Fmrilm </A>: 
+Several adjustments have been made to allow for longer runs. Temporal trends are 
+now modeled as cubic splines, rather than polynomials. The N_TEMPORAL parameter 
+(formerly N_POLY) is now the number of spline terms <I>per 6 minutes</I> of 
+scanner time, so for the old 6 minute runs, the number of terms remains the 
+same, but more will be added for longer runs. Moreover for N_TEMPORAL=3, a cubic 
+spline is just a cubic, so for the old 6 minute runs, N_TEMPORAL=3 will give the 
+same results as before! It also adjusts the amount of smoothing of the AR 
+coefficients for longer runs; if there are more frames, the AR coefficients are 
+smoothed less, reducing the bias.<BR><A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/multistat.m">Multistat 
+</A>: Now chooses the amount of smoothing to target a specified df (default: 
+100), so that if there are more runs/sessions/subjects, less smoothing will be 
+needed, reducing the bias.<BR><A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/locmax.m">Locmax </A>: 
+Now ouputs a volume of clusters labelled by an index, to make it easier to find 
+clusters in visualization tools such as 'register'.<BR><A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/blob_brain.m">Blob_brain 
+</A>is a new function that produces an isosurface 3D 'blob' plot that can be 
+rotated. Useful for looking at activated regions coloured by effect size, 
+clusters, and confidence regions.<BR><A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/stat_summary.m">Stat_summary</A> 
+produces voxel and world (for minc files) coordinates, and a blob-plot. as well 
+a an SPM-stlye summary of clusters, peaks and their P-values and Q-values.<BR><A 
+href="http://www.math.mcgill.ca/keith/fmristat/#resels">Finding the exact resels 
+of a search region with mask_resels</A>: A new section for finding exact 
+non-isotropic resels of arbitrarily shaped search regions (up to now, fmristat 
+has assumed that search regions are spherical). This gives more precise P-values 
+for peaks, but these are not much different from the usual P-values that assume 
+a spherical search region, so this is only of interest for the perfectionist. 
+<P>25 October, 2002: I have noticed that you get a huge improvement in <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">fmrilm </A>by 
+converting each volume of the data to percent of the whole volume. On the test 
+data set here, I noticed a 20-80% increase in T-statistics, further enhanced by 
+adding the whole volume average as a covariate to the linear model. This is now 
+the default in <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">fmrilm </A>. To 
+retrieve the old analysis, set n_poly (now a vector n_trends - see the help of 
+<A href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">fmrilm </A>) 
+to [3 0 0]; for conversion to percent only (no extra covariate), set n_poly to 
+[3 1 0]. Note that if you convert to percent of the time course (using the 
+previous fmri2pcnt, now abandoned) then this has no effect on T-statistics. 
+Nearly all the figures have been redrawn, using an improved <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/view_slices.m">view_slices 
+</A>. World coordinates in mm are now output from <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/stat_summary.m">stat_summary 
+</A>to make it easier to report results.
+<P>5 August, 2002: A few bug fixes in reading and writing analyze format files. 
+A new program <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/efficiency.m">efficiency 
+</A>to calculate efficiencies and optimum designs - see <A 
+href="http://www.math.mcgill.ca/keith/fmristat/#effic">Efficiency and choosing 
+the best design.</A>
+<P>25 April, 2002: <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">Fmrilm </A>has 
+been extended to allow for different confounds for different slices. This is 
+useful for effective connectivity, where a new function <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmri_interp.m">fmri_interp</A> 
+has been added to resample a single fmri time series at different frame times 
+and slice times. See <A 
+href="http://www.math.mcgill.ca/keith/fmristat/#connect">Effective connectivity 
+of all voxels with a reference.</A> 
+<P>12 April, 2002: Fmristat now reads ANALYZE format files created on any 
+machine, and the file seperator can be / or \.
+<P>8 April, 2002: Fmristat now allows for non-isotropic (non-constant FWHM) 
+data. Many of the FWHM parameters can now be replaced by FWHM images. Fmristat 
+now works for 2D data (one slice) as well as 3D data (more than one slice). 
+<BR><A href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">Fmrilm 
+</A>now reads multiple 3D image files as well as a single 4D file - useful for 
+ANALYZE format data. <BR><A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">Fmrilm </A>and 
+<A href="http://www.math.mcgill.ca/keith/fmristat/toolbox/multistat.m">multistat 
+</A>have been extended to estimate the effective FWHM of the data both from 
+fixed and random effects. This allows for non-isotropic inference.<BR><A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/multistat.m">Multistat 
+</A>has been extended to estimate mixed effects conjunctions. It is now very 
+fast if no sdeffect files are specified, making it suitable for analyzing PET 
+data. <BR><A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/locmax.m">Locmax </A>now 
+finds clusters as well as local maxima.<BR><A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/stat_threshold.m">Stat_threshold 
+</A>has been extended to find P-values and thresholds for conjunctions, and it 
+now adjusts P-values and thresholds for clusters if the cluster extent is 
+measured in resels and the resels are themselves estimated by <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">fmrilm </A>or 
+<A href="http://www.math.mcgill.ca/keith/fmristat/toolbox/multistat.m">multistat 
+</A>.<BR>
+<HR>
+<A name=pca></A>
+<H2>Looking at the fMRI data using <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/pca_image.m">pca_image 
+</A></H2>A Principal Components Analysis (PCA) of the fMRI data is sometimes 
+useful as an exploratory tool that does not require any model for the data. It 
+can reveal unexpected signals, or outlying frames. The PCA writes the data as a 
+sum of temporal components times spatial components, chosen to best approximate 
+the fMRI data. To define the brain, we use the first slice of the fMRI data as a 
+mask. <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmri_mask_thresh.m">fmri_mask_thresh 
+</A>tries to find a nice threshold, in this case 452. <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/pca_image.m">Pca_image 
+</A>produces the following graph of the first 4 components: <XMP>input_file='c:/keith/data/brian_ha_19971124_1_100326_mri_MC.mnc';
+mask_file=input_file;
+mask_thresh=fmri_mask_thresh(mask_file);
+pca_image(input_file, [], 4, mask_file, mask_thresh);
+colormap(spectral);
+</XMP><A href="http://www.math.mcgill.ca/keith/fmristat/figs/figpca1.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figpca1.jpg" 
+border=0></A>
+<P>The first component, with an sd of 105.7 that accounts for 77.8% of the 
+variance of the data, has extreme temporal values in the first few frames, 
+perhaps because the EPI scanner has not reached a steady state. The spatial 
+component is roughly the difference between the first few frames and the average 
+of the others. The second component appears to capture a linear drift. We can 
+see this more clearly by excluding the first three frames as follows (note that 
+you don't need to specify mask_thresh, <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/pca_image.m">pca_image 
+</A>will call <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmri_mask_thresh.m">fmri_mask_thresh 
+</A>to find it): <XMP>exclude=[1 2 3];
+V=pca_image(input_file, exclude, 4, mask_file);
+</XMP><A href="http://www.math.mcgill.ca/keith/fmristat/figs/figpca2.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figpca2.jpg" 
+border=0></A>
+<P>Now the first component appears to have captured the linear drift around the 
+edges of the brain, with an sd of 27.4 that explains 22.6% of the variability of 
+the fMRI data. Note that signs are arbitrary, e.g. we can change the signs of 
+both the time and space components. This component is saved in the first column 
+of V; we could use it later on as the CONFOUND parameter to <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">fmrilm</A> to 
+remove drift, instead of, or in addition to removing polynomial drift.
+<P>The next two components, with sd's of 17.5 and 15.7, appear to capture a 
+cyclic pattern with 10 cycles that might be related to the 10 repetitions of the 
+heat stimulus paradigm. This cyclic pattern is expressed in the supplementary 
+motor areas which is confirmed below by a model-driven analysis. The fourth 
+component, with an sd of 12.0, appears to be noise.
+<P><A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/pca_image.m">Pca_image 
+</A>can also do a PCA on the coefficients from a linear model specified by a 
+design matrix X_interest, after removing effects from another linear model 
+specified by a design matrix X_remove (Worsley et al., 1998). As an example, we 
+might try to confine the PCA to the 12 scans in each block. To do this, we set 
+X_interest to a design matrix for the 12 time points within each block. We might 
+also remove a constant and the linear drift already detected as the first 
+component of the PCA above: <XMP>X_remove=[ones(120,1) (1:120)'];
+X_interest=repmat(eye(12),10,1);
+pca_image(input_file, exclude, 4, mask_file, [], [], X_remove, X_interest);
+</XMP><A href="http://www.math.mcgill.ca/keith/fmristat/figs/figpca3.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figpca3.jpg" 
+border=0></A>
+<P>The stimulus was 3 frames each of rest, hot, rest, warm, repeated 10 times, 
+but delayed 6s (2 frames) by the hemodynamic response. The first component 
+appears to have captured a warm minus hot stimulus effect. The second component, 
+though much smaller, appears to be capturing a 6s delay of the first component. 
+The rest appear to be noise.
+<P></P>
+<LI>Worsley, K.J., Poline, J.B., Friston, K.J. and Evans, A.C. (1998). <A 
+href="http://www.math.mcgill.ca/keith/multi/multi.abstract.html">Characterizing 
+the response of PET and fMRI data using Multivariate Linear Models (MLM). 
+</A><I>NeuroImage </I>, <B>6</B>:305-319.
+<P><A name=plotting></A>
+<H2>Plotting the hemodynamic response function (hrf) using <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmridesign.m">fmridesign</A></H2>The 
+hrf is modeled as the difference of two gamma density functions (Glover, G.H. 
+(1999). "Deconvolution of impulse response in event-related BOLD fMRI." 
+<I>NeuroImage</I>, 9:416-429). The parameters of the hrf are specified by a row 
+vector whose elements are:
+<P>1. PEAK1: time to the peak of the first gamma density;<BR>2. FWHM1: 
+approximate FWHM of the first gamma density;<BR>3. PEAK2: time to the peak of 
+the second gamma density;<BR>4. FWHM2: approximate FWHM of the second gamma 
+density;<BR>5. DIP: coefficient of the second gamma density. The final hrf is: 
+gamma1/max(gamma1)-DIP*gamma2/max(gamma2) scaled so that its total integral is 
+1.<BR>If PEAK1=0 then there is no smoothing of that event type with the hrf. If 
+PEAK1&gt;0 but FWHM1=0 then the design is lagged by PEAK1. The default, chosen 
+by Glover (1999) for an auditory stimulus, is:<BR><XMP>hrf_parameters=[5.4 5.2 10.8 7.35 0.35]
+</XMP>To look at the hemodynamic response function, try:<BR><XMP>time=(0:240)/10;
+hrf0=fmridesign(time,0,[1 0],[],hrf_parameters);
+plot(time,squeeze(hrf0.X),'LineWidth',2)
+xlabel('time (seconds)')
+ylabel('hrf')
+title('Glover hrf model')
+</XMP><A href="http://www.math.mcgill.ca/keith/fmristat/figs/fighrf0.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_fighrf0.jpg" 
+border=0></A>
+<P><A name=making></A>
+<H2>Making the design matrices using <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmridesign.m">fmridesign</A></H2>Specifying 
+all the frame times and slice times is now obligatory. For 120 scans, separated 
+by 3 seconds, and 13 interleaved slices every 0.12 seconds use:
+<P><XMP>frametimes=(0:119)*3;
+slicetimes=[0.14 0.98 0.26 1.10 0.38 1.22 0.50 1.34 0.62 1.46 0.74 1.58 0.86];
+</XMP>The events are specified by a matrix of EVENTS, or directly by a stimulus 
+design matrix S, or both. EVENTS is a matrix whose rows are events and whose 
+columns are:
+<P>1. EVENTID - an integer from 1:(number of events) to identify event 
+type;<BR>2. EVENTIMES - start of event, synchronized with frame and slice 
+times;<BR>3. DURATION (optional - default is 0) - duration of event;<BR>4. 
+HEIGHT (optional - default is 1) - height of response for event.
+<P>For each event type, the response is a box function starting at the event 
+times, with the specified durations and heights, convolved with the hemodynamic 
+response function (see above). If the duration is zero, the response is the 
+hemodynamic response function whose integral is the specified height - useful 
+for ‘instantaneous’ stimuli such as visual stimuli. The response is then 
+subsampled at the appropriate frame and slice times to create a design matrix 
+for each slice, whose columns correspond to the event id number. EVENT_TIMES=[] 
+will ignore event times and just use the stimulus design matrix S (see next).
+<P>This is a sample run on Brian Ha's data, which was a block design of 3 scans 
+rest, 3 scans hot stimulus, 3 scans rest, 3 scans warm stimulus, repeated 10 
+times (120 scans total). The hot event is identified by 1, and the warm event by 
+2. The events start at times 9,27,45,63... and each has a duration of 9s, with 
+equal height:<BR><XMP>events=[
+     1     9     9     1
+     2    27     9     1
+     1    45     9     1
+     2    63     9     1
+     1    81     9     1
+     2    99     9     1
+     1   117     9     1
+     2   135     9     1
+     1   153     9     1
+     2   171     9     1
+     1   189     9     1
+     2   207     9     1
+     1   225     9     1
+     2   243     9     1
+     1   261     9     1
+     2   279     9     1
+     1   297     9     1
+     2   315     9     1
+     1   333     9     1
+     2   351     9     1
+];
+</XMP>or if you are good at matlab:<BR><XMP>eventid=kron(ones(10,1),[1; 2]);
+eventimes=(0:19)'*18+9;
+duration=ones(20,1)*9;
+height=ones(20,1);
+events=[eventid eventimes duration height] 
+</XMP>Events can also be supplied by a stimulus design matrix S (not 
+recommended), whose rows are the frames, and columns are the event types. Events 
+are created for each column, beginning at the frame time for each row of S, with 
+a duration equal to the time to the next frame, and a height equal to the value 
+of S for that row and column. Note that a constant term is not usually required, 
+since it is removed by the polynomial trend terms provided N_TEMPORAL&gt;=0. For 
+the same experiment:<BR><XMP>S=[
+     0     0
+     0     0
+     0     0
+     1     0
+     1     0
+     1     0
+     0     0
+     0     0
+     0     0
+     0     1
+     0     1
+     0     1
+.
+.
+.
+(repeated 10 times)
+.
+.
+.
+];
+</XMP>or if you are good at matlab:<BR><XMP> 
+S=kron(ones(10,1),kron([0 0; 1 0; 0 0; 0 1],ones(3,1)));
+</XMP>Either of these give the same cache of design matrices, X_CACHE:<BR><XMP>X_cache=fmridesign(frametimes,slicetimes,events,[],hrf_parameters);
+X_cache=fmridesign(frametimes,slicetimes,  []  , S,hrf_parameters);
+</XMP>or just<BR><XMP>X_cache=fmridesign(frametimes,slicetimes,events);
+</XMP>if you are using the default hrf parameters. To look at the two columns of 
+the design matrix for the 4th slice:<BR><XMP>plot(squeeze(X_cache.X(:,:,1,4)),'LineWidth',2)
+legend('Hot','Warm')
+xlabel('frame number')
+ylabel('response')
+title('Hot and Warm responses')
+</XMP><A href="http://www.math.mcgill.ca/keith/fmristat/figs/figdesign.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figdesign.jpg" 
+border=0></A>
+<P><A name=analysing></A>
+<H2>Analysing one run with <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">fmrilm</A></H2>First 
+set up the contrasts. CONTRAST is a matrix whose rows are contrasts for the 
+statistic images, with row length equal to the number regressor variables in 
+X_CACHE. We wish to look for regions responding to the hot stimulus, the warm 
+stimulus, and the difference hot-warm:
+<P><XMP>contrast=[1  0;
+          0  1;
+          1 -1];
+</XMP>EXCLUDE is a list of frames that should be excluded from the analysis. 
+This must be used with Siemens EPI scans to remove the first few frames, which 
+do not represent steady-state images. Default is [1], but [1 2 3] is better:
+<P><XMP>exclude=[1 2 3];
+</XMP>WHICH_STATS is a logical matrix indicating output statistics by 1. Rows 
+correspond to rows of CONTRAST, columns correspond to:
+<P>1: T statistic image, OUTPUT_FILE_BASE_mag_t.mnc or .img (for contrasts in 
+the delays, mag is replaced by del in the extension). <BR>The degrees of freedom 
+is DF. Note that tstat=effect/sdeffect. 2: effect image, 
+OUTPUT_FILE_BASE_mag_ef.mnc or .img.<BR>3: standard deviation of the effect, 
+OUTPUT_FILE_BASE_mag_sd.mnc or .img. <BR>4: F-statistic image, 
+OUTPUT_FILE_BASE_mag_F.mnc or .img, for testing all rows of CONTRAST that deal 
+with magnitudes (see CONTRAST_IS_DELAY below). The degrees of freedom are [DF, 
+P].<BR>5: the temporal autocorrelation(s), OUTPUT_FILE_BASE_rho.mnc or 
+.img.<BR>6: the residuals from the model, OUTPUT_FILE_BASE_resid.mnc or .img, 
+only for the non-excluded frames (warning: uses lots of memory). <BR>7: the 
+whitened residuals from the model, OUTPUT_FILE_BASE_wresid.mnc or .img, only for 
+the non-excluded frames (warning: uses lots of memory).<BR>8: the AR 
+parameter(s) a_1 ... a_p, in OUTPUT_FILE_BASE_A.mnc or .img.<BR>9: the estimated 
+FWHM in OUTPUT_FILE_BASE_FWHM.mnc or .img - note this uses more time and memory.
+<P>If WHICH_STATS to a row vector of length 9, then it is used for all 
+contrasts; if the number of columns is less than 9 it is padded with zeros. 
+Default is 1. 
+<P>To get t statistics, effects and their sd's, and the F statistic for testing 
+for any effect of either hot or warm vs baseline, the autocorrelation, and the 
+FWHM:
+<P><XMP>which_stats=[1 1 1 1 1 0 0 0 1]
+</XMP>Input minc file for one session, and output base for each row of CONTRAST 
+(hot for hot, wrm for warm, hmw for hot-warm):
+<P><XMP> 
+input_file='c:/keith/data/brian_ha_19971124_1_100326_mri_MC.mnc';
+output_file_base=['c:/keith/results/ha_100326_hot';
+                  'c:/keith/results/ha_100326_wrm';
+                  'c:/keith/results/ha_100326_hmw'];
+</XMP>The big run:
+<P><XMP> 
+[df1, p]=fmrilm(input_file, output_file_base, X_cache, contrast, exclude, which_stats);
+</XMP>and the output gives the degrees of freedom of the T statistic images 
+(with df df1=110) and the F statistic image (with df's p=2, df1=110). Note that 
+p=2, not 3, because the third contrast is a linear combination of the first two. 
+The files generated are:
+<P><XMP>c:/keith/results/ha_100326_hot_rho.mnc
+c:/keith/results/ha_100326_hmw_mag_t.mnc
+c:/keith/results/ha_100326_hmw_mag_ef.mnc
+c:/keith/results/ha_100326_hmw_mag_sd.mnc
+c:/keith/results/ha_100326_hot_mag_t.mnc
+c:/keith/results/ha_100326_hot_mag_ef.mnc
+c:/keith/results/ha_100326_hot_mag_sd.mnc
+c:/keith/results/ha_100326_wrm_mag_t.mnc
+c:/keith/results/ha_100326_wrm_mag_ef.mnc
+c:/keith/results/ha_100326_wrm_mag_sd.mnc
+c:/keith/results/ha_100326_hot_fwhm.mnc
+</XMP><A name=look></A>
+<H2>Visualizing the results using <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/view_slices.m">view_slices</A>, 
+<A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/glass_brain.m">glass_brain</A> 
+and <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/blob_brain.m">blob_brain</A></H2>To 
+look at slice 3 (zero based) or slice 4 (one based) of the t-statistic for 
+hot-warm try
+<P><XMP>t_file='c:/keith/results/ha_100326_hmw_mag_t.mnc';
+m=fmris_read_image(t_file,4,1);
+imagesc(m.data'))',[-6 6]); colorbar; axis xy; colormap(spectral);
+</XMP><A href="http://www.math.mcgill.ca/keith/fmristat/figs/figslice.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figslice.jpg" 
+border=0></A>
+<P>To see the brain using the first frame of the fMRI data as a mask (note <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/view_slices.m">view_slices</A> 
+slices start at 0, so subtract 1): <XMP>mask_file=input_file;
+clf;
+view_slices(t_file,mask_file,[],3,1,[-6 6]);
+</XMP><A 
+href="http://www.math.mcgill.ca/keith/fmristat/figs/figviewslice.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figviewslice.jpg" 
+border=0></A>
+<P>or to see the first 12 slices: <XMP>clf;
+view_slices(t_file,mask_file,[],0:11,1,[-6 6]);
+</XMP><A 
+href="http://www.math.mcgill.ca/keith/fmristat/figs/figviewslices.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figviewslices.jpg" 
+border=0></A>
+<P>To get an SPM-style maximum intensity projection ('glass brain') above 3 try: 
+<XMP>clf;
+glass_brain(t_file,3,mask_file);
+</XMP><A 
+href="http://www.math.mcgill.ca/keith/fmristat/figs/figlassbrain.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figlassbrain.jpg" 
+border=0></A>
+<P>To get a 3D 'blob' plot of voxels where the T statistic &gt; 5, coloured by 
+the hot - warm effect (in %BOLD), try <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/blob_brain.m">blob_brain</A>: 
+<XMP>clf;
+blob_brain(t_file,5,'c:/keith/results_test/ha_100326_hmw_mag_ef.mnc');
+title('Hot - warm, T>5, coloured by effect (%BOLD)');
+</XMP><A 
+href="http://www.math.mcgill.ca/keith/fmristat/figs/figblobrain.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figblobrain.jpg" 
+border=0></A>
+<P><A name=ftest></A>
+<H2>F-tests</H2>F-tests should only be used when we are interested in any linear 
+combination of the contrasts. For example, an F-test would be appropriate for 
+detecting regions with high polynomial drift, since we would be interested in 
+either a linear, quadratic or cubic trend, or any linear combination of these. 
+The drift terms appear after the regressor terms, in the order constant, linear, 
+quadratic, cubic etc. So to test for a drift, use the contrast <XMP> 
+contrast=[0  0  0 1 0 0;
+          0  0  0 0 1 0;
+          0  0  0 0 0 1]
+which_stats=[0 0 0 1];
+output_file_base='c:/keith/results/ha_100326_drift';
+fwhm_rho='c:/keith/results/ha_100326_hot_rho.mnc';
+fmrilm(input_file,output_file_base,X_cache,contrast,exclude,which_stats,fwhm_rho);
+</XMP>Note that by replacing the fwhm_rho parameter (10mm by default) with the 
+file name c:/keith/results/ha_100326_hot_rho.mnc we avoid re-calculating the 
+autocorrelations. To visualize the regions with significant drift:<BR><XMP> 
+clf;
+view_slices('c:/keith/results_test/ha_100326_drift_mag_F.mnc',mask_file,[],0:11,1,[0 50]);
+stat_threshold(1000000,26000,8,[3 110])
+</XMP><A href="http://www.math.mcgill.ca/keith/fmristat/figs/figdrift.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figdrift.jpg" 
+border=0></A>
+<P>Note that we can use <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/stat_threshold.m">stat_threshold</A> 
+to find the threshold for significant drift (P&lt;0.05), which is 11.14 (see <A 
+href="http://www.math.mcgill.ca/keith/fmristat/#thresholding">later</A>). 
+Another good use of the F-test is for detecting effects when the hemodynamic 
+response is modeled by a set of basis functions (see <A 
+href="http://www.math.mcgill.ca/keith/fmristat/#time">Estimating the time course 
+of the response </A>). <A name=linear></A>
+<H2>A linear effect of temperature</H2>Instead of using just two values 
+(hot=49<SUP>o</SUP>C, and low=35<SUP>o</SUP>C), suppose the temperature of the 
+stimulus varied 'randomly' over the 20 blocks, taking 5 equally spaced values 
+between 35 and 49:<BR><XMP>temperature=[45.5 35.0 49.0 38.5 42.0 49.0 35.0 42.0 38.5 45.5 ...
+             38.5 49.0 35.0 45.5 42.0 45.5 38.5 42.0 35.0 49.0]';
+</XMP>To model a linear effect of temperature (see Figure (a) below), use one 
+event type with height=1 and another with a height=temperature:<BR><XMP>events=[zeros(20,1)+1 eventimes duration ones(20,1);
+        zeros(20,1)+2 eventimes duration temperature] 
+</XMP>The following contrasts will estimate first the slope of the temperature 
+effect (per <SUP>o</SUP>C), then the hot, warm and hot-warm effects exactly as 
+before:<BR><XMP>contrast=[0  1;
+          1 49;
+          1 35;
+          0 14];
+</XMP><A href="http://www.math.mcgill.ca/keith/fmristat/figs/figpoly.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figpoly.jpg" 
+border=0></A>
+<P>To model a quadratic effect of temperature (Figure b), add a third event type 
+with a height equal to the temperature<SUP>2</SUP>:<BR><XMP>events=[zeros(20,1)+1 eventimes duration ones(20,1);
+        zeros(20,1)+2 eventimes duration temperature; 
+        zeros(20,1)+3 eventimes duration temperature.^2] 
+contrast=[0 0 1];
+</XMP>The contrast will test for a quadratic effect. Taking this further, we may 
+wish to test for a cubic (Figure c), quartic (Figure d) or even a 'non-linear' 
+effect of temperature, where the temperature effects are arbitrary. Note that 
+the quartic model is identical to the arbitrary model because a quartic can be 
+fitted exactly to any arbitrary 5 points. To model the arbitrary effect, simply 
+assign a different event type from 1 to 5 for each of the 5 different 
+temperature values: <XMP>events=[floor((temperature-35)/3.5)+1 eventimes duration ones(20,1)]
+</XMP>To look for any effect of the stimulus compared to baseline, use:<BR><XMP>contrast=[1  0  0  0  0;
+          0  1  0  0  0;
+          0  0  1  0  0;
+          0  0  0  1  0;
+          0  0  0  0  1];
+contrast=[eye(5) ones(5,4)];
+which_stats=[0 0 0 1];
+</XMP>The resulting F statistic image will have 5 and 107 d.f.. To see if the 
+changes in temperature have any effect, subtract the average from each row of 
+the contrasts:<BR><XMP>contrast=[.8 -.2 -.2 -.2 -.2;
+         -.2  .8 -.2 -.2 -.2;
+         -.2 -.2  .8 -.2 -.2;
+         -.2 -.2 -.2  .8 -.2;
+         -.2 -.2 -.2 -.2  .8];
+contrast=[eye(5)-ones(5)/5 ones(5,4)];
+which_stats=[0 0 0 1];
+</XMP>The resulting F statistic image will have 4 and 107 d.f.. To see if the 
+changes in temperature have a <I>linear</I> effect, subtract the average from 
+the 5 temperature values:<BR><XMP>contrast=[-7.0 -3.5  0  3.5 7.0];
+which_stats=[1 1 1];
+</XMP>This will produce a T statistic with 107 d.f.. How is this different from 
+the previous linear effect? The <I>effect</I> is the same, but the standard 
+deviation may be slightly different. The reason is that in this model, we are 
+basing the standard deviation on errors about each temperature value; in the 
+first analysis, it is based on errors about a linear model. As a result, the 
+degrees of freedom is slightly different: 112 before, but 109 here. <A 
+name=combining></A>
+<H2>Combining runs/sessions/subjects with <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/multistat.m">multistat</A></H2>Repeat 
+previous analysis for hot-warm for the three other sessions (note that the same 
+X_CACHE is used for each):
+<P><XMP> 
+contrast=[1 -1];
+      
+input_file='c:/keith/data/brian_ha_19971124_1_093923_mri_MC.mnc';
+output_file_base='c:/keith/results/ha_093923_hmw';
+[df2 p]=fmrilm(input_file, output_file_base, X_cache, contrast, exclude, which_stats);
+ 
+input_file='c:/keith/data/brian_ha_19971124_1_101410_mri_MC.mnc';
+output_file_base='c:/keith/results/ha_101410_hmw';
+[df3 p]=fmrilm(input_file, output_file_base, X_cache, contrast, exclude, which_stats);
+ 
+input_file='c:/keith/data/brian_ha_19971124_1_102703_mri_MC.mnc';
+output_file_base='c:/keith/results/ha_102703_hmw';
+[df4 p]=fmrilm(input_file, output_file_base, X_cache, contrast, exclude, which_stats);
+</XMP>Now we can average the different sessions as follows. NOTE THAT ALL FILES 
+MUST HAVE EXACTLY THE SAME SHAPE (SLICES, COLUMNS, ROWS). If not, reshape them! 
+This is done by again setting up design matrix and a contrast:
+<P><XMP> 
+X=[1 1 1 1]';
+contrast=[1];
+which_stats=[1 1 1];
+input_files_ef=['c:/keith/results/ha_093923_hmw_mag_ef.mnc';
+                'c:/keith/results/ha_100326_hmw_mag_ef.mnc';
+                'c:/keith/results/ha_101410_hmw_mag_ef.mnc';
+                'c:/keith/results/ha_102703_hmw_mag_ef.mnc'];
+input_files_sd=['c:/keith/results/ha_093923_hmw_mag_sd.mnc';
+                'c:/keith/results/ha_100326_hmw_mag_sd.mnc';
+                'c:/keith/results/ha_101410_hmw_mag_sd.mnc';
+                'c:/keith/results/ha_102703_hmw_mag_sd.mnc'];
+output_file_base='c:/keith/results/ha_multi_hmw'
+</XMP>For the final run, we need to specify the row vector of degrees of freedom 
+of the input files, printed out by fmrilm.m: 
+<P><XMP>input_files_df=[df1 df2 df3 df4]
+</XMP>To get an idea of the FWHM, look at one of the FWHM files. The FWHM is 
+close to 6 mm outside the brain (due to motion correction), but a value of 
+input_files_fwhm = 8 mm seems more reasonable for the FWHM in the brain:
+<P><XMP>clf;
+view_slices('c:/keith/results/ha_100326_hot_fwhm.mnc',mask_file,0,3,1,[0 20]);
+input_files_fwhm=8;
+</XMP><A href="http://www.math.mcgill.ca/keith/fmristat/figs/figfwhm.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figfwhm.jpg" 
+border=0></A>
+<P>These two parameters are only used to calculate the final degrees of freedom, 
+and don't affect the images very much. Finally, for a fixed effects analysis 
+(not recommended!) we set the last parameter to Inf (see later). The final run 
+is: 
+<P><XMP>df=multistat(input_files_effect,input_files_sdeffect,input_files_df, ...
+   input_files_fwhm,X,contrast,output_file_base,which_stats,Inf)
+</XMP>Note that the program prints and returns the final degrees of freedom of 
+the tstat image, which is df=448 (see discussion on fixed and random effects).
+<P>For a more elaborate analysis, e.g. comparing the first two sessions with the 
+next two, you can do it by:<BR><XMP>X=[1 1 0 0; 0 0 1 1]';
+contrast=[1 -1];
+</XMP><A name=fixed></A>
+<H2>Fixed and random effects</H2>In the above run, we did a <I>fixed effect 
+</I>analysis, that is, the analysis is only valid for the particular group of 4 
+sessions on Brian Ha. It is not valid for an arbitrary session on Brian Ha, nor 
+for the population of subjects in general. It may turn out that the underlying 
+effects themselves vary from session to session, and from subject to subject. To 
+take this extra source of variability into account, we should do a <I>random 
+effects </I>analysis. 
+<P>The ratio of the random effects standard error, divided by the fixed effects 
+standard error, is outputed as ha_multi_hmw_sdratio.mnc. If there is no random 
+effect, then sdratio should be roughly 1. If there is a random effect, sdratio 
+will be greater than 1. To allow for the random effects, we multiply the 
+sdeffect by sdratio, and divide the tstat by sdratio. The only problem is that 
+sdratio is itself extremely noisy due to its low degrees of freedom, which 
+results in a loss of efficiency. One way around this is to assume that the 
+underlying sdratio is fairly smooth, so it can be better estimated by smoothing 
+sdratio. This will increase its degrees of freedom, thus increasing efficiency. 
+Note however that too much smoothing could introduce bias. 
+<P>The amount of smoothing is controlled by the final parameter, fwhm_varatio. 
+It is the FWHM in mm of the Gaussian filter used to smooth the ratio of the 
+random effects variance divided by the fixed effects variance. 0 will do no 
+smoothing, and give a purely random effects analysis. Inf will do complete 
+smoothing to a global ratio of one, giving a purely fixed effects analysis 
+(which we did above). The higher the fwhm_varatio, the higher the ultimate 
+degrees of freedom of the tstat image, and the more sensitive the test. However 
+too much smoothing will bias the results. 
+<P>By giving fwhm_varatio a negative value, it treats this as a target df, and 
+adjusts the smoothing to try to achieve this. The defualt is -100, i.e. <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/multistat.m">multistat</A> 
+finds the amount of smoothing to achieve 100 df. Why 100? The idea is that even 
+if the assumptions underlying the df formula are wrong by a factor of 2, this 
+will not greatly affect the distribution of T statistics, since T statistics 
+with more than 50 df are very close to Gaussian. Using this default:
+<P><XMP>which_stats=[1 1 1 1 0 0 0 0 1];
+[df, df_resid]=multistat(input_files_effect,input_files_sdeffect,input_files_df, ...
+   input_files_fwhm,X,contrast,output_file_base,which_stats)
+</XMP>The amount of smoothing is 19mm, which gives 100 df. The sd ratio of 
+random to fixed effects looks like this:
+<P><XMP>clf;
+view_slices('c:/keith/results/ha_multi_hmw_sdratio.mnc',mask_file,0,3,1);
+</XMP><A 
+href="http://www.math.mcgill.ca/keith/fmristat/figs/figsdratio.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figsdratio.jpg" 
+border=0></A>
+<P>Note that it is roughly 1 outside the brain and at most places inside, 
+indicating little random effect over the runs. The random effect sd is about 30% 
+higher than the fixed effect sd (sdratio = 1.3) in posterior regions. The 
+sdratio is much higher (~3) over subjects.
+<P>The effective FWHM over runs looks very similar to that over scans, but a lot 
+more noisy,<BR><XMP>clf;
+view_slices('c:/keith/results/ha_multi_hmw_fwhm.mnc',mask_file,0,3,1,[0 20]);
+</XMP><A 
+href="http://www.math.mcgill.ca/keith/fmristat/figs/figfwhmulti.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figfwhmulti.jpg" 
+border=0></A>
+<P>so some smoothing with <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/gauss_blur.m">gauss_blur</A> 
+makes it easier to interpret:
+<P><XMP>blured_fwhm=gauss_blur('c:/keith/results/ha_multi_hmw_fwhm.mnc',10);
+clf;
+view_slices(blured_fwhm,mask_file,0,3,1,[0 20]);
+</XMP><A 
+href="http://www.math.mcgill.ca/keith/fmristat/figs/figfwhmultiblur.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figfwhmultiblur.jpg" 
+border=0></A>
+<P>Reference:
+<P></P>
+<LI>Worsley, K.J. (2002). <A 
+href="http://www.math.mcgill.ca/keith/HBM2000/HBM2002.htm">Non-stationary FWHM 
+and its effect on statistical inference of fMRI data. </A><I>NeuroImage,</I> 
+submitted. 
+<P><A name=thresholding></A>
+<H2>Thresholding the tstat image with <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/stat_threshold.m">stat_threshold</A> 
+and <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fdr_threshold.m">fdr_threshold</A> 
+</H2>Suppose we search c:/keith/results/ha_multi_hmw_t.mnc for local maxima 
+inside a search region of 1000cc. The voxel volume is 2.34375*2.34375*7= 
+38.4521, so the number of voxels is 1000000/38.4521=26000. There is roughly 8 mm 
+smoothing. The degrees of freedom returned by <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/multistat.m">multistat</A>, 
+is 100. By default the significance is the standard 0.05. The threshold to use 
+is
+<P><XMP>stat_threshold(1000000,26000,8,100)
+</XMP>which gives 4.89. Often we we want to define a search region by a mask. <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/mask_vol.m">Mask_vol</A> 
+finds the volume of the search region, and the number of voxels of a mask_file 
+above a mask_thresh - if no mask_thresh is supplied, it will attempt to fund one 
+using <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmri_mask_thresh.m">fmri_mask_thresh</A>. 
+Using the raw fMRI data in mask_file to define the mask: <XMP>mask_file='c:/keith/data/brian_ha_19971124_1_100326_mri_MC.mnc';
+[search_volume, num_voxels]=mask_vol(mask_file)
+</XMP>gives search_volume = 1183800 mm^3 (just over a litre) and num_voxels = 
+30786. Using these values, <XMP>stat_threshold(search_volume,num_voxels,8,100)
+</XMP>gives a threshold of 4.93. 
+<P>Another way of detecting significant activation is by looking at the spatial 
+extent of activated regions (clusters), rather than peak height. We first set a 
+lower threshold, usually in the range 2.5 - 4. Lower thresholds are better at 
+detecting large clusters, but setting it too low invalidates the P-values. By 
+default, <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/stat_threshold.m">stat_threshold</A> 
+uses the threshold for P=0.001 (uncorrected) which is cluster_threshold = 3.17. 
+The resulting threshold for the spatial extent of clusters is extent_threshold = 
+638 mm^3. This means that any cluster of neighbouring voxels above a threshold 
+of 3.17 with a volume larger than 638 mm^3 is significant at P&lt;0.05.
+<P>Sometimes we are interested in a specific peak or cluster e.g. the nearest 
+peak or cluster to a pre-chosen voxel or ROI. We don't have to search over all 
+peaks and clusters, so the thresholds are lower. The threshold for peak height 
+is then peak_threshold_1 = 4.30, and spatial extent_threshold_1 = 221 mm^3 is 
+the extent of a single cluster chosen in advance - see Friston (1997).
+<P>Often the FWHM is estimated as an image rather than a fixed value. The extra 
+variability in this estimate increases P-values and thresholds. It does not have 
+much effect on P-values and thresholds for local maxima if the search region is 
+large, but it can have a strong effect on P-values and thresholds for spatial 
+extent. The random noise in the FWHM is measured by the degrees of freedom of 
+the linear model used to estimate it. For example, if the FWHM comes from a 
+single run of fmrilm, then the df of the estimated FWHM is equals the df of T 
+statistic image. Suppose this is 100, for comparison (actually it was 110). To 
+incorporate this into <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/stat_threshold.m">stat_threshold</A>, 
+add an extra row to the df: <XMP>stat_threshold(search_volume,num_voxels,8,[100; 100])
+</XMP>The thresholds for peak height are the same, but the thresholds for 
+spatial extent increase slightly to extent_threshold = 683 mm^3 and 
+extent_threshold_1 = 223 mm^3 for a pre-chosen cluster. If the FWHM comes from 
+multistat, two degrees of freedom are required: the first is the residual 
+degrees of freedom df_resid, equal to the number of runs - number of parameters 
+in the model = 4 - 1 = 3 (output as the second parameter of multistat), and the 
+second is df, the effective degrees of freedom after smoothing the sdratio = 100 
+(output as the first parameter of multistat). These are put into the second row 
+of a 2 x 2 matrix as follows (the 0 indicates that we want calculations for a t 
+statistic): <XMP>stat_threshold(search_volume, num_voxels,8,[100 0; 3 100])
+</XMP>The thresholds for local maxima are the same, but the thresholds for 
+spatial extent jump to 1020 mm^3 and 239 mm^3 for a pre-chosen cluster. 
+<P>Fdr_threshold calculates the threshold for a t or F image for controlling the 
+false discovery rate (FDR). The FDR is the expected proportion of false 
+positives among the voxels above the threshold. This threshold is higher than 
+that for controlling the expected proportion of false positives in the whole 
+search volume, and usually lower than the Bonferroni threshold (printed out as 
+BON_THRESH) which controls the probability that *any* voxels are above the 
+threshold. The threshold depends on the data as well as the search region, but 
+does not depend on the smoothness of the data. We must specify a search volume, 
+here chosen as the first frame of the raw fMRI data thresholded at a value of 
+mask_thresh=452:<BR><XMP>t_file='c:/keith/results/ha_multi_hmw_t.mnc';
+fdr_threshold(t_file,[],mask_file,[],100)
+</XMP>The result is a threshold of 2.67, considerably lower than the random 
+field / Bonferroni threshold of 4.93 above. But remember that the interpretation 
+is different: at least 95% of the voxels above 2.67 are true signal (on 
+average), whereas the 19 times out of 20, there will be *no* false positives in 
+the voxels above 4.93.
+<P>References:
+<P></P>
+<LI>Benjamini, Y. &amp; Hochberg, Y. (1995). Controlling the false discovery 
+rate: a practical and powerful approach to multiple testing. <I>Journal of the 
+Royal Statistical Society, Series B</I>, <B>57</B>:289-300. 
+<LI>Friston, K.J. (1997). Testing for anatomically specified regional effects. 
+<I>Human Brain Mapping</I>, <B>5</B>:133-136. 
+<LI>Genovese, C.R., Lazar, N.A. &amp; Nichols, T.E. (2002). Thresholding of 
+statistical maps in functional neuroimaging using the false discovery rate. 
+<I>NeuroImage</I>, <B>15</B>:722-786. 
+<LI>Worsley, K.J., Marrett, S., Neelin, P., Vandal, A.C., Friston, K.J., and 
+Evans, A.C. (1996). <A 
+href="http://www.math.mcgill.ca/keith/unified/abstract.unified.html">A Unified 
+Statistical Approach for Determining Significant Signals in Images of Cerebral 
+Activation.</A> <I>Human Brain Mapping</I>, <B>4</B>:58-73.
+<P><A name=resels></A>
+<H2>Finding the exact resels of a search region with <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/mask_resels.m">mask_resels</A></H2>For 
+the perfectionist, there is a way of finding the exact resels of a search region 
+in dimensions 0,1,2,3. These are used by <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/stat_threshold.m">stat_threshold</A> 
+to get more accurate thresholds and P-values that take into account the shape of 
+the search region, not just its volume (see Worsley et al., 1996, above). Up to 
+now, <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/stat_threshold.m">stat_threshold 
+</A>has been assuming that the search region is a ball, so that the resulting 
+thresholds are slighty too low (liberal) for non-ball shaped regions. <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/mask_resels.m">Mask_resels</A> 
+will find the exact resels of any search region defined by a mask_file above 
+mask_thresh (if mask_thresh is not provided, it will use <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmri_mask_thresh.m">fmri_mask_thresh 
+</A>to find one). It works by filling the mask with a tetrahedral mesh that is 
+warped so it touches the boundary, thus overcoming the 'jagged boundary' problem 
+of the method in Worsley et al. (1996). The FWHM must also be supplied, here 
+assumed to be 8mm: <XMP>mask_file='c:/keith/data/brian_ha_19971124_1_100326_mri_MC.mnc';
+resels=mask_resels(8,[],mask_file);
+</XMP>the result is resels = [1 36.3 516.1 2291.6]. The first component 
+(dimension 0) is the Euler characteristic of the mask, which is 1 if the search 
+region is simply connected (topologically equivalent to a ball). The second 
+component (dimension 1) is 2 * caliper diameter / FWHM, the third (dimension 2) 
+is 1/2 * surface area / FWHM^2, and the fourth (dimension 3) is the familiar 
+volume / FWHM^3. Note that this is not quite the same as search_volume / 8^3 = 
+1183800 / 8^3 = 2312.1 found using mask_vol. Mask_resels is more accurate - it 
+fills the mask with tetrahedra out to the boundary (interpolated between voxels, 
+a bit like 'marching cubes'), whereas mask_vol assumes that the search region is 
+a set of box-shaped voxels surrounding each voxel in the search region (so it 
+has a 'jagged' boundary). Putting these resels into stat_threshold in place of 
+search_volume, and setting FWHM=1: <XMP>stat_threshold(resels,num_voxels,1,100)
+</XMP>gives peak_threshold = 4.93, peak_threshold_1 = 4.30 and extent_threshold 
+= 1.2425, extent_threshold_1 = 0.4310 (note these are now measured in resels, 
+not mm^3). In other words, the results are almost identical to what we had 
+before. The reason is that <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/stat_threshold.m">stat_threshold 
+</A>reports the lower of the Bonferroni threshold and the random field 
+threshold, and in this case the Bonferroni threshold, which depends on the 
+number of voxels and not the resels, is lower. To see the difference in the 
+random field threshold, we can set the number of voxels to infinity: <XMP>stat_threshold(resels,Inf,1,100)
+    5.2154
+stat_threshold(search_volume,Inf,8,100)
+    5.2145
+</XMP>The returned thresholds are almost identical, so again this is just for 
+the perfectionist! 
+<P>The *real* perfectionist might want to allow for non-isotropic random fields 
+as well, i.e. non-uniform FWHM. This requires quite a bit more work. We first 
+need to save normalised residuals from <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">fmrilm</A> or 
+<A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/multistat.m">multistat</A> 
+(depending on which program generated the test statistic) then replace the FWHM 
+(before 8mm) by a file name fwhm_info that contains these residuals. To get 
+fwhm_info, put a 1 in the 7th component of which_stats: <XMP>which_stats=[0 0 0 0 0 0 1];
+contrast=[];
+output_file_base='c:/keith/results/ha_100326_hot';
+fmrilm(input_file, output_file_base, X_cache, contrast, exclude, which_stats);
+fwhm_info='c:/keith/results/ha_100326_hot_wresid.mnc';
+resels=mask_resels(fwhm_info,[],mask_file);
+</XMP>The result is resels =[ 1 -450.4 303.5 1634.4] which has considerable 
+negative caliper diameter for reasons that are not clear at the moment. Using 
+this again in <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/stat_threshold.m">stat_threshold</A>, 
+and allowing for the variability in estimating the resels: <XMP>stat_threshold(resels,num_voxels,1,[100; 100])
+</XMP>The peak thresolds are the same as before because again the Bonferroni 
+wins, but the extent_threshold = 1.2111 and extent_threshold_1 = 0.4351 are a 
+bit smaller due to the smaller 3D resels. Note that the extents are in resels, 
+not mm^3, which allows for non-uniform FWHM. It would not be complete without an 
+example from multistat: <XMP>which_stats=[0 0 0 0 0 0 1];
+contrast=[];
+output_file_base='c:/keith/results/ha_multi_hmw';
+multistat(input_files_ef,input_files_sd,input_files_df, ...
+   input_files_fwhm,X,contrast,output_file_base,which_stats,20);
+fwhm_info='c:/keith/results/ha_multi_hmw_wresid.mnc';
+resels=mask_resels(fwhm_info,[3 111],mask_file);
+stat_threshold(resels,num_voxels,1,[111 0; 3 111],0.05,3);
+</XMP>The result is resels =[ 1 96.5 310.7 1563.2], similar to what we had 
+before, with identical peak thresholds (because Bonferroni wins) and 
+extent_threshold = 1.7213 and extent_threshold_1 = 0.4668 presumably because 
+there is more uncertainty in estimating the resels. <A name=locating></A>
+<H2>Locating peaks and clusters with <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/locmax.m">locmax</A></H2>To 
+locate peaks and clusters masked by the first slice if the fMRI data, use<BR><XMP>lm=locmax(t_file, 4.93, mask_file)
+</XMP>which gives a list of local maxima above 4.93, sorted in descending order. 
+The first column of LM is the values of the local maxima, and the next three are 
+the x,y,z voxel coordinates starting at 1. The 5th column is a cluster id, and 
+the 6th is the cluster volume. To find P-values for these local maxima, add the 
+list of peak values from the first column of lm, e.g.<BR><XMP>pval=stat_threshold(1000000,26000,8,100,lm(:,1))
+</XMP><A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/locmax.m">Locmax</A> can 
+now produce a file that has the cluster id as its values, useful for locating 
+the clusters. It can also produce cluster resels as well as volumes if a FWHM 
+scalar or file is given - see the help. <A name=summary></A>
+<H2>Producing an SPM style summary with <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/stat_summary.m">stat_summary</A></H2>To 
+look at all peaks and clusters above a threshold corresponding to an uncorrected 
+P-value of 0.001 (default), together with a complete listing of P-values and 
+false discovery rates (based on the local fwhm), use:<BR><XMP>fwhm_file='c:/keith/results/ha_multi_hmw_fwhm.mnc';
+[SUMMARY_CLUSTERS SUMMARY_PEAKS]=stat_summary(stat_file,fwhm_file, ...
+[100 0; 3 100],mask_file)
+</XMP>SUMMARY_CLUSTERS is a matrix with 6 columns:<BR>Col 1: index of cluster, 
+in descending order of cluster volume.<BR>Col 2: volume of cluster in 
+mm^3.<BR>Col 3: resels of cluster.<BR>Col 4: P-value of cluster extent.<BR>Col 
+5: P-value if the cluster was chosen in advance, e.g. nearest to an ROI.<BR><XMP>clus    vol  resel  p-val  (one)
+   1  33992  54.22      0 (    0)  
+   2  14150  25.03      0 (    0)  
+   3  12382  20.29      0 (    0)  
+   4   2538   3.12  0.011 (0.001)  
+   5   2538   2.77  0.016 (0.001)  
+   6   1577   2.15  0.035 (0.002)  
+   7   1000   1.43  0.098 (0.006)  
+   8    500   1.31  0.119 (0.007)  
+   9   1000   1.07  0.179 (0.011)  
+  10    385   0.99  0.208 (0.013)  
+  11    846   0.97  0.216 (0.014)  
+  12    269   0.86  0.266 (0.017)  
+  13    461   0.78  0.312 (0.021)  
+  14   1115   0.75  0.332 (0.023)  
+  15    308   0.67  0.388 (0.028)  
+  16    269    0.6  0.449 (0.033)  
+  17    231   0.56  0.493 (0.038)  
+  18    231   0.54  0.506 ( 0.04)  
+  19    461   0.53  0.515 (0.041)  
+  20    154   0.48  0.575 (0.048)  
+  .
+  .
+  .
+</XMP>SUMMARY_PEAKS is a matrix with 11 columns.<BR>Col 1: index of 
+cluster.<BR>Col 2: values of local maxima, sorted in descending order.<BR>Col 3: 
+P-value of local maxima.<BR>Col 4: P-value if the peak was chosen in advance, 
+e.g. nearest to an ROI.<BR>Col 5: Q-value or false discovery rate ~ probability 
+that voxel is not signal.<BR>Cols 6-8: i,j,k coords of local maxima in voxels, 
+starting at 0, as for 'register'.<BR>Cols 9-11: x,y,z coords of local maxima in 
+world coordinates (mm).<BR><XMP>clus   peak   p-val  (one)   q-val   (i   j   k)  (   x      y      z )
+   1  12.72       0 (    0)      0  (59  74   1)  ( 10.5  -28.7   24.1)
+   1  12.58       0 (    0)      0  (60  75   1)  (  8.2    -31   23.7)
+   1  11.45       0 (    0)      0  (61  73   2)  (  5.9  -25.3   17.5)
+   1  11.08       0 (    0)      0  (62  66   4)  (  3.5   -6.9    6.3)
+   1  10.95       0 (    0)      0  (61  70   4)  (  5.9  -16.2    4.8)
+   1   10.6       0 (    0)      0  (62  69   3)  (  3.5    -15   12.1)
+   1   9.96       0 (    0)      0  (59  81   1)  ( 10.5  -44.9   21.5)
+   1   9.93       0 (    0)      0  (56  79   0)  ( 17.6  -41.4   29.2)
+   1   9.38       0 (    0)      0  (55  75   0)  ( 19.9  -32.1   30.6)
+   1   9.23       0 (    0)      0  (55  89   1)  ( 19.9  -63.5   18.6)
+   1   9.08       0 (    0)      0  (56  76   0)  ( 17.6  -34.5   30.3)
+   1   8.72       0 (    0)      0  (57  70   5)  ( 15.2  -15.1   -2.1)
+   3   8.17       0 (    0)      0  (75  61   8)  (  -27      9  -19.5)
+   2   8.14       0 (    0)      0  (39  62  10)  ( 57.4    8.9  -33.7)
+   3   7.53       0 (    0)      0  (85  67   8)  (-50.4   -4.9  -21.7)
+   2   7.52       0 (    0)      0  (52  61  10)  (   27   11.2  -33.4)
+   1   7.49       0 (    0)      0  (54  85   2)  ( 22.3  -53.1   13.1)
+   3   7.44       0 (    0)      0  (85  64   9)  (-50.4    3.2  -27.6)
+   2   7.32       0 (    0)      0  (51  62  10)  ( 29.3    8.9  -33.7)
+   3   7.31       0 (    0)      0  (82  66   9)  (-43.4   -1.5  -28.3)
+   1   7.31       0 (    0)      0  (57  61   5)  ( 15.2    5.7    1.2)
+   3    6.9       0 (    0)      0  (71  61  10)  (-17.6   11.2  -33.4)
+   1    6.5       0 (    0)      0  (67  78   2)  ( -8.2  -36.9   15.7)
+   5   6.22       0 (    0)      0  (68  92   1)  (-10.5  -70.4   17.5)
+   2    6.2       0 (    0)      0  (47  62   8)  ( 38.7    6.7  -19.9)
+   2   6.18       0 (    0)      0  (47  61  10)  ( 38.7   11.2  -33.4)
+   3   6.12       0 (    0)      0  (72  69   9)  (-19.9   -8.4  -29.4)
+   2   6.06       0 (    0)      0  (51  65   9)  ( 29.3    0.9  -27.9)
+   3   5.83   0.001 (    0)      0  (88  67   7)  (-57.4     -6  -14.8)
+   1   5.77   0.001 (    0)      0  (52  83   2)  (   27  -48.5   13.9)
+   5   5.73   0.002 (    0)      0  (67  85   1)  ( -8.2  -54.2   20.1)
+   2   5.58   0.003 (0.001)      0  (49  69   9)  (   34   -8.4  -29.4)
+  14   5.55   0.004 (0.001)      0  (75  48   4)  (  -27   34.7   12.9)
+   6   5.55   0.004 (0.001)      0  (40  67   4)  ( 55.1   -9.2    5.9)
+  18    5.5   0.005 (0.001)      0  (45  74   4)  ( 43.4  -25.4    3.4)
+   4   5.49   0.005 (0.001)      0  (40  77   8)  ( 55.1    -28  -25.4)
+   3   5.47   0.005 (0.001)      0  (78  62   9)  (  -34    7.8  -26.8)
+   2   5.33    0.01 (0.001)      0  (50  68   9)  ( 31.6   -6.1    -29)
+   4   5.22   0.015 (0.002)      0  (39  77   9)  ( 57.4  -26.9  -32.3)
+   8    5.2   0.016 (0.002)      0  (78  73   2)  (  -34  -25.3   17.5)
+   4   5.15    0.02 (0.003)      0  (44  79   8)  ( 45.7  -32.6  -26.1)
+   2   5.07   0.029 (0.004)      0  (48  69  10)  ( 36.3   -7.3  -36.3)
+   3   5.06   0.029 (0.004)      0  (73  72   9)  (-22.3  -15.3  -30.5)
+   3   5.03   0.033 (0.004)      0  (81  63  10)  (  -41    6.6  -34.1)
+  13   5.02   0.035 (0.005)      0  (88  72   8)  (-57.4  -16.4  -23.6)
+   6   4.91   0.054 (0.007)      0  (42  69   3)  ( 50.4    -15   12.1)
+  11   4.91   0.055 (0.007)      0  (69  70   7)  (-12.9  -12.9  -15.9)
+   9   4.91   0.055 (0.007)      0  (48  46   5)  ( 36.3   40.5    6.7)
+   1   4.85   0.069 (0.008)      0  (52  93   2)  (   27  -71.6   10.2)
+   3   4.82    0.08 (0.009)      0  (79  66   8)  (-36.3   -2.5  -21.4)
+   3   4.81   0.082 (0.009)      0  (78  65   8)  (  -34   -0.2    -21)
+   1    4.8   0.086 ( 0.01)      0  (62  59   5)  (  3.5   10.4    1.9)
+   3   4.77   0.097 (0.011)      0  (82  61  10)  (-43.4   11.2  -33.4)
+   1   4.75   0.106 (0.012)      0  (55  71   2)  ( 19.9  -20.7   18.3)
+   5   4.73   0.114 (0.012)      0  (67  84   2)  ( -8.2  -50.8   13.5)
+   1   4.72   0.117 (0.013)      0  (57  83   4)  ( 15.2  -46.3    0.1)
+   4   4.72    0.12 (0.013)      0  (40  80   7)  ( 55.1  -36.1  -19.6)
+   1   4.68    0.14 (0.015)      0  (57  94   2)  ( 15.2  -73.9    9.8)
+   7   4.68    0.14 (0.015)      0  (65  65   9)  ( -3.5    0.9  -27.9)
+   3   4.65   0.156 (0.016)      0  (87  69   9)  (-55.1   -8.4  -29.4)
+  21   4.56   0.228 (0.022)      0  (57  78   5)  ( 15.2  -33.6     -5)
+  19    4.5   0.286 (0.027)      0  (78  72  10)  (  -34  -14.2  -37.4)
+   1   4.45   0.341 (0.031)      0  (54  79   2)  ( 22.3  -39.2   15.3)
+   2   4.36   0.489 (0.042)      0  (43  65   9)  (   48    0.9  -27.9)
+   2   4.24    0.78 (0.061)  0.001  (53  67  11)  ( 24.6   -1.6  -42.5)
+   2   4.22   0.841 (0.065)  0.001  (52  68  11)  (   27   -3.9  -42.8)
+  14   4.18   0.968 (0.073)  0.001  (78  53   4)  (  -34   23.2   11.1)
+   9   4.18   0.973 (0.073)  0.001  (47  49   6)  ( 38.7   34.6   -1.3)
+   7   4.17   0.987 (0.074)  0.001  (67  66  11)  ( -8.2    0.7  -42.1)
+  26   4.15   1.059 (0.078)  0.001  (62  56   6)  (  3.5   18.4   -3.9)
+  12   4.14   1.116 (0.082)  0.001  (63  77   5)  (  1.2  -31.3   -4.7)
+   1   4.14   1.121 (0.082)  0.001  (56  82   4)  ( 17.6    -44    0.4)
+  22   4.13    1.14 (0.083)  0.001  (66  70   8)  ( -5.9  -11.8  -22.8)
+   7    4.1   1.281 (0.091)  0.001  (66  67  11)  ( -5.9   -1.6  -42.5)
+   5   4.07   1.455 (0.101)  0.001  (66  91   2)  ( -5.9    -67   10.9)
+   3   4.06   1.525 (0.105)  0.001  (86  65   6)  (-52.7   -2.4   -7.2)
+  10   4.02   1.762 (0.118)  0.001  (70  78   7)  (-15.2  -31.4  -18.9)
+  36   3.95   2.252 (0.143)  0.002  (91  83   7)  (-64.5    -43  -20.7)
+   5   3.95    2.26 (0.143)  0.002  (69  94   2)  (-12.9  -73.9    9.8)
+  20   3.94   2.311 (0.146)  0.002  (85  81   7)  (-50.4  -38.4    -20)
+  .
+</XMP>Note that 'p-values' for peaks may be greater than 1. Don't be 
+discouraged! In fact the 'p-value' for peaks is really the approximate expected 
+number of peaks above the peak height due to chance alone (in fact it is 
+<I>exactly</I> the expected Euler characteristic of the suprathreshold voxels). 
+If this is small (i.e. &lt; 0.1) it closely approximates the p-value of the 
+peaks. Since we are usually only interested when P&lt;0.05, this is never a 
+problem.
+<P>A file with _cluster before the extension is also produced which takes as its 
+values the cluster id, and 0 elsewhere. If you put this into e.g. 'register' you 
+can see where the clusters are. A glass brain, together with a 3D rendering of 
+the significant clusters (which you can rotate), is produced as well:
+<P><A 
+href="http://www.math.mcgill.ca/keith/fmristat/figs/figlassbrainmulti.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figlassbrainmulti.jpg" 
+border=0></A>
+<P><A name=confregion></A>
+<H2>Confidence regions for the spatial location of local maxima using <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/conf_region.m">conf_region</A></H2>The 
+spatial location of a peak also has a random error due to the noise component of 
+the images. This error is roughly equal to FWHM / ( sqrt(4log(2)) * PEAK ), 
+where FWHM is the effective fwhm of the data, and PEAK is the height of the 
+peak. Note that higher peaks are more accurately located, as you would expect. 
+This standard error assumes that the signal has a Gaussian spatial shape with a 
+fwhm that matches FWHM. If this is not the case, a more robust method is based 
+on the spatial shape of the peak itself. Instead of estimating the standard 
+error, we can find a confidence region for the location by thresholding the peak 
+at a value of sqrt( peak^2 - chisq_pvalue), where the probability of a chisq 
+random variable with 3 df exceeding chisq_pvalue is the desired P-value 
+(chisq_pvalue = 7.81 for P-value = 0.05). This is implemented by <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/conf_region.m">conf_region</A>, 
+which produces a 95% (P=0.05) confidence region image with values equal to the 
+peak value in each confidence region. Thresholding this image at a value of say 
+9 in register or <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/blob_brain.m">blob_brain</A>, 
+produces an image of confidence regions for locations of all peaks above 9. <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/blob_brain.m">blob_brain</A> 
+colours the confidence regions by the peak height: 
+<P><XMP>conf_region(t_file,4.93,mask_file)
+conf_file='c:/keith/results/ha_multi_hmw_t_95cr.mnc';
+clf;
+blob_brain(conf_file,9,conf_file,9)
+</XMP><A 
+href="http://www.math.mcgill.ca/keith/fmristat/figs/figconfregion.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figconfregion.jpg" 
+border=0></A>
+<P>Reference: </P>
+<LI>Ma, L., Worsley, K.J. and Evans, A.C. (1999). <A 
+href="http://www.math.mcgill.ca/keith/HBM99/hbm99li.pdf">Variability of spatial 
+location of activation in fMRI and PET CBF images.</A> <I>NeuroImage</I>, 
+<B>9</B>:S178. (<A 
+href="http://www.math.mcgill.ca/keith/fmristat/HBM99/poster_li.ps.gz">POSTER</A>)
+<P><A name=conjunctions></A>
+<H2>Conjunctions</H2>An alternative to averaging the runs using <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/multistat.m">multistat</A> 
+as above, is to find the common regions that are significantly activated in all 
+runs. These are called conjunctions, and they can be found by thresholding the 
+image of the minimum of the four T statistic images for each run. To incorporate 
+random effects, we use the mixed effects standard deviation from <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/multistat.m">multistat</A>, 
+rather than the fixed effects standard deviation from <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">fmrilm</A>. 
+This can be calculated directly from <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/multistat.m">multistat</A> 
+by setting the fifth component of which_stats to 1. P-values and thresholds can 
+be obtained from <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/stat_threshold.m">stat_threshold</A>, 
+<A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fdr_threshold.m">fdr_threshold</A> 
+and finally <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/stat_summary.m">stat_summary</A> 
+by setting the last parameter to the number of conjunctions, here 4 (note that 
+P-values and thresholds for clusters of conjunction images are not available 
+yet):
+<P><XMP>which_stats=[0 0 0 0 1];
+multistat(input_files_effect,input_files_sdeffect,input_files_df, ...
+   input_files_fwhm,X,contrast,output_file_base,which_stats,20)
+stat_summary('c:/keith/results/ha_multi_hmw_conj.mnc', fwhm_file, ...
+    [100 0; 3 100], mask_file, [], 0.001, 1, 4);
+clus   peak   p-val  (one)   q-val  (i   j   k)  (   x      y      z )
+   1  5.54       0 (    0)      0  (61  76   1)  (  5.9  -33.4   23.4)
+   1  5.51       0 (    0)      0  (59  72   1)  ( 10.5  -24.1   24.8)
+   1  4.62       0 (    0)      0  (59  81   1)  ( 10.5  -44.9   21.5)
+   1  4.56       0 (    0)      0  (62  69   3)  (  3.5    -15   12.1)
+   1  3.76       0 (    0)      0  (61  65   4)  (  5.9   -4.6    6.7)
+   1  3.72       0 (    0)      0  (56  76   0)  ( 17.6  -34.5   30.3)
+   1  3.42       0 (    0)      0  (57  80   0)  ( 15.2  -43.7   28.8)
+   1  3.26       0 (    0)      0  (55  80   0)  ( 19.9  -43.7   28.8)
+   1  3.23       0 (    0)      0  (54  89   1)  ( 22.3  -63.5   18.6)
+   6  3.15       0 (    0)      0  (39  62  10)  ( 57.4    8.9  -33.7)
+   1  3.14       0 (    0)      0  (55  90   1)  ( 19.9  -65.8   18.2)
+   2  3.08       0 (    0)      0  (75  62   8)  (  -27    6.7  -19.9)
+   2  2.96       0 (    0)      0  (86  65   8)  (-52.7   -0.2    -21)
+   1  2.94       0 (    0)      0  (57  70   5)  ( 15.2  -15.1   -2.1)
+   2  2.91       0 (    0)      0  (84  64   9)  (  -48    3.2  -27.6)
+   2  2.84       0 (    0)      0  (82  65   9)  (-43.4    0.9  -27.9)
+   1  2.71       0 (    0)      0  (55  85   0)  ( 19.9  -55.3     27)
+   1   2.7       0 (    0)      0  (55  87   0)  ( 19.9  -59.9   26.2)
+   1   2.7       0 (    0)      0  (53  84   2)  ( 24.6  -50.8   13.5)
+   5  2.59       0 (    0)      0  (67  92   1)  ( -8.2  -70.4   17.5)
+   1  2.51       0 (    0)      0  (67  79   2)  ( -8.2  -39.2   15.3)
+   3   2.5       0 (    0)      0  (46  63   8)  (   41    4.4  -20.3)
+   3  2.43       0 (    0)      0  (53  61  11)  ( 24.6   12.3  -40.3)
+   3  2.41       0 (    0)      0  (52  60  11)  (   27   14.6  -39.9)
+   3  2.32   0.001 (    0)      0  (53  59  11)  ( 24.6   16.9  -39.5)
+   2  2.26   0.001 (    0)      0  (70  61  10)  (-15.2   11.2  -33.4)
+   5  2.26   0.001 (    0)      0  (68  90   1)  (-10.5  -65.8   18.2)
+   4  2.25   0.001 (    0)      0  (40  78   8)  ( 55.1  -30.3  -25.8)
+   .
+   .
+   .
+</XMP><A href="http://www.math.mcgill.ca/keith/fmristat/figs/figconj.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figconj.jpg" 
+border=0></A>
+<P>Note that the peaks and thresholds are a lot lower than for a conventional T 
+statistic image; the P=0.05 threshold is 
+<P><XMP>stat_threshold(search_volume,num_voxels,8,100,0.05,0.001,0.05,4)
+</XMP>which gives 1.82, much lower than 4.93. Even allowing for this, there 
+seems to be less significant activation in the conjunction (minimum) image than 
+in the average image, perhaps because the subject was not consistently showing 
+activation in <I>all</I> four runs. Moreover there are theoretical reasons why 
+the miniumum is less sensitive at detecting activation than the average, as in 
+our previous analysis in the section <A 
+href="http://www.math.mcgill.ca/keith/fmristat/#fixed">Fixed and random 
+effects</A>. <A name=extracting></A>
+<H2>Extracting values from a minc file using <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/extract.m">extract</A></H2>You 
+may want to look at the effects and their standard deviations at some of the 
+local maxima just found, for example the peak with value 10.6 in slice 3 (zero 
+based) with voxel coordinates [62 69 3]:<BR><XMP>voxel=[62  69   3]
+ef=extract(voxel,'c:/keith/results/ha_multi_hmw_ef.mnc')  
+sd=extract(voxel,'c:/keith/results/ha_multi_hmw_sd.mnc')
+ef/sd
+</XMP>which gives 1.1185 and 0.1055 respectively. Note that 1.1185/0.1055 = 
+10.60, the value of the T statistic. A matrix of voxels can be given, and the 
+corresponding vector of values will be extracted. 
+<P>To look at the time course of the data for the first run, and compare it to 
+the fitted values, try this:<BR><XMP>[df,p,spatial_av]=fmrilm(input_file,[],[],[],exclude);
+ref_data=squeeze(extract(voxel,input_file))./spatial_av*100;
+ef_hot=extract(voxel,'c:/keith/results/ha_100326_hot_mag_ef.mnc')
+ef_wrm=extract(voxel,'c:/keith/results/ha_100326_wrm_mag_ef.mnc')
+fitted=mean(ref_data)+ef_hot*X_cache.X(:,1,1,voxel(3)+1) ...
+                     +ef_wrm*X_cache.X(:,2,1,voxel(3)+1);
+clf;
+plot(frametimes,[ref_data fitted],'LineWidth',2); 
+legend('Reference data','Fitted values');
+xlabel('time (seconds)');
+ylabel('fMRI response, percent');
+title(['Observed (reference) and fitted data, ignoring trends, at voxel ' num2str(voxel)]);
+</XMP><A href="http://www.math.mcgill.ca/keith/fmristat/figs/figfit.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figfit.jpg" border=0></A>
+<P><A name=time></A>
+<H2>Estimating the time course of the response</H2>We may be intersted in 
+estimating the time course of the response, rather than just the data as above. 
+The easiest way to do this might be to average the responses beginning at the 
+start of each `epoch' of the response, e.g. averaging the 12 scans starting at 
+scans 1, 13, 25, ... 109. This does not remove drift, nor does it give you a 
+standard error. A better, though more complex way, is to replace the block 
+design of 2 blocks (9s hot, 9s warm) with say 12 blocks of 3s each covering the 
+entire epoch, then estimate their effects with NO convolution by the hrf: <XMP>eventid=kron(ones(10,1),(1:12)');
+eventimes=frametimes';
+duration=ones(120,1)*3;
+height=ones(120,1);
+events=[eventid eventimes duration height]
+
+events =
+
+     1     0     3     1
+     2     3     3     1
+     3     6     3     1
+     4     9     3     1
+     5    12     3     1
+     6    15     3     1
+     7    18     3     1
+     8    21     3     1
+     9    24     3     1
+    10    27     3     1
+    11    30     3     1
+    12    33     3     1
+     1    36     3     1
+     2    39     3     1
+     3    42     3     1
+.
+.
+.
+X_bases=fmridesign(frametimes,slicetimes,events,[],zeros(1,5));
+</XMP>The advantage of this is that it is much more flexible; it can be applied 
+to event related designs, with randomly timed events, even with events almost 
+overlaping, and the duration of the `events' need not be equal to the TR. 
+Moreover, the results from separate runs/sessions/subjects can be combined using 
+<A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/multistat.m">multistat</A>. 
+
+<P>Now all the time course is covered by events, and the baseline has 
+disappeared, so we must contrast each event with the average of all the other 
+events, as follows:
+<P><XMP>contrast=[eye(12)-ones(12)/12]
+
+ans =
+
+ 0.92       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08
+-0.08        0.92       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08
+-0.08       -0.08        0.92       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08
+-0.08       -0.08       -0.08        0.92       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08
+-0.08       -0.08       -0.08       -0.08        0.92       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08
+-0.08       -0.08       -0.08       -0.08       -0.08        0.92       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08
+-0.08       -0.08       -0.08       -0.08       -0.08       -0.08        0.92       -0.08       -0.08       -0.08       -0.08       -0.08
+-0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08        0.92       -0.08       -0.08       -0.08       -0.08
+-0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08        0.92       -0.08       -0.08       -0.08
+-0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08        0.92       -0.08       -0.08
+-0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08        0.92       -0.08
+-0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08       -0.08        0.92
+
+exclude=[1 2 3];
+which_stats=[0 1 1 1];
+input_file='c:/keith/data/brian_ha_19971124_1_100326_mri_MC.mnc';
+output_file_base=['c:/keith/results/ha_100326_time01';
+'c:/keith/results/ha_100326_time02';
+'c:/keith/results/ha_100326_time03';
+'c:/keith/results/ha_100326_time04';
+'c:/keith/results/ha_100326_time05';
+'c:/keith/results/ha_100326_time06';
+'c:/keith/results/ha_100326_time07';
+'c:/keith/results/ha_100326_time08';
+'c:/keith/results/ha_100326_time09';
+'c:/keith/results/ha_100326_time10';
+'c:/keith/results/ha_100326_time11';
+'c:/keith/results/ha_100326_time12'];
+[df, p]=fmrilm(input_file,output_file_base,X_bases,contrast,exclude,which_stats,fwhm_rho)
+</XMP>We need 12 output files, but only the effect and its standard error. The 
+F-statistic has been requested so we can find voxels with significant responses. 
+Its df's are p=11 and df=101, so its critical threshold is:
+<P><XMP>stat_threshold(search_volume,num_voxels,8,[p df])
+</XMP>which gives 5.26. The local maxima above this are:
+<P><XMP>lm=locmax([output_file_base(1,:) '_mag_F.mnc'],5.26);
+num2str(lm)
+</XMP>There is a peak of 8.93 at [61 67 3], very near the previous voxel [62 69 
+3]. The extracted effects and their standard errors at the previous voxel are:
+<P><XMP>voxel=[62 69 3]
+values=extract(voxel,output_file_base,'_mag_ef.mnc')
+sd=extract(voxel,output_file_base,'_mag_sd.mnc')
+</XMP>Plotting these out against time gives the estimated response, together 
+with 1 sd error bars. Note that the times are offset by the slicetimes, so they 
+are in seconds starting from the beginning of slice acquisition. On top of this 
+we can add the modeled response by extracting the effects of the hot and warm 
+stimuli, then multiplying these effects by the hrf convolved with the 9s blocks 
+for hot and warm stimuli (also shown):
+<P><XMP>b_hot=extract(voxel,'c:/keith/results/ha_100326_hot_mag_ef.mnc')
+b_wrm=extract(voxel,'c:/keith/results/ha_100326_wrm_mag_ef.mnc')
+time=(1:360)/10;
+X_hrf=fmridesign(time,0,[1 9 9 1],[],hrf_parameters);
+hrf=squeeze(X_hrf(:,1,1));
+ plot((0:12)*3+slicetimes(voxel(3)+1),values([1:12 1]),'k', ...
+   [0:11; 0:11]*3+slicetimes(voxel(3)+1), [values+sd; values-sd],'g', ...
+   time,[zeros(1,90) ones(1,90) zeros(1,180)],'r', ...
+   time,[zeros(1,270) ones(1,90)],'b', ...
+   time,hrf*b_hot+hrf([181:360 1:180])*b_wrm,'g');
+legend('Estimated response','Modeled response');
+text(10,0.5,'Hot')
+text(28,0.5,'Warm')
+xlabel('time (seconds) from start of epoch');
+ylabel('fMRI response, percent');
+title(['Estimated and modeled response at voxel ' num2str(voxel)]);
+</XMP><A 
+href="http://www.math.mcgill.ca/keith/fmristat/figs/figmodelresp.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figmodelresp.jpg" 
+border=0></A>
+<P>The modeled response and the fitted response are quite close. Note that the 
+graph `wraps around' in time. <A name=delay></A>
+<H2>Estimating the delay </H2>Rather than the whole response at one voxel, we 
+may prefer just one parameter, the delay, estimated at all voxels. Delays are 
+shifts of the time origin of the HRF, measured in seconds. CONTRAST_IS_DELAY is 
+a logical vector indicating if the row of CONTRAST is a contrast in the delays 
+(1) or magnitudes (0). Note that you cannot estimate delays of the polynomial 
+terms or confounds. Note that F statistics are not yet available with this 
+option. If the length of CONTRAST_IS_DELAY is less then the number of contrasts, 
+it is padded with zeros. Default is 0, i.e. all contrasts refer to magnitudes. 
+Here is an example to estimate the delays of the hot, the warm and the 
+difference hot-warm stimuli for the above data. In this case every contrast is a 
+delay, so CONTRAST_IS_DELAY = [1 1 1]:
+<P><XMP>contrast=[1  0;
+          0  1;
+          1 -1]
+which_stats=[1 1 1]
+input_file='c:/keith/data/brian_ha_19971124_1_100326_mri_MC.mnc'; 
+output_file_base=['c:/keith/results/ha_100326_hot';
+                  'c:/keith/results/ha_100326_wrm';
+                  'c:/keith/results/ha_100326_hmw']
+n_trends=[3 1 1];
+fwhm_rho='c:/keith/results/ha_100326_hot_rho.mnc';
+confounds=[];
+contrast_is_delay=[1 1 1];
+fmrilm(input_file, output_file_base, X_cache, contrast, exclude, ...
+    which_stats, fwhm_rho, n_poly, confounds, contrast_is_delay);
+</XMP>The result is the following files: <XMP>c:/keith/results/ha_100326_hmw_del_t.mnc
+c:/keith/results/ha_100326_hmw_del_ef.mnc
+c:/keith/results/ha_100326_hmw_del_sd.mnc
+c:/keith/results/ha_100326_hot_del_t.mnc
+c:/keith/results/ha_100326_hot_del_ef.mnc
+c:/keith/results/ha_100326_hot_del_sd.mnc
+c:/keith/results/ha_100326_wrm_del_t.mnc
+c:/keith/results/ha_100326_wrm_del_ef.mnc
+c:/keith/results/ha_100326_wrm_del_sd.mnc
+</XMP>To visualize the results in slice 2 (zero based):
+<P><XMP>slice=2; 
+subplot(2,2,1);
+view_slices('c:/keith/results/ha_100326_hot_mag_t.mnc',mask_file,[],slice,1,[-6 6]);
+subplot(2,2,2);
+view_slices('c:/keith/results/ha_100326_hot_del_ef.mnc',mask_file,[],slice,1,[-3 3]);
+subplot(2,2,3);
+view_slices('c:/keith/results/ha_100326_hot_del_sd.mnc',mask_file,[],slice,1,[0 6]);
+subplot(2,2,4);
+view_slices('c:/keith/results/ha_100326_hot_del_t.mnc',mask_file,[],slice,1,[-6 6]);
+</XMP><A href="http://www.math.mcgill.ca/keith/fmristat/figs/figdelay.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figdelay.jpg" 
+border=0></A>
+<P>The delays and their sd (second and third figures) only make sense where the 
+magnitude of the response is significantly large (first figure). The delay shift 
+is roughly 0.5 +/- 0.6 seconds, indicating no significant delay shift from the 
+Glover HRF (fourth figure). You could also put delay effects and sdeffects from 
+separate runs/sessions/subjects through multistat as before.
+<P>If a contrast involves the delays of more than one response, e.g. the third 
+contrast which compares the delays of the hot and warm response, then it only 
+makes sense to look at places where the magnitudes of all the responses involved 
+are large. Unfortunately there are no points where both the hot and the warm 
+stimulus are exceed the 4.93 threshold, so we can't compare the delays. 
+<P>Note that if you ask for magnitudes as well as delays in the same analysis, 
+i.e. <XMP>contrast=[1  0;
+          0  1;
+          1 -1;
+          1  0;
+          0  1;
+          1 -1]
+contrast_is_delay=[0 0 0 1 1 1];
+</XMP>then the magnitude images are not quite the same as what you would get 
+from fmrilm without asking for delays, i.e. <XMP>contrast=[1  0;
+          0  1;
+          1 -1]
+contrast_is_delay=[0 0 0];
+</XMP>The reason is that in order to calculate delays, <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">fmrilm</A> 
+replaces the convolution of the stimulus with the hrf by the convolution of the 
+stimulus with two basis functions for the hrf, in the linear model. It uses 
+these two basis functions for every response that has a non-zero value in any 
+contrast in the delays, otherwise it just uses one basis function (the hrf 
+itself). If you want to force two basis functions into the model for any extra 
+responses, even though you don't want to estimate delays in these responses, see 
+the next parameter NUM_HRF_BASES.
+<P>The best way of visualizing delays is to use register like this: <XMP>register c:/keith/results/ha_100326_hot_mag_t.mnc c:/keith/results/ha_100326_hot_del_ef.mnc 
+</XMP>After synchronising the two images, you can then search the tstat image in 
+the first window for regions of high signal e.g. &gt;5, then read off the 
+estimated delay at that location from the second window. You also use <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/blob_brain.m">blob_brain</A> 
+to colour code the t stat image thresholded at 4.93 with the delay in 
+seconds:<BR><XMP>clf;
+blob_brain('c:/keith/results_test/ha_100326_hot_mag_t.mnc',5, ...
+   'c:/keith/results_test/ha_100326_hot_del_ef.mnc');
+title('Delay (secs) of hot stimulus where T > 5')
+</XMP><A 
+href="http://www.math.mcgill.ca/keith/fmristat/figs/figdelay3D.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figdelay3D.jpg" 
+border=0></A>
+<P><A name=effic></A>
+<H2><A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/efficiency.m">Efficiency</A> 
+and choosing the best design </H2>The efficiency of a design for an effect is 
+inversely proportional to the sd of that effect using such a design. The program 
+<A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/efficiency.m">efficiency</A> 
+calculates the sd of an effect without needing any data. It simply executes all 
+the code of <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">fmrilm</A> that 
+calculates the sd, setting the sd of the noise to 1, so the returned sd is 
+relative to the sd of the noise. The call is a lot like <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmrilm.m">fmrilm</A> 
+except that you don't supply input_file or output_file_base, but you must supply 
+details of the design through X_cache from <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmridesign.m">fmridesign</A>, 
+the contrast, and the frames to exclude. Because it works out the sd at a single 
+voxel, it is quite fast. It returns a matrix of sd's for each contrast (rows) 
+and slice (columns). For the design above: <XMP>efficiency(X_cache, contrast, exclude)
+ ans =
+   Columns 1 through 8 
+    0.1558    0.1565    0.1559    0.1566    0.1560    0.1567    0.1561    0.1567
+    0.1619    0.1618    0.1619    0.1617    0.1619    0.1617    0.1618    0.1616
+    0.1918    0.1916    0.1918    0.1916    0.1918    0.1916    0.1917    0.1915
+   Columns 9 through 13 
+    0.1562    0.1567    0.1563    0.1567    0.1564
+    0.1618    0.1615    0.1618    0.1613    0.1618
+    0.1917    0.1915    0.1917    0.1914    0.1917
+</XMP>The sd of the hot stimulus is about 0.156 in all 13 slices, the warm 
+stimulus is about the same (0.162) and the sd for the hot-warm stimulus is 
+larger (0.192) by about sqrt(2) since it is the difference of two effects. 
+<P>You can also get the actual linear combination of the data that is used to 
+estimate these effects. These weights show how the frames are actually 
+contributing to the effect. The array Y (second component of the output) 
+contains the weights for each frame (first dimension), contrast (second 
+dimension) and frame (third dimension). For the first 40 frames of slice 3 (zero 
+based): <XMP>[sd_ef, Y]=efficiency(X_cache, contrast, exclude);
+slice=4;
+plot(squeeze(X_cache.X(:,:,1,slice)),'LineWidth',2)
+hold on; plot(Y(:,:,slice)'/max(max(Y(:,:,slice))),':','LineWidth',2); hold off
+xlim([0 40])
+legend('Hot resp','Warm resp','Hot wt','Warm wt','Hot - Warm wt')
+xlabel('frame number')
+ylabel('response')
+title('Hot and Warm responses and weights')
+</XMP><A href="http://www.math.mcgill.ca/keith/fmristat/figs/figrespwt.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figrespwt.jpg" 
+border=0></A>
+<P>The hot weights don't quite match the hot response because they are adjusted 
+for the warm response, which is not quite orthogonal (if they were orthogonal, 
+the weights would match the responses). The weights of the hot-warm are in fact 
+the hot weights minus the warm weights. The weights are also adjusted for the 
+drift as well; this is more evident if we have longer blocks, e.g. the extreme 
+case of two 90 second blocks instead of twenty 9 second blocks: <XMP>events=[1 90 90 1; 2 270 90 1] 
+X_cache1=fmridesign(frametimes,slicetimes,events,[],hrf_parameters);
+[sd_ef, Y]=efficiency(X_cache1, contrast, exclude);
+sd_ef
+   Columns 1 through 8 
+    0.2770    0.2782    0.2771    0.2784    0.2773    0.2786    0.2775    0.2787
+    0.4297    0.4288    0.4295    0.4287    0.4294    0.4286    0.4292    0.4285
+    0.5460    0.5467    0.5461    0.5469    0.5461    0.5470    0.5462    0.5471
+   Columns 9 through 13 
+    0.2777    0.2789    0.2778    0.2790    0.2780
+    0.4291    0.4283    0.4290    0.4282    0.4289
+    0.5464    0.5472    0.5465    0.5472    0.5466
+slice=4;
+plot(squeeze(X_cache1.X(:,:,1,slice)),'LineWidth',2)
+hold on; plot(Y(:,:,slice)'/max(max(Y(:,:,slice))),':','LineWidth',2); hold off
+legend('Hot resp','Warm resp','Hot wt','Warm wt','Hot - Warm wt')
+xlabel('frame number')
+ylabel('response')
+title('Hot and Warm responses and weights')
+</XMP><A 
+href="http://www.math.mcgill.ca/keith/fmristat/figs/figrespwt1.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figrespwt1.jpg" 
+border=0></A>
+<P>Now the sd of the effects are much larger (this is a less efficient design), 
+particularly for the warm stimulus. Part of the reason is that the responses are 
+now correlated (confounded) with the cubic drift. This can be seen more clearly 
+in the plot of the weights, which are concentrated at the beginning and end of 
+the blocks (particularly for the warm stimulus). In other words, because the 
+long blocks look a bit like drift, most of the information about the response 
+comes from the frames when the stimulus is changing rapidly. The steady state of 
+the response in the middle of the blocks is not providing much information 
+because it is indistinguishable from (condfounded with) drift. This also 
+explains why this design is less efficient: the extra frames in the middle of 
+the blocks are wasted because they don't contribute to the effect. This is 
+reflected in the increased sd of the effects, as already noted.
+<P><A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/efficiency.m">efficiency</A> 
+can also be used to find the sd of delays as well as magnitudes. Interestingly, 
+the sd is in seconds irrespective of the data. This sounds a little strange, but 
+if you think about it, delay estimation does not depend on the scaling of the 
+data. To do this, just set contrast_is_delay to 1 where you want sd's of delays 
+instead of magnitudes. For a temporal correlation of 0.3 (typical of cortex), 
+cubic drift, and no confounds: <XMP>rho=0.3;
+n_temporal=3;
+confounds=[];
+contrast_is_delay=[1 1 1];
+efficiency(X_cache, contrast, exclude, rho, n_temporal, confounds, contrast_is_delay)
+ ans =
+   Columns 1 through 8 
+    0.5543    0.5542    0.5543    0.5542    0.5542    0.5542    0.5542    0.5543
+    0.5564    0.5593    0.5566    0.5598    0.5570    0.5603    0.5574    0.5608
+    0.8700    0.8724    0.8701    0.8728    0.8703    0.8733    0.8706    0.8738
+   Columns 9 through 13 
+    0.5542    0.5544    0.5542    0.5544    0.5542
+    0.5579    0.5612    0.5583    0.5618    0.5588
+    0.8710    0.8742    0.8714    0.8747    0.8718
+</XMP>which gives you about 0.55 seconds sd for estimating delays, and about 
+0.87 seconds for their difference.
+<P>By looping through a variety of choices of stimulus duration and 
+interstimulus interval, you can find out which combination gives the best 
+design. The code is given in <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/example.m">example.m</A>, 
+but the result is:
+<P><A href="http://www.math.mcgill.ca/keith/fmristat/figs/figsd_ef.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figsd_ef.jpg" 
+border=0></A>
+<P>(a) A stimulus duration and interstimulus interval of about 8 seconds seems 
+to be optimal for estimating the hot stimulus (the same is true of the warm 
+stimulus). Fortunatley any values in the range 6 to 16 seem to be close to 
+optimal.<BR>(b) A stimulus duration of about 9 seconds and NO interstimulus 
+interval seems to be optimal for hot-warm - this makes sense, because there is 
+no need for the rest periods between the hot and warm stimuli. Again anything in 
+the range 5 to 20 seems to be equally good, and short stimuli should be avoided. 
+<BR>(c) For delays, shorter bloocks are optimal, attaining sd's of about 0.2 
+seconds. Note that for very short blocks the sd of the magnitude is too large to 
+reliably estimate the delay (black areas).<BR>(d) Again shorter blocks seem to 
+be better for delay differences.
+<P>Event related designs can be handled by setting the duration to zero. For a 
+fixed number of events, we tried three different designs: equally spaced events 
+('uniform'), randomly spaced events ('random'), and all the events concentrated 
+together at a single time point in the middle of the frames ('concentrated'). 
+This last design is an extreme case, equivalent to a single event with magnitude 
+= number of events. We then varied the number of events, and plotted the sd of 
+the effect against the average time between events = time interval for the 
+experiment (360s) divided by the number of events. Again the code is in <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/example.m">example.m</A> 
+and the results are shown here:
+<P><A 
+href="http://www.math.mcgill.ca/keith/fmristat/figs/figsd_ef_event.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figsd_ef_event.jpg" 
+border=0></A>
+<P>For the magnitude (solid lines), and well seperated events, uniform and 
+random designs give much the same increase in sd as the time between events 
+increases. This is because as the time between events increases, the number of 
+events decreases, and the sd is proportional to 1/sqrt(number of events) if the 
+events are well separated. The uniform design seems to be optimumal at about 12s 
+between events and gets less efficient as the time between events gets shorter 
+than 12s. This is because after blurring by the HRF, the 'rest' periods get 
+shorter and so there is less baseline to compare the stimulus with. On the other 
+hand, the random design continues to show improvement as the time between events 
+decreases because there is always some baseline present even after blurring with 
+the HRF. 
+<P>For the delays (dottted lines), it is interesting to note that the uniform 
+design appears to be better, whereas the random design is better for the 
+magnitude. Presumably the more consistent spacing between uniform events is 
+better for estimating the shape of the HRF, including the delay. Also shorter 
+times between events are better, but the results for very short times may be 
+unreliable because the response of closely spaced events may be less than that 
+of widely spaced responses, i.e. the additivity of responses may break down. For 
+example, 10 presentations of a visual stimulus 0.1s apart might evoke less total 
+response than 10 presentations 10s apart. The same thing might happen for 
+blocks: 1s of continuous pain might evoke less total response than 10 
+well-separated presentations of 0.1s of pain. 
+<P>This is exagerated when we force all the events very close together at a 
+single time point (red lines). The sd of the effect is now inversely 
+proportional to the number of events concentrated at the point, which is itself 
+inversley propotional to the average time between events, so the sd of the 
+effect is directly proportional to the average time between events. According to 
+the graph, we reach the absurd conclusion that this is by far the best strategy! 
+This shows that the additivity assumption must be wrong.
+<P><B>Conclusion:</B> For block designs, try 8 or 9s blocks; for event-related 
+designs, try about 12s or more between events, either uniformly or randomly 
+spaced. For delays, shorter blocks and times between events are better. 
+Fortunately halving or doubling these values produces only slightly less 
+efficient designs, so there is great flexibility in the design parameters. <A 
+name=connect></A>
+<H2>Effective connectivity of all voxels with a reference voxel </H2>We might be 
+interested in all voxels that are correlated with the time course at a 
+pre-chosen reference voxel, removing the effect of the signal, to find those 
+voxels that are effectively connected. To do this, we add the data from the 
+pre-chosen voxel (ref_data) as a confound, then estimate its effect, sd, and t 
+statistic as before. Note that ref_data is measured at times that depend on the 
+slicetimes for that slice, i.e. slice 3 (zero based). For other slices, ref_data 
+must be resampled at the same frametimes and slicetimes as the fmri data, so use 
+<A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/fmri_interp.m">fmri_interp</A> 
+to do this:<BR><XMP>output_file_base='c:/keith/results/ha_100326_connect';
+contrast=[0  0  0  0  0  0  1];
+which_stats=[1 1 1];
+ref_times=frametimes'+slicetimes(voxel(3)+1);
+confounds=fmri_interp(ref_times,ref_data,frametimes,slicetimes);
+fmrilm(input_file, output_file_base, X_cache, contrast, exclude, ...
+ which_stats,fwhm_rho,[],confounds);
+clf;
+view_slices('c:/keith/results/ha_100326_connect_mag_t.mnc',mask_file,[],0:11,1,[-6 6]);
+</XMP><A 
+href="http://www.math.mcgill.ca/keith/fmristat/figs/figconnect.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figconnect.jpg" 
+border=0></A>
+<P>Note that voxels in the neighbourhood of the pre-chosen voxel are obviously 
+highly correlated due to smoothness of the image. To avoid very large t 
+statistics, the t statistic image has a ceiling of 100 (the F statistic image 
+has a ceiling of 10000).
+<P>Local maxima of this image could be identified, their values extracted and 
+added as columns to ref_data to find further voxels that are correlated with the 
+first reference voxel removing the effect of the second reference voxel. This 
+could be repeated to map out the connectivity.
+<P>The same idea could be used with <A 
+href="http://www.math.mcgill.ca/keith/fmristat/toolbox/multistat.m">multistat</A> 
+to look for connectivity across runs or subjects; simply add an extra column to 
+the design matrix X that contains the subject or run values at the reference 
+voxel, and set the contrast to choose that column by puting a value of 1 for 
+that column and zero for the others. <A name=arp></A>
+<H2>Higher order autoregressive models</H2>The last parameter of FMRILM is 
+NUMLAGS, the number of lags or order of the autoregressive model for the 
+temporal correlation structure. Order 1 (the default) seems to be adequate for 
+1.5T data, but higher order models may be needed for 3T data. To assess this, 
+the first NUMLAGS autoregression parameters can be outputted as 'frames' by 
+setting the 8th element of WHICH_STATS to 1. These parameters should be zero for 
+orders higher than the true order of the data. Note: if NUMLAGS&gt;1 it takes a 
+lot longer to fit. Here is an example of an AR(4) model (note that setting the 
+intervening parameters to [] uses their defaults): <XMP>which_stats=[1 1 1 0 1 0 0 1];
+contrast=[1 -1];
+output_file_base='c:/keith/results/ha_100326_hmw_ar4';
+fmrilm(input_file, output_file_base, X_cache, contrast, exclude, ...
+    which_stats, [], [], [], [], [], [], 4);
+clf;
+view_slices('c:/keith/results/ha_100326_hmw_ar4_A.mnc',mask_file,0,3,1:4,[-0.1 0.3]); 
+</XMP><A href="http://www.math.mcgill.ca/keith/fmristat/figs/figar4.jpg"><IMG 
+alt="[Click to enlarge image]" src="fMRI_stat_files/tn_figar4.jpg" border=0></A>
+<P>The images of the autoregressive coefficients show that the last three are 
+near to zero so the first order autoregressive model is adequate, which is what 
+we were using before (NUMLAGS=1, the default).
+<P></P></LI></BODY></HTML>

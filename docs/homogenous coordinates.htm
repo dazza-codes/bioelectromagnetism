@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0049)http://bishopw.loni.ucla.edu/AIR5/homogenous.html -->
+<HTML><HEAD><TITLE>homogenous coordinates</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff>
+<CENTER>
+<H3>Homogenous Coordinates</H3></CENTER>
+<UL>
+  <LI><A href="http://bishopw.loni.ucla.edu/AIR5/homogenous.html#vectors">4x1 
+  homogenous coordinate vectors</A> 
+  <LI><A href="http://bishopw.loni.ucla.edu/AIR5/homogenous.html#matrices">4x4 
+  homogenous coordinate matices</A> 
+  <LI><A 
+  href="http://bishopw.loni.ucla.edu/AIR5/homogenous.html#translations">translations</A> 
+
+  <LI><A 
+  href="http://bishopw.loni.ucla.edu/AIR5/homogenous.html#rotations">rotations</A> 
+
+  <LI><A 
+  href="http://bishopw.loni.ucla.edu/AIR5/homogenous.html#rescaling">rescaling</A> 
+
+  <LI><A 
+  href="http://bishopw.loni.ucla.edu/AIR5/homogenous.html#perspective">perspective</A> 
+  </LI></UL>
+<P>Homogenous coordinates utilize a mathematical trick to embed 
+three-dimensional coordinates and transformations into a four-dimensional matrix 
+format. As a result, inversions or combinations of linear transformations are 
+simplified to inversion or multiplication of the corresponding matrices. 
+Homogenous coordinates also make it possible to define perspective 
+transformations.<BR></P>
+<H4><A name=vectors></A>4x1 Homogenous Coordinate Vectors</H4>
+<P>Instead of representing each point (x,y,z) in three-dimensional space with a 
+single three-dimensional vector:<BR><IMG height=49 alt="" 
+src="homogenous coordinates_files/vector3by1.gif" width=30 
+align=top><BR><BR>homogenous coordinates allow each point (x,y,z) to be 
+represented by any of an infinite number of four dimensional vectors:<BR><IMG 
+height=61 alt="" src="homogenous coordinates_files/vector4by1.gif" width=50 
+align=top><BR><BR>The three-dimensional vector corresponding to any 
+four-dimensional vector can be computed by dividing the first three elements by 
+the fourth, and a four-dimensional vector corresponding to any three-dimensional 
+vector can be created by simply adding a fourth element and setting it equal to 
+one.<BR><BR>Many textbooks define homogenous coordinates in such a way that 
+points are represented by 1x4 vectors:</P><PRE>[T*x T*y T*z T]</PRE>
+<P>instead of 4x1 vectors. This definition is not used in the AIR package and 
+results in different 4x4 homogenous coordinate transformation matrices than 
+those described below.</P>
+<HR>
+
+<H4><A name=matrices></A>4x4 Homogenous Coordinate Transformation Matrices</H4>
+<P>Homogenous coordinate transformation matrices operate on four-dimensional <A 
+href="http://bishopw.loni.ucla.edu/AIR5/homogenous.html#vectors">homogenous 
+coordinate vector</A> representations of traditional three-dimensional 
+coordinate locations. Any three-dimensional linear transformation (rotation, 
+translation, skew, perspective distortion) can be represented by a 4x4 
+homogenous coordinate transformation matrix. In fact, because of the redundant 
+representation of three space in a homogenous coordinate system, an infinite 
+number of different 4x4 homogenous coordinate transformation matrices are 
+available to perform any given linear transformation. This redundancy can be 
+eliminated to provide a unique representation by dividing all elements of a 4x4 
+homogenous transformation matrix by the last element (which will become equal to 
+one). This means that a 4x4 homogenous transformation matrix can incorporate as 
+many as 15 independent parameters. The generic format representation of a 
+homogenous transformation equation for mapping the three dimensional coordinate 
+(x,y,z) to the three-dimensional coordinate (x',y',z') is:<BR><IMG height=61 
+alt="" src="homogenous coordinates_files/homogenous.gif" width=260 
+align=top><BR></P>
+<P>If any two matrices or vectors of this equation are known, the third matrix 
+(or vector) can be computed and then the redundant T element in the solution can 
+be eliminated by dividing all elements of the matrix by the last element.</P>
+<P>Various <A 
+href="http://bishopw.loni.ucla.edu/AIR5/models.html">transformation models</A> 
+can be used to constrain the form of the matrix to tranformations with fewer 
+degrees of freedom.</P>
+<P>In many textbooks, you will find homogenous tranformation matrices defined 
+such that 1x4 homogenous coordinate vectors are placed to the left of the 4x4 
+homogenous coordinate transformation matrix and multiplied. This format is not 
+supported in the AIR package and the difference accounts for the fact that 
+translations are represented in the fourth column and perspective distortions in 
+the fourth row of AIR homologous transformation matrices rather than vice 
+versa.</P>
+<HR>
+
+<H4><A name=translations></A>Translations</H4>
+<P>Translations can be represented by the 4x4 homogenous coordinate 
+transformation matrix:<BR><IMG height=136 alt="" 
+src="homogenous coordinates_files/rigid_translations.gif" width=270 
+align=top></P>
+<HR>
+
+<H4><A name=rotations></A>Rotations</H4>
+<P>A series of rotations (in the order [roll matrix]*[pitch matrix]*[yaw 
+matrix]) can be represented by the 4x4 homogenous coordinate transformation 
+matrix:<BR><IMG height=148 alt="" 
+src="homogenous coordinates_files/rigid_rotations.gif" width=475 align=top></P>
+<HR>
+
+<H4><A name=rescaling></A>Rescaling</H4>
+<P>Rescaling along the major axes can be represented by the 4x4 homogenous 
+coordinate transformation matrix:<BR><IMG height=136 alt="" 
+src="homogenous coordinates_files/talamatrix.gif" width=350 align=top></P>
+<HR>
+
+<H4><A name=perspective></A>Perspective</H4>
+<P>Perspective distortion is achieved by applying the 4x4 homogenous coordinate 
+transformation matrix:<BR><IMG height=136 alt="" 
+src="homogenous coordinates_files/perspective.gif" width=350 align=top></P>
+<HR>
+<A href="http://bishopw.loni.ucla.edu/AIR5/index.html"><IMG height=50 alt="" 
+src="homogenous coordinates_files/AIRlogo.gif" width=52 
+align=bottom></A>Modified: December 10, 2001<BR><BR>© 1995-2001 <A 
+href="http://bishopw.loni.ucla.edu/AIR5/rpw.html">Roger P. Woods, M.D.</A>(<A 
+href="mailto:rwoods@ucla.edu">rwoods@ucla.edu</A>) </BODY></HTML>

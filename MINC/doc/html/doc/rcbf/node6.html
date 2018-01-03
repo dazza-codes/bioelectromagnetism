@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Triple-Weighted Integration Method</TITLE>
+<META NAME="description" CONTENT="Triple-Weighted Integration Method">
+<META NAME="keywords" CONTENT="rcbf">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="rcbf.css">
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html108"
+ HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html105"
+ HREF="node3.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html99"
+ HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html107"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html109"
+ HREF="node7.html">Delay and Dispersion Correction</A>
+<B> Up:</B> <A NAME="tex2html106"
+ HREF="node3.html">Mathematical Analysis</A>
+<B> Previous:</B> <A NAME="tex2html100"
+ HREF="node5.html">Double-Weighted Integration Method</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000">
+Triple-Weighted Integration Method</A>
+</H2>
+
+<P>
+In order to model the complete two-compartment system, we must be able
+to solve equation (<A HREF="node4.html#eq:2comp4">4</A>).  In section
+<A HREF="node5.html#sec:double_weight">2.2</A>,
+we solved the equation by multiplying by two different weights and
+then dividing, and we can take a similar approach with the full
+two-compartment equation.  We can weight equation (<A HREF="node4.html#eq:2comp4">4</A>)
+with <EM>three</EM> different weights and then integrate:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+\int_{0}^{T} w_{1}A^{*}(t)dt = K_{1} \int_{0}^{T} w_{1}
+\frac{\int_{T_1}^{T_2} \left[ C_{a}(u) \otimes e^{-k_{2}u} \right]
+du}{T_2 - T_1} dt + V_{0} \int_{0}^{T}w_{1} \frac{\int_{T_1}^{T_2}
+C_{a}(u) du}{T_2 - T_1} dt
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:fullweight1">&#160;</A><IMG
+ WIDTH="614" HEIGHT="59"
+ SRC="img8.gif"
+ ALT="\begin{displaymath}\int_{0}^{T} w_{1}A^{*}(t)dt = K_{1} \int_{0}^{T} w_{1}
+\frac...
+...{0}^{T}w_{1} \frac{\int_{T_1}^{T_2}
+C_{a}(u) du}{T_2 - T_1} dt
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(7)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+\int_{0}^{T} w_{2}A^{*}(t)dt = K_{1} \int_{0}^{T} w_{2}
+\frac{\int_{T_1}^{T_2} \left[ C_{a}(u) \otimes e^{-k_{2}u} \right]
+du}{T_2 - T_1} dt + V_{0} \int_{0}^{T}w_{2} \frac{\int_{T_1}^{T_2}
+C_{a}(u) du}{T_2 - T_1} dt
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:fullweight2">&#160;</A><IMG
+ WIDTH="614" HEIGHT="59"
+ SRC="img9.gif"
+ ALT="\begin{displaymath}\int_{0}^{T} w_{2}A^{*}(t)dt = K_{1} \int_{0}^{T} w_{2}
+\frac...
+...{0}^{T}w_{2} \frac{\int_{T_1}^{T_2}
+C_{a}(u) du}{T_2 - T_1} dt
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(8)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+\int_{0}^{T} w_{3}A^{*}(t)dt = K_{1} \int_{0}^{T} w_{3}
+\frac{\int_{T_1}^{T_2} \left[ C_{a}(u) \otimes e^{-k_{2}u} \right]
+du}{T_2 - T_1} dt + V_{0} \int_{0}^{T}w_{3} \frac{\int_{T_1}^{T_2}
+C_{a}(u) du}{T_2 - T_1} dt
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:fullweight3">&#160;</A><IMG
+ WIDTH="614" HEIGHT="59"
+ SRC="img10.gif"
+ ALT="\begin{displaymath}\int_{0}^{T} w_{3}A^{*}(t)dt = K_{1} \int_{0}^{T} w_{3}
+\frac...
+...{0}^{T}w_{3} \frac{\int_{T_1}^{T_2}
+C_{a}(u) du}{T_2 - T_1} dt
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(9)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+<P>
+By multiplying equation (<A HREF="node6.html#eq:fullweight1">7</A>) by 
+<!-- MATH: $V_{0}
+\int_{0}^{T} w_{3} {(\int_{T_1}^{T_2}C_{a}(u)du)}/{(T_2 - T_1)} dt$ -->
+<IMG
+ WIDTH="283" HEIGHT="42" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.gif"
+ ALT="$V_{0}
+\int_{0}^{T} w_{3} {(\int_{T_1}^{T_2}C_{a}(u)du)}/{(T_2 - T_1)} dt$">and equation (<A HREF="node6.html#eq:fullweight3">9</A>) by 
+<!-- MATH: $V_{0} \int_{0}^{T} w_{1}
+{(\int_{T_1}^{T_2}C_{a}(u)du)}/{(T_2 - T_1)} dt$ -->
+<IMG
+ WIDTH="283" HEIGHT="42" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.gif"
+ ALT="$V_{0} \int_{0}^{T} w_{1}
+{(\int_{T_1}^{T_2}C_{a}(u)du)}/{(T_2 - T_1)} dt$">,
+and then
+subtracting the two, we may eliminate the <I>V</I><SUB>0</SUB> term.  A similar
+operation can be performed on equation (<A HREF="node6.html#eq:fullweight2">8</A>) and
+equation (<A HREF="node6.html#eq:fullweight3">9</A>).  This leaves two equations that do
+not contain <I>V</I><SUB>0</SUB>.  They may then be divided to produce:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+\hspace*{-1.0cm}
+\frac{
+\begin{array}{lcr}
+\multicolumn{2}{l}{
+\int_{0}^{T}\!\!w_{3}(t) \frac{(\int_{T_1}^{T_2}C_{a}(u)du)}{(T_2 - T_1)} dt \cdot
+\int_{0}^{T}\!\!w_{1}(t)A^{*}(t)dt\,\,-}&\\
+&\multicolumn{2}{r} {\int_{0}^{T}\!\!w_{1}(t)
+\frac{(\int_{T_1}^{T_2}C_{a}(u)du)}{(T_2 - T_1)} dt \cdot
+\int_{0}^{T}\!\!w_{3}(t)A^{*}(t)dt}\end{array}
+}
+{
+\begin{array}{lcr}
+\multicolumn{2}{l}
+{\int_{0}^{T}\!\!w_{3}(t) \frac{(\int_{T_1}^{T_2}C_{a}(u)du)}{(T_2 - T_1)} dt \cdot 
+\int_{0}^{T}\!\!w_{2}(t)A^{*}(t)dt\,\,-}&\\
+&\multicolumn{2}{r}
+{\int_{0}^{T}\!\!w_{2}(t) \frac{(\int_{T_1}^{T_2}C_{a}(u)du)}{(T_2 - T_1)} dt \cdot 
+\int_{0}^{T}\!\!w_{3}(t)A^{*}(t)dt}\end{array}
+}
+=
+\frac{
+K_{1} \left\{\!\!\!\! \begin{array}{c}
+\begin{array}{lcr}\multicolumn{2}{l}
+{\int_{0}^{T}\!\!w_{3}(t) \frac{(\int_{T_1}^{T_2}C_{a}(u)du)}{(T_2 -
+T_1)} dt \cdot
+\int_{0}^{T}\!\!w_{1}(t) \frac{(\int_{T_1}^{T_2}C_{a}(u) \otimes
+e^{-k_{2}u} du)}{(T_2 - T_1)}\, dt\,\,-}&
+\\
+&\multicolumn{2}{r} {\int_{0}^{T}\!\!w_{1}(t)
+\frac{(\int_{T_1}^{T_2}C_{a}(u)du)}{(T_2 - T_1)} dt \cdot
+\int_{0}^{T}\!\!w_{3}(t)  \frac{(\int_{T_1}^{T_2}C_{a}(u) \otimes
+e^{-k_{2}u} du)}{(T_2 - T_1)}\, dt}
+\end{array} \end{array} \!\!\!\! \right\} }
+{
+K_{1} \left\{ \!\!\!\! \begin{array}{c}
+\begin{array}{lcr} 
+\multicolumn{2}{l}{\int_{0}^{T}\!\!w_{3}(t) \frac{(\int_{T_1}^{T_2}C_{a}(u)du)}{(T_2 - T_1)} dt \cdot 
+\int_{0}^{T}\!\!w_{2}(t) \frac{(\int_{T_1}^{T_2}C_{a}(u) \otimes
+e^{-k_{2}u} du)}{(T_2 - T_1)}\, dt\,\,-} &
+\\
+&\multicolumn{2}{r}{\int_{0}^{T}\!\!w_{2}(t)
+\frac{(\int_{T_1}^{T_2}C_{a}(u)du)}{(T_2 - T_1)} dt \cdot
+\int_{0}^{T}\!\!w_{3}(t)  \frac{(\int_{T_1}^{T_2}C_{a}(u) \otimes
+e^{-k_{2}u} du)}{(T_2 - T_1)}\, dt} \end{array} \end{array} \!\!\!\!
+\right\} }
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:k1two">&#160;</A><IMG
+ WIDTH="852" HEIGHT="169"
+ SRC="img13.gif"
+ ALT="\begin{displaymath}\hspace*{-1.0cm}
+\frac{
+\begin{array}{lcr}
+\multicolumn{2}{l}...
+...(T_2 - T_1)}\, dt} \end{array} \end{array} \!\!\!\!
+\right\} }
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(10)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+<P>
+The <I>K</I><SUB>1</SUB> term cancels out of both the numerator and denominator of
+equation (<A HREF="node6.html#eq:k1two">10</A>), leaving an equation that only involves
+<I>k</I><SUB>2</SUB>.  As with the equation in section <A HREF="node5.html#sec:double_weight">2.2</A>,
+this is very difficult to solve for <I>k</I><SUB>2</SUB>.  Therefore, a look-up
+table was again used.  Once the table matching values of <I>k</I><SUB>2</SUB> with
+values of the right hand side of equation (<A HREF="node6.html#eq:k1two">10</A>) has been
+created, we may evaluate <I>k</I><SUB>2</SUB> through simple lookup.  With the
+<I>k</I><SUB>2</SUB> data computed, finding <I>K</I><SUB>1</SUB> is simply a matter of
+evaluating either the numerator or denominator of equation
+(<A HREF="node6.html#eq:k1two">10</A>) without cancelling <I>K</I><SUB>1</SUB>.  With both <I>K</I><SUB>1</SUB> and
+<I>k</I><SUB>2</SUB> known, we may find <I>V</I><SUB>0</SUB> by evaluating equation
+(<A HREF="node4.html#eq:2comp4">4</A>).
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html108"
+ HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html105"
+ HREF="node3.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html99"
+ HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html107"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html109"
+ HREF="node7.html">Delay and Dispersion Correction</A>
+<B> Up:</B> <A NAME="tex2html106"
+ HREF="node3.html">Mathematical Analysis</A>
+<B> Previous:</B> <A NAME="tex2html100"
+ HREF="node5.html">Double-Weighted Integration Method</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,349 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>RCBF1</TITLE>
+<META NAME="description" CONTENT="RCBF1">
+<META NAME="keywords" CONTENT="rcbf">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="rcbf.css">
+<LINK REL="next" HREF="node13.html">
+<LINK REL="previous" HREF="node11.html">
+<LINK REL="up" HREF="node11.html">
+<LINK REL="next" HREF="node13.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html183"
+ HREF="node13.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html180"
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html174"
+ HREF="node11.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html182"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html184"
+ HREF="node13.html">RCBF2</A>
+<B> Up:</B> <A NAME="tex2html181"
+ HREF="node11.html">Annotated Program Listings</A>
+<B> Previous:</B> <A NAME="tex2html175"
+ HREF="node11.html">Annotated Program Listings</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00043100000000000000">&#160;</A>
+<A NAME="sec:rcbf1_listing">&#160;</A>
+<BR>
+RCBF1
+</H3>
+
+<P>
+<DL COMPACT>
+<DD><P>
+<DT>1.
+<DD>The function declaration line.  The output arguments <TT>K1</TT>
+  and <TT>k2</TT> are both whole images: that is, for 
+<!-- MATH: $128 \times 128$ -->
+<IMG
+ WIDTH="84" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$128 \times 128$">
+PET data, they will be column vectors with 16,384 elements.
+  <TT>filename</TT> is the name of the MINC file to process,
+  <TT>slice</TT> specifies which slice from the file to process, and
+  <TT>progress</TT> indicates whether or not the program should print
+  progress information as it goes.  <TT>filename</TT> and <TT>slice</TT>
+  are both required; if <TT>progress</TT> is not given, it defaults to 1
+  (``true'').  
+<PRE>
+function [K1,k2] = rcbf1 (filename, slice, progress)
+</PRE>
+<P>
+<DT>2.
+<DD>Get the images and image information.  This includes all of the
+  frames for the slice being analyzed, the frame start times, the
+  frame lengths, the mid-frame times, and the blood data.  The frame
+  time information is returned by simple enquiries with the data
+  handle <TT>img</TT> returned by <TT>openimage</TT>.  The blood data is
+  returned by <TT>resampleblood</TT>, which gives the blood data in an
+  evenly sampled time domain (every half second).  The blood data is
+  then cross-calibration corrected by multiplying by the factor
+  <TT>XCAL</TT>.  The cross-calibration converts from 
+<!-- MATH: ${\rm Bq} /
+{\rm g_{blood}}$ -->
+<IMG
+ WIDTH="80" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.gif"
+ ALT="${\rm Bq} /
+{\rm g_{blood}}$">
+to 
+<!-- MATH: ${\rm nCi} / {\rm mL_{blood}}$ -->
+<IMG
+ WIDTH="104" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.gif"
+ ALT="${\rm nCi} / {\rm mL_{blood}}$">,
+taking into
+  account the calibration between the well counter and the PET
+  scanner.  In order to maintain consistent units throughout the
+  analysis, this data must then be converted from 
+<!-- MATH: ${\rm nCi / ml_{blood}}$ -->
+<IMG
+ WIDTH="98" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.gif"
+ ALT="${\rm nCi / ml_{blood}}$">
+<EM>back</EM> to 
+<!-- MATH: ${\rm Bq} / {\rm g_{blood}}$ -->
+<IMG
+ WIDTH="80" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.gif"
+ ALT="${\rm Bq} /
+{\rm g_{blood}}$">.
+The actual PET
+  images are then retrieved, and the units are again converted to
+  
+<!-- MATH: ${\rm Bq} / {\rm g_{tissue}}$ -->
+<IMG
+ WIDTH="81" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.gif"
+ ALT="${\rm Bq} / {\rm g_{tissue}}$">.
+Any negative values present in
+  the images are set to zero.
+<PRE>
+img = openimage(filename);
+FrameTimes = getimageinfo (img, 'FrameTimes');
+FrameLengths = getimageinfo (img, 'FrameLengths');
+MidFTimes = FrameTimes + (FrameLengths / 2);
+
+[g_even, ts_even] = resampleblood (img, 'even');
+
+% Apply the cross-calibration factor, and convert back to Bq/g_blood 
+XCAL = 0.11;
+g_even = g_even*XCAL*37/1.05;
+
+Ca_even = g_even;                % no delay/dispersion correction
+
+PET = getimages (img, slice, 1:length(FrameTimes));
+PET = PET * 37 / 1.05;           % convert to decay / (g_tissue * sec)
+PET = PET .* (PET &gt; 0);          % set all negative values to zero
+ImLen = size (PET, 1);           % num of rows = length of image
+</PRE>
+<P>
+<DT>3.
+<DD>Calculate some useful integrals that are used several times in
+  the rest of the program.  <TT>PET_int1</TT>, and <TT>PET_int2</TT> are
+  weighted integrals of the PET data across frames (integrated with
+  respect to time).  In particular, <TT>PET_int1</TT> is the numerator
+  of the left-hand-side of equation <A HREF="node5.html#eq:1comp">6</A>, and
+  <TT>PET_int2</TT> is the denominator.  To get clean images out of the
+  analysis, we wish to set all points outside of the head to zero.
+  Therefore, we create a simple mask, and apply it to the weighted
+  integrals.  Note the use of <TT>rescale</TT> to perform an
+  ``in-place'' multiplication on <TT>PET_int1</TT>.  This has the same
+  effect as the more conventional MATLAB <code>PET_int1 = PET_int1 .*   mask</code>, but without making a copy of <TT>PET_int1</TT>.
+<PRE>
+PET_int1 = trapz (MidFTimes, PET')';
+PET_int2 = trapz (MidFTimes, PET' .* (MidFTimes * ones(1,ImLen)))';
+
+mask = PET_int1 &gt; mean (PET_int1);
+rescale (PET_int1, mask);
+rescale (PET_int2, mask);
+</PRE>
+<P>
+<DT>4.
+<DD>Calculate the left hand side of equation (<A HREF="node5.html#eq:1comp">6</A>).
+<PRE>
+rL = PET_int1 ./ PET_int2;
+</PRE>
+<P>
+<DT>5.
+<DD>Assign the <I>k</I><SUB>2</SUB> values to be used in the lookup table, and then
+generate some more useful weighted integrals.  <TT>findintconvo</TT>
+computes the function
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+C_{a}(t) \otimes e^{-k_{2}t}
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="104" HEIGHT="33"
+ SRC="img29.gif"
+ ALT="\begin{displaymath}C_{a}(t) \otimes e^{-k_{2}t}
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(15)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+at all points in the evenly-resampled time domain <TT>ts_even</TT>.
+Then, it integrates across each individual frame (which run from <I>T</I><SUB>1</SUB>to <I>T</I><SUB>2</SUB>; <I>T</I><SUB>1</SUB> and <I>T</I><SUB>2</SUB> in the following formula are implicitly
+functions of the frame).  Then, the weighted integrals across <EM>all</EM> frames
+are computed:
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+\int_{0}^{T} \frac
+{\int_{T_1}^{T_2} \left[ C_{a}(u) \otimes e^{-k_{2}u} \right] du}
+  {T_2 - T_1}
+  w_i dt
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:convint">&#160;</A><IMG
+ WIDTH="247" HEIGHT="59"
+ SRC="img30.gif"
+ ALT="\begin{displaymath}\int_{0}^{T} \frac
+{\int_{T_1}^{T_2} \left[ C_{a}(u) \otimes e^{-k_{2}u} \right] du}
+{T_2 - T_1}
+w_i dt
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(16)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+Here, <I>w</I><SUB><I>i</I></SUB> is the weighting function; for the double-weighted
+analysis it is either 1 or <I>t</I> as in the right hand side of equation
+(<A HREF="node5.html#eq:1comp">6</A>).  
+
+<P>
+Then, since we wish to relate <I>k</I><SUB>2</SUB> to the values of these integrals,
+<TT>findintconvo</TT> computes equation <A HREF="node12.html#eq:convint">16</A> at a wide range
+of values of <I>k</I><SUB>2</SUB> (supplied by the argument <TT>k2_lookup</TT>) for
+each weighting function <I>w</I><SUB><I>i</I></SUB>.  (For the double-weighted method, <I>w</I><SUB>1</SUB>
+= 1 and <I>w</I><SUB>2</SUB> = <I>t</I>.)  Note that the supplied value of
+<TT>k2_lookup</TT> implies an assumption that no voxel in the image
+will have a <I>k</I><SUB>2</SUB> value outside the range 
+<!-- MATH: $0 \ldots 3\,
+{\rm min}^{-1}$ -->
+<IMG
+ WIDTH="104" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.gif"
+ ALT="$0 \ldots 3\,
+{\rm min}^{-1}$">.)  See section <A HREF="node15.html#sec:findintconvo_listing">3.3.4</A> for
+information on the internal details of <TT>findintconvo</TT>.
+
+<P>
+<PRE>
+k2_lookup = (0:0.02:3) / 60;
+[conv_int1, conv_int2] = findintconvo (Ca_even, ts_even, k2_lookup,...
+                            MidFTimes, FrameLengths, 1, MidFTimes);
+</PRE>
+<P>
+<DT>6.
+<DD>Calculate the right side of equation (<A HREF="node5.html#eq:1comp">6</A>).
+<PRE>
+rR = conv_int1 ./ conv_int2;
+</PRE>
+<P>
+<DT>7.
+<DD>Generate the <I>k</I><SUB>2</SUB> image through table lookup.  This is where we
+  make use of the lookup tables generated in <TT>findintconvo</TT> for
+  great time savings: <TT>findintconvo</TT> only has to compute equation
+  <A HREF="node12.html#eq:convint">16</A> (a comparatively slow operation) a few hundred
+  times, but for that effort we get 16,384 values of <I>k</I><SUB>2</SUB> very
+  quickly.
+<PRE>
+k2 = lookup(rR, k2_lookup, rL);
+</PRE>
+<P>
+<DT>8.
+<DD>Generate the <I>K</I><SUB>1</SUB> image through table lookup and division.
+  <TT>k2_conv_ints</TT> contains the values of equation <A HREF="node12.html#eq:convint">16</A>
+  at the actual values of <I>k</I><SUB>2</SUB> for this image, rather than at the
+  artificial set <TT>k2_lookup</TT>.  This step is where we solve the
+  numerator of equation <A HREF="node5.html#eq:1comp">6</A> for <I>K</I><SUB>1</SUB>.
+<PRE>
+k2_conv_ints = lookup (k2_lookup, conv_int1, k2);
+K1 = PET_int1 ./ k2_conv_ints;
+</PRE>
+<P>
+<DT>9.
+<DD>Clean up the <I>K</I><SUB>1</SUB> image by setting any NaN's and infinities to
+zero, and close the image data set.
+<PRE>
+nuke = find (isnan (K1) | isinf (K1));
+K1 (nuke) = zeros (size (nuke));
+closeimage (img);
+</PRE>
+<P>
+<DT>10.
+<DD>Finally, <I>K</I><SUB>1</SUB> is converted from the internal units [
+<!-- MATH: ${\rm
+g_{blood} / g_{tissue}}$ -->
+<IMG
+ WIDTH="101" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.gif"
+ ALT="${\rm
+g_{blood} / g_{tissue}}$">]
+to the standard units for rCBF
+  analysis [
+<!-- MATH: ${\rm mL_{blood} / (100\, g_{tissue} \cdot min)}$ -->
+<IMG
+ WIDTH="209" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.gif"
+ ALT="${\rm mL_{blood} / (100\, g_{tissue} \cdot min)}$">].
+<PRE>
+rescale (K1, 100*60/1.05);
+</PRE>
+<P>
+</DL>
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html183"
+ HREF="node13.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html180"
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html174"
+ HREF="node11.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html182"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html184"
+ HREF="node13.html">RCBF2</A>
+<B> Up:</B> <A NAME="tex2html181"
+ HREF="node11.html">Annotated Program Listings</A>
+<B> Previous:</B> <A NAME="tex2html175"
+ HREF="node11.html">Annotated Program Listings</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

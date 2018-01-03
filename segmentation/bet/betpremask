@@ -1,0 +1,28 @@
+#!/bin/sh
+
+Usage() {
+    echo "Usage: betpremask <inroot> <outroot> [-d]"
+    echo "-d : don't delete intermediate files"
+    exit
+}
+
+[ "$1" = "" ] && Usage
+
+if [ _$FSLDIR = _ ] ; then
+    FSLDIR=/usr/local/fsl
+    export FSLDIR
+fi
+
+debug=0
+if [ "$3" == "-d" ] ; then
+  debug=1
+fi
+
+${FSLDIR}/bin/flirt -ref ${FSLDIR}/etc/standard/avg152T1 -in $1 -omat ${2}_tmp.mat -searchrx -180 180 -searchry -180 180 -searchrz -180 180
+${FSLDIR}/bin/convert_xfm -omat ${2}_tmp_inv.mat -ref ${FSLDIR}/etc/standard/avg152T1 -in $1 -inverse ${2}_tmp.mat
+${FSLDIR}/bin/flirt -ref $1 -in ${FSLDIR}/etc/standard/avg152T1_brain_mask_dil2 -out ${2}_tmp_mask -applyxfm -init ${2}_tmp_inv.mat
+${FSLDIR}/bin/avwmaths $1 -mul ${2}_tmp_mask $2
+
+if [ $debug = 0 ] ; then
+    /bin/rm -f ${2}_tmp*
+fi

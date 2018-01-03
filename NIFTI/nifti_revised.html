@@ -1,0 +1,388 @@
+<html><head><title>NIfTI-1 Data Format: Extension and Customization</title>
+
+<link rel="SHORTCUT ICON" href="http://nifti.nimh.nih.gov/nifti_icon.ico"></head>
+<body>
+<center><b>
+<font size="+3" color="#002244">NIfTI-1 Data Format</font><br>
+<font size="+2" color="#004422">Extension and Customization</font><br>
+<a href="http://afni.nimh.nih.gov/sscc/rwcox/cv/"><font size="+1" color="#440022">Robert W Cox, PhD</font></a><br>
+Director, <a href="http://afni.nimh.nih.gov/sscc">Scientific and Statistical Computing Core</a> <br>
+<a href="http://www.nimh.nih.gov/">National Institute of Mental Health</a> <br>
+<a href="http://www.nih.gov/">National Institutes of Health</a> <br>
+<a href="http://www.dhhs.gov/">Department of Health and Human Services</a> <br>
+<a href="http://www.house.gov/Constitution/Constitution.html">United States of America</a></b><br>
+15 Apr 2004
+</center>
+
+<hr noshade="noshade" width="60%" align="center">
+<!----------------------------------------------------------------------->
+
+<p>
+<u><b><font color="#000044" size="+1">Introduction</font></b></u>
+<br>
+The biggest drawback to the NIfTI-1 format is the complete inability to
+customize or extend the header.  The reasons for doing so are varied and
+do not need to be discussed here.  This has been the major topic of
+discussion on the <a href="http://nifti.nimh.nih.gov/dfwg/phorum/">NIfTI-1 message board</a>.
+This document contains my proposal (or rather, three nested proposals) for adding
+extra header fields to the NIfTI-1 format.  <a href="#Other">At the end</a>, I'll also address briefly some of
+the other issues that have been raised on the message board.
+</p>
+
+<p>
+<u><b><font color="#000044" size="+1">Extension and Customization of the Header</font></b></u><br>
+I propose a standard format for the "extra" header information that
+can fit between byte offset 348 and <tt>vox_offset</tt> in a <tt>*.nii</tt>
+file.  This format is an <a href="http://www.xml.com/axml/axml.html">XML</a>-ish
+text format. The format described
+below is simplified so as to be easy to parse without the use of a full
+XML processor library.  It is also close enough to XML to be able to be
+extracted bodily and incorporated into an XML document, with the addition
+of an XML prolog and an enclosing XML element (start and end tags).
+</p>
+
+<p>
+<b>Character Set</b>:<br>
+The data in the extended header space will be in 8-bit text form
+(no <a href="http://www.unicode.org/">Unicode</a> or
+ <a href="http://www.cl.cam.ac.uk/%7Emgk25/unicode.html">UTF-8</a>).
+The character set will have the first 128 characters (lower 7 bits) be
+<a href="http://czyborra.com/charsets/iso646.html">US-ASCII (ISO-646)</a>.
+It would be legal to use one of the
+<a href="http://czyborra.com/charsets/iso8859.html">ISO-8859-*</a>
+character sets for non-English languages, but this might create some portability issues.
+</p>
+
+<p>
+<b>Elements</b>:<br>
+The extended header data will be formatted as a sequential
+collection of <b>elements</b>.
+(The term is derived from XML.
+Unlike XML, an element may not contain another element, and there is no prolog.)
+The format of an element is
+</p><blockquote>
+<tt>&lt;<i>NAME</i>&nbsp;<i>ATTRIBUTEs</i>&gt;&nbsp;<i>DATATEXT</i>&nbsp;&lt;/<i>NAME</i>&gt;</tt>
+&nbsp; &nbsp; <b>or</b>
+&nbsp; &nbsp; <tt>&lt;<i>NAME</i>&nbsp;<i>ATTRIBUTEs</i> /&gt;</tt>
+</blockquote>
+The second form can be used if the DATATEXT field is empty.
+The words in uppercase italics are defined below:
+<ul>
+ <p>
+ </p><li> <i><b>NAME</b></i>
+ <ul> <li> The allowable characters in an element (or attribute) NAME are
+           "<tt>A-Z</tt>", "<tt>a-z</tt>", "<tt>0-9</tt>",
+           and the special characters underscore, period, colon, and hyphen
+           ("<tt>_</tt>"&nbsp;&nbsp;"<tt>.</tt>"&nbsp;&nbsp;"<tt>:</tt>"&nbsp;&nbsp;and&nbsp;&nbsp;"<tt>-</tt>").
+      </li><li> The first character in a NAME must be alphabetic.
+      </li><li> The first whitespace or other non-NAME character found ends the NAME.
+      </li><li> Whitespace is defined by NIfTI-1 (and by XML)
+           to be the characters blank, newline, carriage-return, and horizontal tab.
+      </li><li> The maximum legal length of a NAME is 255 characters.
+      </li><li> The NAME that starts an element must immediately follow the opening "&lt;"
+           character (no whitespace).  If an element ends with the
+           construct "<tt>&lt;/<i>NAME</i>&gt;</tt>", the NAME that starts the element
+           must also finish the element.
+      </li><li> Some example NAMEs:
+           <pre>             Z_zzza-...         legal
+             _Ethel_            illegal (can't start with "_")
+             In;the;beginning   illegal (can't use ";" in a NAME) </pre>
+      </li><li> XML notes:
+      <ul>
+       <li> The characters that are allowed in a NAME are taken from the XML specification,
+            restricted to the US-ASCII character set.
+       </li><li> The <a href="http://www.w3.org/TR/REC-xml-names/">XML namespace specification</a>
+            reserves the use of the colon in NAMEs for namespace identification.
+            This concept is adopted and adapted (far) below for NIfTI-1 use.
+       </li><li> XML allows NAMEs to start with underscore&nbsp;"_", but NIfTI-1 does not.
+       </li><li> XML does not put a maximum length on a NAME.
+      </li></ul>
+  </li></ul>
+ <p></p>
+
+ <p>
+ </p></li><li> <i><b>ATTRIBUTE</b></i> (optional)
+ <ul> <li> Each ATTRIBUTE takes the form <i>NAME=STRING</i>, where <i>NAME</i> was defined
+           above.
+      </li><li> Multiple ATTRIBUTES in an element header
+           must be separated by one or more whitespace characters.
+      </li><li> The element header ends at the first "<tt>&gt;</tt>" character following the element NAME.
+      </li><li> The "=" character separating the attribute name from its string value may optionally
+           be surrounded by whitespace.
+      </li><li> A <b><i>STRING</i></b> is enclosed in matching quote characters,
+           either "double quotes" or 'single quotes'.   The following XML escape sequences
+           can be used to represent certain characters inside STRINGs:
+            <blockquote><table border="2" cellpadding="3">
+            <tbody><tr> <td><b>Escape</b></td>       <td><b>Translation</b>          </td> <td><b>Note</b></td> </tr>
+            <tr> <td><tt>&amp;lt;</tt></td>   <td><tt>&lt;</tt> (less than)   </td> <td>Required</td> </tr>
+            <tr> <td><tt>&amp;gt;</tt></td>   <td><tt>&gt;</tt> (greater than)</td> <td>Required</td> </tr>
+            <tr> <td><tt>&amp;amp;</tt></td>  <td><tt>&amp;</tt> (ampersand)  </td> <td>Required</td> </tr>
+            <tr> <td><tt>&amp;quot;</tt></td> <td><tt>"</tt>    (quote)       </td> <td>Optional</td> </tr>
+            <tr> <td><tt>&amp;apos;</tt></td> <td><tt>'</tt>    (apostrophe)  </td> <td>Optional</td> </tr>
+            </tbody></table></blockquote>
+            Characters marked as "Required" can only be represented in a String by
+            the escape sequence.  Characters marked as "Optional" can be represented
+            by the escape or by themselves.  (Of course, to include a double quote character inside
+            a string delimited by double quotes, the <tt>&amp;quot;</tt> escape would be required.)
+      </li><li> Some example ATTRIBUTEs:
+           <pre>              diffusion_bfactor="2407.3"
+              command = "cat fred &amp;gt; 'ethel'" </pre>
+      </li><li> XML notes:
+      <ul>
+        <li> XML requires that no two attributes in the same element have the same attribute name.
+             NIfTI-1 does not enforce this requirement, but if you wish to produce well-formed XML
+             elements, then you need to be aware of this restriction.
+        </li><li> Other XML-defined escapes (such as "<tt>&amp;#x3A;</tt>"
+             for insertion of a single character specified in hexadecimal)
+             should not be used, since they are not required to be recognized by NIfTI-1
+             processor software.
+      </li></ul>
+ </li></ul>
+ <p></p>
+
+ <p>
+ </p></li><li> <i><b>DATATEXT</b></i> (optional)
+ <ul> <li> The text between the <tt>&gt;</tt> that closes the element header and
+           the <tt>&lt;/</tt> that closes the element can be almost any sequence of
+           nonzero bytes.  (Remember that this information is supposed to be text.)
+           Exceptions are the characters whose escapes are listed as "Required" in the
+           table above.
+      </li><li> If no DATATEXT is present (the element is "empty"), then
+           the element can be in either of the forms
+           <tt>&lt;NAME/&gt;</tt> &nbsp; <b>or</b> &nbsp; <tt>&lt;NAME&gt;&lt;/NAME&gt;</tt>.
+      </li><li> XML note:
+      <ul> <li> NIfTI-1 does <b>not</b> allow for CDATA, nested elements, entities, DTDs,
+                and so forth.
+      </li></ul>
+ </li></ul>
+ <p></p>
+</li></ul>
+<p></p>
+
+<p>
+<b>Rationale</b>:<br>
+The choices above are guided by
+the principle that the extended header stuff should be easy to parse.
+For the truly lazy/amateur/hurried programmer, the following pseudo-algorithm would work
+to extract the element NAME and DATATEXT (on well-formed elements):
+</p><ol>
+ <li> Start at byte offset #348.  Don't scan past byte offset <tt>vox_offset-1</tt>.
+ </li><li> Scan forward until the "<tt>&lt;</tt>" character is found.
+ </li><li> From the current scan position, scan until a non-NAME character is
+      found.  You now have the element NAME.
+ </li><li> Scan forward until the next "<tt>&gt;</tt>" character is found.
+      If the character before that is "<tt>/</tt>", the data element is
+      ended and there is no DATATEXT.  <b>Go&nbsp;back&nbsp;to&nbsp;2</b>.
+ </li><li> Scan forward until the next "<tt>&lt;</tt>" character is found.
+      DATATEXT is everything between the last "<tt>&gt;</tt>" and this "<tt>&lt;</tt>".
+      <b>Go&nbsp;back&nbsp;to&nbsp;2.</b>
+</li></ol>
+Parsing attributes and expanding escapes is a little harder.  Perhaps attributes should not
+be included in this revision.  On the other hand, attributes can be very useful.  See the
+<b>Recap</b> section, below, for further discussion.
+<p></p>
+
+<p>
+I chose to propose an XML-ish format for these header extensions because I think that
+being able to extract this information into some external file/database may become
+important in the future.  A&nbsp;simpler idea would be something of the form
+<tt>NAME&nbsp;=&nbsp;STRING</tt>, which would be trivial to parse.  This was my
+first idea, and is more-or-less equivalent to the simplest level of this proposal (cf.&nbsp;<b>Recap</b>).
+But I actually favor including information about how to parse the <tt>STRING</tt>, which means
+we need attributes, which leads straight to XML-land.
+</p>
+
+<p>
+<b>Structured Elements</b>:<br>
+As a higher level of organization, NIfTI-1 elements can contain attributes
+that define how to interpret the DATATEXT as a 2D table of numbers.  To start with an
+example:
+</p><pre>  &lt;diffusion_encoding nifti:type="3*float" nifti:rows="4" &gt;
+       2.3 7.2 9.4
+       6.2 -3.1 -1.0
+       0.2 6.7 9.8
+       6.6 7.9 -88.3 &lt;/diffusion_encoding&gt;
+</pre>
+The <tt>nifti:type</tt> attribute specifies that DATATEXT is to be interpreted as
+a sequence of sets of 3 floating point numbers; the <tt>nifti:rows</tt> attribute specifies
+that there will be 4 such sets.  (The line breaks in the example are not required; arbitrary
+whitespace can be used to separate numbers inside DATATEXT.)
+A&nbsp;more complicated example mixes numeric types:
+<pre>  &lt;node_rgb nifti:type='int,3*float' nifti:rows='5'&gt;
+           7 0.8 0.1 0.9  11 0.0 0.1 0.9  17 0.9 0.9 0.0
+          23 0.9 0.7 0.7  31 0.2 0.9 0.9
+   &lt;/node_rgb&gt;
+</pre>
+Here, each "row" of values is to comprise 1 int and 3 floats, and there are 5 "rows".
+<p></p>
+
+<p>
+The elementary types allowed in the <tt>nifti:type</tt> ATTRIBUTE
+would be <tt>int</tt>, <tt>float</tt>, <tt>complex</tt>,
+and <tt>String</tt>.  This last type would be a way to encode a integer-string
+labeling table:
+</p><pre>  &lt;label_table nifti:type="int,String" nifti:rows="4&gt;
+     1 "Hippocampus"   2 "Amygdala"  3 "Brodmann 42"  4 "Who Knows?" &lt;/label_table&gt;
+</pre>
+The only reason <b>not</b> to allow a <tt>String</tt> type would be to minimize the
+parsing effort.  On the other hand, if ATTRIBUTEs are included in NIfTI-1, then the code
+for parsing them would be reusable for parsing the DATATEXT Strings.
+<p></p>
+
+<p>
+<b>Standard Attribute</b>:<br>
+A standard attribute can be defined to incorporate the information from the binary
+header.  For example:
+</p><pre>  &lt;nifti_image
+    nifti_type = 'NIFTI-1+'
+    header_filename = 'elvis.nii'
+    image_filename = 'elvis.nii'
+    image_offset = '-1'
+    ndim = '3'
+    nx = '64' ny = '64' nz = '21'
+    dx = '4' dy = '4' dz = '6'
+    datatype = '4' datatype_name = 'INT16'
+    nvox = '86016'
+    nbyper = '2'
+    byteorder = 'LSB_FIRST'
+    cal_min = '3' cal_max = '25500'
+    freq_dim = '1' phase_dim = '2' slice_dim = '3'
+    slice_start = '0' slice_end = '20' slice_duration = '5.5' slice_code = '3'
+    xyz_units = '2' time_units = '8'
+    qform_code = '1' quatern_b = '0.7' quatern_c = '0' quatern_d = '0'
+    qoffset_x = '0' qoffset_y = '0' qoffset_z = '0' qfac = '1'
+  /&gt;</pre>
+Other layouts could be designed.  The <tt>image_offset</tt> value of <tt>-1</tt>
+is intended to signal that the image data occurs flush to the end of the file;
+that is, the offset should be computed by examining the length of the file,
+then subtracting the number of bytes that the image data occupies (<tt>nvox*nbyper</tt>).
+<p></p>
+
+<p>
+<b>Namespaces (of a sort)</b>:<br>
+To prevent overlap in element names between different developers,
+there are two non-exclusive possible ways to proceed.
+Both methods would make a NAME be of the form "<tt>prefix:suffix</tt>".
+The prefix part would be used to distinguish the originator of the NAME.
+(The use of a colon to separate NAMEs into distinct pieces is compatible with the
+<a href="http://www.w3.org/TR/REC-xml-names/">XML namespace idea</a>, and is partly
+where I got the idea.)
+</p>
+
+<p>
+The first method is to have a central "registry" for name prefixes (presumably the
+nifti.nimh.nih.gov site), and start off with some pre-defined prefixes such as
+<tt>afni:</tt>, <tt>brainvoyager:</tt>, <tt>caret:</tt>, <tt>dicom:</tt>, <tt>freesurfer:</tt>,
+<tt>fsl:</tt>, <tt>mni:</tt>, <tt>nifti:</tt>, and&nbsp;<tt>spm:</tt>
+(and anything else at all popular).  Anyone who wants a new prefix assigned can ask.
+I&nbsp;don't think the demand will be too high, so that maintaining the registry
+would be a low-key activity.
+</p>
+<p>
+The second method is for each site to
+use as a prefix some unique fully qualified domain name from their institution,
+such as <tt>nimh.nih.gov:</tt>.  The advantage of the second way is that no
+central registry is needed.  The disadvantage is that NAMEs will be longer.
+</p>
+
+<p>
+As an example, DICOM attributes could be included in a NIfTI-1 extended header with
+elements of the form
+</p><pre>  &lt;dicom:0020_0037 nifti:type="6*float"&gt;
+    0.984808 0.173648 0.0 -0.173648 0.984808 0.0 &lt;/dicom:0020_0037&gt;
+</pre>
+(This particular example is the "Image Orientation (Patient)" DICOM field.)
+<p></p>
+
+<p>
+<b>Recap</b>:<br>
+There are 3 levels to this extended header proposition:
+</p><ol>
+ <li> Simple elements of the form <tt>&lt;NAME&gt;&nbsp;DATATEXT&nbsp;&lt;/NAME&gt;</tt>
+      or <tt>&lt;NAME/&gt;</tt>,
+      with no attributes.  These are easiest to parse.  Namespaces are part of this
+      level of the proposal.
+ </li><li> Add attributes, but don't have any NIfTI-1 defined meaning for any of them.
+ </li><li> Add the <tt>nifti:type</tt> and <tt>nifti:rows</tt> attributes to give a
+      standardized way to specify the interpretation of the DATATEXT part of an element.
+</li></ol>
+I can provide a C implementation of any of these levels.  This proposal is a simplified
+version of the NIML protocol/format that is already implemented in the AFNI+SUMA package,
+and so incorporating it to the NIfTI-1 sample code will be relatively easy.
+<p></p>
+
+<p>
+Finally, the extended header is designed to supplement the NIfTI-1 binary header,
+not replace it.  Applications should be able to skip the extended header entirely and
+still be able to read the image data.  Applications that do use the extended header
+should be prepared to deal with (e.g.,&nbsp;ignore) elements with which they are
+not familiar.
+</p>
+
+<a name="Other"></a>
+<!----------------------------------------------------------------------->
+<hr>
+<p>
+<u><b><font color="#000044" size="+1">Other Issues</font></b></u>
+<br>
+Other issues that have come up on the NIfTI-1 message board include:
+</p><ul>
+ <li><p>
+     <b>Compressed image data</b>: 2D image files are usually compressed, so why
+      not 3-5D files?  The answer is simplicity: the format is intended
+     to be simple and I/O easily implemented by a "reasonable" programmer in a
+     "reasonable" time in various languages.  Nothing prevents a programmer from
+     storing a <tt>*.nii</tt> file in <tt>gzip</tt>-ed form (e.g.,&nbsp;<tt>fred.nii.gz</tt>),
+     detecting this from the filename, and decompressing it during input.  But the
+     burden of supporting compression should not be present in every program.
+     </p>
+
+ </li><li><p>
+     <b>Endian-ness</b>: The byte ordering of the header and image data is to be inferred
+     from the <tt>dim[0]</tt> header field; there is no explicit byte ordering flag.
+     Some would argue for a fixed byte order for the header, others for an explicit flag.
+     These are minor points, and I don't think the NIfTI-1 format needs to be changed
+     in this area.
+     </p>
+
+ </li><li><p>
+     <b>DICOM?</b>: The idea of using DICOM is still floating around.  The reasons why
+     not are simple: DICOM is <i>too</i> layered and rococo to meet the "reasonable" test
+     described above.  For example, after 2 hours of reading, I still cannot figure out how
+     to determine the 3D orientation of a multi-slice (Supplement&nbsp;49) DICOM file.
+     I'm sure it is in there somewhere, but if this minor factoid can't be deciphered in
+     2 hours, then the format and its documentation is too intricate.
+     </p>
+
+ </li><li><p>
+     <b><tt>orient</tt> <i>vs.</i> <tt>qform_code</tt></b>:  The ANALYZE-7.5 format indicated
+     3D orientation with the 1 byte code <tt>orient</tt>, which was to be interpreted as
+     </p><blockquote><table border="1" cellpadding="2">
+       <tbody><tr> <td>0 = transverse-unflipped</td> <td><tt>  R&#8594;L P&#8594;A I&#8594;S</tt></td></tr>
+       <tr> <td>1 = coronal-unflipped</td>    <td><tt>  R&#8594;L I&#8594;S P&#8594;A</tt></td></tr>
+       <tr> <td>2 = sagittal-unflipped</td>   <td><tt>  P&#8594;A I&#8594;S R&#8594;L</tt></td></tr>
+       <tr> <td>3 = transverse-flipped</td>   <td><tt>  R&#8594;L A&#8594;P I&#8594;S</tt></td></tr>
+       <tr> <td>4 = coronal-flipped</td>      <td><tt>  R&#8594;L S&#8594;I P&#8594;A</tt></td></tr>
+       <tr> <td>5 = sagittal-flipped</td>     <td><tt>  P&#8594;A I&#8594;S L&#8594;R</tt></td></tr>
+     </tbody></table></blockquote>
+     NIfTI-1 uses the 2 byte <tt>qform_code</tt> (which overlaps with <tt>orient</tt>)
+     and the quaternion values <tt>quatern_b</tt>, <tt>quatern_c</tt>, <tt>quatern_d</tt>
+     to indicate the general orientation in 3D (plus <tt>pixdim[0]</tt> when the image
+     axes aren't right-handed).
+    <p></p>
+
+    <p>It was proposed to keep the <tt>orient</tt> code values to indicate orientations
+       that are orthogonal to the subject anatomical axes, and modify the <tt>qform_code</tt>
+       values to allow for these values.  In principal, I&nbsp;am not opposed to this idea,
+       although it would make the application programs more complicated: they would now have
+       to deal with 3 different orientation-specifying methods (quaternion, general matrix,
+       and discrete flips).  However, an application can detect the presence of flips by
+       examining the values of the quaternion parameters; for example, <tt>(b,c,d)=(1,0,0)</tt>
+       is a 180<sup>o</sup> flip around the <i>x</i>-axis.  Thus, if a programmer wants to
+       write a special purpose flipping function (for speed) when the orientation is special,
+       the information needed to decide when this is possible is already present.
+    </p>
+</li></ul>
+<p></p>
+
+</body></html>

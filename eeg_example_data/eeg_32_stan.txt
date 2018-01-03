@@ -1,0 +1,41 @@
+#http://www.mathematik.uni-marburg.de/~hangi/stan/howtomap.htm
+#Topography testtop
+FP1   0.00
+FP2   0.02
+F3    0.00
+F4    0.01
+C3    2.28
+C4    0.00
+P3    6.83
+P4   -7.07
+O1  -7.38
+O2  -7.91
+F7  -8.58
+F8  -8.12
+T3   5.39
+T4   -6.84
+T5   -9.48
+T6   -8.43
+CZ   -6.05
+FZ  -5.51
+PZ  -8.62
+FCZ -9.07
+CPZ -6.99
+CP3 -3.87
+CP4  -7.50
+FC3  -6.79
+FC4  -8.06
+TP7  -4.92
+TP8 -1.79
+FT8 -6.58
+OZ  -6.25
+FT7 -5.95
+P8  -0.07
+PO3  -2.53
+PO4  -1.66
+O1  -2.09
+OZ  -4.95
+O2  -1.36
+Comment
+Base= 0..5000ms (0..5000ticks)
+Window= 0..100ms (0..100ticks)

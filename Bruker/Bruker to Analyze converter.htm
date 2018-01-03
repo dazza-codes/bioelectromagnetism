@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0048)http://www.mrc-cbu.cam.ac.uk/Imaging/pvconv.html -->
+<HTML><HEAD><TITLE>Bruker to Analyze converter</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR><LINK rev=Made 
+href="mailto:matthew.brett@mrc-cbu.cam.ac.uk">
+<META content="Matthew Brett, matthew.brett@mrc-cbu.cam.ac.uk" name=author>
+<META content=perl,Bruker,Analyze,MINC,convert name=keywords>
+<META content="MRC CBU imaging page" name=description></HEAD>
+<BODY text=#000000 vLink=#800080 aLink=#ff0000 link=#0000ff bgColor=#ffffff 
+background="Bruker to Analyze converter_files/lashley.jpg">
+<H1>pvconv.pl - a Bruker data converter</H1>This page very briefly describes a 
+program - pvconv.pl - that converts <A 
+href="http://www.mrc-cbu.cam.ac.uk/Imaging/brukerformat.html">Bruker format</A> 
+MRI data to <A 
+href="http://www.mrc-cbu.cam.ac.uk/Imaging/analyze_fmt.html">Analyze image 
+format</A>. It may also convert Bruker data to MINC format. 
+<P>The program is based on the <A 
+href="http://www.cmr.uq.edu.au/~rotor/software/">converters by Andrew Janke</A>; 
+many thanks to him for the original programs and helpful suggestions. 
+<P>See the <A href="http://www.mrc-cbu.cam.ac.uk/Imaging/pvconv_pod.html">pvconv 
+help</A> for pvconv features and usage. This help information is also available 
+by running pvconv from the command line thus: 
+<P><PRE>pvconv.pl -help  (help summary)
+pvconv.pl -help -verbose (more extensive)
+pvconv.pl -man   (full documentation)
+</PRE>
+<H2>Installing</H2>The program is written entirely in perl. You will need a 
+working version of perl 5 on your system. To install, download the latest 
+version of the pvconv archive from the <A 
+href="ftp://ftp.mrc-cbu.cam.ac.uk/pub/imaging/Pvconv">pvconv ftp directory</A>. 
+Unpack it into a temporary directory. You now have three programs, "pvconv.pl", 
+"pvshow.pl", and "brk2mat.pl" and two directories, "Bruker" and "Data". Copy the 
+two directories to a directory on your perl library path. You may need to edit 
+the top line of the .pl programs to make sure they can find your version of 
+perl. At the moment the top line reads: <PRE>#!/usr/local/bin/perl -w</PRE>. If your version of perl is not at this 
+path, change it to the correct path. You may be able to find your copy of perl 
+with "which perl" from the Unix prompt. Then copy the pvconv.pl, pvshow.pl, 
+brk2mat.pl program files to somewhere on your executable path. 
+<P>You next need to install the <A 
+href="http://www.cpan.org/authors/id/ULPFR/Math-Matrix-0.4.tar.gz">MathMatrix 
+0.4 perl package</A>. See <A href="http://www.cpan.org/modules/INSTALL.html">the 
+CPAN module install instructions</A>. 
+<H2>Time series files</H2>If there are many time points in the data - e.g. for 
+FMRI, then the analyze image that results will be a 4D file (x,y,z, time). You 
+may want to use the <A 
+href="http://www.mrc-cbu.cam.ac.uk/Imaging/ana4dto3d.html">ana4dto3d</A> program 
+to convert the 4D image to separate 3D volumes for each time point. 
+<H2><A name=brk2mat>Remaking .mat files from Bruker data</A></H2>If you have 
+previously converted your Bruker data, still have the <A 
+href="http://www.mrc-cbu.cam.ac.uk/Imaging/brukerformat.html">Bruker</A> text 
+files, and just want to create the <A 
+href="http://www.mrc-cbu.cam.ac.uk/Imaging/spm_format.html#matfile">.mat 
+files</A> for those data, you can use the brk2mat.pl program, which is in the 
+same archive as pvconv. 
+<P>pvconv creates a text file "image.brkhdr" which is the concatenation of all 
+the Bruker text files for the image. You will need to create this file if pvconv 
+has not done it for you, using something like this (3 is the run number you 
+want, "brukerdirectory" is the Bruker data directory for this scanning session): 
+<PRE>cd brukerdirectory/3
+cat ../subject imnd acqp pdata/1/reco &gt; image.brkhdr
+</PRE>- or put all these files into the same file with a text editor. 
+<P>Now, you can create a .mat file from this .brkhdr file, with: <PRE>brk2mat.pl image.brkhdr
+</PRE>which results in a .mat file "image.mat". 
+<H2><A name=pvshow>Showing parameters for runs in a Bruker session</A></H2>If 
+you want to see the scan names, session numbers and number of repetitions for 
+all the files in a Bruker data directory, use pvshow.pl which is in the same 
+archive as the other programs. Here is some example output: <PRE>pvshow.pl 000054-m04.ci1/ -all
+000054-m04.ci1:1: GEFI_TOMO_TriPilot; byte order: bigEndian; nreps: 1; reconstructed: Yes
+000054-m04.ci1:2: EPI_FID_100_fmri; byte order: bigEndian; nreps: 1; reconstructed: Yes
+000054-m04.ci1:3: EPI_SE_100_template; byte order: bigEndian; nreps: 4; reconstructed: Yes
+000054-m04.ci1:4: EPI_FID_100_fmri; byte order: littleEndian; nreps: 300; reconstructed: Yes
+000054-m04.ci1:5: EPI_FID_100_fmri; byte order: littleEndian; nreps: 260; reconstructed: Yes
+000054-m04.ci1:6: EPI_SE_100_template; byte order: bigEndian; nreps: 4; reconstructed: Yes
+000054-m04.ci1:7: EPI_FID_200_fmri; byte order: bigEndian; nreps: 1; reconstructed: Yes
+000054-m04.ci1:8: EPI_SE_200_template; byte order: bigEndian; nreps: 4; reconstructed: Yes
+000054-m04.ci1:9: EPI_FID_200_fmri; byte order: littleEndian; nreps: 260; reconstructed: Yes
+000054-m04.ci1:10: EPI_SE_100_template; byte order: bigEndian; nreps: 4; reconstructed: Yes
+000054-m04.ci1:11: EPI_FID_100_fmri; byte order: littleEndian; nreps: 300; reconstructed: Yes
+000054-m04.ci1:12: new 3d phase 1a; byte order: bigEndian; nreps: 1; reconstructed: Yes
+000054-m04.ci1:13: new 3d phase 1b; byte order: bigEndian; nreps: 1; reconstructed: Yes
+000054-m04.ci1:14: new 3d phase 1c; byte order: bigEndian; nreps: 1; reconstructed: Yes
+000054-m04.ci1:15: PD-T2 FSE; byte order: bigEndian; nreps: 1; reconstructed: Yes
+000054-m04.ci1:16: SPGR_1mm; byte order: bigEndian; nreps: 1; reconstructed: Yes
+</PRE>
+<H2>The End</H2>I hope this converter is useful to you. If you have any 
+problems, please email me (address below) and I will try and help. I will 
+probably ask for a tarred archive of a Bruker data directory (a directory that 
+contains a single scanning session) with the data giving the problem. You might 
+want to remove the FID files from the archive, as they are not used by pvconv, 
+and take up a large amount of space. 
+<P>
+<P>Matthew Brett 7 January 2002, 16 September 2002 
+<CENTER><IMG height=21 src="Bruker to Analyze converter_files/timecourse.gif" 
+width="95%"></CENTER>
+<P><B><A href="http://www.mrc-cbu.cam.ac.uk/Imaging/index.html" target=_top><IMG 
+height=37 alt=HOME src="Bruker to Analyze converter_files/cbuihome.gif" 
+width=37></A> Cambridge Imagers Home Page.</B></P>
+<P>© Copyright MRC Cognition and Brain Sciences Unit 1999.<BR>
+<ADDRESS>Page maintained by: <A 
+href="mailto:matthew.brett@mrc-cbu.cam.ac.uk">matthew.brett@mrc-cbu.cam.ac.uk</A></ADDRESS><!-- hhmts start -->Last 
+Refreshed: Thu Oct 17 11:14:48 BST 2002 <!-- hhmts end --></BODY></HTML>

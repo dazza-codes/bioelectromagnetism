@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<meta name="keywords" content="Talairach Daemon Client, neuroinformatics, brain mapping, Research Imaging Center, Atlas, coordinates, brain function, Peter Fox, Jack Lancaster" />
+	<meta name="robots" content="all" />
+	<title>Talairach Daemon Client</title>
+	<!-- to correct the unsightly Flash of Unstyled Content. http://www.bluerobot.com/web/css/fouc.asp -->
+	
+<script language="JavaScript">
+<!--
+
+function SymError()
+{
+  return true;
+}
+
+window.onerror = SymError;
+
+//-->
+</script>
+
+<script type="text/javascript"></script>
+	<style type="text/css" media="screen">@import "../tdStyle.css";</style>
+</head>
+
+<body>
+
+	<a href="http://ric.uthscsa.edu/projects/tdc"><div id="header">
+	</div></a>
+    
+	<div id="content">	
+        <h2>Talairach Daemon Command-Line Iterfaces</h2>
+        
+        <p>Two core applications provide user access to the Talairach Daemon (TD) databases.  They are both based on a single c-coded module that takes input from the client, opens a communication socket to the TD server, submits data, receives results, closes communication socket, and returns results.  Several command line interface (CLI) applications using this code are available for downloading and are described below:</p>
+        <ul>
+            <li><p><strong>PointtoTD</strong> is a CLI that sends a Talairach coordinate to the daemon and prints the returned labels to the terminal.  The program is run as follows:</p>
+                <p><span class="code">PointtoTD 2, 15, 10, 12</span></p>
+                <p>In this example the 2 is the code for Talairach Atlas labels database, and 15,10,12 is the x-y-z coordinate.</p>
+                <p>A code of 1 will select the SP Maps database while a code of 3:n will perform a search around the coordinate in the Talairach Labels database in a range designated by n (e.g. 3:5 would be a 5x5x5 mm region).</p>
+            </li>
+            <li><p><strong>ExceltoTD</strong> is a CLI that takes a tab-delimited text file containing any number of "x y z" coordinates for input, and creates a new tab-delimited text file with labels appended line-by-line with the coordinates.  This file can be easily opened in a spreadsheet program (such as Microsoft Excel) for further analysis, sorting, etc.  The program is run as follows:</p>
+                <p><span class="code">ExceltoTD 2, Myfile.txt</span></p>
+                <p>In this example the 2 is the code for Talairach Atlas database and Myfile.txt is a tab delimited text file.  A new file named Myfile.td is output.  This file contains the original coordinates along with the 5 levels of labels for each coordinate.  The 3:n search mode is supported with this application as well.</p>
+            </li>
+        </ul>
+    
+        <p>Both of these programs have been compiled, tested, and used on Sun (Solaris 2.x) and SGI (Irix 5.x) computer systems.  If either is run without parameters, or with incorrect parameters, the user is presented with the instructions and an example for proper use. The <strong>ExceltoTD</strong> application is now also available for use on PCs with Windows 95.</p>
+    <div><!-- end of content -->
+</BODY>
+</HTML>

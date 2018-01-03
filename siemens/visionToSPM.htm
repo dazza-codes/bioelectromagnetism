@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0084)http://www.charite.de/ch/neuro/forschung/teams/klinisch/people/thees/visionToSPM.htm -->
+<HTML><HEAD><TITLE>visionToSPM</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><LINK 
+href="visionToSPM_files/text.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY text=#000000 bgColor=#ffffff>
+<TABLE cellSpacing=0 cellPadding=0 width=600 border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=bottom width=300>
+      <H2>visionToSPM, Documentation</H2></TD>
+    <TD width=300><IMG src="visionToSPM_files/visionToSPM.gif" 
+width=300></TD></TR>
+  <TR></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=5 width=600 border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <H3><BR>What is the benefit when converting *.imas to SPM with visionToSPM 
+      ?<BR></H3><BR>
+      <P>The basic idea of this tool is preserve all the information 
+      (orientation/position of a volume scan too) that is contained in the raw 
+      image files (*.imas) when the data is transformed to the analyse-format 
+      used by SPM. This can make a coregistration of anatomical and functional 
+      data in SPM-preprocessing dispensable:</P>
+      <P>If the experimental scanning-procedure ensures that the first 
+      functional image is recorded immediately after the anatomical scan 
+      (MPRage, FLASH) has finished, a perfect coregistration between anatomical 
+      and functional data is obtained by transforming the orientation/position 
+      of the scans to the SPM-world too and realigning all the functional images 
+      onto the first functional scan.</P>
+      <P><BR><BR></P>
+      <H3>When can I use visionToSPM ?</H3>
+      <P><BR>First at all you need to have recorded your functional data with an 
+      SIEMENS Magnetom vision scanner. Image files must be in ACR-NEMA file 
+      format (*.ima), not DICOM (this would be a nice extension to the tool. If 
+      you add it - <A href="mailto:s_thees@yahoo.com">inform me</A> please 
+      !).</P>
+      <P>There is no experience with other MR-scanner from SIEMENS at the 
+      moment. But I suppose that even on a SIEMENS Symphony or something similar 
+      it will not work without some adjustments.</P>
+      <P>Second the tool is tested only for a few sequences (MPRage, T1_se_fast, 
+      EPI_mosaic). The basic problem is that there is no documentation of raw 
+      image file format provided by SIEMENS. Thus the parameters needed by 
+      visionToSPM may read from the wrong place in header, when using other 
+      sequences. In this case you must enter some parameters manually (see 
+      below).<BR><BR><BR></P>
+      <H3>Installation<BR><BR></H3>
+      <P>Make the directory visionToSPM in your matlab-working space and unzip 
+      the files into this directory. 
+      <P><BR>Add this directory to the path in matlab<BR><BR><BR><BR>
+      <H3>Running the program</H3>
+      <P><BR>Let us assume you would like to transform an anatomical volume scan 
+      (MPRage) recorded first and a functional session (EPI_mosaic) recorded 
+      subsequently. We assume further that the subject has not moved his head 
+      between the anatomical and the functional scan !<BR><BR><BR></P>
+      <P>start the tool by typing: 
+      <I><B>visionToSPM<BR><BR></B></I><B><BR>A)</B> conversion of the 
+      anatomical data:<BR><BR>Choose from <I><B>select ima type</B></I> the item 
+      normal (anatomical) and enter a name for the output file. If the slices 
+      were scanned interleaved select it (you MUST have used top to bottom 
+      interleaved mode !).</P>
+      <P>From the menu <I><B>file</B></I> choose <I><B>select ima files</B></I>. 
+      To select the images select one of the image files and click OK. 
+      visionToSPM selects all the files that are numbered continiously in the 
+      last number of the filename. If the number of file visionToSPM founds is 
+      correct, click yes. If not, check whether al the ima-files of the volume 
+      scan are in the directory.</P>
+      <P><B>Check </B>whether the scan-parameters given in the left frame are 
+      correct. If not check <I><B>enter Ima parameters manually</B></I> and 
+      enter those parameters which are wrong by your own (the image displayed on 
+      the right is the one you selected before).</P>
+      <P>Choose the information that sould be transformed (bitmaps ad geometry, 
+      bitmaps only or geometry only) and start the conversion. Three files named 
+      as output-Filename.hdr, output-Filename.img and output-Filename.mat are 
+      generated.<BR><BR><BR><B>B)</B> conversion of the functional 
+      data:<BR><BR>Choose from <I><B>select ima type</B></I> the item mosaic 
+      (EPI). If the slices were scanned interleaved select it (you MUST have 
+      used top to bottom interleaved mode !).</P>
+      <P>When converting the functional data the <B><I>mat-file prefix</I></B> 
+      determines after which step of the preprocessing in SPM ( a=slicetiming, 
+      ra=realigning, nra=normalization or snra=smoothing) the geometrical 
+      information (orientation/position) obtained from the raw image files is 
+      added to the flow of data-processing. In particular if you plan to use the 
+      spm_batch tool this must be 'ra'.</P>
+      <P></P>
+      <P>Now, from the menu <I><B>file</B></I> choose <I><B>select ima 
+      files</B></I>. To select the volume-scans of a session select one of the 
+      volume-scans and click OK. If the <B><I>imaType</I></B> is mosaic, 
+      visionToSPM selects all the files that are numbered continiously in the 
+      last two numbers of the filename.</P>
+      <P>Again, check whether the scan-parameters given are correct and enter 
+      them manually if not.</P>
+      <P><B><I>Start the conversion</I></B>. Three files per volume-scan will be 
+      generated, a <B>*.hdr</B>, a <B>*.img</B> and a <B>ra*.mat</B> 
+      file.<BR><BR></P><BR>
+      <P>If you perform the preprocessing in SPM manually (not using spm_batch), 
+      separate the ra*.mat files of the functional data from the *.hdr and *.img 
+      files by moving them into a different directory before you start with 
+      preprocessing in SPM. Now perform slice-timing and realigning (coregister 
+      &amp; reslice). After realigning copy the ra*.mat files generated by 
+      visionToSPM into the directory of the ra*.img and ra*.hdr files.</P>
+      <P>A coregistration between anatomical and functional data is now 
+      obtained.</P>
+      <P>&nbsp;</P>
+      <P>&nbsp;</P></TD></TR></TBODY></TABLE></BODY></HTML>

@@ -1,0 +1,392 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>EEG and MRI Matlab Toolbox</title>
+<meta name="author" content="Darren Weber">
+<link href="../styles.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>EEG and MRI Matlab Toolbox</h1>
+
+<p>
+<A href="http://www.mathworks.com/">Powered by 
+<IMG src="images/matlab.gif" border="0" alt="Matlab Logo"></A>
+
+<p>
+<A href="http://sourceforge.net">Distributed by 
+<IMG src="http://sourceforge.net/sflogo.php?group_id=50847&type=5" 
+width="210" height="62" border="0" alt="SourceForge Logo"></A></p>
+
+
+
+<h2><a name="LICENSE">License</a></h2>
+<A href="http://www.gnu.org/licenses/gpl.html">
+<IMG SRC="images/gnu-head-sm.jpg" ALT="GNU" WIDTH="129" HEIGHT="122"></A>
+<p>This toolbox is released under the GNU General Public License (GPL,
+see <a href="http://www.gnu.org/licenses/gpl.html">http://www.gnu.org/licenses/gpl.html</a>).
+This is a <a href="http://www.gnu.org/copyleft/copyleft.html">copyleft</a> license,
+which means you have the freedom to use, distribute and modify the code, but only on
+the condition that you must pass on this freedom.  You <i>can</i> integrate this code 
+into proprietary packages, but you must do so according to this rule.  That is, 
+some parts of your proprietary package will not have this freedom, but those 
+parts derived from this code must retain that freedom.  You must use, distribute 
+and develop the code herein in accordance with the GPL.</p>
+
+
+
+<h2><a name="EEG_FEATURES">EEG Toolbox Features</a></h2>
+
+<p>Firstly, this is not a signal processing toolbox.  Of course, once the data 
+is loaded, there are many matlab functions available for data processing, but 
+few of them are integrated into a GUI interface here.  At present, there
+are no specific functions for processing raw EEG, such as filtering, averaging,
+etc.  For examples of signal processing tools, see the matlab signal processing 
+toolbox and the links below, especially EEGLAB.</p>
+
+<p>This toolbox has been developed to facilitate quick and easy
+import, visualisation and measurement for ERP data.  The toolbox can 
+open and visualise ERP averaged data (Neuroscan, ascii formats), 2D/3D 
+electrode coordinates and 3D cerebral tissue tesselations (meshes).  
+All the features can be explored quickly and easily using the example 
+data provided in the toolbox.  The GUI interface is simple and intuitive.
+The following lists the features already available and some items that
+could be developed.</p>
+
+<h4>ERP Visualisation</h4>
+<ul>
+<li>ERP data can be read and plotted as a time series</li>
+<li>Automated or GUI entry of ERP epoch/sampling etc. parameters</li>
+<li>Interactive, precise measurement of ERP waveform values</li>
+<li>Interactive ERP peak detection and plotting/measurement</li>
+<li>Interactive ERP topographic mapping</li>
+</ul>
+
+<h4>Data Import/Export Support</h4>
+<ul>
+<li><a href="http://www.neuro.com/">Neuroscan</a> EEG formats (.avg,.eeg,.cnt)</li>
+<li><a href="http://www.neuro.com/">Neuroscan</a> electrode formats (.tri, .3dd ascii)</li>
+<li><a href="http://www.sourcesignal.com/">EMSE</a> electrode and mesh formats (.elp/.wfr/.reg)</li>
+<li><a href="http://surfer.nmr.mgh.harvard.edu/">FreeSurfer</a> mesh formats (.tri/.asc/.surf/.curv/etc)</li>
+<li><a href="http://neuroimage.usc.edu/brainstorm/">BrainStorm</a> formats</li>
+<li>All data is stored internally in one large, convenient data
+structure (p), which is available from the matlab workspace.</li>
+</ul>
+
+<h4>Topographic Mapping</h4>
+<p>If the electrode position data is available or adapted from the standardized
+electrode positions available, the toolbox can generate topographic maps.  There
+are various topography options, including 2D/3D surface mapping with various
+controls for contour mapping, scaling, and colour maps.  If a scalp tesselation
+is available, the toolbox can load and visualise the 'mesh' and interpolating 
+from the electrodes onto the mesh (only when they are already coregistered - the
+functions for coregistration are in early stages of development).
+</p>
+<ul>
+<li>standardized extended 10/20 electrode coordinates available</li>
+<li>example realistic geometry, with 124 channel electrode 
+coordinates and associated scalp/skull/cortex tissue meshes from
+MRI volume provided</li>
+<li>latency selection for topographic mapping based on single values, either
+entered manually or interactively selected</li>
+<li>animation of topographic maps</li>
+<li>automatic or user-defined amplitude scales</li> 
+<li>various color or bw topographic maps (linear or polynomial color scales)</li>
+<li>contour topographic mapping, with automatic or user-defined intervals
+ or numbers of contours specified (rudimentary at the moment - needs refinement)</li> 
+<li>Printing or saving graphics files (various formats)</li> 
+<li>3D rotation and left,right,front,back views of 3D topographic maps</li>
+</ul>
+
+<p>The following graphic illustrates 3D scalp topography
+(with interpolation from 124 electrodes onto a scalp mesh).
+As of May 2002, the methods are integrated with the GUI interface (they are 
+available in the mesh_laplacian.m and mesh_laplacian_interp.m functions).  Many 
+thanks to <a href="http://www.mbfys.kun.nl/mbfys/people/roberto/">Robert Oostenveld</a>
+for assistance in validating these functions.<br>
+<img src="images/scalp_interpolation.gif" alt="scalp interpolation">
+</p>
+
+<h4>Data Transforms/Analysis</h4>
+<ul>
+<li>Identification/replacement of bad electrodes</li>
+<li>ERP peak detection for all electrodes</li>
+<li>ERP peak detection for regions of electrodes</li>
+</ul>
+
+
+
+<h2><a name="MRI_FEATURES">MRI Toolbox Features</a></h2>
+
+<p>There are useful functions to load and visualize MRI volumes
+in Analyze format (or the Freesurfer COR- format and GE Signa files).  The 
+Analyze avw* functions have been developed to carefully handle the orientation 
+and implement a strict interpretation of the original Analyze 7.5 specification.
+This specification is available here in two very informative pdf documents:</p>
+<ul>
+<li><a href="AnalyzeDirect_ANALYZEformat.pdf">AnalyzeDirect_ANALYZEformat.pdf</a></li>
+<li><a href="ANALYZE75.pdf">ANALYZE75.pdf</a></li>
+</ul>
+<p>If you need to, use the orient option in the avw* functions
+to handle different image orientations, but read the above documents and this 
+<a href="mri_orientation_notes.html">discussion</a> 
+on the issue first (you will be wise in no time).</p>
+
+<p>Also, when working with format conversions, consider these 
+<a href="MJenkinson_coordtransforms.pdf">enlightening notes</a> from
+Mark Jenkinson!</p>
+
+<p>It is expected these MRI functions, together with mesh functions, will provide 
+the opportunity to visualize mesh overlays with MRI volumes.  It is also creates 
+an avenue for conversion of MRI volumes.  There are some MRI processing functions 
+freely available for matlab, some of them are bundled into the CVS archives, but 
+none are integrated into GUI interfaces yet.</p>
+
+<p>For further MRI processing functions, see the matlab image processing toolbox, the 
+<a href="http://www.fil.ion.ucl.ac.uk/fil.html">SPM</a> toolbox for
+matlab, and the <a href="http://www.fmrib.ox.ac.uk/">FSL</a> tools (in c/c++
+with source code available).</p>
+
+
+
+
+<h2><a name="SYSTEM">System Requirements - Development Platform</a></h2>
+<p>The development of this matlab toolbox is in its infancy. It is not very 
+clear what the system requirements are, although matlab 6+ is required.  
+I understand from one report that the toolbox GUI does not work under 
+matlab 5.x, but many command line functions should be OK.  For most ERP 
+plotting, the toolbox creates about 4-8Mb of data in the workspace and GUI.  
+For more elaborate mesh plotting and interpolation, the toolbox can create up to
+40Mb of workspace data (probably that much again in the GUI itself).</p>
+
+<p>The toolbox has been developed on matlab 6.x on a windows platform.  I have 
+noticed some minor problems with mesh plotting and interpolation on systems 
+without OpenGL graphics.</p>
+
+
+
+<h2><a name="DOWNLOAD">Download</a></h2>
+<p>
+Download from the sourceforge development and release service (see 
+<a href="http://sourceforge.net/projects/eeg/">http://sourceforge.net/projects/eeg/</a>).
+
+There are now several 
+<a href="http://sourceforge.net/project/showfiles.php?group_id=50847">release versions</a> 
+available (the latest version should be good).  Also download the example data archives.  
+The latest release incorporates all previous releases, but the most up-to-date development 
+version is in the CVS repository (see below).</p>
+
+<p>The download is a .tar.gz, .zip or .rar file (the latter can be extracted 
+on windows and linux/unix platforms with <a href="http://www.rarlab.com/">rar</a>
+software). On a linux/unix system, you should download the .tar.gz file and use 
+the following command:</p>
+
+<p><code>tar -zxvf eeg_toolbox_v1.5.tar.gz</code></p>
+
+<h2><a name="CVS">CVS Access</a></h2>
+
+<p>A CVS client is required to retrieve data from the CVS archive. CVS 
+clients are available for every major operating system, eg:
+
+<ul>
+<li>Microsoft Windows: <a href="http://tortoisecvs.sourceforge.net/">TortoiseCVS</a></li>
+<li>Linux, BSD and Mac OS X: <a href="http://cvshome.org/">CVS</a> (normally provided by your operating system vendor)</li> 
+<li>Mac OS X: <a href="http://fink.sourceforge.net/">fink CVS</a></li> 
+<li>Macintosh classic: <a href="http://sourceforge.net/projects/maccvspro/">MacCVS Pro</a></li>
+</ul>
+</p>
+
+<p>To view the modules in this project, use the www interface to the 
+<a href="http://cvs.sourceforge.net/viewcvs.py/eeg/">CVS repository</a>.
+The modules to check out are <code>'eeg_toolbox'</code> and <code>'mri_toolbox'</code>.  The CVS 
+repository can be checked out through anonymous (pserver) CVS with the 
+following instructions (when prompted for a password, simply press Enter).
+</p>
+
+<p><code>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/eeg login</code></p>
+ 
+<p><code>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/eeg co 'modulename'</code></p> 
+
+<p>Updates from within the module's directory do not need the -d parameter.</p>
+
+
+
+<h2><a name="INSTALL">Installation for Matlab</a></h2>
+
+<p>Extract it to a folder on your matlab path or use the 
+<code>'addpath [eeg_toolbox folder] -end'</code> command
+to append a new folder to your matlab path.</p>
+
+
+
+<h2><a name="EMAIL">Email Support List</a></h2>
+<p>
+To ask questions or keep informed of updates, subscribe to 
+<a href="http://lists.sourceforge.net/lists/listinfo/eeg-users">eeg-users</a>.
+</p>
+
+
+
+<h2><a name="GET_STARTED">Getting Started</a></h2>
+
+<p>See the <a href="getting_started.html">getting started guide</a>.</p>
+
+
+
+<h2><a name="DOCS">Documentation</a></h2>
+
+<p>See the auto-html documentation for both 
+<a href="eegdoc/index.html">eeg_toolbox</a> and 
+<a href="mridoc/index.html">mri_toolbox</a>, with similar info also
+available by typing 'doc eeg_toolbox' or 'doc mri_toolbox' at the matlab 
+command prompt.  This documentation provides html access to the information
+otherwise availabe using 'help [command]', once the toolbox is installed
+under matlab.  In addition, it provides clear dependency links between
+functions in the toolbox.  It was generated automatically by 
+<a href='http://www.madic.org/download/matlab/m2html/'>m2html</a>.  You may
+find the entire html help in the downloads as eegdoc.tar.gz and mridoc.tar.gz
+</p>
+
+
+
+<h2><a name="SCRIPT">Script Processing</a></h2>
+<p>It is possible to run all of the functions in
+the toolbox from the command prompt or a matlab script.
+Script and function names are intended to be loosely
+descriptive of their purpose (scripts have the _script.m extension). At this
+stage, most of the scripts and functions have been developed and tested on 
+limited dataset specifications, so be careful to verify operations on
+<i>your data</i>. A couple of scripts may be under development
+and will not work at all.  It is best if you have some familiarity 
+with programming in matlab so that you can modify some script 
+variables, which are defined at the outset of a script.</p>
+
+
+
+<h2>GUI Layout Problems?</h2>
+<p>There is no guarantee that GUI interfaces will appear correctly on
+different matlab platforms. It is developed on windows98, matlab6.0 (R12),
+but some of the text and boxes may not scale correctly on other
+systems. The toolbox uses normalized scaling for all GUI widgets, which 
+should display and resize OK on any platform, but the matlab handlers seem
+to work differently with different display systems (X, windows, etc).
+Please just try resizing the GUI window until it looks OK for 
+you.
+<p>If you find the toolbox useful and wish to modify the GUI, please
+have a look at the gui*.m files to adjust the size of widgets, figures 
+or whatever.  If you do tidy up the code for your system, 
+please email your modifications to me with an indication of what is 
+modified for what system.  If you have the time and
+inclination, please register as a sourceforge developer and make 
+arrangements to integrate your development efforts with the cvs 
+repository.</p>
+
+
+
+<h2><a name="DEVELOP">Developers</a></h2>
+<p>To development the toolbox, first consider the data structure.  All the data
+is integrated into fields of the p struct, which is easily passed into the 
+functions.  At this early stage of the project, there is a degree of fluidity 
+and flexibility, which may facilitate integration of this toolbox with similar 
+projects, such as <a href="http://www.sccn.ucsd.edu/eeglab/">EEGLAB</a>.</p>
+
+<p>To fully engage the CVS repository, first get an account with sourceforge 
+and then follow the sourceforge instructions to register and to setup your 
+ssh/cvs access to the toolbox source code.  The ssh/cvs setup and development 
+process is made easy by reading the introduction materials
+at <a href="http://sfsetup.sourceforge.net">http://sfsetup.sourceforge.net</a>.  Also, subscribe
+to <a href="http://lists.sourceforge.net/lists/listinfo/eeg-developers">eeg-developers</a>.
+</p>
+
+
+
+<h2><a name="TODO">Development</a></h2>
+
+<h4>Recently Done</h4>
+<ul>
+<li>Histogram and ROI functions for MRI viewer (avw_view)</li>
+<li>Spherical spline interpolation (not in GUI yet)</li>
+</ul>
+
+<h4>To Be Completed</h4>
+<ul>
+<li>average reference transform</li>
+<li>interactive topographic map measurements (single value or local max/min)</li>
+<li>realistic surface spline interpolation</li> 
+<li>incorporate analysis tools into GUI</li>
+<li>Access to time-series filtering from the GUI (eg, signal processing toolbox)</li>
+<li>GUI display of .eeg and .cnt EEG formats.  There are no GUI facilities 
+for viewing or manipulating epoched or continuous EEG at present. There are 
+some command line functions to read Neuroscan data in these formats.</li>
+<li>Other data formats. If you want to load a data format other than those available 
+or you have a function that loads an alternative data format, please forward 
+an example data file and description of the data format (or matlab function 
+to read it). Please first see the link to a useful list of file formats for 
+which matlab functions are available below.</li>
+<li>MRI segmentation and tesselation (possibly based on FSL routines)</li>
+<li>tesselation orientation and metric conversions</li>
+<li>Integration with the EEGLAB and Brainstorm toolboxes?  Some conversion 
+functions for BrainStorm are available, but nothing yet for ICA.</li>
+</ul>
+
+
+
+<h2><a name="LINKS">Other EEG/ERP matlab links</a></h2>
+<ul>
+<li><a href="http://www.sccn.ucsd.edu/eeglab/">
+EEGLAB: Independent Components Analysis of EEG</a></li>
+<li><a href="http://neuroimage.usc.edu/brainstorm/">
+BrainStorm MEG/EEG Source Modelling</a></li>
+<li><a href="http://biosig.sourceforge.net/">
+Matlab tools for biomedical signal processing</a></li>
+<li><a href="http://www.dpmi.tu-graz.ac.at/~schloegl/matlab/eeg/">
+Matlab filters for various EEG/ERP data formats</a></li>
+<li><a href="http://www.occuphealth.fi/users/jussi.virkkala/index.htm">
+Jussi Virkkala's QEEG package for Neuroscan</a></li>
+<li><a href="http://astronomy.swin.edu.au/~pbourke/dataformats/neuroscan/">
+Paul Bourke's illustration of Neuroscan data formats</a></li>
+<li><a href="http://www.epub.org.br/cm/n03/tecnologia/eeg.htm#brain-electric">
+EEG Brain Mapping: Renato Sabbatini's introduction to EEG</a></li>
+<li><a href="http://www.mrc-cbu.cam.ac.uk/EEG/index.shtml">
+MRC Cognition and Brain Sciences Unit: EEG laboratory</a></li>
+<li><a href="http://www.ncrg.aston.ac.uk/netlab/">
+NETLAB: Neural Network Algorithms for matlab</a></li>
+<li><a href="http://www.neuroshare.org">
+NEUROSHARE: An open source data format with matlab filters</a></li>
+
+
+
+</ul>
+
+
+
+<h2>Some MRI and Visualization links</h2>
+<ul>
+<li><a href="http://www.dclunie.com/medical-image-faq/html/">
+Medical Image Formats</a></li>
+<li><a href="http://www.fil.ion.ucl.ac.uk/fil.html">SPM (matlab)</a></li>
+<li><a href="http://white.stanford.edu/software/">Stanford anatomy and retinotopy tools (matlab)</a></li>
+<li><a href="http://www.fmrib.ox.ac.uk/">FSL</a></li>
+<li><a href="http://www.bic.mni.mcgill.ca/software/">MNI software</a></li>
+<li><a href="http://www.cla.sc.edu/psyc/faculty/rorden/">
+Chris Rhorden's site</a>, see MRICRO for windows/linux</li>
+<li><a href="http://www.mrc-cbu.cam.ac.uk/Imaging/index.html">
+MRC Cognition and Brain Sciences Unit: Imaging</a></li>
+<li><a href="http://www.itk.org/">Segmentation and Registration Toolkit (ITK, c++)</a></li>
+<li><a href="http://public.kitware.com/VTK/index.php">Visualization Toolkit (VTK, c++)</a></li>
+<li><a href="http://www.cs.unc.edu/~fillard/">Diffusion Tensor Imaging and Fiber Tracking</a></li>
+<li><a href="http://www.loni.ucla.edu/~thompson/thompson.html">Paul Thompson at UCLA</a></li>
+<li><a href="http://www.med.harvard.edu/AANLIB/home.html">The Whole Brain Atlas</a></li>
+<li><a href="http://www.vh.org/adult/provider/anatomy/BrainAnatomy/BrainAnatomy.html">
+The Virtual Hospital: Real Brain Sections</a></li>
+</ul>
+
+
+
+<script language="JavaScript" type="text/javascript">
+<!--
+     document.write("<p><p><hr>Darren.Weber_at_radiology.ucsf.edu, Last Modified " + document.lastModified)
+// -->
+</script>
+</body>
+</html>
+

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+Usage() {
+    echo "Usage: betfunc <inroot> <outroot>"
+    exit
+}
+
+[ "$1" = "" ] && Usage
+
+if [ _$FSLDIR = _ ] ; then
+    FSLDIR=/usr/local/fsl
+    export FSLDIR
+fi
+
+${FSLDIR}/bin/avwroi $1 ${2}_tmp 0 1
+${FSLDIR}/bin/bet ${2}_tmp ${2}_tmp_brain -m -n -f 0.3 > /dev/null 2>&1
+${FSLDIR}/bin/avwmaths ${2}_tmp_brain_mask -dil ${2}_mask
+${FSLDIR}/bin/avwmaths $1 -mas ${2}_mask $2
+
+/bin/rm -f ${2}_tmp.img ${2}_tmp.hdr ${2}_tmp_brain_mask.img ${2}_tmp_brain_mask.hdr

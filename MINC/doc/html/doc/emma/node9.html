@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Saving the Integrated Image</TITLE>
+<META NAME="description" CONTENT="Saving the Integrated Image">
+<META NAME="keywords" CONTENT="emma">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="emma.css">
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node5.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html136"
+ HREF="node10.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html133"
+ HREF="node5.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html127"
+ HREF="node8.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html135"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html137"
+ HREF="node10.html">Using an Integrated Image</A>
+<B> Up:</B> <A NAME="tex2html134"
+ HREF="node5.html">Some Basic Examples: Masking</A>
+<B> Previous:</B> <A NAME="tex2html128"
+ HREF="node8.html">Viewing and Comparing the</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00054000000000000000">
+Saving the Integrated Image</A>
+</H2>
+
+<P>
+After performing some analysis, it is often desirable to write the
+results to a new MINC file.  Currently, we only have a single image to
+write, so we will create a MINC file with 1 slice and no frames
+(because of the integration across frames, time is no longer a
+variable).  We use EMMA function <TT><B>newimage</B></TT> as follows:
+<PRE>
+     new_handle = newimage ('yates_summed.mnc', [0 1], ...
+                            'examples/yates_19445.mnc');
+</PRE>To write our single image to slice 1 of the new MINC file, we enter:
+<PRE>
+     putimages (new_handle, PETsummed2, 1);
+</PRE>
+<P>
+Alternately, we could create a MINC file with a full 15 slices, and
+loop through the entire original study to sum every slice.  MATLAB
+will allow us to enter a <code>for</code> loop interactively, so enter the
+following (note that if you already executed the above code, you
+should use a new filename in place of <TT><B>yates_summed.mnc</B></TT> or
+delete the old one--<TT><B>newimage</B></TT> will die if you try to overwrite
+an existing file):
+<PRE>
+     closeimage (new_handle);
+     new_handle = newimage ('yates_summed.mnc', [0 ns], ...
+                            'examples/yates_19445.mnc');
+     for slice = 1:ns
+        PET = getimages (handle, slice, 1:nf);
+        PETsummed = trapz (MidFTimes, PET')';
+        putimages (new_handle, PETsummed, slice);
+     end
+     closeimage (new_handle);
+</PRE>
+<P>
+<BR><HR>
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0052)http://www.mrc-cbu.cam.ac.uk/Imaging/pvconv_pod.html -->
+<HTML><HEAD><TITLE>pvconv.pl - converts Bruker format data to other image formats</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252"><LINK 
+rev=made href="mailto:iain.morrison@mrc-cbu.cam.ac.uk">
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY><A name=__index__></A><!-- INDEX BEGIN -->
+<UL>
+  <LI><A 
+  href="http://www.mrc-cbu.cam.ac.uk/Imaging/pvconv_pod.html#name">NAME</A> 
+  <LI><A 
+  href="http://www.mrc-cbu.cam.ac.uk/Imaging/pvconv_pod.html#synopsis">SYNOPSIS</A> 
+
+  <LI><A 
+  href="http://www.mrc-cbu.cam.ac.uk/Imaging/pvconv_pod.html#options">OPTIONS</A> 
+
+  <LI><A 
+  href="http://www.mrc-cbu.cam.ac.uk/Imaging/pvconv_pod.html#description">DESCRIPTION</A> 
+
+  <LI><A 
+  href="http://www.mrc-cbu.cam.ac.uk/Imaging/pvconv_pod.html#features">FEATURES</A> 
+  </LI></UL><!-- INDEX END -->
+<HR>
+
+<P>
+<H1><A name=name>NAME</A></H1>
+<P>pvconv.pl - converts Bruker format data to other image formats</P>
+<P>e.g.</P>
+<P>If the Bruker data is stored in a directory ``/brukerdata/mysession'', and 
+you want to create analyze format files in the current directory, then:</P>
+<P>pvconv.pl /brukerdata/mysession/ -verbose all</P>
+<P>will convert all the series in the Bruker data directory.</P>
+<P>See <A 
+href="http://www.mrc-cbu.cam.ac.uk/Imaging/pvconv.html">http://www.mrc-cbu.cam.ac.uk/Imaging/pvconv.html</A> 
+for more information.</P>
+<P>
+<HR>
+
+<H1><A name=synopsis>SYNOPSIS</A></H1>
+<P>pvconv.pl [options] paravision_data_dir [output_dir]</P>
+<P>Options:</P><PRE>    -help          print help message and quit
+    -man           full documentation and quit
+    -verbose       more messages, more detailed help output
+    -quiet         no messages during operation
+    -clobber       overwrite preexisting files
+    -series        one or more series to convert
+    -recono        reconstruction no
+    -reshape       whether to reshape (MINC only so far)
+    -stepdir       directions of increase x, y, z
+    -rawfile       specify rawfile (2dseq) to use
+    -outtype       output type, "analyze" or "minc"
+    -outdir        directory to output files
+    -outfile       name of file to output (extension ignored)
+    -view          show image after conversion (MINC only)
+    -frecofix      fix reported byte ordering for FRECO reconstruction
+    -timelength    specify no of volumes in time series 
+    -all           Convert all series in the directory
+    -layers        Separate images according to layer information [default]
+    -nolayers      Do not separate images according to layer information 
+    -radio         use radiological orientation for mat file 
+    -noradio       use neurological orientation for mat file [default]
+    -dirext        adds PV directory ext to output names
+    -version       returns version no</PRE>
+<P>
+<HR>
+
+<H1><A name=options>OPTIONS</A></H1>
+<DL>
+  <DT><STRONG><A name=item_%2Dhelp><STRONG>-help</STRONG></A></STRONG><BR>
+  <DD>Print a long help message and exit. 
+  <P></P>
+  <DT><STRONG><A name=item_%2Dman><STRONG>-man</STRONG></A></STRONG><BR>
+  <DD>Prints the manual page and exit. 
+  <P></P>
+  <DT><STRONG><A name=item_%2Dverbose><STRONG>-verbose</STRONG></A></STRONG><BR>
+  <DD>Gives out moderately helpful warning and other messages during image 
+  conversion. Adding -verbose to -help outputs more help. 
+  <P></P>
+  <DT><STRONG><A name=item_%2Dquiet><STRONG>-quiet</STRONG></A></STRONG><BR>
+  <DD>Turn off any messages during conversion 
+  <P></P>
+  <DT><STRONG><A name=item_%2Dclobber><STRONG>-clobber</STRONG></A></STRONG><BR>
+  <DD>Will overwrite preexisting files. If there <STRONG>are</STRONG> 
+  preexisting files, and you do not use -clobber, pvconv will exit with an error 
+  message. 
+  <P></P>
+  <DT><STRONG><A name=item_%2Dall><STRONG>-all</STRONG></A></STRONG><BR>
+  <DD>Convert all series in the directory. 
+  <P></P>
+  <DT><STRONG><A name=item_%2Dseries><STRONG>-series</STRONG></A></STRONG><BR>
+  <DD>Specify series to convert, e.g. 
+  <P>pvconv.pl /brukerdata/mysession/ -series 1 -series 3</P>
+  <P>will convert series 1 and 3 only. Defaults to -series 1 if not set, and 
+  -all flag is not used</P>
+  <P></P>
+  <DT><STRONG><A name=item_%2Douttype><STRONG>-outtype</STRONG></A></STRONG><BR>
+  <DD>Specify output type, currently one of ``analyze'' or ``minc''. ``analyze'' 
+  is the default. 
+  <P></P>
+  <DT><STRONG><A name=item_%2Doutdir><STRONG>-outdir</STRONG></A></STRONG><BR>
+  <DD>Directory to output converted image files; e.g. 
+  <P>pvconv.pl /brukerdata/mysession/ -all -outdir /home/me/images</P>
+  <P>The default output directory is the current directory.</P>
+  <P></P>
+  <DT><STRONG><A name=item_%2Doutfile><STRONG>-outfile</STRONG></A></STRONG><BR>
+  <DD>Root name of image files to output (extension ignored); e.g. 
+  <P>pvconv.pl /brukerdata/mysession/ -series 2 -outname image2</P>
+  <P>will create output files:</P>
+  <P>./image2.img ./image2.hdr ./image2.mat</P>
+  <P>pvconv derives the default file name from the name of the Bruker data 
+  directory, the series number, and any matches it finds of the protocol name 
+  with preset strings identifying image types; thus, if the default tripilot 
+  scan is the first series in the data directory:</P>
+  <P>pvconv.pl /brukerdata/mysession -series 1</P>
+  <P>may generate files:</P>
+  <P>./mysession_01_T3.img ./mysession_01_T3.hdr ./mysession_01_T3.mat</P>
+  <P></P>
+  <DT><STRONG><A 
+  name=item_%2Dfrecofix><STRONG>-frecofix</STRONG></A></STRONG><BR>
+  <DD>Fix reported byte ordering for FRECO reconstructions in paravision 2.0, 
+  and for some other reconstructions. If the reco file specifies that the 
+  reconstructed data is a different endianness from the raw (FID) data, then the 
+  reconstructed data is assumed to have the endianness of the raw data. Try this 
+  flag if you get a snowstorm effect in converted images without it. 
+  <P></P>
+  <DT><STRONG><A name=item_%2Dradio><STRONG>-radio</STRONG></A></STRONG><BR>
+  <DD>Set orientation calculations to return radiological orientation. 
+  <P></P>
+  <DT><STRONG><A name=item_%2Dnoradio><STRONG>-noradio</STRONG></A></STRONG><BR>
+  <DD>Set orientation calculations to return neuroogical orientation (the pvconv 
+  and Bruker default). 
+  <P></P>
+  <DT><STRONG><A name=item_%2Ddirext><STRONG>-dirext</STRONG></A></STRONG><BR>
+  <DD>Adds Bruker directory extension to output names. Bruker data directories 
+  usually have an extension that is unique for the particular day of scanning. 
+  pvconv usually omits this extension from the default output filename; e.g. 
+  <P>pvconv.pl /brukerdata/mysession.fs1 -series 1</P>
+  <P>may generate a file: ./mysession_01.img</P>
+  <P>The -dirext option causes the extension to be added to the filename; 
+  e.g.</P>
+  <P>pvconv.pl /brukerdata/mysession.fs1 -series 1 -dirext</P>
+  <P>may generate a file: ./mysession_fs1_01.img</P>
+  <P></P>
+  <DT><STRONG><A name=item_%2Dversion><STRONG>-version</STRONG></A></STRONG><BR>
+  <DD>Returns version no to the console. 
+  <P></P>
+  <DT><STRONG><A name=item_%2Drawfile><STRONG>-rawfile</STRONG></A></STRONG><BR>
+  <DD>Specify raw image file to use as image data instead of 2dseq: e.g. 
+  <P>pvconv.pl /brukerdata/mysession/ -all -rawdata mydata.img</P>
+  <P></P>
+  <DT><STRONG><A 
+  name=item_%2Dtimelength><STRONG>-timelength</STRONG></A></STRONG><BR>
+  <DD>Specify no of volumes in time series. This is useful in cases where the 
+  reco etc files have incorrect parameters, and you know the actual no of 
+  volumes. 
+  <P></P>
+  <DT><STRONG><A name=item_%2Dlayers><STRONG>-layers</STRONG></A></STRONG><BR>
+  <DD>Separate images according to layer information; for example, multiecho 
+  sequences such as combined T1/PD acquisitions have images from the two echos 
+  interleaved. This option will cause pvconv to split the interleaved slices 
+  into two images. 
+  <P></P>
+  <DT><STRONG><A 
+  name=item_%2Dnolayers><STRONG>-nolayers</STRONG></A></STRONG><BR>
+  <DD>Do not separate images according to layer information; create converted 
+  image with the slice interleave preserved. 
+  <P></P>
+  <DT><STRONG><A name=item_%2Drecono><STRONG>-recono</STRONG></A></STRONG><BR>
+  <DD>Reconstruction no to convert. Usually there is only one; use e.g. 
+  <P>pvconv.pl /brukerdata/mysession/ -series 4 -recono 2</P>
+  <P>to convert a second reconstruction for series 4.</P>
+  <P></P>
+  <DT><STRONG><A name=item_%2Dreshape><STRONG>-reshape</STRONG></A></STRONG><BR>
+  <DD>Whether to reshape (MINC only so far) 
+  <P></P>
+  <DT><STRONG><A name=item_%2Dstepdir><STRONG>-stepdir</STRONG></A></STRONG><BR>
+  <DD>Directions of increase x, y, z (MINC only) 
+  <P></P>
+  <DT><STRONG><A name=item_%2Dview><STRONG>-view</STRONG></A></STRONG><BR>
+  <DD>Show image after conversion (MINC only) 
+  <P></P></DD></DL>
+<P>
+<HR>
+
+<H1><A name=description>DESCRIPTION</A></H1>
+<P><STRONG>pvconv.pl</STRONG> converts Bruker format MRI data to Analyze image 
+format. It may also convert Bruker data to MINC format.</P>
+<P>The program is based on the converters by Andrew Janke ( <A 
+href="http://www.cmr.uq.edu.au/~rotor/software/">http://www.cmr.uq.edu.au/~rotor/software/</A> 
+) Many thanks to him for the original programs and helpful suggestions.</P>
+<P>
+<HR>
+
+<H1><A name=features>FEATURES</A></H1>
+<P>pvconv reads the text header files from the Bruker data format ( <A 
+href="http://www.mrc-cbu.cam.ac.uk/Imaging/brukerformat.html">http://www.mrc-cbu.cam.ac.uk/Imaging/brukerformat.html</A> 
+), and uses the values therein to fill a header information for Analyze format 
+images ( <A 
+href="http://www.mrc-cbu.cam.ac.uk/Imaging/analyze_fmt.html">http://www.mrc-cbu.cam.ac.uk/Imaging/analyze_fmt.html</A> 
+), and possibly MINC files.</P>
+<UL>
+  <LI>pvconv will try and work out the orientation of the scan in terms of the 
+  magnet isocentre, and create reorientation matrices. For Analyze format 
+  images, the orientation is stored in Matlab .mat format, of a type that can be 
+  read by SPM software: <A 
+  href="http://www.mrc-cbu.cam.ac.uk/Imaging/spm_format.html.">http://www.mrc-cbu.cam.ac.uk/Imaging/spm_format.html.</A> 
+  In this way, scans will be automatically coregistered when you use SPM for 
+  your analysis. 
+  <P></P>
+  <LI>If two acquisitions have been collected in the same image (e.g. dual echo 
+  sequences) it will (by default - see the -layers option) create separate files 
+  for each. 
+  <P></P>
+  <LI>A text file containing all the Bruker text file parameters is 
+  automatically saved with the analyze image (as a .brkhdr file) for further 
+  reference. 
+  <P></P>
+  <LI>Converted files will be saved with semi-sensible file names; for example, 
+  if the original data came from a directory ``/brukerdata/mysession'', and you 
+  had converted files from the fifth series collected in that session, and the 
+  protocol name stored in the Bruker files was ``EPI_FID'', then the output 
+  files would be: 
+  <P>./mysession_05_EPI.hdr (Analyze header) ./mysession_05_EPI.img (Analyze 
+  image data) ./mysession_05_EPI.mat (SPM orientation information) 
+  ./mysession_05_EPI.brkhdr (Bruker parameter text file data)</P>
+  <P></P></LI></UL></BODY></HTML>

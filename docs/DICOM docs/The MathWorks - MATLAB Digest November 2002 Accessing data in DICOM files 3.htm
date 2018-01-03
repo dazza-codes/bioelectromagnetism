@@ -1,0 +1,719 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0061)http://www.mathworks.com/company/digest/nov02/dicom_pt3.shtml -->
+<HTML><HEAD><TITLE>The MathWorks - MATLAB Digest November 2002: Accessing data in DICOM files</TITLE>
+<META http-equiv=content-type content=text/html;charset=iso-8859-1><LINK 
+href="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/site3.css" 
+type=text/css rel=stylesheet><LINK 
+href="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/company.css" 
+type=text/css rel=stylesheet>
+<STYLE type=text/css>SAMP {
+	FONT-SIZE: 9pt; MARGIN-LEFT: 10px
+}
+CODE {
+	FONT-SIZE: 9pt
+}
+CODE.fnctn {
+	FONT-SIZE: 9pt
+}
+</STYLE>
+
+<META content="MSHTML 6.00.2800.1126" name=GENERATOR></HEAD>
+<BODY class=company>
+<TABLE cellSpacing=0 cellPadding=0 width=600 border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=bottom width=185 colSpan=2 rowSpan=2><A 
+      href="http://www.mathworks.com/index.shtml" target=_top><IMG height=30 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/mw_membrane5.gif" 
+      width=188 border=0></A></TD>
+    <TD colSpan=3><FONT class=small size=1>&nbsp;</FONT></TD>
+    <TD colSpan=3></TD>
+    <TD width=3></TD></TR>
+  <TR>
+    <TD width="100%" colSpan=4></TD>
+    <TD vAlign=bottom width=84><A 
+      href="http://www.mathworks.com/siteindex.shtml" target=_top><IMG height=13 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/index_off.gif" 
+      width=84 border=0></A></TD>
+    <TD vAlign=bottom width=51><A href="http://www.mathworks.com/search/" 
+      target=_top><IMG height=13 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/search_off.gif" 
+      width=51 border=0></A></TD>
+    <TD vAlign=bottom width=73><A 
+      href="http://www.mathworks.com/company/contact.shtml" target=_top><IMG 
+      height=13 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/contact_off.gif" 
+      width=73 border=0></A></TD>
+    <TD width=3></TD></TR></TBODY></TABLE>
+<TABLE height=25 cellSpacing=0 cellPadding=0 width=600 border=0>
+  <TBODY>
+  <TR>
+    <TD width=154><A href="http://www.mathworks.com/index.shtml" 
+      target=_top><IMG height=25 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/mw_membrane2.gif" 
+      width=154 border=0></A></TD>
+    <TD width=85><A href="http://www.mathworks.com/products/" target=_top><IMG 
+      height=25 alt=Products 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/products2_off.gif" 
+      width=85 border=0></A></TD>
+    <TD width=93><A href="http://www.mathworks.com/consulting/" 
+      target=_top><IMG height=25 alt=Consulting 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/consulting2_off.gif" 
+      width=93 border=0></A></TD>
+    <TD width=125><A href="http://www.mathworks.com/company/events/" 
+      target=_top><IMG height=25 alt="Training and Events" 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/training_events_off.gif" 
+      width=125 border=0></A></TD>
+    <TD width=77><A href="http://www.mathworks.com/support/" target=_top><IMG 
+      height=25 alt=Support 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/support2_off.gif" 
+      width=77 border=0></A></TD>
+    <TD width=65><A href="http://www.mathworks.com/store/index.html" 
+      target=_top><IMG height=25 alt=Store 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/store2_off.gif" 
+      width=65 border=0></A></TD></TR></TBODY></TABLE>
+<TABLE height=24 cellSpacing=0 cellPadding=0 width=600 border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD width=7><IMG height=1 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelwhite.gif" 
+      width=6></TD>
+    <TD vAlign=top width=593><IMG height=17 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+      width=593></TD>
+    <TD></TD></TR></TBODY></TABLE><!-- Start header table --><!--
+/*THESE COMMENTS SHOULD BE REMOVED IN PRODUCTION*/
+The header table is constructed to have only two moving parts, the width of the graphic, and the width of the blue line to the right of the graphic.  
+In this example, the header.gif width="300" and the pixelclear width="171" (in three places). 
+
+The pixelclear width="120" should never be touched unless the rightnav width of 120 is altered for some reason (which should NEVER happen except for international pages)
+The height tags should in NO instance EVER be moved.
+-->
+<TABLE cellSpacing=0 cellPadding=0 width=600 border=0>
+  <TBODY>
+  <TR>
+    <TD rowSpan=3><IMG height=48 alt="" 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+      width=8></TD>
+    <TD rowSpan=3><IMG height=48 alt=MATLAB 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/digest_header.gif" 
+      width=300></TD>
+    <TD><IMG height=31 alt="" 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+      width=171></TD>
+    <TD><IMG height=1 alt="" 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+      width=1></TD>
+    <TD><IMG height=31 alt="" 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+      width=120></TD></TR>
+  <TR>
+    <TD class=darkback><IMG height=1 alt="" 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+      width=171></TD>
+    <TD class=darkback><IMG height=1 alt="" 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+      width=1></TD>
+    <TD width=120 height=1></TD></TR>
+  <TR>
+    <TD><IMG height=16 alt="" 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+      width=171></TD>
+    <TD class=darkback><IMG height=16 alt="" 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+      width=1></TD>
+    <TD><IMG height=16 alt="" 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+      width=120></TD></TR></TBODY></TABLE><!-- End header table --><!-- Start body_table -->
+<DIV class=mainbody style="MARGIN-TOP: 0px; MARGIN-LEFT: 25px">
+<TABLE id=bodytable cellSpacing=0 cellPadding=0 width=575 border=0>
+  <TBODY>
+  <TR>
+    <TD id=bodytextcell vAlign=top width=435><!--Dont touch this br--><BR>
+      <H1>November 2002 <BR>Volume 10, Number 6</H1>
+      <P><SPAN class=head2>Accessing data in DICOM files</SPAN> </P>
+      <P><SPAN class=head4>(Part 3 of 3)</SPAN></P>
+      <P><SPAN class=head3>Details about DICOM Metadata</SPAN><BR>As shown in 
+      the previous example, a typical DICOM file contains numerous attributes. 
+      The reason for this is that DICOM messages encapsulate <EM>all</EM> of the 
+      information about a medical imaging procedure, including details about the 
+      patient, study, imaging modality, and image series in addition to the 
+      image frame stored in the file. Together, all of these attributes comprise 
+      an<EM> Information Object.</EM></P>
+      <P>The DICOM specification contains numerous <EM>Information Object 
+      Definitions </EM>(IODs), such as MR Image, Ultrasound Multiframe Image, 
+      and Radiotherapy Plan. The DICOM files in the examples above contain MR 
+      Image Information Objects. <CODE class=fnctn>dicomread</CODE> understands 
+      most IODs that are listed in the DICOM specification.</P>
+      <P>IODs are defined in terms of smaller functional units, or 
+      <EM>modules</EM>, which correspond to specific real-world objects, such as 
+      patients, imaging equipment, etc. The hundred-or-so modules in DICOM 
+      describe everything that could be combined to make a DICOM information 
+      object. For example, the following table lists the modules that constitute 
+      an MR Image IOD:</P>
+      <P><SPAN class=head3>Modules in the MR Image IOD:</SPAN></P>
+      <TABLE cellSpacing=0 cellPadding=2 width=430 border=1>
+        <TBODY>
+        <TR>
+          <TD vAlign=top><STRONG>Module </STRONG></TD>
+          <TD vAlign=top><STRONG>Description</STRONG></TD></TR>
+        <TR>
+          <TD vAlign=top>Patient </TD>
+          <TD vAlign=top>Details about the patient</TD></TR>
+        <TR>
+          <TD vAlign=top>General Study </TD>
+          <TD vAlign=top>General information about the study, a set of imaging 
+            procedures</TD></TR>
+        <TR>
+          <TD vAlign=top>Patient Study (U) </TD>
+          <TD vAlign=top>Information about the patient at the time of the 
+          study</TD></TR>
+        <TR>
+          <TD vAlign=top>General Series </TD>
+          <TD vAlign=top>General information about one particular imaging 
+            procedure</TD></TR>
+        <TR>
+          <TD vAlign=top>Frame of Reference</TD>
+          <TD vAlign=top>Information to spatially relate images in a 
+        series</TD></TR>
+        <TR>
+          <TD vAlign=top>General Equipment</TD>
+          <TD vAlign=top>General information about the image modality that 
+            produced the series</TD></TR>
+        <TR>
+          <TD vAlign=top>General Image </TD>
+          <TD vAlign=top>Details that identify and describe an image within 
+            the series</TD></TR>
+        <TR>
+          <TD vAlign=top>Image Plane</TD>
+          <TD vAlign=top>Slice thickness/location/spacing and other 
+            orientation details</TD></TR>
+        <TR>
+          <TD vAlign=top>Image Pixel</TD>
+          <TD vAlign=top>The actual image pixels and information on how to 
+            interpret them</TD></TR>
+        <TR>
+          <TD vAlign=top>Contrast/Bolus (C)</TD>
+          <TD vAlign=top>Details about medication given at the time of 
+          imaging</TD></TR>
+        <TR>
+          <TD vAlign=top>MR Image </TD>
+          <TD vAlign=top>Values specific to magnetic resonance imaging</TD></TR>
+        <TR>
+          <TD vAlign=top>Overlay Plane (U)</TD>
+          <TD vAlign=top>Graphics or bitmapped text to display with a 
+            particular image</TD></TR>
+        <TR>
+          <TD vAlign=top>VOI LUT (U)</TD>
+          <TD vAlign=top>Information to transform the contrast or intensity of 
+            the image</TD></TR>
+        <TR>
+          <TD vAlign=top>SOP Common</TD>
+          <TD vAlign=top>Date/time of message creation and other generic DICOM 
+            details</TD></TR></TBODY></TABLE>
+      <P>Some modules, such as Patient, General Study, General Equipment, and 
+      Image Pixel, are found in many IODs. Other modules appear only in specific 
+      IODs. The MR Image module, for example, is only part of the MR Image 
+      IOD.</P>
+      <P>The IOD contains modules that describe the patient, study, series, and 
+      images for a particular medical imaging procedure. Also, notice that some 
+      modules have a "(C)" or "(U)" near their name, which means that for this 
+      IOD they are "conditionally required" or "user optional" modules; the 
+      conditional and user optional modules may or may not appear in every MR 
+      Image IOD. For example, the Contrast/Bolus module will only appear if 
+      medication is given at the time of imaging, and the VOI LUT module does 
+      not have to be implemented by the device that writes the DICOM file.</P>
+      <P>All of the modules and attributes are defined in PS 3.3 of the DICOM 
+      specification, which are available online from the <A 
+      href="http://medical.nema.org/" target=_blank>National Electrical 
+      Manufacturer’s Association</A>. Additionally, all of the defined 
+      attributes are listed in a data dictionary. Vendors sometimes define 
+      private attributes that are specific to their hardware. While you do not 
+      need to do anything special to read private attributes with <CODE 
+      class=fnctn>dicomread</CODE> or <CODE class=fnctn>dicominfo</CODE>, if you 
+      want to provide additional information about attributes that are not part 
+      of the DICOM specification, you can provide your own data dictionary.</P>
+      <P><SPAN class=head3>Writing DICOM Files</SPAN><BR>We will now create a 
+      new DICOM file. Writing a new file requires an image and metadata. We 
+      created a new image with the scaled data in one of the examples above, and 
+      <CODE class=fnctn>dicomwrite</CODE> and <CODE class=fnctn>dicominfo</CODE> 
+      will help us create the metadata we need. </P>
+      <P>To write a DICOM file, simply use <CODE class=fnctn>dicomwrite</CODE> 
+      in the Image Processing Toolbox. Currently, this function supports 
+      creating Secondary Capture (SC) Image IODs, which contain all of the pixel 
+      data and metadata necessary for correctly interpreting the image. 
+      Essentially, an SC image is similar to what you would generate with a 
+      framegrabber, or if you had generated the image yourself from scratch or 
+      from another image (as in the example above). Metadata about the patient, 
+      image, and study will be present, but information about the original 
+      hardware that produced the image will not.</P>
+      <P>To write the tenth frame of the scaled image using default metadata to 
+      a new file, use <CODE class=fnctn>dicomwrite</CODE> with its basic 
+      syntax:</P>
+      <P><CODE>frame = Y(:,:,:,10);<BR>filename = 
+      'brain_scaled_10.dcm';<BR>dicomwrite(frame, filename)</CODE></P>
+      <P>In this example, <CODE class=fnctn>dicomwrite</CODE> infers the 
+      metadata that is required, filling in blank values where appropriate. To 
+      override default values, provide <CODE class=fnctn>dicomwrite</CODE> with 
+      a structure containing attributes:</P>
+      <P><CODE>info = dicominfo('brain_001.dcm');<BR>dicomwrite(frame, filename, 
+      info)</CODE></P>
+      <P><CODE class=fnctn>dicomwrite</CODE> picks the values that apply to the 
+      Secondary Capture IOD and ignores the rest. When <CODE 
+      class=fnctn>dicomwrite</CODE> makes a new file, it is actually performing 
+      two operations. First, it creates a Secondary Capture information object. 
+      Then it encodes the information object’s attributes, turning them into a 
+      stream of bytes that are written to the output file. This last step 
+      demonstrates the DICOM concept of <EM>services</EM>.</P>
+      <P>A service provides a set of concrete actions to perform on objects. 
+      Common services include Storage, Print Management, Verification, and 
+      Query/Retrieve. When dealing with network messages, services are 
+      implemented by adding extra attributes to the message and then sending a 
+      series of instructions to the receiving machine or application, which 
+      deciphers the extra attributes to figure out what to do with the message. 
+      When working with DICOM files, the attributes are added to the file, and 
+      writing or reading the file replaces the transfer of instructions.</P>
+      <P>Writing a file containing DICOM data is very much like performing the 
+      Storage service. Essentially, the IOD's attributes plus those for the 
+      Storage service are combined and "frozen" when written to disk. Reading 
+      the file "thaws" the IOD and service attributes, and the entire context of 
+      what to do with the information is preserved.</P>
+      <P>Encoding rules found in the DICOM standard provide the algorithm for 
+      transforming attributes into a series of bytes to be transmitted or 
+      stored. Different byte-ordering schemes can be used during encoding, and 
+      image pixels can be compressed using numerous techniques, such as JPEG or 
+      run-length encoding. In the calls to <CODE class=fnctn>dicomwrite</CODE> 
+      above, the files are encoded using so-called “implicit VR, little endian” 
+      style, and the pixels are not compressed.</P>
+      <P><SPAN class=head3>Working Together</SPAN><BR>A host of <EM>Transfer 
+      Syntaxes</EM> unambiguously define how to decode a DICOM message. One of 
+      these transfer syntaxes appears at the beginning of a DICOM network 
+      transmission or at the start of a DICOM file. If both the sender/writer 
+      and receiver/reader support the same transfer syntax, communication 
+      proceeds. Otherwise, communication fails. The DICOM features in MATLAB and 
+      the Image Processing Toolbox support the most commonly used transfer 
+      syntaxes.</P>
+      <P>With all of these possibilities—IODs, optional modules, services, and 
+      transfer syntaxes—it can be difficult to know exactly how well two 
+      modalities will interact. Implementing a service requires knowing which 
+      attributes to send or receive. Furthermore, making the service useful 
+      frequently requires knowing what kind of data to put into attributes and 
+      verifying that the information is correct. Consequently, few manufacturers 
+      support the full set of "Service-Object Pairs" that are possible in DICOM. 
+      In addition, different applications support different transfer 
+      syntaxes.</P>
+      <P>Fortunately, every application that implements part of DICOM should 
+      know what it supports. Manufacturers publish the information about the 
+      services, IODs, and transfer syntaxes that they support in DICOM 
+      <EM>conformance statements</EM>. By comparing statements from two 
+      different vendors, you can identify whether the two applications can share 
+      information.</P>
+      <P><SPAN class=head3>Limitless Possibilities with DICOM</SPAN><BR>DICOM 
+      makes it easy to acquire and put medical images into a file. It is 
+      becoming more prevalent in the medical field.</P>
+      <P>Many medical device manufacturers and software manufacturers are adding 
+      DICOM to just about any product that can work with medical images and 
+      data. </P>
+      <P>Using MATLAB with the Image Processing Toolbox provides easy access to 
+      medical images, modality metadata, and patient information within DICOM 
+      files. They also provide numerical and image processing algorithms, 
+      GUI-building tools, and visualization techniques. With MATLAB, the Image 
+      Processing Toolbox, and DICOM it is possible to quickly view medical 
+      images, design and test new modalities, and create GUI-driven medical 
+      image analysis systems.</P>
+      <P><STRONG>To learn more about products mentioned in this article, 
+      visit:</STRONG><BR><A 
+      href="http://www.mathworks.com/products/matlab/">MATLAB</A><BR><A 
+      href="http://www.mathworks.com/products/image/">Image Processing 
+      Toolbox</A><BR></P></TD>
+    <TD id=gutter width=19>&nbsp;</TD>
+    <TD id=navcell vAlign=top width=121><!--Start rightnav-->
+      <TABLE id=rightnavtable cellSpacing=0 cellPadding=0 width=121 border=0>
+        <TBODY>
+        <TR>
+          <TD class=darkback width=1 rowSpan=2><IMG height=1 alt="" 
+            src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+            width=1></TD>
+          <TD width=120><!-- Check page that is being called and highlight the appropriate cell -->
+            <TABLE cellSpacing=0 cellPadding=0 width=120 border=0>
+              <TBODY>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=10><B class=nav>2002 Issues</B></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR bgColor=#d5cfe0>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/index.shtml">November</A></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/sept02/index.shtml">September</A></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/july02/index.shtml">July</A></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/may02/index.shtml">May</A></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/mar02/index.shtml">March</A></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/jan02/index.shtml">January</A></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=10><B class=nav>2001 Issues</B></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/nov01/index.shtml">November</A></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/sept01/index.shtml">September</A></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/june01/index.shtml">June</A></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/march01/index.shtml">March</A></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=10><B class=nav>2000 Issues</B></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/december00/index.shtml">December</A></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/september00/index.shtml">September</A></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/june00/index.shtml">June</A></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/march00/index.shtml">March</A></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=10><B class=nav>Archived Articles</B></TD></TR>
+              <TR>
+                <TD><IMG height=4 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=25><A class=plaincomp 
+                  href="http://www.mathworks.com/company/digest/archive.shtml">1999-1998</A></TD></TR><!-- <tr> 
+      <td><img src="/company/images/comparrow_on.gif" width="14" height="9"><b class=nav>1999 Issues</b></td>
+  </tr>
+
+  <tr>
+      <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+  </tr>
+  
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/december99/index.shtml">December</a></td>
+  </tr>
+
+
+
+  <tr>
+      <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+  </tr>
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/september99/index.shtml">September</a></td>
+  </tr>
+
+
+
+  <tr>
+      <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+  </tr>
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/june99/index.shtml">June</a></td>
+  </tr>
+
+
+
+
+
+   
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+  </tr>
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/march99/index.shtml">March</a></td>
+  </tr>
+
+   
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="1" height="8"></td>
+  </tr>
+
+  <tr> 
+      <td><b class=nav><img src="/company/images/comparrow_on.gif" width="14" height="9">1998 Issues</b></td>
+  </tr>
+    
+    <tr>
+      <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+    </tr>
+
+
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/dec98/index.shtml">December</a></td>  
+  </tr>
+   
+<tr>
+    <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+  </tr>
+
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/sept98/index.shtml">September</a></td>  
+  </tr>
+   
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+  </tr>
+
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/june98/index.shtml">June</a></td>  
+  </tr>
+   
+
+<tr>
+    <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+  </tr>
+
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/march98/index.shtml">March</a></td>  
+  </tr>
+   
+
+ <tr>
+    <td><img src="/images/pixelclear.gif" width="1" height="8"></td>
+  </tr>
+
+  <tr> 
+      <td><b class=nav><img src="/company/images/comparrow_on.gif" width="14" height="9">1997 Issues</b></td>
+  </tr>
+    
+    <tr>
+      <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+    </tr>
+
+
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/dec97/index.shtml">December</a></td>  
+  </tr>
+   
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+  </tr>
+
+
+  <tr>
+      <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/july97.shtml">July</a></td>  
+  </tr>
+   
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+  </tr>
+
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/march97.shtml">March</a></td>  
+  </tr>
+   
+ <tr>
+      <td><img src="/images/pixelclear.gif" width="1" height="8"></td>
+    </tr>
+
+ <tr> 
+      <td><b class=nav><img src="/company/images/comparrow_on.gif" width="14" height="9">1996 Issues</b></td>
+  </tr>
+    
+    <tr>
+      <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+    </tr>
+
+                                   
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/sept96.shtml">September</a></td>  
+  </tr>
+   
+<tr>
+    <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+  </tr>
+
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/jun96.shtml">June/July</a></td>  
+  </tr>
+   
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+  </tr>
+
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/may96.shtml">May</a></td>  
+  </tr>
+   
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+  </tr>
+
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/mar96.shtml">March/April</a></td>  
+  </tr>
+   
+
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="1" height="4"></td>
+  </tr>
+
+
+  <tr>
+    <td><img src="/images/pixelclear.gif" width="25" height="1"><a class=plaincomp href="/company/digest/jan96.shtml">Jan/Feb</a></td>  
+  </tr> -->
+              <TR>
+                <TD><IMG height=8 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=1></TD></TR>
+              <TR>
+                <TD><IMG height=1 
+                  src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+                  width=10><A class=plaincomp 
+                  href="http://www.mathworks.com/mla/join.shtml"><B 
+                  class=nav>Subscribe Now</B></A></TD></TR></TBODY></TABLE></TD></TR>
+        <TR id=bottomline>
+          <TD class=darkback width=120><IMG height=1 alt="" 
+            src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+            width=120></TD></TR></TBODY></TABLE><!--End rightnav--></TD></TR></TBODY></TABLE></DIV><!-- End body_table --><!-- Start trademark_footer -->
+<TABLE cellSpacing=0 cellPadding=0 width=459 border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=1 alt="" 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/pixelclear.gif" 
+      width=8></TD>
+    <TD vAlign=top align=right><IMG height=3 
+      alt="Copyright 1994-2002 by The MathWorks, Inc." 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/tmline.gif" 
+      width=451 border=0><BR><IMG 
+      alt="Copyright 1994-2002 by The MathWorks, Inc." 
+      src="The MathWorks - MATLAB Digest November 2002 Accessing data in DICOM files 3_files/copyright.gif"><SPAN 
+      class=small> 1994-2002 The MathWorks, Inc. </SPAN><A class=small 
+      href="http://www.mathworks.com/company/trademarks.shtml">Trademarks</A>&nbsp; 
+      &nbsp;<A class=small 
+      href="http://www.mathworks.com/company/policies/privacypolicy.shtml">Privacy 
+      Policy</A></TD></TR></TBODY></TABLE><!-- End trademark_footer --></BODY></HTML>

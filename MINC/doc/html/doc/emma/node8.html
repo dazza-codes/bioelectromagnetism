@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Viewing and Comparing the Integrated Images</TITLE>
+<META NAME="description" CONTENT="Viewing and Comparing the Integrated Images">
+<META NAME="keywords" CONTENT="emma">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="emma.css">
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node5.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html125"
+ HREF="node9.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html122"
+ HREF="node5.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html116"
+ HREF="node7.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html124"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html126"
+ HREF="node9.html">Saving the Integrated Image</A>
+<B> Up:</B> <A NAME="tex2html123"
+ HREF="node5.html">Some Basic Examples: Masking</A>
+<B> Previous:</B> <A NAME="tex2html117"
+ HREF="node7.html">Integrating Images</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00053000000000000000">
+Viewing and Comparing the Integrated Images</A>
+</H2>
+
+<P>
+Now, we wish to view the integrated images.  If you are using a colour
+console or an monochrome X terminal, enter the following to create a
+MATLAB figure window and display the image obtained by rectangular
+integration:
+<PRE>
+     figure;
+     viewimage (PETsummed1);
+</PRE>(Note that explicitly creating the window via the <code>figure</code>
+command is not really necessary.  However, if you already had a
+figure window with a plot or image that you did not want to lose,
+MATLAB would have overwritten the existing figure when you called
+<TT><B>viewimage</B></TT>.  It is generally good practice to call
+<code>figure</code> before creating new plots or images, unless you are
+sure you wish to obliterate whatever was previously in the current
+figure window.)
+
+<P>
+You may want to title this window:
+<PRE>
+     title ('yates_19445, slice 8, rectangular integration');
+</PRE>
+<P>
+Now do the same thing for <code>PETsummed2</code>.  You will probably want
+to move one or both figure windows so that you can see both images
+simultaneously.  Clearly, the two images are similar--but if we want
+a more objective comparison, we can calculate the ratio of the two
+images on a pixel-by-pixel basis and view this:
+<PRE>
+     ratio = PETsummed1 ./ PETsummed2;
+     figure;
+     viewimage (ratio);
+</PRE>
+<P>
+Note the use of the <code>./</code> operator to specify an
+element-by-element operation on two matrices.  The resulting image
+shows that most of the pixels in <code>PETsummed1</code> and
+<code>PETsummed2</code> appear fairly close.  However, because some pixels
+have such large values compared to 1, any small variations around 1
+are swamped.  One way to deal with this is simply to clip the image
+at certain points: for example, set all points below -10 to -10, and
+all points above 10 to 10.  This is accomplished as follows:
+<PRE>
+     clipneg = find (ratio &lt; -10);
+     ratio (clipneg) = ones (size (clipneg)) * (-10);
+     clippos = find (ratio &gt; 10);
+     ratio (clippos) = ones (size (clippos)) * (10);
+</PRE>
+<P>
+If you wish to know how many points were clipped at either end,
+type <code>size (clipneg)</code> or <code>size (clippos)</code>.
+
+<P>
+If you now <TT><B>viewimage (ratio)</B></TT>, it should be clear that the
+overall ratio between the two integrated images is close to 1 inside
+the head.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html125"
+ HREF="node9.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html122"
+ HREF="node5.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html116"
+ HREF="node7.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html124"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html126"
+ HREF="node9.html">Saving the Integrated Image</A>
+<B> Up:</B> <A NAME="tex2html123"
+ HREF="node5.html">Some Basic Examples: Masking</A>
+<B> Previous:</B> <A NAME="tex2html117"
+ HREF="node7.html">Integrating Images</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

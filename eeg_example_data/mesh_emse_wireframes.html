@@ -1,0 +1,522 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0050)http://www.sourcesignal.com/fileform/Wireframe.htm --><HTML><HEAD><TITLE>Wireframe</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2600.0" name=GENERATOR>
+<META content="C:\Program Files\Microsoft Office\Office\html.dot" 
+name=Template></HEAD>
+<BODY vLink=#800080 link=#0000ff>
+<P>Wireframe</P><B><FONT size=2>
+<P>Description</B>: Wireframe (.wfr) files are used to represent tessellated 
+surfaces. The surfaces consist of vertices, patches (triangles), and, optionally 
+edges. In general, the file consists of a prolog, a header, a sequence of 
+vertices, followed by a sequence of triangles, followed by a sequence of edges, 
+but the detailed structure depends on the minor rev. Minor rev = 1, 2, 4 are 
+similar, and a documented together. Minor rev =3 is documented last.</P></FONT>
+<P>Minor rev </P><FONT size=2>
+<P>EMSE v4.2 and above write minor rev 3 and 4, but can read earlier revisions. 
+</P><B>
+<P>Minor rev = 4:</B> Indices rather than address are used to link objects such 
+as triangles and their associated vertices.</P><B>
+<P>Minor rev = 3</B>: The connectivity information in minor rev=3 files is 
+stripped (i.e. only essential vertex and triangle information is stored). 
+Connectivity information must be reconstructed once the file is read. The header 
+consists of only one field (the type field).</P><B>
+<P>Minor rev = 2:</B> Explicit address pointers are stored. The header includes 
+the type field, but the file is otherwise identical to minor rev=1. </P><B>
+<P>Minor rev = 1:</B> Explicit address pointers are stored. The header omits the 
+type field.</P><B>
+<P>Comments:</B> Wireframe files must not have comment lines.</P><B>
+<P>Header</P></B>
+<P>The header consists of up to 5 entries in mandatory sequence (minor rev 1, 2, 
+4), shown in Table A-19.</P></FONT>
+<TABLE cellSpacing=2 cellPadding=9 width=791 border=1>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P align=right><A name=_Ref433093013><I>Table A-19</A></I></P></TD>
+    <TD vAlign=top width="18%"><FONT size=2>
+      <P align=center>Name</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>Format</FONT></P></TD>
+    <TD vAlign=top width="46%" colSpan=3><FONT size=2>
+      <P align=center>Description</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%"><FONT size=2>
+      <P>radius </FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%f</FONT></P></TD>
+    <TD vAlign=top width="46%" colSpan=3><FONT size=2>
+      <P>Sphere radius used for initial create step</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%"><FONT size=2>
+      <P># vertex</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%d</FONT></P></TD>
+    <TD vAlign=top width="46%" colSpan=3><FONT size=2>
+      <P>Number of vertices in this file</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%"><FONT size=2>
+      <P># patch</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%d</FONT></P></TD>
+    <TD vAlign=top width="46%" colSpan=3><FONT size=2>
+      <P>Number of triangles in this file</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%"><FONT size=2>
+      <P># edge</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%d</FONT></P></TD>
+    <TD vAlign=top width="46%" colSpan=3><FONT size=2>
+      <P>Number of edges in this file</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%"><FONT size=2>
+      <P>type</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%d (m-rev=2)</P>
+      <DIR>
+      <DIR>
+      <DIR>
+      <DIR>
+      <DIR>
+      <DIR>
+      <DIR>
+      <DIR>
+      <P align=center>%x 
+      (m-rev=4)</P></DIR></DIR></DIR></DIR></DIR></DIR></DIR></DIR></FONT></TD>
+    <TD vAlign=top width="46%" colSpan=3><FONT size=2>
+      <P>Type must be one of the following</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="20%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%"><FONT size=2>
+      <P>m-rev=2</FONT></P></TD>
+    <TD vAlign=top width="14%"><FONT size=2>
+      <P>m-rev=3,4</FONT></P></TD>
+    <TD vAlign=top width="14%"><FONT size=2>
+      <P>Type</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="20%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%"><FONT size=2>
+      <P>0</FONT></P></TD>
+    <TD vAlign=top width="14%"><FONT size=2>
+      <P>0x0</FONT></P></TD>
+    <TD vAlign=top width="14%"><FONT size=2>
+      <P>Unknown</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="20%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%"><FONT size=2>
+      <P>64</FONT></P></TD>
+    <TD vAlign=top width="14%"><FONT size=2>
+      <P>0x40</FONT></P></TD>
+    <TD vAlign=top width="14%"><FONT size=2>
+      <P>Scalp</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="20%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%"><FONT size=2>
+      <P>128</FONT></P></TD>
+    <TD vAlign=top width="14%"><FONT size=2>
+      <P>0x80</FONT></P></TD>
+    <TD vAlign=top width="14%"><FONT size=2>
+      <P>Outer skull</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="20%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%"><FONT size=2>
+      <P>256</FONT></P></TD>
+    <TD vAlign=top width="14%"><FONT size=2>
+      <P>0x100</FONT></P></TD>
+    <TD vAlign=top width="14%"><FONT size=2>
+      <P>Inner skull</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="20%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="18%"><FONT size=2>
+      <P>512</FONT></P></TD>
+    <TD vAlign=top width="14%"><FONT size=2>
+      <P>0x200</FONT></P></TD>
+    <TD vAlign=top width="14%"><FONT size=2>
+      <P>cortex</FONT></P></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=2 cellPadding=9 width=791 border=1>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width="17%">
+      <OL start=0>
+        <OL start=0>
+          <OL start=0>
+            <OL start=0>
+              <P align=right>
+              <LI><B><FONT face=Arial 
+    size=2>Vertex</B></FONT></LI></OL></OL></OL></OL></TD>
+    <TD vAlign=top width="83%" colSpan=3><FONT size=2>
+      <P>Table A-20 defines the vertex fields (minor rev = 1, 2, 
+  4)</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%"><I>
+      <P align=right><A name=_Ref433095583>Table A-20</A></I></P></TD>
+    <TD vAlign=top width="83%" colSpan=3><FONT size=2>
+      <P align=center>Vertex field</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P align=center>Name</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>Format</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P align=center>Description</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%d %x %d</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>Index, address, channel index</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P>Location</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>3 %g %g %g</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>replace %g %g %g with the point location (meters)</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P>Outward normal</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>3 %g %g %g</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>replace %g %g %g with outward normal </FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P>potential</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%g</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>Current or voltage</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P>curvature</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%g</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>curvature</FONT></P></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=2 cellPadding=9 width=791 border=1>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P align=right>
+      <LI><B><FONT face=Arial size=2>Patch</B></FONT></LI></TD>
+    <TD vAlign=top width="83%" colSpan=3><FONT size=2>
+      <P>Table A-21defines the patch fields (minor rev = 1, 2, 
+  4)</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%"><I>
+      <P align=right><A name=_Ref433096018>Table A-21</A></I></P></TD>
+    <TD vAlign=top width="83%" colSpan=3><FONT size=2>
+      <P align=center>Vertex field</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P align=center>Name</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>Format</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P align=center>Description</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%d %x %d</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>Index, address, channel index</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%g %g %g %g</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>Solid angle, magnitude, potential, area</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P>Location</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%g %g %g</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>replace %g %g %g with the center location (meters)</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P>Outward normal</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%g %g %g</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>replace %g %g %g with outward normal </FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P>vertices</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%x %x %x</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>Vertex addresses (m-rev 1,2) or indices (m-rev4)</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P>edges</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%x %x %x</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>edge addresses (m-rev 1,2) or indices 
+(m-rev4)</FONT></P></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=2 cellPadding=9 width=791 border=1>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P align=right>
+      <LI><B><FONT face=Arial size=2>Edge</B></FONT></LI></TD>
+    <TD vAlign=top width="83%" colSpan=3><FONT size=2>
+      <P>Table A-22 defines the edge fields (minor rev = 1, 2, 
+  4)</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%"><I>
+      <P align=right><A name=_Ref433098201>Table A-22</A></I></P></TD>
+    <TD vAlign=top width="83%" colSpan=3><FONT size=2>
+      <P align=center>Edge field</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P align=center>Name</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>Format</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P align=center>Description</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P>index</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%d %x</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>Index, address</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>%x %x</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>Vertex address (m-rev= ,2) or index 
+(m-rev=4)</FONT></P></TD></TR></TBODY></TABLE>
+<P>&nbsp;</P><B><FONT face=Arial>
+<P>Example 1</P></B></FONT>
+<P>The following example illustrates a tetrahedron saved in minor rev = 2 
+format. The tetrahedron is shown in Figure A-4. </P><FONT size=2>
+<P>3 4000</P>
+<P>2</P>
+<P>0 4 4 6 64</P>
+<P>0 0x01f87620 -1 3 0 0 0</P>
+<P>3 0 0 0</P>
+<P>0 0</P>
+<P>1 0x01f94244 -1 3 0.5 0.867 0</P>
+<P>3 0 0 0</P>
+<P>0 0</P>
+<P>2 0x01f94380 -1 3 1 0 0</P>
+<P>3 0 0 0</P>
+<P>0 0</P>
+<P>3 0x01f93ec8 -1 3 0.5 0.289 0.816</P>
+<P>3 0 0 0</P>
+<P>0 0</P>
+<P>0 0x01f93b90 0 0 0 0.4335</P>
+<P>0.5 0.289 0</P>
+<P>0 0 -1</P>
+<P>0x01f87620 0x01f94244 0x01f94380 0x01f93fb0 0x01f93ffc 0x01f94048 </P>
+<P>1 0x01f93c68 0 0 0 0.433157</P>
+<P>0.333333 0.385333 0.272</P>
+<P>-0.816645 0.47096 0.333597</P>
+<P>0x01f87620 0x01f93ec8 0x01f94244 0x01f94094 0x01f940e0 0x01f93fb0 </P>
+<P>2 0x01f93d40 0 0 0 0.432833</P>
+<P>0.5 0.0963333 0.272</P>
+<P>0 -0.942627 0.333847</P>
+<P>0x01f87620 0x01f94380 0x01f93ec8 0x01f94048 0x01f9412c 0x01f94094 </P>
+<P>3 0x01f93858 0 0 0 0.433157</P>
+<P>0.666667 0.385333 0.272</P>
+<P>0.816645 0.47096 0.333597</P>
+<P>0x01f94244 0x01f93ec8 0x01f94380 0x01f93ffc 0x01f940e0 0x01f9412c </P>
+<P>0 0x01f93fb0 0x01f87620 0x01f94244 </P>
+<P>1 0x01f93ffc 0x01f94244 0x01f94380 </P>
+<P>2 0x01f94048 0x01f94380 0x01f87620 </P>
+<P>3 0x01f94094 0x01f87620 0x01f93ec8 </P>
+<P>4 0x01f940e0 0x01f94244 0x01f93ec8 </P>
+<P>5 0x01f9412c 0x01f94380 0x01f93ec8 </P></FONT><B><FONT face=Arial>
+<P>Example 2</P></B></FONT>
+<P>The following example illustrates a tetrahedron saved in minor rev = 4 
+format. </P><FONT size=2>
+<P>3 4000</P>
+<P>4</P>
+<P>0 4 4 6 40</P>
+<P>-1 3 0 0 0</P>
+<P>3 0 0 0</P>
+<P>0 0</P>
+<P>-1 3 0.5 0.867 0</P>
+<P>3 0 0 0</P>
+<P>0 0</P>
+<P>-1 3 1 0 0</P>
+<P>3 0 0 0</P>
+<P>0 0</P>
+<P>-1 3 0.5 0.289 0.816</P>
+<P>3 0 0 0</P>
+<P>0 0</P>
+<P>0 0 0 0.4335</P>
+<P>0.5 0.289 0</P>
+<P>0 0 -1</P>
+<P>0 1 2 0 1 2 </P>
+<P>0 0 0 0.433157</P>
+<P>0.333333 0.385333 0.272</P>
+<P>-0.816645 0.47096 0.333597</P>
+<P>0 3 1 3 4 0 </P>
+<P>0 0 0 0.432833</P>
+<P>0.5 0.0963333 0.272</P>
+<P>0 -0.942627 0.333847</P>
+<P>0 2 3 2 5 3 </P>
+<P>0 0 0 0.433157</P>
+<P>0.666667 0.385333 0.272</P>
+<P>0.816645 0.47096 0.333597</P>
+<P>1 3 2 1 4 5 </P>
+<P>0 1 </P>
+<P>1 2 </P>
+<P>2 0 </P>
+<P>0 3 </P>
+<P>1 3 </P>
+<P>2 3 </P></FONT><B><FONT face=Arial>
+<P>Minor rev = 3</P></B></FONT>
+<P>The connectivity information in minor rev=3 files is stripped (i.e. essential 
+vertex and triangle information is stored). Connectivity information must be 
+reconstructed once the file is read. The header consists of only one field (the 
+type field, see Table A-19). Each subsequent line represents either a vertex or 
+a triangle.</P>
+<TABLE cellSpacing=2 cellPadding=9 width=791 border=1>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P align=right><I>Table A-22</I></P></TD>
+    <TD vAlign=top width="83%" colSpan=3><FONT size=2>
+      <P align=center>Minor rev =3</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P align=center>Name</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>Format</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P align=center>Description</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P>vertex</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>v %f %f %f</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>A vertex is reprented by the charater 'v' folowed by the (xyz) 
+      coordinates</FONT></P></TD></TR>
+  <TR>
+    <TD vAlign=top width="17%">
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width="16%"><FONT size=2>
+      <P>triangle</FONT></P></TD>
+    <TD vAlign=top width="20%"><FONT size=2>
+      <P align=center>t %f %f %f</FONT></P></TD>
+    <TD vAlign=top width="47%"><FONT size=2>
+      <P>A triangle is represented by the character 't' followed by the indices 
+      of the 3 vertices. The vertex index is given by its sequence within the 
+      file.</FONT></P></TD></TR></TBODY></TABLE><B><FONT face=Arial size=2>
+<P align=right>
+<LI>Example 3 
+<P></P>
+<OL></OL>
+<OL></OL>
+<OL></OL>
+<OL></OL></B></FONT><FONT size=2>
+<P>The following example illustrates a tetrahedron saved in minor rev = 3 
+format. </P>
+<P>3 4000</P>
+<P>3</P>
+<P>40</P>
+<P>v 0 0 0</P>
+<P>v 0.5 0.867 0</P>
+<P>v 1 0 0</P>
+<P>v 0.5 0.289 0.816</P>
+<P>t 0 1 2 </P>
+<P>t 0 3 1 </P>
+<P>t 0 2 3 </P>
+<P>t 1 3 2 </P></FONT>
+<P><A name=_Ref433435341>Figure A-4</A></P><FONT size=2>
+<P>Tetrahedron used in examples 1-3, showing vertices v0-v3 with their (xyz) 
+locations, and triangles t0-t3.</P></FONT>
+<P><IMG height=332 src="" width=458></P>
+<P>
+<HR>
+
+<P></P>
+<P>Return to <A href="http://www.sourcesignal.com/index.htm">SSI Home 
+Page</A></P></LI></BODY></HTML>

@@ -1,0 +1,25 @@
+Greenblatt, R.:
+
+Tissue       | Lowest Highest Baseline
+-------------+------------------------
+White matter | 0.08   1.18    0.2
+Gray matter  | 0.16   0.48    0.33
+CSF          | 1.0    1.79    1.79
+Skull        | 0.004  0.07    0.0132
+Fat          | 0.02   0.07    0.045
+Muscle       | 0.043  0.67    0.35
+Eye          | 0.5    0.5     0.5
+Skin         | 0.35   0.35    0.35
+
+The conductivities are in units of Seimens/m == 1 / ( Ohm m ).
+
+The "lowest" value is... (yet to be told what this is).
+
+The "highest" value is... (yet to be told what this is).
+
+The "baseline" value is that used in the forward model.
+
+\cite{waberski-et-al-1998-advanced}:
+
+skin = brain = 0.33 [1/(Ohm m)]
+skull = 0.0042      [1/(Ohm m)]

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Some Basic Examples: Masking and Summing</TITLE>
+<META NAME="description" CONTENT="Some Basic Examples: Masking and Summing">
+<META NAME="keywords" CONTENT="emma">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="emma.css">
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="emma.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html87"
+ HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html84"
+ HREF="emma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html78"
+ HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html86"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html88"
+ HREF="node6.html">Reading the Data</A>
+<B> Up:</B> <A NAME="tex2html85"
+ HREF="emma.html">EMMA: Extensible MATLAB Medical</A>
+<B> Previous:</B> <A NAME="tex2html79"
+ HREF="node4.html">Basic EMMA MATLAB Functions</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00050000000000000000">&#160;</A>
+<A NAME="simple_example">&#160;</A>
+<BR>
+Some Basic Examples: Masking and Summing
+</H1>
+
+<P>
+As an example of the EMMA functions presented thus far, we will
+explore sample code for both masking and summing/integrating images
+from a dynamic study.  The MINC file used in this example will be one
+of the H<SUB>2</SUB><SUP>15</SUP>O CBF studies from
+<TT><B>/usr/local/matlab/toolbox/emma/examples</B></TT>; there is also a
+corresponding BNC (<B>b</B>lood <B>n</B>et<B>C</B>DF) file, which is
+necessary to get the plasma activity data.  To make accessing
+these files easier, you may want to create symbolic links to them in a
+directory of your own:
+<PRE>
+     cd &lt;your-work-directory&gt;
+     ln -s /local/matlab/toolbox/emma/examples/yates_19445.* .
+</PRE>That way, the file
+<code>/local/matlab/toolbox/emma/examples/yates_19445.mnc</code> can be
+accessed as simply <code>yates_19445.mnc</code> (as long as you are in your
+work directory).  In the remainder of this section, it will be assumed
+that these symbolic links exist in the current directory.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS">&#160;</A>
+<UL>
+<LI><A NAME="tex2html89"
+ HREF="node6.html">Reading the Data</A>
+<LI><A NAME="tex2html90"
+ HREF="node7.html">Integrating Images</A>
+<LI><A NAME="tex2html91"
+ HREF="node8.html">Viewing and Comparing the Integrated Images</A>
+<LI><A NAME="tex2html92"
+ HREF="node9.html">Saving the Integrated Image</A>
+<LI><A NAME="tex2html93"
+ HREF="node10.html">Using an Integrated Image for Image Masking</A>
+</UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

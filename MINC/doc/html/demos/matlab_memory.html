@@ -1,0 +1,138 @@
+<HTML>
+<TITLE>Controlling MATLAB Memory Use</TITLE>
+<H1>Controlling MATLAB Memory Use</H1>
+
+
+MATLAB is a very useful tool for analysing medical image data.
+Unfortunately, it has one significant drawback: MATLAB memory
+management is terrible.  The memory becomes easily fragmented, with no
+attempts made at compaction (except for the almost useless MATLAB
+<TT>pack</TT> function).  With large medical image volumes, the
+results can be disastrous, leading to huge memory use, poor
+performance, and in the extreme case the termination of your MATLAB
+process by the operating system.
+
+<P>Controlling MATLAB memory use is a bit of a black art.  There are
+general guidelines that can be followed, but no hard and fast rules
+that will work in every case.  Here are some soft rules:
+
+<OL> 
+
+<LI> Re-use memory whenever possible.  For example, the EMMA
+<TT>getimages</TT> function allows you to specify a block of memory to
+use.  In general, this is the variable that already contains an image,
+and should be the same size as the images to be loaded:
+
+<PRE>
+PET = getimages(h,8,1:21,PET);
+</PRE>
+
+will re-use the memory assigned to the matrix PET, and will not
+allocate new memory for the returned images.  This eliminates the
+fragmentation associated with reloading a set of images.
+
+<P><LI> Use the EMMA <TT>rescale</TT> function to multiply matrices by a
+scalar.  This function does not assign new memory, but instead uses
+the memory already assigned to the matrix.  For example, the MATLAB
+instruction:
+
+<PRE>
+PET = PET .* 5;
+</PRE>
+
+will cause fragmentation since the matrix PET will be copied.
+However, the instruction:
+
+<PRE>
+rescale (PET,5);
+</PRE>
+
+has the same effect, but without causing fragmentation.
+
+<P><LI> Initialize large matrices.  This is useful when you intend to
+fill a matrix slowly through a series of operations.  For example, if
+you intended to create a 128x128 image one row at a time in the
+variable <TT>Fake_PET</TT>, you should specify:
+
+<PRE>
+Fake_PET = zeros(128,128);
+</PRE>
+
+This will initialize the matrix to the correct size, and fill it with
+zeros.  Then, when you fill the matrix in with your values, it will
+not be copied, and memory fragmentation will not occur.
+
+<P><LI> Use small amounts of memory at a time.  This is probably the
+<I>most important rule</I>, and can potentially solve all memory use
+problems.  For example, when analyzing a dynamic study, consider
+breaking down your analysis so that it can be performed on one line
+(or several lines) at a time, instead of on the whole image.
+
+</OL>
+
+For example consider the case presented in the <A
+HREF="emma1.html">basic EMMA image manipulation</A> tutorial: we want
+to generate a volume of integrated images.  The following snippet of
+code demonstrates the wrong way to do this:
+
+<PRE>
+h=openimage('/local/matlab/toolbox/emma/examples/yates_19445.mnc');
+h2 = newimage('new.mnc',[0 15], ...
+     '/local/matlab/toolbox/emma/examples/yates_19445.mnc');
+
+ftimes = getimageinfo (h,'MidFrameTimes');
+
+img = zeros (16384,1);
+
+for j=1:15
+   PET = getimages(h,j,1:21);
+   img = ntrapz(ftimes,PET')';
+   putimages(h2,img,j);
+end;
+
+closeimage(h);
+closeimage(h2);
+</PRE>
+
+This brute force technique violates several of the above guidelines.
+It does not re-use memory when loading images from the MINC file.  It
+transposes <TT>PET</TT>, which causes <TT>PET</TT> to be copied.  It
+then transposes the result from <TT>ntrapz</TT>, which causes this
+result to be copied.
+
+<P>A better approach is to load the images for one slice, take the
+data line by line, and then re-assemble this into a final image.  The
+following piece of MATLAB code has the same final result as the above,
+but uses much less memory (approximately 4 Megabytes).
+
+<PRE>
+h=openimage('/local/matlab/toolbox/emma/examples/yates_19445.mnc');
+h2 = newimage('new.mnc',[0 15], ...
+     '/local/matlab/toolbox/emma/examples/yates_19445.mnc');
+
+ftimes = getimageinfo (h,'MidFrameTimes');
+
+img = zeros (16384,1);
+
+for j=1:15
+   PET = getimages(h,j,1:21,PET);
+   for i=1:128:16257;
+      line = PET(i:i+127,:);
+      img (i:i+127) = ntrapz(ftimes, line')';
+   end;
+
+   putimages(h2,img,j);
+end;
+
+closeimage(h);
+closeimage(h2);
+</PRE>
+
+<hr>
+
+<ADDRESS>
+This page was created by Mark Wolforth
+(wolforth@pet.mni.mcgill.ca)
+</ADDRESS>
+
+</HTML>

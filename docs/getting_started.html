@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>EEG Matlab Toolbox: Getting Started</title>
+<meta name="author" content="Darren Weber">
+<link href="../styles.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+
+
+<h1>EEG Matlab Toolbox: Getting Started</h1>
+
+<p>This document is an initial attempt to help new users get started with the
+toolbox.  It is unlikely to cover all aspects of the toolbox, but
+it appears to be a reliable starting point on several installations to date.
+The toolbox provides some easy ways to visualize data.  This document works 
+entirely with the example data provided with the toolbox and finishes with 
+some clear suggestions on the next steps to getting your data to work.</p>
+
+
+
+<h2>Installation</h2>
+<p>First download the archives for the eeg_toolbox and the mri_toolbox via
+<a href='http://eeg.sf.net'>http://eeg.sf.net</a>.  Also download the
+example data archives for each.  Unpack the archives using tar or winzip 
+or your favourite archive software.  They can be "installed" into
+separate folders (directories) anywhere on your file system.  Once all the
+archives are extracted, start matlab and 'cd' into the installation directory
+or add the full path of the installation folder(s) to your matlab path - 
+see the addpath command.  Then type 'eeg_toolbox'.  If you have any trouble
+getting this far, please subscribe to the users email list via this easy 
+subscription site:
+<a href='http://lists.sourceforge.net/lists/listinfo/eeg-users'>
+         http://lists.sourceforge.net/lists/listinfo/eeg-users</a>
+then post your email to eeg-users@lists.sourceforge.net and we can sort out
+the installation.  Actually, it is a good idea to subscribe to this list
+anyway, because new releases and bugs are notified there.</p>
+
+<p>There is a lot of documentation already in the help system, just type
+'help eeg_toolbox' at the command prompt to see a full listing of functions 
+in the toolbox.  Similarly, 'help mri_toolbox'.  If that fails, email 
+eeg-users@lists.sourceforge.net.</p>
+
+
+
+<h2>Exploring the Example Data</h2>
+
+<p>The following GUI tour can be summarised, to some extent, in this
+command line script:<br>
+p = eeg_toolbox_defaults<br>
+p = eeg_open(p)<br>
+p = elec_open(p)<br>
+p = mesh_open(p)<br>
+p = gui_erp_plot(p)<br>
+p = eeg_contours_engine(p)<br>
+So, this will open an ERP file, the associated electrodes and
+realistic scalp mesh.  It will then create GUI interfaces to explore the 
+ERP data, including a timeseries plot and a topographic map.  You can see
+how easy it is to use the toolbox, given the example data!  At this point, you
+can explore the interface on the ERP plot and topographic map.  Now for the 
+GUI tour of how to get to this point...</p>
+
+<p>Type 'eeg_toolbox' at the matlab prompt. It will initialise the default
+parameters and display the folling GUI:</p>
+
+<img alt="eeg_toolbox main menu" src="images/eeg_toolbox.gif" />
+
+<p>This is the main access point to loading data.  If this is the first time
+you've seen this, its best to reinitialise the default parameters
+using the Parameters -> Reset Defaults and then Parameters -> Save Defaults
+commands.  If there are any problems at this stage, please email the errors 
+to the eeg-users list.  Assuming that works alright, lets now consider 
+the 'file' menu:</p>
+
+<img alt="eeg_toolbox main menu" src="images/eeg_toolbox_file_open.gif" /><br>
+
+<p>From the file menu, open voltage, electrode, tesselations or mri data 
+(see further details on these below).  There is also an attempt to keep track 
+of recent data structures.  These can be created using 
+Parameters -> Save As Data Workspace command.</p>
+
+<img alt="eeg_toolbox main menu" src="images/eeg_toolbox_parameters.gif" /><br>
+
+<p>The return command will return the toolbox data structure to the matlab
+workspace, although this structure is constantly updated in the workspace
+during operations in the toolbox.  The default parameters can be used to 
+explore the toolbox with the default data in 'eeg_example_data'.  When you 
+are familiar with the toolbox and can see some benefit from it, take a look 
+at the 'eeg_toolbox_defaults.m' function and modify as necessary.  This 
+function initialises the data structure that is the key to everything.  
+All functions in the toolbox pass and process the 'p' data structure.  
+As matlab is smart at passing by reference or by value, as necessary, it 
+shouldn't be too memory hungry, but there has been no conscientious 
+effort to manage memory carefully.  If you open too many datasets, 
+especially ones with dense tesselations, it might get memory 
+hungry.</p>
+
+<p>To get started with looking at the example data, try File -> Open Voltage
+and leave all the defaults, click Plot and fill in the parameters with the
+values given below in the example figure (ERP PARAMETERS).  Once this ERP plot 
+is given, click the ELEC button and then return (or plot) in that GUI.  That 
+will load (and plot) the default electrode dataset.  Then click on the MESH 
+button and return to load the default mesh set.  At this point, your ready to 
+look at topographic maps.  Select any time point of the ERP waveform by 
+clicking on it and then hit the TOPO button.  You should see a top view of the 
+scalp topography.  Click anywhere on the viewer and it will start to rotate with
+the mouse movements.  Try the animation controls too (which allows saving
+of graphics and movies).  That's the topography based on the electrodes only.
+Now close the topography window and go back to the ERP waveform plot.  Click
+on the GUI checkbox below the TOPO button and then note the checkboxes near
+the bottom of the window - uncheck Elec Surface and check Mesh Surface. Then
+hit plot and wait - it will calculate a surface interpolation from
+the scalp electrodes to the scalp tesselation vertices and plot the
+realistic scalp topography.  Yippee!  If the MRI toolbox is installed, you
+can also open Analyze 7.5 data.  If you get this far, your well on the way
+to using the toolbox on your data.  Below is some more information about
+using the GUI interface.  Play around with the ERP plot window, there are
+some nice interactive features for PRECISE measurement of data values.  This
+GUI uses the same functions available in a general matlab function called
+crosshair (which has been downloaded thousands of times and used in all kinds
+of fascinating work around the globe ;-), see 
+<a href='http://www.mathworks.com/matlabcentral/fileexchange/loadAuthor.do?objectType=author&objectId=445317'>
+my matlab file exchange page</a>).  Place the mouse over various elements of
+the GUI and it will give popup help immediately.</p>
+
+<p>Each of the file open GUIs appears very similar (as below).  They each
+provide edit fields that contain the current file path and filename and
+facilities to browse for a file, plot the data and close the GUI.  The
+'Hold GUI' checkbox allows control of whether the GUI automatically closes
+after a plot command.  Each of these GUIs returns the 'p' data structure
+to the main eeg_toolbox GUI and the matlab workspace.  These GUIs call the
+eeg_open.m, elec_open.m and mesh_open.m functions, which control loading
+and plotting of the data.  These functions can be called directly from
+the command prompt.</p>
+
+<img alt="eeg_toolbox main menu" src="images/open_voltage.gif" /><br>
+<img alt="eeg_toolbox main menu" src="images/open_electrodes.gif" /><br>
+<img alt="eeg_toolbox main menu" src="images/open_mesh.gif" /><br>
+
+<p>These GUIs provide access to various data types/formats.</p>
+
+<img alt="eeg_toolbox main menu" src="images/open_voltage_type.gif" /><br>
+
+<p>For ERP timeseries, the ascii format should provide access to most data.  The
+ascii file should contain only a matrix of potential values, no channel labels. 
+The Neuroscan .avg format is well supported, and the matlab option provides 
+access to binary files (via 'eeg_load.m').</p>
+
+<p>The toolbox will attempt to arrange an EEG/ERP data matrix so that it has 
+N rows of ERP sample points from M columns of electrodes (N>M is assumed). 
+Many matlab functions assume that channels are given by column vectors 
+(eg, the signal processing toolbox). One assumption made in the toolbox 
+is that there are more ERP sample points than there are channels and it will
+try to arrange input data so that channels are column vectors.</p>
+
+<p>An example of filtering an ERP waveform may be attained if you have the
+signal processing toolbox. For example, the following implements a 50 Hz 
+lowpass filter:<br>
+<code>lowpassHz = 50;</code><br>
+<code>[b,a] = butter(15,lowpassHz/p.volt.sampleHz);</code><br>
+<code>data  = filtfilt(b,a,p.volt.data);</code><br>
+</p>
+
+<p>The ERP parameters button provides GUI access to defining essential epoch
+and sampling parameters:</p>
+
+<img alt="eeg_toolbox main menu" src="images/erp_parameters2.gif" /><br>
+
+<p>These parameters will be read from Neuroscan .avg files, where possible, but
+must be entered for ascii data (although a first guess at electrodes and points
+is made from the size of the data matrix).  If all essential parameters are 
+not defined, this dialog box is opened during the plot command.</p>
+
+<img alt="eeg_toolbox main menu" src="images/open_electrodes_type.gif" /><br>
+
+<p>For electrodes, ascii data is supported and some other formats are available
+(scantri is from Neuroscan 3Dspace, Brainstorm and EMSE files are also there, 
+either in the GUI already or at least via the command line).  The ascii files 
+can be Cartesian or spherical coordinates.  See 'help elec_load' for more 
+information on ascii data and 'help elec_open' in general.  Also see the 
+format of the default electrode file in the example data folder.</p>
+
+<img alt="eeg_toolbox main menu" src="images/open_mesh_type.gif" /><br>
+
+<p>For meshes (tesselations), the toolbox can read ascii data in the
+FreeSurfer or EMSE formats and functions are available to read binary
+FreeSurfer files too.  The toolbox can also read BrainStorm tesselations.
+See 'help mesh_open' for more information.</p>
+
+
+
+<h3>Example Data</h3>
+
+<p>In the subfolder 'eeg_example_data', the file names are descriptive of
+the contents.</p>
+
+<p>ERP data:<br>
+<ul>
+<li>eeg_10ch.dat - ascii ERP (10 electrodes x 680 points)</li>
+<li>eeg_10ch.txt - ascii ERP (680 points x 10 electrodes)</li>
+
+<li>eeg_124ch.dat - ascii ERP (124 electrodes x 680 points)</li>
+
+<li>eeg_simulated_124ch.txt - ascii ERP (400 points x 124 electrodes)</li>
+<li>eeg_simulated_32ch.txt - ascii ERP (200 points x 32 electrodes)</li>
+
+<li>scan41.avg - Neuroscan 4.1 format ERP (850 points x 124 electrodes)</li>
+
+</ul>
+
+<p>Electrode data:<br>
+See the description of file formats in <code>help elec_open</code><br>
+<ul>
+<li>elec_32ch_sph.txt - 32 10-20 electrode coordinates (spherical)</li>
+<li>elec_32ch_3dspace.txt - 32 realistic electrode coordinates (Neuroscan 3Dspace)</li>
+<li>elec_124ch_3dspace.txt - 124 realistic electrodes (Neuroscan 3Dspace)</li>
+
+<li>elec_1020_sph.txt - 10-20 electrode coordinates (spherical)</li>
+<li>elec_1020ext_sph.txt - as above, with additonal electrodes</li>
+<li>elec_1020ext_besa_sph.txt - BESA format of 10-20(+) electrodes</li>
+
+<li>elec_124ch_emse.elp - EMSE (www.sourcesignal.com) electrode data</li>
+</ul>
+
+<p>Mesh data:<br>
+<ul>
+<li>BrainStorm_subjecttess.mat - Example head tissue tesselations in Brainstorm
+format.  Includes scalp.</li>
+</ul>
+
+
+
+
+<script language="JavaScript" type="text/javascript">
+<!--
+         document.write("<p><p><hr>Darren.Weber_at_radiology.ucsf.edu, Last Modified " + document.lastModified)
+// -->
+</script>
+</body>
+</html>
+

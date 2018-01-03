@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0056)http://www.mrc-cbu.cam.ac.uk/Imaging/brodmann_areas.html -->
+<HTML><HEAD><TITLE>Brodmann's areas and Talairach Coordinates</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2800.1126" name=GENERATOR><LINK rev=Made 
+href="mailto:matthew.brett@mrc-cbu.cam.ac.uk">
+<META content="Matthew Brett, matthew.brett@mrc-cbu.cam.ac.uk" name=author>
+<META 
+content="fMRI,MRI,PET,functional,SPM,CBU,imaging,Cambridge,Medical Research Coucil" 
+name=keywords>
+<META content="Brodmann's areas and Talairach Coordinates" 
+name=description></HEAD>
+<BODY text=#000000 vLink=#800080 aLink=#ff0000 link=#0000ff bgColor=#ffffff 
+background="Brodmann's areas and Talairach Coordinates_files/lashley.jpg">
+<H1>Reporting activity or lesion location</H1>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD width="100%"><STRONG>Stereotaxic Coordinates</STRONG>
+      <P>MRI scans from multiple individuals will vary greatly due to 
+      differences in slice orientation and brain features (i.e. brain size and 
+      shape varies across individuals). Therefore, it is generally useful to '<A 
+      href="http://www.mrc-cbu.cam.ac.uk/Imaging/www.psychology.nottingham.ac.uk/staff/cr1/mritut.html#Li near">normalize</A>' 
+      scans to a standard template. Normalization is the process of translating, 
+      rotating, scaling, and maybe warping a brain to roughly match a standard 
+      template image.</P>
+      <P>After normalization, it may be informative to report locations using 
+      stereotaxic ("Talairach") coordinates. This format uses three numbers 
+      (X,Y,Z) to describe the distance from the <A 
+      href="http://www.mrc-cbu.cam.ac.uk/Imaging/antcomm.html">Anterior 
+      Commissure</A> (the 'origin' of Talairach space). The X,Y,Z dimensions 
+      refer to left-right, posterior-anterior, and ventral-dorsal respectively. 
+      So 38x-64x58mm refers to a point in right posterior dorsal region of the 
+      brain. If you have normalized your brain to one matching the brain in the 
+      Talairach atlas, then you can examine the Talairach atlas to get a general 
+      idea of the region you are describing. Because most neuroimagers 
+      coregister their images with a template from the Montreal Neurological 
+      Institute, readers can also examine an MNI template (as there are some <A 
+      href="http://www.mrc-cbu.cam.ac.uk/Imaging/mnispace.html">differences 
+      between the MNI brain and the Talairach brain</A>). The next section will 
+      describe some limitations in making comparisons between brains.</P></TD>
+    <TD width=220><IMG height=200 
+      src="Brodmann's areas and Talairach Coordinates_files/stereo.gif" 
+      width=200>
+      <P>Figure 1. Stereotaxic coordinates.</P></TD></TR></TBODY></TABLE>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><STRONG>Limitations of Comparisons</STRONG>
+      <P>Like fingerprints, each brain has a unique configuration of gyri and 
+      sulci. In fact, secondary and tertiary sulci are not found in all 
+      individuals [Ono et al. 1990, Atlas of Cerebral Sulci]. This makes it 
+      difficult and probably undesirable for software to precisely match sulci 
+      between different individuals. In addition, because the sulci can have 
+      very different configurations, software which attempted to match sulci 
+      would create severe local distortions. Therefore, most normalization 
+      software smooths brain images before attempting normalization. The detail 
+      of sulcal information is greatly reduced by this smoothing process (Figure 
+      2 shows a sample image, and the same image after smoothing).</P>
+      <P>Therefore, the normalized images for any two individuals will not have 
+      the sulci and gyri in the same locations. As a consequence, stereotaxic 
+      coordinates do not necessarily refer to a specific sulcal location. In 
+      this way, stereotaxic coordinates are 'probabilistic' [Mazziotta et al 
+      1995, Neuroimage, 2: 89-101]. Figure 3 shows the variability of sulcal 
+      location after normalization in 15 healthy individuals, after a 
+      normalization based on matching the location of the major sulci (courtesy 
+      of Paul Thompson's lab).</P>
+      <P>Also, note that brain function may not be specifically located to 
+      specific sulci. So sulcal location and stereotaxic space may both be 
+      probabilistic in terms of functional location. In a study of cortical 
+      cytoarchitecture, Zilles et al. (1997, Human Brain Mapping 5: 228-221) 
+      noted that "sulci are not generally valid landmarks of the microstructural 
+      organization of the cortex". </P>
+      <P>Unfortunately, the cytoarchitecture can not be directly examined in 
+      living humans. Therefore stereotaxic coordinates and sulcal landmarks are 
+      the best we can do.</P></TD>
+    <TD><IMG height=109 
+      src="Brodmann's areas and Talairach Coordinates_files/smooth16.gif" 
+      width=91>
+      <P>Figure 2: MRI image before and after smoothing.</P>
+      <P><IMG height=203 
+      src="Brodmann's areas and Talairach Coordinates_files/nc50.gif" 
+      width=240></P>
+      <P>Figure 3: variability in location of various sulci in healthy adults. 
+      For more details, please see <A 
+      href="http://www.loni.ucla.edu/~thompson/ICBM/warp_validation.html" 
+      eudora="AUTOURL">http://www.loni.ucla.edu/~thompson/ICBM/warp_validation.html</A></P></TD></TR></TBODY></TABLE>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD><STRONG>Identifying Brodmann's Areas</STRONG>
+      <P>Brodmann (1909) classified brain regions based on their 
+      cytoarchitecture (basically, the appearance of the cortex under the light 
+      microscope). In some instances there is a clear link between the 
+      microscopic appearance of a region and its function. For example, the 
+      'stripe' of the striate cortex delineates the first main cortical area of 
+      the visual system (today this area is usually referred to as V1, Brodmann 
+      called it area 17). However, it is important to remember that Brodmann's 
+      Areas (BAs) were identified purely based on visual appearance, which is 
+      not necessarily related to function.</P>
+      <P>Attempting to convert stereotaxic coordinates based on MRI scans to 
+      Brodmann areas based on cytoarchitecture faces several problems. First, as 
+      noted earlier, Zilles et al. have found that there can be only approximate 
+      correspondence between sulcal landmarks or stereotaxic space and 
+      cytoarchitecture. Second, while many atlases define BAs (somewhat 
+      arbitrarily) as being segmented at sulcal fundus, sulcal location varies 
+      tremendously between individuals (see the previous section). </P>
+      <P>Atlases such as the online <A 
+      href="http://ric.uthscsa.edu/projects/talairachdaemon.html">Talairach 
+      Daemon</A> and <A href="http://stp.wustl.edu/">Van Essen and Drury's 
+      Caret</A> software can approximate between stereotaxic location and BAs, 
+      although the derivation of the BAs can be obscure, and in neither case is 
+      based on cytoarchitectonic data from the individual brains. These tools 
+      should be used with extreme caution, because of the inherent uncertainty 
+      of the information they contain. Given the problems with these BA 
+      estimates, it is attractive to take a more conservative approach, and 
+      define locations based on stereotaxic coordinates or (where activity 
+      across individuals appears to be correlated more strongly with sulcal 
+      landmarks than Talairach space) to sulcal locations. The main reason for 
+      converting between stereotaxic space and BAs is when comparing human work 
+      to animal research (where direct stereotaxic comparisons are 
+      impossible).</P></TD>
+    <TD><IMG height=288 
+      src="Brodmann's areas and Talairach Coordinates_files/drury.gif" 
+width=288>
+      <P>Figure 4. Brodmann's Areas approximated in the human 
+  brain.</P></TD></TR></TBODY></TABLE>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><STRONG>Locating Sulci and Gyri</STRONG>
+      <P>It is important to remember that neither stereotaxic coordinates nor 
+      cytoarchitecture perfectly correspond with gyri and sulci. For reporting 
+      data from stereotaxically aligned images, it is generally a good idea to 
+      present both stereotaxic coordinates and an image, so that readers can 
+      identify relevant landmarks. Once MRI scans have been normalized, they may 
+      roughly match the Talairach atlas or the online <A 
+      href="http://ric.uthscsa.edu/projects/talairachdaemon.html">Talairach 
+      Daemon</A>, and you can refer to these sources to locate the relevant 
+      sulci, gyri, and (with a lower degree of accuracy) the Brodmann Area. As 
+      noted earlier, some brains do not show all of the sulci, and there are 
+      different sulcal configurations. Therefore, care should be taken when 
+      identifying a sulcus.</P></TD>
+    <TD><IMG height=192 
+      src="Brodmann's areas and Talairach Coordinates_files/tala.gif" width=144>
+      <P>Figure 5. A slice from the Talairach atlas.</P></TD></TR></TBODY></TABLE>
+<P>written by <A href="mailto:chris.rorden@nottingham.ac.uk">Chris Rorden</A> 
+and Matthew Brett</P>
+<P>
+<CENTER><IMG height=21 
+src="Brodmann's areas and Talairach Coordinates_files/timecourse.gif" 
+width="95%"></CENTER>
+<P><B><A href="http://www.mrc-cbu.cam.ac.uk/Imaging/index.html" target=_top><IMG 
+height=37 alt=HOME 
+src="Brodmann's areas and Talairach Coordinates_files/cbuihome.gif" 
+width=37></A> Cambridge Imagers Home Page.</B></P>
+<P>© Copyright MRC Cognition and Brain Sciences Unit 1999.<BR>
+<ADDRESS>Page maintained by: <A 
+href="mailto:matthew.brett@mrc-cbu.cam.ac.uk">matthew.brett@mrc-cbu.cam.ac.uk</A></ADDRESS><!-- hhmts start -->Last 
+Refreshed: Mon Oct 30 15:20:18 GMT 2000 <!-- hhmts end --></BODY></HTML>

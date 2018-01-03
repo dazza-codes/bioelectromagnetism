@@ -1,0 +1,5 @@
+
+remove elec_coregister.m, replaced with fiducial_coregister.m
+remove fs_*.m, replaced with freesurfer_*.m
+remove elec_load_scanTRI.m, replaced with elec_load_scan_tri.m
+remove eeg_load_scan41.m, replaced with eeg_load_scan4_avg.m

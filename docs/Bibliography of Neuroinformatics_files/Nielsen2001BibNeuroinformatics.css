@@ -1,0 +1,60 @@
+.MATH {
+	FONT-FAMILY: "Century Schoolbook", serif
+}
+.MATH I {
+	FONT-FAMILY: "Century Schoolbook", serif; font-shape: italic
+}
+.BOLDMATH {
+	FONT-WEIGHT: bold; FONT-FAMILY: "Century Schoolbook", serif
+}
+SMALL.XTINY {
+	FONT-SIZE: xx-small
+}
+SMALL.TINY {
+	FONT-SIZE: x-small
+}
+SMALL.SCRIPTSIZE {
+	FONT-SIZE: smaller
+}
+SMALL.FOOTNOTESIZE {
+	FONT-SIZE: small
+}
+SMALL.SMALL {
+	
+}
+BIG.LARGE {
+	
+}
+BIG.XLARGE {
+	FONT-SIZE: large
+}
+BIG.XXLARGE {
+	FONT-SIZE: x-large
+}
+BIG.HUGE {
+	FONT-SIZE: larger
+}
+BIG.XHUGE {
+	FONT-SIZE: xx-large
+}
+H1 {
+	
+}
+H2 {
+	
+}
+H3 {
+	
+}
+H4 {
+	
+}
+H5 {
+	
+}
+DIV.displaymath {
+	
+}
+TD.eqno {
+	
+}

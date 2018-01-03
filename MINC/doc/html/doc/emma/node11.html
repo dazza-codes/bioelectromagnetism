@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Underlying Structure</TITLE>
+<META NAME="description" CONTENT="Underlying Structure">
+<META NAME="keywords" CONTENT="emma">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="emma.css">
+<LINK REL="next" HREF="node15.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="emma.html">
+<LINK REL="next" HREF="node12.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html156"
+ HREF="node12.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html153"
+ HREF="emma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html147"
+ HREF="node10.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html155"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html157"
+ HREF="node12.html">Stand-alone C Programs</A>
+<B> Up:</B> <A NAME="tex2html154"
+ HREF="emma.html">EMMA: Extensible MATLAB Medical</A>
+<B> Previous:</B> <A NAME="tex2html148"
+ HREF="node10.html">Using an Integrated Image</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00060000000000000000">
+Underlying Structure</A>
+</H1>
+
+<P>
+EMMA has a set of underlying functions written in C that provide the
+interface to MINC files.  An EMMA user will not ordinarily require
+use of these functions since every interaction with MINC files should
+be possible using the MATLAB scripts and functions provided (.m
+files).  However, for the sake of completeness, these functions are
+documented in this section.
+
+<P>
+MATLAB provides an interface to external C programs that allows
+dynamic linking at runtime.  This interface, called CMEX, is detailed
+in the MATLAB <EM>External Interface Guide</EM>.  Please consult this
+guide for further details.  Unfortunately, due to problems with the
+CMEX interface, it was not possible to create any CMEX programs that
+wrote to MINC files.  Therefore, all of the MINC creation and writing
+functions are written as stand-alone C programs, and all of the MINC
+reading functions are written as CMEX programs.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS">&#160;</A>
+<UL>
+<LI><A NAME="tex2html158"
+ HREF="node12.html">Stand-alone C Programs</A>
+<LI><A NAME="tex2html159"
+ HREF="node13.html">CMEX Programs</A>
+<LI><A NAME="tex2html160"
+ HREF="node14.html">MATLAB files</A>
+</UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

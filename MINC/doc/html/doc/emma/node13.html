@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>CMEX Programs</TITLE>
+<META NAME="description" CONTENT="CMEX Programs">
+<META NAME="keywords" CONTENT="emma">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="emma.css">
+<LINK REL="next" HREF="node14.html">
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="node11.html">
+<LINK REL="next" HREF="node14.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html181"
+ HREF="node14.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html178"
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html172"
+ HREF="node12.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html180"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html182"
+ HREF="node14.html">MATLAB files</A>
+<B> Up:</B> <A NAME="tex2html179"
+ HREF="node11.html">Underlying Structure</A>
+<B> Previous:</B> <A NAME="tex2html173"
+ HREF="node12.html">Stand-alone C Programs</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00062000000000000000">
+CMEX Programs</A>
+</H2>
+
+<P>
+In addition to stand-alone C programs, the underlying structure also includes
+several CMEX programs which are dynamically linked by MATLAB.  Please see the
+MATLAB <EM>External Interface Guide</EM> for an explanation of CMEX files.
+
+<P>
+<UL>
+<P>
+<LI><TT><B>mireadvar</B></TT> - Read a hyperslab from a MINC (or any NetCDF)
+file into a MATLAB vector, using NetCDF-style start and count
+vectors.  Note that the indexing of <code>start_vector</code> and
+<code>stop_vector</code> is zero-based.
+<PRE>
+    mireadvar ('minc_file', 'var_name', start_vector, count_vector)
+</PRE>
+<P>
+<LI><TT><B>mireadimages</B></TT> - Read images from a MINC file.  Opens the
+given MINC file, and attempts to read whole or partial images from the
+slices and frames specified in the slices and frames vectors.  If
+<code>start_row</code> and <code>num_rows</code> are not specified, then whole
+images are read.  If only <code>start_row</code> is specified, a single row
+will be read.  If both <code>start_rows</code> and <code>num_rows</code> are
+given, then the specified number of rows will be read (unless either
+is out of bounds, which will result in an error message).
+
+<P>
+<PRE>
+    mireadimages ('minc_file'[, slices[, frames[, options]]])
+</PRE>
+<P>
+<LI><TT><B>miinquire</B></TT> - find out various things about a MINC file
+from MATLAB.  Retrieves some item(s) of information about a MINC file.
+The first argument is always the name of the MINC file.  Following the
+filename can come any number of ``option sequences'', which consist of
+the option (a string) followed by zero or more items (more strings).
+Generally speaking, the ``option'' tells miinquire the general class
+of information you're looking for (such as an attribute value or a
+dimension length), and the item or items that follow it give
+<TT><B>miinquire</B></TT> more details, such as the name of a dimension,
+variable, or attribute.
+
+<P>
+<PRE>
+    miinquire ('minc_file' [, 'option' [, 'item']], ...)
+</PRE>
+<P>
+</UL>
+<P>
+
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html181"
+ HREF="node14.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html178"
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html172"
+ HREF="node12.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html180"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html182"
+ HREF="node14.html">MATLAB files</A>
+<B> Up:</B> <A NAME="tex2html179"
+ HREF="node11.html">Underlying Structure</A>
+<B> Previous:</B> <A NAME="tex2html173"
+ HREF="node12.html">Stand-alone C Programs</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

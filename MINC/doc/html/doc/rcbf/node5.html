@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Double-Weighted Integration Method</TITLE>
+<META NAME="description" CONTENT="Double-Weighted Integration Method">
+<META NAME="keywords" CONTENT="rcbf">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="rcbf.css">
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html97"
+ HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html94"
+ HREF="node3.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html88"
+ HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html96"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html98"
+ HREF="node6.html">Triple-Weighted Integration Method</A>
+<B> Up:</B> <A NAME="tex2html95"
+ HREF="node3.html">Mathematical Analysis</A>
+<B> Previous:</B> <A NAME="tex2html89"
+ HREF="node4.html">Introduction</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+Double-Weighted Integration Method</A>
+</H2>
+
+<P>
+<A NAME="sec:double_weight">&#160;</A>
+<P>
+Since the time required to perform a least squares curve fitting would
+be prohibitive, a simpler approach to solving the problem is required.
+One technique is to use a weighted integration method.  We initially
+approached the problem by assuming that <I>V</I><SUB>0</SUB> was negligibly small,
+in which case the 
+<!-- MATH: $C_{a}V_{0}$ -->
+<I>C</I><SUB><I>a</I></SUB><I>V</I><SUB>0</SUB> term is eliminated from equation
+(<A HREF="node4.html#eq:2comp4">4</A>).  Taking equation (<A HREF="node4.html#eq:2comp4">4</A>) with <I>C</I><SUB><I>a</I></SUB><I>V</I><SUB>0</SUB>eliminated, and integrating both sides from time 0 to the end of the
+last frame, we get:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+\int_{0}^{T} A^{*}(t) dt = K_{1} \int_{0}^{T} \frac{\int_{T_1}^{T_2}
+\left[ C_{a}(u) \otimes e^{-k_{2}u} \right] du}{T_2 - T_1} dt
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="369" HEIGHT="59"
+ SRC="img6.gif"
+ ALT="\begin{displaymath}\int_{0}^{T} A^{*}(t) dt = K_{1} \int_{0}^{T} \frac{\int_{T_1...
+...
+\left[ C_{a}(u) \otimes e^{-k_{2}u} \right] du}{T_2 - T_1} dt
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(5)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+<P>
+We can then take this equation, and divide it by a weighted version
+of itself:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+\frac{\int_{0}^{T} A^{*}(t) dt}{\int_{0}^{T} A^{*}(t) t dt} =
+\frac{K_{1} \int_{0}^{T} \frac{\int_{T_1}^{T_2} \left[ C_{a}(u)
+\otimes e^{-k_{2}u} \right] du}{T_2 - T_1} dt}{K_{1} \int_{0}^{T}
+\frac{\int_{T_1}^{T_2} \left[ C_{a}(u) \otimes e^{-k_{2}u} \right]
+du}{T_2 - T_1} t dt}
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:1comp">&#160;</A><IMG
+ WIDTH="330" HEIGHT="87"
+ SRC="img7.gif"
+ ALT="\begin{displaymath}\frac{\int_{0}^{T} A^{*}(t) dt}{\int_{0}^{T} A^{*}(t) t dt} =...
+...eft[ C_{a}(u) \otimes e^{-k_{2}u} \right]
+du}{T_2 - T_1} t dt}
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(6)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+<P>
+<I>K</I><SUB>1</SUB> cancels out of this equation, leaving us with an equation
+that only involves <I>k</I><SUB>2</SUB>.  The left side of equation
+(<A HREF="node5.html#eq:1comp">6</A>) is easily evaluated by integrating the PET data.
+The right side of equation (<A HREF="node5.html#eq:1comp">6</A>) is not easily solved for
+<I>k</I><SUB>2</SUB>, so a different approach was taken.  A look-up table was
+generated relating values of <I>k</I><SUB>2</SUB> to resulting values of the
+right hand side of equation (<A HREF="node5.html#eq:1comp">6</A>).  A linear
+interpolation was then performed to choose values of <I>k</I><SUB>2</SUB> from
+this look-up table for each point in the left hand side of equation
+(<A HREF="node5.html#eq:1comp">6</A>).
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html97"
+ HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html94"
+ HREF="node3.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html88"
+ HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html96"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html98"
+ HREF="node6.html">Triple-Weighted Integration Method</A>
+<B> Up:</B> <A NAME="tex2html95"
+ HREF="node3.html">Mathematical Analysis</A>
+<B> Previous:</B> <A NAME="tex2html89"
+ HREF="node4.html">Introduction</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

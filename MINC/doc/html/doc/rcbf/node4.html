@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Introduction</TITLE>
+<META NAME="description" CONTENT="Introduction">
+<META NAME="keywords" CONTENT="rcbf">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="rcbf.css">
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html86"
+ HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html83"
+ HREF="node3.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html77"
+ HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html85"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html87"
+ HREF="node5.html">Double-Weighted Integration Method</A>
+<B> Up:</B> <A NAME="tex2html84"
+ HREF="node3.html">Mathematical Analysis</A>
+<B> Previous:</B> <A NAME="tex2html78"
+ HREF="node3.html">Mathematical Analysis</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+Introduction</A>
+</H2>
+
+<P>
+The two-compartment cerebral blood flow model can be characterized by
+the following three equations:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+\frac{dM}{dt} = K_{1}C_{a}(t) - k_{2}M(t)
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:2comp1">&#160;</A><IMG
+ WIDTH="204" HEIGHT="46"
+ SRC="img1.gif"
+ ALT="\begin{displaymath}\frac{dM}{dt} = K_{1}C_{a}(t) - k_{2}M(t)
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(1)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+M(t) = K_{1}C_{a}(t) \otimes e^{-k_{2}t}
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:2comp2">&#160;</A><IMG
+ WIDTH="192" HEIGHT="33"
+ SRC="img2.gif"
+ ALT="\begin{displaymath}M(t) = K_{1}C_{a}(t) \otimes e^{-k_{2}t}
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(2)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+A(t) = M(t) + C_{a}(t)V_{0}
+\end{equation} -->
+<A NAME="eq:2comp3">&#160;</A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP>
+<I>A</I>(<I>t</I>) = <I>M</I>(<I>t</I>) + <I>C</I><SUB><I>a</I></SUB>(<I>t</I>)<I>V</I><SUB>0</SUB>
+</TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(3)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+<P>
+In these equations, <I>A</I>(<I>t</I>) is the PET data collected over a set of
+frames, <I>C</I><SUB><I>a</I></SUB>(<I>t</I>) is the delay and dispersion corrected arterial
+blood sample data, and <I>M</I>(<I>t</I>) is the radioactive tracer activity
+present in cerebral tissue.  We know both <I>A</I>(<I>t</I>) and <I>C</I><SUB><I>a</I></SUB>(<I>t</I>), but
+cannot know <I>M</I>(<I>t</I>) without knowing <I>V</I><SUB>0</SUB>.
+
+<P>
+One additional point to consider is that these equations are written
+for continuous functions.  However, the PET data that is actually
+available is average activity across each frame.  Therefore, in
+order to solve the equations, we must average the non PET data
+across frames.  By combining equations (<A HREF="node4.html#eq:2comp2">2</A>) and
+(<A HREF="node4.html#eq:2comp3">3</A>), and averaging the non PET data over frames, we
+get:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+A^{*}(t) = \frac{\int\limits_{T_1}^{T_2} \left( K_{1} \left[ C_{a}(t) \otimes
+e^{-k_{2}t} \right] + C_{a}(t)V_{0} \right) dt}{T_{2} - T_{1}}
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:2comp4">&#160;</A><IMG
+ WIDTH="357" HEIGHT="76"
+ SRC="img3.gif"
+ ALT="\begin{displaymath}A^{*}(t) = \frac{\int\limits_{T_1}^{T_2} \left( K_{1} \left[ ...
+...e^{-k_{2}t} \right] + C_{a}(t)V_{0} \right) dt}{T_{2} - T_{1}}
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(4)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+<P>
+where <I>A</I><SUP>*</SUP>(<I>t</I>) is the PET data that is actually collected (by
+definition, averaged over frames), and 
+<!-- MATH: ${\int_{T_1}^{T_2}dt} / {(T_2 -
+T_1)}$ -->
+<IMG
+ WIDTH="135" HEIGHT="42" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.gif"
+ ALT="${\int_{T_1}^{T_2}dt} / {(T_2 -
+T_1)}$">
+performs an averaging over frames (<I>T</I><SUB>1</SUB> is the frame start
+time, <I>T</I><SUB>2</SUB> is the frame stop time, and the integral is evaluated for
+each frame).
+
+<P>
+We wish to solve equation (<A HREF="node4.html#eq:2comp4">4</A>) for <I>K</I><SUB>1</SUB>, <I>k</I><SUB>2</SUB>, and
+<I>V</I><SUB>0</SUB>.  Of course, one approach would be to try to perform an
+explicit least squares curve fitting.  However, this approach would be
+quite computationally intensive since the fitting would need to be
+performed for every pixel of a 
+<!-- MATH: $128 \times 128$ -->
+<IMG
+ WIDTH="84" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$128 \times 128$">
+pixel image.  Fortunately,
+there is a method of solution that gives good results with reduced
+computational difficulty.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html86"
+ HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html83"
+ HREF="node3.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html77"
+ HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html85"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html87"
+ HREF="node5.html">Double-Weighted Integration Method</A>
+<B> Up:</B> <A NAME="tex2html84"
+ HREF="node3.html">Mathematical Analysis</A>
+<B> Previous:</B> <A NAME="tex2html78"
+ HREF="node3.html">Mathematical Analysis</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

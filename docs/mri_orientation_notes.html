@@ -1,0 +1,336 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<title>MRI Orientation Notes</title>
+<meta name="author" content="Darren Weber">
+<link href="../styles.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<h1>MRI Orientation Notes</h1>
+
+<p>The mri_toolbox download at 
+<a href="http://eeg.sf.net">http://eeg.sf.net</a>
+contains matlab code that employs the orient header field to read and 
+orthotransform ANALYZE volumes (see the avw* functions).  In this code 
+(ie, avw_img_read.m) there is complete documentation of the XYZ directions 
+for all 6 orthogonal orientations defined by ANALYZE in the avw.hdr.hist.orient 
+field, namely:<br>
+
+<ul>
+<li>          0,  transverse unflipped (LAS*)</li> 
+<li>          1,  coronal unflipped (LA*S)</li> 
+<li>          2,  sagittal unflipped (L*AS)</li> 
+<li>          3,  transverse flipped (LPS*)</li> 
+<li>          4,  coronal flipped (LA*I)</li> 
+<li>          5,  sagittal flipped (L*AI)</li>
+</ul>
+where * follows the slice dimension and letters indicate +XYZ
+orientations (L left, R right, A anterior, P posterior,
+I inferior, &amp; S superior). These values can be used in avw_img_read or
+avw_img_write to read/write the corresponding orientation correctly.</p>
+
+<p>The default ANALYZE orientation is LAS (radiological orientation):<br> 
+<ul>
+<li>+X is <u>L</u>eft</li> 
+<li>+Y is <u>A</u>nterior</li> 
+<li>+Z is <u>S</u>uperior</li>
+</ul>
+This corresponds to: avw.hdr.hist.orient = 0, transverse unflipped.</p>
+
+<p>The neurological convention is RAS (only the direction of X is swapped):<br>
+<ul>
+<li>+X is <u>R</u>ight</li> 
+<li>+Y is <u>A</u>nterior</li> 
+<li>+Z is <u>S</u>uperior</li>
+</ul>
+This is also the 'Talairach' and MNI template coordinate system.
+
+For more details on Talairach space and normalization with the MNI templates,
+see the notes from Chris Rorden and Matthew Brett:<br>
+<a href="http://www.mricro.com/anatomy/">
+         http://www.mricro.com/anatomy/</a>,<br>
+<a href="http://www.mrc-cbu.cam.ac.uk/Imaging/brodmann_areas.html">
+         http://www.mrc-cbu.cam.ac.uk/Imaging/brodmann_areas.html</a>,<br>
+<a href="http://www.mrc-cbu.cam.ac.uk/Imaging/mnispace.html">
+         http://www.mrc-cbu.cam.ac.uk/Imaging/mnispace.html</a>, where the latter
+matlab functions are included in this toolbox.<br>
+The standard analyze format does not support the neurological orientation in
+either the hdr.hist.orient field or the .img file data order.  You can use 
+avw_flip to obtain this, but it is a violation of the Analyze file
+format.</p>
+
+<p>This toolbox will try to load an Analyze volume (actually any .img file)
+as an LAS volume, so long as the avw.hdr.hist.orient field is set correctly.  
+Thus, the avw_view function should always present the volume in LAS (radiological) 
+orientation (a GUI control allows easy L/R flipping for viewing purposes).  If 
+you need to, you can use avw_flip to orthoflip any dimension, although this 
+could easily invalidate the Analyze coordinate system (NOT recommended).</p>
+
+<p>The avw.hdr.hist.orient field is "optional" and not all software will read
+or write it correctly.  For example,
+<a href="http://www.fil.ion.ucl.ac.uk/spm/">SPM</a> ignores it and 
+<a href="http://www.sensor.com">MEDx</a> sets an unused header field.</p>
+
+<p>The flipped orientations (orient values 3-5) are only defined in
+Analyze to support a movie animation.  The flipping is not done in the slice
+direction, but rather in the dimension that suits raster graphics.  The flipping
+has NO relationship to the actual orientation of the volume, only to how the 
+data is handled during graphics processes.  Thus, orient values 3-5 are NOT 
+recommended. For example, for a transverse LAS volume, the orient=3 option 
+flips to the anterior-posterior direction (LPS), which does not provide for 
+saving RAS volumes.  Nevertheless, this toolbox will attempt to handle the 
+flipped Analyze volumes correctly.</p>
+
+<p>If your not sure what the orientation of a volume is, it is near impossible
+to differentiate LAS from RAS without landmarks in the image.  A useful tool is
+the flip L/R control in avw_view.  It will allow you to quickly flip left/right
+to find visual cues that differentiate these two orientations.  Often the 
+ventricles provide good asymmetry indicators.  Some high resolution T1 
+anatomical data I have worked with was acquired with a small pinpoint 
+artifact in the central voxel of the left most slice of the volume 
+(what a great idea! except when it comes to intensity normalisation!).  It's
+also possible to use radiological markers (a preferable method, perhaps, as it
+should avoid the intensity artifact when normalising or correcting Bo field 
+distortions).  If that information is not available to you, but you have 
+the original scanner files, you can use your favourite software or some free
+offerrings:
+<a href="http://www.mricro.com/">http://www.mricro.com/</a> or 
+<a href="http://xmedcon.sourceforge.net">http://xmedcon.sourceforge.net</a> 
+to read the original scanner volume headers, which usually contain useful 
+orientation information, if you can interpret it (maybe speak to your 
+radiographer).  You might then use MRIcro or Xmedcon to convert
+the original data to ANALYZE, in a specific orientation.  Keep careful track
+of the orientation during this conversion, especially left/right.  Also 
+consider acquisition of a small phantom volume, containing LAS orientation 
+markers, in the sequence you use for your subject data.  You can then process 
+that volume through all the stages of your analyses to confirm the final 
+orientation.</p>
+
+<p>When working with format conversions, consider these 
+<a href="MJenkinson_coordtransforms.pdf">enlightening notes</a> from
+Mark Jenkinson!</p>
+
+<p>All the best getting it right.  MRI volume orientation has been a problem
+for me, prompting development of the MRI_toolbox.  After better understanding 
+how it works, the anxiety dissipates ;-) (although never really leaves you at 
+peace). It's frustrating that our visuo-spatial intelligence for 3D object 
+orientation virtually goes out the window when looking at ortho slices!  In 
+reality, we know this is a simple problem, yet the ortho views are unyielding!</p>
+
+
+<h3>Further comments on -X pixdim and neurological convention,
+ with an illustration and some issues to clarify</h3>
+
+<p>Just to get down to basics, imagine a 2D axial slice through the AC, 
+viewed with the nose at the top.  Take a row of that image that passes from 
+ear to ear.  This is the X dimension (Y is the posterior to anterior 
+dimension). Simple enough.</p>
+
+<p>The question is what is left or right?  Are we looking at this slice from
+the feet up or from the top of the head down?  You can look for anatomical
+asymetries and try to find "real-world" landmarks.  Alternatively, a
+convention for the order of the data in the file should provide a reliable 
+answer.</p>
+
+<p>That is, if the "left side of the image" is pixel 1 (X=1) and the "right
+side of the image" is pixel N (X=N), Analyze file format specifies that
+pixel 1 is "patient right" and pixel N is "patient left", so the row pixel
+numbers increase from right to left, ie +X is left (+Y is anterior and +Z is
+superior, LAS).  So we are looking at this slice from the feet upwards.</p>
+
+<p>A 2D image is stored in an .img file as a continuous data stream (say 8 bits
+per pixel/voxel).  When reading this continuous data stream into a 2D matrix, 
+it is divided up into M rows and N columns.  The header provides the information 
+about how many rows (M) and how many columns (N), often they are the axial 
+in-plane dimensions and equal, say 64x64, 128x128, or 256x256 (these values 
+are in hdr.dime.dim).  For a 2D axial slice, the data stream can be read one 
+row at a time and each row has N pixels.  For each row of the Analyze file, we have 
+a column index 1:N, where index 1 is right and index N is left.</p>
+
+<p>Thus, we can read an .img file without knowing anything about the size of the 
+voxels.  We can completely ignore any hdr.dime.pixdim values when reading the 
+.img file and we should have a data matrix where +X direction is left.</p>
+
+<p>This is the radiological convention.  It is also the Analyze file convention.
+To violate this convention is to risk confusion about left/right orientation, 
+the most intractible orientation problem in tomography.</p>
+
+<p>Any software working with .img files in the Analyze 7.5 format must be able to
+rely on this convention to be able to display left/right properly.  There is
+no way to determine left/right otherwise (although SPM has the .mat solution, 
+which is itself a convention that *overrides* the Analyze file format).</p>
+
+<p>So what happens when the pixdim is considered.  It provides information
+about the real-world size of each pixel of each dimension.  We usually use 4
+dimensions: X mm, Ymm, Zmm and Time in msec (although Analyze provides for
+more dimensions).  OK, but what happens when we have a -ve pixdim value?</p>
+
+<p>Analyze 7.5 format does not support the neurological convention (ie, +X right).
+This causes a problem when using the Talairach atlas, which is given in 
+neurological orientation.  The MNI has done some great work to provide templates 
+for registration into Talairach space.  But how do you do this registration with 
+Analyze files?</p>
+
+<p>The MNI templates have a -X pixdim value.  Given that the Analyze format
+specifies +X pixdim values and the radiological convention, this use of -X pixdim 
+values indicates that the files are in neurological convention.  I have no idea 
+whether the actual data order of the MNI template .img files is +X left or right.
+It is possible that they could be either.  If +X is right, they are pseduo-Analyze
+.img files.  If +X is left, the .img files can be read by any Analyze software 
+that abides by the Analyze/radiological convention and the only question is what 
+to do with the -ve pixdim value.</p>
+
+
+<h4>Other software: FSL</h4>
+
+<p>In essence, FSL does not determine left/right - only the number of rows,
+columns, slices and timepoints and the absolute magnitude of voxels (mm) and
+time (msec) is important, the rest is image intensity analysis. 
+Normalisation/registration is mainly image intensity analysis, but also
+involves <i>reslicing</i>.  One qestion is whether the MNI template 
+.img files are +X right or +X left (regardless of their .hdr files) and 
+whether this has any implications for the order of the data .img files after 
+normalisation.  FSL relies on the order of the pixels in the .img file.  
+Whatever goes into registration to the templates could come out with the same 
+.img order as the templates, but only if the data is <i>resliced</i> into the 
+template space and I don't think FSL does that.  In FSL, the MNI templates are 
+resliced into the "native experimental data" space during registration.  I think
+most, if not all, of FSL processing is done in "native experimental data space",
+with Talairach coordinates provided from the FSL .mat files.  That is, I think 
+FSL registers/reslices the templates to experimental volumes and then calculates
+the inverse registration to get the Talairach coordinates (FSL .mat file). This 
+avoids interpolation of the experimental data during registration, effectively 
+leaving it entirely untouched.  <i>In this sense, what goes into FSL is what 
+comes out it.</i>  But note that it is the .img files that are important, not 
+whether the hdr.dime.pixdim is +ve or -ve. Please search the 
+<a href="http://www.jiscmail.ac.uk/cgi-bin/wa.exe?A0=FSL">
+FSL email archives</a> for more discussion on this topic (search for
+"Registering Talairach and MNI152 Spaces").</p>
+
+<p>Also, consider these <a href="MJenkinson_coordtransforms.pdf">notes</a> from
+Mark Jenkinson!</p>
+
+
+<h4>Other software: SPM/MRIcro</h4>
+
+<p>SPM2 provides two specific alternatives for data orientation, either 
+radiological (LAS) or neurological (RAS).  SPM uses a spatial transformation 
+matrix to supplement the Analyze format, so you get *.hdr *.img and *.mat files,
+where the .mat file holds all spatial transformations.  Please ask the FIL for 
+information on whether or not SPM changes the order of the pixels in the .img 
+file to represent the neurological orientation.  You will find SPM help at
+<a href="http://www.fil.ion.ucl.ac.uk/spm/help/">
+         http://www.fil.ion.ucl.ac.uk/spm/help/</a>.  
+You will also find some information about SPM handling of Analyze files at:
+<a href="http://www.fil.ion.ucl.ac.uk/spm/spm99.html#AzeFmt">
+         http://www.fil.ion.ucl.ac.uk/spm/spm99.html#AzeFmt</a>
+</p>
+
+<p>John Ashburner offerred the following comments:<br>
+The SPM99-SPM2 differences are documented at
+<a href="http://www.fil.ion.ucl.ac.uk/spm/spm2.html#Compat">
+         http://www.fil.ion.ucl.ac.uk/spm/spm2.html#Compat</a>. 
+The SPM2 orientation is now the same as that of Analyze (when flip=1).<br>
+
+Unlike PET images, MR images can be acquired in any orientation.  Because
+of this, it is better to consider the handedness of the data, rather than
+the orientation of a single slice.  For example, an image can be rotated
+by 180 degrees around the Y axis, which would flip the left-right ordering
+of the voxels within a plane.  The image would still have the same
+handedness though.  Mapping from voxels to co-ordinates in some mm space
+is done via a .mat file, so the actual ordering of the data is unimportant
+(provided the handedness is correct).<br>
+
+The NIFTI file format should be finalised soon. This will incorporate the affine transform
+within it.</p>
+
+
+
+<p>I understand that MRIcro has been developed in conjunction with SPM and it 
+provides the option to flip files left/right.  Chris Rorden has web pages that
+clarify whether the .hdr has -ve pixdim values and how to interpret them, 
+also how the .img file is written out of MRIcro/SPM99/SPM2 for each of the 
+neurological and radiological orientations.  MRIcro does not read any .mat
+files (as of Jan 2004). You will find MRIcro at
+<a href="http://www.mricro.com/">
+         http://www.mricro.com/</a>.
+</p>
+
+<p>According to Chris, SPM2 and SPM99 always show images in NEUROLOGICAL orientation.<br>
+<ul>
+<li>With SPM2, the data is stored in LAS format (first byte = RIGHT), ie:<br>
+ X increases from Right to Left (L)<br>
+ Y increases from Posterior to Anterior (A)<br>
+ Z increases from Inferior to Superior (S)<br>
+If you change "defaults.analyze.flip = 1;" to "defaults.analyze.flip = 0;" 
+in the spm_defaults.m file then SPM2 uses RAS (first byte = LEFT).</li>
+<li>With SPM99, the data is stored in RAS format (first byte = LEFT).</li>
+<li>By default, SPM99 flips left-right in the image during normalization. 
+This is controlled by the "sptl_Ornt" value in spm_defaults.m. Regardless 
+of the setting, images are always displayed in NEUROLOGICAL ordering (RAS).</li>
+</ul>
+Also see the notes from Chris on image byte ordering here:<br>
+<a href="http://www.psychology.nottingham.ac.uk/staff/cr1/faq.html#upside">
+         http://www.psychology.nottingham.ac.uk/staff/cr1/faq.html#upside</a>
+</p>
+
+
+
+
+
+<h4>Other software: AIR</h4>
+<p>see
+<a href="http://bishopw.loni.ucla.edu/AIR5/index.html">
+         http://bishopw.loni.ucla.edu/AIR5/index.html</a>
+and especially
+<a href="http://bishopw.loni.ucla.edu/AIR5/technicalnotes.html">
+         http://bishopw.loni.ucla.edu/AIR5/technicalnotes.html</a>
+and
+<a href="http://bishopw.loni.ucla.edu/AIR5/file_types.html#voxelorder">
+         http://bishopw.loni.ucla.edu/AIR5/file_types.html#voxelorder</a>.
+Also, this description of the AIR internal coordinate system is informative:
+<a href="http://bishopw.loni.ucla.edu/AIR5/coordinates.html">
+         http://bishopw.loni.ucla.edu/AIR5/coordinates.html</a>.
+Note that the image voxel order specifies axial .img files, but it does 
+not specify whether +X is left (radiological/Analyze) or +X right.  It does
+indicate that larger X indices are assigned to each successive voxel in the
+.img file (for each row of the axial .img file).  Lastly, the AIR page on
+homogenous coordinates is a nice introduction to the information used for
+registration matrices, see
+<a href="http://bishopw.loni.ucla.edu/AIR5/homogenous.html">
+         http://bishopw.loni.ucla.edu/AIR5/homogenous.html</a>
+</p>
+
+
+
+<h4>Other software: AFNI</h4>
+<p>See the AFNI main page 
+<a href="http://afni.nimh.nih.gov/afni/">
+         http://afni.nimh.nih.gov/afni/</a>
+including the matlab tools at
+<a href"http://afni.nimh.nih.gov/ssc/ziad/AFNI_MatlabLib/">
+        http://afni.nimh.nih.gov/ssc/ziad/AFNI_MatlabLib/</a>.
+Note the following comment,
+"The data in the .BRIK is stored in the order (orientation) in which the images 
+were loaded into to3d. So, in order to know how to slice through a data set you 
+need to look into the Info structure (output of BrikInfo and BrikLoad). I have 
+included the AFNI* functions to help shed some light into the darkness."
+Also, see these additional files for Talairach coordinates 
+<a href="ftp://geon.usc.edu/mni_to_tlrc/">
+         ftp://geon.usc.edu/mni_to_tlrc/</a>
+</p>
+
+
+
+
+<p></p>
+<script language="JavaScript" type="text/javascript">
+<!--
+     document.write("<p><p><hr>Darren.Weber_at_radiology.ucsf.edu; Last Modified " + document.lastModified)
+// -->
+</script>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="Keywords" content="brain anatomy, Talairach, MRIcro">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>neuroanatomy atlas introduction</title>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%"
+bgcolor="#000000">
+    <tr>
+        <td bgcolor="#FFFFFF"><a href="na_atlas.html"><img
+        src="na_icon.gif" border="0" width="64" height="64"></a></td>
+        <td width="100%" bgcolor="#FFFFFF"><font color="#386868"
+        size="5"
+        face="Verdana,Arial,Helvetica,Sans-Serif,MS Sans Serif"><b>Neuroanatomy
+        Atlas</b></font></td>
+        <td align="center" bgcolor="#FFFFFF"><a href="home.html">Introduction</a><br>
+        <a href="na_atlas.html">Atlas</a><br>
+        <a href="na_links.html">Links</a></td>
+        <td bgcolor="#FFFFFF">&nbsp;</td>
+        <td align="right" bgcolor="#FFFFFF"><a
+        href="http://www.mricro.com"><img src="48x36.gif"
+        border="0" width="48" height="36"></a></td>
+    </tr>
+</table>
+
+<p><strong>Index</strong></p>
+
+<ul>
+    <li><a href="home.html">Introduction</a></li>
+    <li><a href="na_atlas.html">Atlas (with A-Z links and
+        abbreviations)</a><ul>
+            <li><a href="na_sag.html">sagittal renderings</a>:
+                identifying major sulci and gyri.</li>
+            <li><a href="na_coro.html">coronal slices</a>:
+                identifying subcortical regions.</li>
+            <li><a href="na_axial.html">axial slices</a>:
+                identifying subcortical regions.</li>
+            <li><a href="na_ac.html">anterior commissure</a>:
+                identifying the origin of talairach space..</li>
+            <li><a href="na_cs.html">central sulcus</a>: finding
+                the cs and surrounding landmarks.</li>
+            <li><a href="na_wm.html">white matter</a>:
+                identifying subcortical white matter landmarks.</li>
+        </ul>
+    </li>
+    <li><a href="na_links.html">Links</a> </li>
+</ul>
+
+<p><strong>Introduction</strong></p>
+
+<p>This neuroanatomy atlas shows regions on normalized MRI scans.
+Normalization is the process of warping a brain to match a
+standard size, orientation and shape of other brains. You can
+normalize MRI scans using programs like <a
+href="http://www.loni.ucla.edu/ICBM/ICBM_AIR.html">AIR</a>, <a
+href="http://www.fmrib.ox.ac.uk/fsl/flirt/">FLIRT</a> or <a
+href="http://www.fil.ion.ucl.ac.uk/spm/">SPM</a>. Once
+normalized, the overall shape of your MRI scan will approximately
+match those in this atlas. However, normalization preserves the
+unique sulcal features of each brain, so there will be some
+variation between your image and the images shown in this atlas.
+There is a great deal of individual variability even after
+normalization, so any atlas is only a rough guide to the shape
+and location of structures in an individuals brain. As I have
+noted <a
+href="http://www.mrc-cbu.cam.ac.uk/Imaging/brodmann_areas.html">before</a>,
+secondary and tertiary sulci are not found in all individuals
+[Ono et al. 1990, Atlas of Cerebral Sulci]. Another benefit of
+normalizing brains is it makes it easy to complete an accurate
+'scalp stripping' with brain extracting software (my MRIcro
+software implements Steve Smith's BET for this task). You can
+then create a useful volume rendering of the cortical surface.
+Typically, it is much easier to identify cortical sulci and gyri
+by looking at a rendered image of the brain's surface. This atlas
+shows you how to recognize these landmarks on a rendered MRI
+scan.</p>
+
+<table border="0">
+    <tr>
+        <td><img src="process.jpg" width="366" height="126"></td>
+        <td>Left: This figure shows how raw (original) MRI scans
+        can be processed to make recognizing neuroanatomical
+        landmarks easier. First, the image can be normalized,
+        realigning the image so the overall shape of the image
+        matches common atlases. Images can also be
+        scalp-stripped, allowing the cortical surface to be
+        rendered (making it easy to recognize many features).</td>
+    </tr>
+</table>
+
+<p>A great way to use this atlas is to download a free copy of my
+MRIcro software. This will let you view your own MRI scans, and <a
+href="http://www.mricro.com">MRIcro</a> comes with the
+&quot;ch2&quot; image that is used throughout this atlas. The
+&quot;ch2&quot; MRI (referred to as 'single_subj_T1&quot; by SPM
+users) is based on 27 T1 scans of a single individual. It is
+great for learning about brain anatomy, but it is probably of
+much higher quality than any other scans you will work with.
+Therefore, I also have illustrated the neuroanatomical regions on
+a more typical MRI scan: a single ultra-T1-weighted image (1.5
+Tesla, MPRAGE sequence) from a volunteer at the University of
+Nottingham. This scan helps you identify brain regions by
+examining a clinical quality scan. Comparing ch2 to the clinical
+scan, you can also observe the variability in the location of
+structural regions following normalization. Due to popularity,
+anatomical definition, resolution and speed of acquisition, this
+atlas focuses on T1-weighted MRI scans. However,
+neuropsychologists plotting lesions should also examine the
+patient's <a href="http://www.mricro.com/mritut.html#creatingROI">T2
+and proton density scans</a> as well. </p>
+
+<table border="0">
+    <tr>
+        <td>It is worthwhile to describe the coordinate system
+        used to define neuroanatomical locations of normalized
+        images. The 'Talairach' coordinate system specifies
+        locations relative to their distance from the anterior
+        commisure (AC). The AC is a small but easy to spot
+        region, making it an ideal origin for the coordinate
+        system. Each location is described by three numbers, each
+        describing the distance in millimeters from the AC: X is
+        the left/right dimension, Y is the posterior/anterior
+        dimension, and Z is the ventral/dorsal dimension.
+        Therefore, the position 0x0x0 is precisely at the AC,
+        while -32x21x10 is left (32mm), anterior (21mm) and
+        dorsal (10mm) from the AC. In this atlas you will notice
+        that axial slices are referred to by their Z coordinate
+        and coronal images are referred to by their Y coordinate.
+        Again, it is important to stress that normalization
+        strives to retain the unique features of each individual
+        brain, and therefore Talairach cordinates are only
+        approximate when comparing locations to other
+        individuals. More details can be found at the <a
+        href="http://www.mrc-cbu.cam.ac.uk/Imaging/brodmann_areas.html">MRC-CBU
+        web site</a>.</td>
+        <td><img src="tspace.gif" width="200" height="191"></td>
+    </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<p><strong>Viewing these pages</strong></p>
+
+<p>The latest version of this atlas can be found on the web at my
+<a href="http://www.mricro.com/anatomy/">website</a>.
+Alternativey, you can download the atlas for viewing with
+computers that are not connected to the internet (<a
+href="http://www.mricro.com/anatomy.zip">shift+click here</a>,
+900kb zip archive).</p>
+
+<p>Chris Rorden, 13 October 2002</p>
+</body>
+</html>

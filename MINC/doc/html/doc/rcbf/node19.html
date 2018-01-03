@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Doing the Analysis</TITLE>
+<META NAME="description" CONTENT="Doing the Analysis">
+<META NAME="keywords" CONTENT="rcbf">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="rcbf.css">
+<LINK REL="previous" HREF="node18.html">
+<LINK REL="up" HREF="node17.html">
+<LINK REL="next" HREF="node20.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html258"
+ HREF="node20.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html255"
+ HREF="node17.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html251"
+ HREF="node18.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html257"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html259"
+ HREF="node20.html">About this document ...</A>
+<B> Up:</B> <A NAME="tex2html256"
+ HREF="node17.html">Using the rCBF Package</A>
+<B> Previous:</B> <A NAME="tex2html252"
+ HREF="node18.html">Preparing Blood Data</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00052000000000000000">
+Doing the Analysis</A>
+</H2>
+
+<P>
+Once the blood and image files are prepared, the analysis can be
+performed.  Start MATLAB by typing <TT>matlab</TT> at the shell prompt.
+Starting the analysis is very straightforward.  You may type
+<TT>help rcbf2</TT> to get information on running the rCBF package.
+Basically, <TT>rcbf2</TT> is a MATLAB function that returns a <I>K</I><SUB>1</SUB>,
+<I>k</I><SUB>2</SUB>, and <I>V</I><SUB>0</SUB> image, as well as the delay found during blood delay
+correction.  It requires the name of the MINC file that contains the
+images, and the number of the slice to analyze.  Therefore, if we
+wished to analyze slice 12 of <TT>arnaud_20547.mnc</TT>, we would call
+<TT>rcbf2</TT> as:
+<PRE>
+     [K1, k2, V0, delay] = rcbf2('arnaud_20547.mnc', 12);
+</PRE>In this case, the semi-colon at the end is <EM>very</EM> important since
+<TT>rcbf2</TT> will return the entire images.  If the semi-colon is
+omitted, the <I>K</I><SUB>1</SUB>, <I>k</I><SUB>2</SUB>, and <I>V</I><SUB>0</SUB> values for every pixel will be
+echoed to the screen, which takes a considerable amount of time.
+
+<P>
+Once the images have been generated, they may be manipulated using
+any of the normal EMMA tools (viewed with <TT>viewimage</TT>, saved
+with <TT>putimages</TT>, etc.).
+
+<P>
+<BR><HR>
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

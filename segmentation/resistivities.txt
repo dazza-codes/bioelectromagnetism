@@ -1,0 +1,25 @@
+\cite{nunez-1981-electric-brain}
+
+From Table 3.1 on Page 80?:
+
+Which                             | What
+----------------------------------+-------------------
+Sea water                         |                 20
+CSF                               |                 64
+Blood                             |                150
+Spinal cord (longitudinal)        |                180
+Cortex (5 kc/sec)                 |                230
+Cortex (5 cps)                    |                350
+White matter (averaged)           |                650
+Spinal cord (transverse)          |              1,200
+Bone (1 Megacycle/sec)            |              1,800
+Bone (low frequency)              |             16,000
+Wet skull (low frequency average) |             20,000
+Pure water                        |         20,000,000
+Dry skull (low frequency)         | 10,000,000,000,000
+
+The resistivities are in Ohm cm units.
+
+Only those thought useful have been typed.
+
+Skull resistivity is quite variable.

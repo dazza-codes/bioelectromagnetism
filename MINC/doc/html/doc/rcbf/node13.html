@@ -1,0 +1,459 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>RCBF2</TITLE>
+<META NAME="description" CONTENT="RCBF2">
+<META NAME="keywords" CONTENT="rcbf">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="rcbf.css">
+<LINK REL="next" HREF="node14.html">
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="node11.html">
+<LINK REL="next" HREF="node14.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html194"
+ HREF="node14.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html191"
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html185"
+ HREF="node12.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html193"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html195"
+ HREF="node14.html">CORRECTBLOOD</A>
+<B> Up:</B> <A NAME="tex2html192"
+ HREF="node11.html">Annotated Program Listings</A>
+<B> Previous:</B> <A NAME="tex2html186"
+ HREF="node12.html">RCBF1</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00043200000000000000">&#160;</A>
+<A NAME="sec:rcbf2_listing">&#160;</A>
+<BR>
+RCBF2
+</H3>
+
+<P>
+<TT>RCBF2</TT> is essentially an extension of <TT>RCBF1</TT> with the
+addition of a third weighting function (needed to calculate <I>V</I><SUB>0</SUB>) and
+correction for the delay and dispersion of blood.  Also, RCBF2
+allows the user to specify a list of slices (as a vector) rather than
+requiring a scalar <TT>slice</TT>.  This means that we add a loop
+through all desired slices, so some of the code is rearranged to avoid
+redoing the same work several times in the loop.
+
+<P>
+<DL COMPACT>
+<DT>1.
+<DD>The function declaration line.  The output arguments <TT>K1</TT>,
+<TT>k2</TT>, and <TT>V0</TT> will all be whole images--that is, for
+  
+<!-- MATH: $128 \times 128$ -->
+<IMG
+ WIDTH="84" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$128 \times 128$">
+PET data, they will be matrices with 16,384
+  elements per column, and one column per slice processed.
+  <TT>delta</TT> will contain the blood delay term <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">
+for each
+  specified slice.
+
+<P>
+Of the input arguments, only <TT>filename</TT> (the name of the MINC
+  volume to process) and <TT>slices</TT> (the list of slices to process)
+  are required.  The other three are boolean variables (i.e., they
+  should be scalars with a value of either 0 or 1) that default to
+  ``true'' (1).  <TT>progress</TT> controls whether RCBF2 prints
+  progress information; <TT>correction</TT> decides whether or not it
+  performs correction of the blood data for delay and dispersion; and
+  <TT>batch</TT> controls whether selection of the mask used for
+  delay/dispersion correction should be interactive or automatic (the
+  default).  The latter two should <EM>not</EM> be changed when RCBF2 is
+  being used for real data analysis, and are merely provided to speed
+  things up when debugging.
+  <PRE>
+function [K1,k2,V0,delta] = rcbf2_slice ...
+         (filename, slices, progress, correction, batch)
+</PRE>
+<P>
+<DT>2.
+<DD>Initialize the matrices that will hold the <I>K</I><SUB>1</SUB>, <I>k</I><SUB>2</SUB>, and
+  <I>V</I><SUB>0</SUB> images, as well as the vector to hold the value of <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">
+(the blood delay from equation <A HREF="node7.html#eq:blood_delay">12</A>) for each slice.
+  <PRE>
+total_slices = length(slices);
+K1 = zeros(16384,total_slices);
+k2 = zeros(16384,total_slices);
+V0 = zeros(16384,total_slices);
+delta = zeros(1,total_slices);
+</PRE>
+<P>
+<DT>3.
+<DD>Open the volume and get some preliminary information on frame
+  times and lengths.
+  <PRE>
+img = openimage(filename);
+if (getimageinfo (img, 'time') == 0)
+   error ('Study is non-dynamic');
+end
+
+FrameTimes = getimageinfo (img, 'FrameTimes');
+FrameLengths = getimageinfo (img, 'FrameLengths');
+MidFTimes = FrameTimes + (FrameLengths / 2);
+</PRE>
+<P>
+<DT>4.
+<DD>Read the blood data, perform cross-calibration, and convert
+  units.  (See explanation in section <A HREF="node12.html#sec:rcbf1_listing">3.3.1</A>.)
+  <PRE>
+[g_even, ts_even] = resampleblood (img, 'even');
+XCAL = 0.11;
+rescale(g_even, (XCAL*37/1.05));
+</PRE>
+<P>
+<DT>5.
+<DD>Create the weighting functions, <I>w</I><SUB>1</SUB>, <I>w</I><SUB>2</SUB>, and <I>w</I><SUB>3</SUB> from
+  equations <A HREF="node6.html#eq:fullweight1">7</A>-<A HREF="node6.html#eq:fullweight3">9</A>.  Also here we
+  initialize the list of <I>k</I><SUB>2</SUB> values from which the lookup table will
+  be generated.
+
+<P>
+<PRE>
+w1 = ones(length(MidFTimes), 1);
+w2 = MidFTimes;
+w3 = sqrt (MidFTimes);
+
+k2_lookup = (-10:0.05:10) / 60;
+</PRE>
+<P>
+<DT>6.
+<DD>At this point, we start the processing that is specific to each
+  slice: read the PET data, perform delay/dispersion correction,
+  generate the lookup table, and solve equation <A HREF="node6.html#eq:k1two">10</A>.  Thus,
+  we loop through all user-specified slices:
+  <PRE>
+for current_slice = 1:total_slices
+</PRE>
+<P>
+<DT>7.
+<DD>Read in the PET data for the current slice, and rescale it
+  to convert from 
+<!-- MATH: ${\rm nCi/mL_{tissue}}$ -->
+<IMG
+ WIDTH="105" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.gif"
+ ALT="${\rm nCi/mL_{tissue}}$">
+to 
+<!-- MATH: ${\rm Bq/g_{tissue}}$ -->
+<IMG
+ WIDTH="81" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.gif"
+ ALT="${\rm Bq/g_{tissue}}$">.
+  <PRE>
+PET = getimages (img, slices(current_slice), 1:length(FrameTimes), PET);
+rescale (PET, (37/1.05));
+</PRE>
+<P>
+<DT>8.
+<DD>Compute the weighted integrals of the PET data.
+  <PRE>
+PET_int1 = ntrapz (MidFTimes, PET, w1);
+PET_int2 = ntrapz (MidFTimes, PET, w2);
+PET_int3 = ntrapz (MidFTimes, PET, w3);
+</PRE>
+<P>
+This uses <TT>ntrapz</TT>, the CMEX version of <TT>trapz</TT>, which has
+  the useful feature of allowing a weighting function to be supplied.
+  Thus, the first line of code above is equivalent to (but faster and
+  less memory-intensive than)
+  <PRE>
+weight = ones (16384,1) * w1';
+PETweighted = PET .* weight;
+PET_int1 = trapz (MidFTimes, PETweighted');
+</PRE>
+<P>
+<DT>9.
+<DD>Generate a simple mask based on <TT>PET_int1</TT> (which is
+  simply the PET data averaged across all frames), and mask using
+  <TT>rescale</TT>.  Also, <TT>mask</TT> is cleared for memory efficiency.
+  <PRE>
+mask = PET_int1 &gt; mean(PET_int1);
+rescale (PET_int1, mask);
+rescale (PET_int2, mask);
+rescale (PET_int3, mask);
+clear mask;
+</PRE>
+<P>
+The next three steps perform delay/dispersion correction of the
+  blood data (see section <A HREF="node7.html#sec:blood_correction">2.4</A>).  
+
+<P>
+<DT>10.
+<DD>First, create a mask that is used to select gray matter only;
+  the mask is a variation on that used to mask the weighted PET
+  integrals above.  That is, simply select all voxels whose values are
+  greater than some constant times the mean of <TT>PET_int1</TT>.  If
+  non-interactive mode is on (i.e.  <TT>batch</TT> = 1, the default
+  behaviour), then this constant is hard-coded to 1.8<A NAME="tex2html3"
+ HREF="footnode.html#foot957"><SUP>1</SUP></A>; otherwise, the function
+  <TT>getmask</TT> is run.  This allows the user to select the threshold
+  value while displaying the resulting, masked PET data.
+  <PRE>
+if (batch)
+  mask = PET_int1 &gt; (1.8*mean(PET_int1));
+else
+  mask = getmask (PET_int1);
+end
+</PRE>
+<P>
+<DT>11.
+<DD>Use the mask to get the mean of all gray-matter voxels.
+  Thus, we reduce the dynamic PET data (16,384 voxels sampled at
+  <I>n</I> points in time) to a single time-activity curve (average of
+  gray-matter activity at <I>n</I> points in time).
+  <PRE>
+A = (mean (PET (find(mask),:)))';
+clear mask;
+</PRE>
+<P>
+<DT>12.
+<DD>The actual delay/dispersion correction is performed by
+  <TT>correctblood</TT>.  See sections <A HREF="node7.html#sec:blood_correction">2.4</A>, and
+  <A HREF="node14.html#sec:correctblood_listing">3.3.3</A> for information on (respectively) the
+  theoretical basis and the implementation of delay/dispersion
+  correction.
+  <PRE>
+[ts_even, Ca_even, delta(:,current_slice)] = correctblood ...
+    (A, FrameTimes, FrameLengths, g_even, ts_even, progress);
+</PRE>
+<P>
+<DT>13.
+<DD>Generate tables of the three weighted integrals of 
+<!-- MATH: $Ca(t)
+\otimes e^{-k_{2}t}$ -->
+<IMG
+ WIDTH="113" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.gif"
+ ALT="$Ca(t)
+\otimes e^{-k_{2}t}$">.
+(Actually, we generate tables of this
+  expression integrated across each individual frame, then integrated
+  across all frames; the procedure is identical to that used in RCBF1
+  except for the addition of a third weighting function and the
+  greatly expanded range of possible values for <I>k</I><SUB>2</SUB>.)
+  <PRE>
+[conv_int1,conv_int2,conv_int3] = findintconvo (Ca_even,ts_even,...
+   k2_lookup, MidFTimes, FrameLengths, 1, w2, w3);
+</PRE>
+<P>
+<DT>14.
+<DD>Generate some additional useful integrals.  These are used more
+  than once in the subsequent code, and so are calculated in advance
+  to speed up the computation.  <TT>Ca_mft</TT> is the blood data
+  averaged over each frame.  This is taken as the value of the blood
+  data at the mid-frame time.  Note that we must detect when the blood
+  data does not cover all the frames that the PET data does; this is
+  made easy because <TT>nframeint</TT> does the work for us.  In
+  particular, if the start time of any frame (some element of
+  <TT>FrameTimes</TT>) is less than the start time of blood data
+  [<TT>ts_even(1)</TT>], then <TT>nframeint</TT> returns <TT>NaN</TT>
+  (not-a-number) in the element of <TT>Ca_mft</TT> corresponding to that
+  frame.  Similarly, if the end time of any frame (some element of
+  <TT>FrameTimes+FrameLengths</TT>) is greater than the end time of
+  blood data [<TT>ts_even(length(ts_even))</TT>], then <TT>NaN</TT>
+  is also returned.  The frames that fall outside of the blood data
+  are then not used in generating the weighted integrals of the blood data.
+<PRE>
+Ca_mft = nframeint (ts_even, Ca_even, FrameTimes, FrameLengths);      
+select = ~isnan(Ca_mft);
+
+if (sum(select) ~= length(FrameTimes))
+  disp('Warning: blood data does not span frames.');
+end
+  
+Ca_int1 = ntrapz(MidFTimes(select), Ca_mft(select), w1(select));
+Ca_int2 = ntrapz(MidFTimes(select), Ca_mft(select), w2(select));
+Ca_int3 = ntrapz(MidFTimes(select), Ca_mft(select), w3(select));
+</PRE>
+<P>
+<DT>15.
+<DD>Generate the lookup table relating <I>k</I><SUB>2</SUB> to values of the right
+hand side of equation (<A HREF="node6.html#eq:k1two">10</A>).  We also calculate the left
+hand side of equation (<A HREF="node6.html#eq:k1two">10</A>), which will be used in the
+generation of a <I>k</I><SUB>2</SUB> image.  Here, we see the value of precomputing
+all the terms of <TT>rL</TT> and <TT>rR</TT>--not only is the code fairly
+straightforward [as long as you understand the correspondence between
+the variables <TT>Ca_int<I>i</I></TT>, <TT>PET_int<I>i</I></TT> and
+<TT>conv_int<I>i</I></TT>, and the terms of equation (<A HREF="node6.html#eq:k1two">10</A>)],
+but the computation of <TT>rL</TT> and <TT>rR</TT> is very fast.
+
+<P>
+Note that since <TT>PET_int<I>i</I></TT> is an image (i.e. it contains
+a value for each voxel in the slice), and <TT>Ca_int<I>i</I></TT> is a
+scalar, then <TT>rL</TT> will be an image.  However, 
+<TT>conv_int<I>i</I></TT> is a lookup table keyed on
+<TT>k2_lookup</TT>; that is, there it contains one value for every
+value of <I>k</I><SUB>2</SUB> presumed possible.  Thus, <TT>rR</TT> will be also be a
+lookup table keyed on <TT>k2_lookup</TT>.
+<PRE>
+rL = ((Ca_int3 * PET_int1) - (Ca_int1 * PET_int3)) ./ ...
+      ((Ca_int3 * PET_int2) - (Ca_int2 * PET_int3));
+
+rR = ((Ca_int3 * conv_int1) - (Ca_int1 * conv_int3)) ./ ...
+      ((Ca_int3 * conv_int2) - (Ca_int2 * conv_int3));
+</PRE>
+<P>
+<DT>16.
+<DD>Since <TT>rL</TT> and <TT>rR</TT> are the left- and right-hand-sides
+  of equation (<A HREF="node6.html#eq:k1two">10</A>), we can use their equality to find
+  <I>k</I><SUB>2</SUB> for every voxel.  That is, we know <TT>rL</TT> for every voxel,
+  and we know <TT>rR</TT> for a certain set of values of <I>k</I><SUB>2</SUB>.  Thus,
+  we can use <TT>rR</TT> to interpolate values of <I>k</I><SUB>2</SUB>.  First,
+  however, we must invert the current relationship between
+  <TT>k2_lookup</TT> and <TT>rR</TT>; that is, we must make
+  <TT>k2_lookup</TT> a lookup table keyed on the values of <TT>rR</TT>.
+  MATLAB's <TT>sort</TT> function makes this quite easy: we can sort
+  <TT>rR</TT> and get a vector containing the ``sort order'' in one
+  step.  Since we need <TT>k2_lookup</TT> in its original order later
+  on, we make a copy called <TT>k2_sorted</TT> (even though it's now
+  scrambled) that is ordered according to <TT>rR</TT>.
+<PRE>
+[rR,sort_order] = sort (rR);
+k2_sorted = k2_lookup (sort_order);
+</PRE>
+<P>
+<DT>17.
+<DD>Generate the <I>k</I><SUB>2</SUB> image, through a simple table lookup.
+Values of <I>k</I><SUB>2</SUB> are chosen by finding the value of <I>k</I><SUB>2</SUB> where
+<TT>rL</TT> and <TT>rR</TT> are equal.
+<PRE>
+k2 = lookup(rR, k2_sorted, rL);
+</PRE>
+<P>
+<DT>18.
+<DD>Generate the <I>K</I><SUB>1</SUB> image by evaluating the numerator of
+equation (<A HREF="node6.html#eq:k1two">10</A>).  All of the time consuming calculations
+have already been performed, and we can evaluate the 
+<!-- MATH: $\int_{0}^{T} w
+(\int_{T_1}^{T_2} Ca(u) \otimes e^{-k_{2}u} du)/(T_2 - T_1) dt$ -->
+<IMG
+ WIDTH="322" HEIGHT="42" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.gif"
+ ALT="$\int_{0}^{T} w
+(\int_{T_1}^{T_2} Ca(u) \otimes e^{-k_{2}u} du)/(T_2 - T_1) dt$">
+terms
+through table lookup.
+<PRE>
+K1_numer = ((Ca_int3*PET_int1) - (Ca_int1 * PET_int3));
+K1_denom = (Ca_int3 * lookup(k2_lookup,conv_int1,k2)) - ...
+           (Ca_int1 * lookup(k2_lookup,conv_int3,k2));
+K1 = K1_numer ./ K1_denom;
+</PRE>
+<P>
+<DT>19.
+<DD>Generate the <I>V</I><SUB>0</SUB> image by evaluating equation
+(<A HREF="node6.html#eq:fullweight1">7</A>) directly.  Once again, we may get values for
+the complicated part of the equation through simple table lookup.
+<PRE>
+V0 = (PET_int1 - (K1 .* lookup(k2_lookup,conv_int1,k2))) / Ca_int1;
+</PRE>
+<P>
+<DT>20.
+<DD>Clean up the images by removing NaN's and infinities (setting
+them to zero).
+<PRE>
+nuke = find (isnan (K1));
+K1 (nuke) = zeros (size (nuke));
+nuke = find (isinf (K1));
+K1 (nuke) = zeros (size (nuke));
+
+nuke = find (isnan (V0));
+V0 (nuke) = zeros (size (nuke));
+nuke = find (isinf (V0));
+V0 (nuke) = zeros (size (nuke));
+</PRE>
+<P>
+<DT>21.
+<DD>Convert from the units used internally to the standard units for
+  rCBF analysis.
+  <PRE>
+rescale (K1, 100*60/1.05);
+rescale (k2, 60);
+rescale (V0, 100/1.05);
+</PRE>
+<P>
+<DT>22.
+<DD>Finally, close the image file so that everything gets cleaned
+up nicely.
+<PRE>
+closeimage (img);
+</PRE>
+<P>
+</DL>
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html194"
+ HREF="node14.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html191"
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html185"
+ HREF="node12.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html193"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html195"
+ HREF="node14.html">CORRECTBLOOD</A>
+<B> Up:</B> <A NAME="tex2html192"
+ HREF="node11.html">Annotated Program Listings</A>
+<B> Previous:</B> <A NAME="tex2html186"
+ HREF="node12.html">RCBF1</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

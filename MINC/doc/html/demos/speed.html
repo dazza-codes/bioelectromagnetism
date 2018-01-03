@@ -1,0 +1,130 @@
+<HTML>
+<TITLE>Speeding up MATLAB</TITLE>
+<H2>Speeding up MATLAB</H2>
+
+One of the frequent complaints that we hear from people just being
+introduced to MATLAB is that it is terribly slow.  There <I>is</I> a
+speed trade-off inherent in MATLAB.  Since it is an interpreted
+language instead of a compiled language (such as C or FORTRAN), its
+speed will almost always lag behind that of a custom program written
+in a language like C.  However, this speed loss is made up for by the
+ease of code development.
+
+<P>
+Fortunately, the speed of MATLAB can be increased significantly by
+careful construction of the scripts.  There is one basic rule to
+follow when writing a MATLAB script for speed:
+
+<UL>
+<LI> Under all circumstances, try to avoid the use of <TT>for</TT>
+loops in MATLAB.
+</UL>
+
+This rule has a simple to remember corollary:
+
+<UL>
+<LI> Vectorize, vectorize, vectorize.
+</UL>
+
+In other words, whenever possible use vector operations.  For many
+operations, with some thought applied to vectorization, code speed can
+be increased by several orders of magnitude.  Unfortunately,
+vectorization can be difficult for someone new to MATLAB to visualize.
+Since most people are introduced to MATLAB after they already have a
+familiarization with traditional programming languages, they tend to
+use <TT>for</TT> loops automatically.
+
+<P>
+Let's consider a simple example.  We want to find how many points in
+an image have a value greater than 2000.  In a traditional programming
+language, we might take the following approach:
+
+<PRE>
+j=0;
+for i=1:16384;
+    if (PET(i)>2000)
+        j=j+1;
+    end
+end
+</PRE>
+
+This takes about a second to execute under MATLAB.  A vectorized
+approach is to use the MATLAB <TT>find</TT> function:
+
+<PRE>
+length(find(PET>2000));
+</PRE>
+
+This takes about 0.07 seconds to execute, and is therefore
+approximately 15 times faster than the traditional approach.  Now,
+consider the following related problem.  We wish to create a mask
+based on the image we were just manipulating, where any point whose
+value is greater than 2000 is set to one, and all other points are set
+to zero.  The traditional solution to this might look something like:
+
+<PRE>
+mask=zeros(16384,1);
+for i=1:16384;
+    if (PET(i)>2000)
+        mask(i)=1;
+    end;
+end;
+</PRE>
+
+This takes about 0.81 seconds to execute.  A faster, vectorized
+approach is as follows:
+
+<PRE>
+mask2=zeros(16384,1);
+index=find(PET>2000);
+mask2(index)=ones(size(index));
+</PRE>
+
+This takes about 0.05 seconds to execute, and is therefore about 16
+times faster than the traditional approach.  It also introduces an
+important technique that is useful when vectorizing routines: using a
+vector as an index to another vector.  In the above code fragment, the
+variable <TT>index</TT> contains the indices of values.
+
+<P>
+One other thing to keep in mind when trying to speed up MATLAB code is
+that it is possible to call FORTRAN or C routines from within MATLAB.
+These functions are called either FMEX or CMEX functions depending on
+which language they are written in, and details on creating them can
+be found in the MATLAB External Interface Guide.
+
+<P>
+The EMMA toolbox contains several CMEX versions of popular MATLAB
+functions:
+
+<OL>
+
+<LI> <TT>ntrapz</TT> is a replacement for the MATLAB <TT>trapz</TT>
+trapezoidal integration function.
+
+<LI> <TT>nfmins</TT> is a replacement for the MATLAB <TT>fmins</TT>
+function minimization routine.
+
+<LI> <CODE>lookup</CODE> performs 1-D linear interpolation, similar to
+MATLAB's <CODE>interp1</CODE> routine.
+
+<LI> <CODE>rescale</CODE> is useful for scaling a large matrix by a
+constant, or by another matrix of the same size and shape.
+<CODE>rescale</CODE> doesn't offer a significant speed advantage over
+the <CODE>.*</CODE> operator, but it performs the arithmetic in place,
+so no copy is made of the target matrix.  This can result in significant
+memory savings.
+
+  </OL>
+
+These routines are functionally identical to the MATLAB routines, and
+simply offer an increase in speed.
+
+<HR>
+
+<ADDRESS>
+This page was created by Mark Wolforth
+(wolforth@bic.mni.mcgill.ca)
+</ADDRESS>
+
+</HTML>

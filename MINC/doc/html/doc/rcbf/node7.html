@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Delay and Dispersion Correction</TITLE>
+<META NAME="description" CONTENT="Delay and Dispersion Correction">
+<META NAME="keywords" CONTENT="rcbf">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="rcbf.css">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html117"
+ HREF="node8.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html114"
+ HREF="node3.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html110"
+ HREF="node6.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html116"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html118"
+ HREF="node8.html">MATLAB Implementation</A>
+<B> Up:</B> <A NAME="tex2html115"
+ HREF="node3.html">Mathematical Analysis</A>
+<B> Previous:</B> <A NAME="tex2html111"
+ HREF="node6.html">Triple-Weighted Integration Method</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00034000000000000000">&#160;</A>
+<A NAME="sec:blood_correction">&#160;</A>
+<BR>
+Delay and Dispersion Correction
+</H2>
+
+<P>
+Since the blood samples used to estimate <I>C</I><SUB><I>a</I></SUB>(<I>t</I>) are taken from the
+subject's arm, the activity data gathered from them must be corrected
+for delay and dispersion within the body.  In order to perform the
+delay correction, we used the technique of Iida, by performing a
+least squares fitting of the equation:
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+A^{*}(t) = \frac{\int\limits_{T_1}^{T_2} \left( \alpha \left[ C_a(t) \otimes
+e^{-\beta t} \right] + \gamma C_a(t) \right) dt} {T_2 - T_1}
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:delay_correct">&#160;</A><IMG
+ WIDTH="332" HEIGHT="76"
+ SRC="img14.gif"
+ ALT="\begin{displaymath}A^{*}(t) = \frac{\int\limits_{T_1}^{T_2} \left( \alpha \left[...
+...
+e^{-\beta t} \right] + \gamma C_a(t) \right) dt} {T_2 - T_1}
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(11)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+where <I>A</I><SUP>*</SUP>(<I>t</I>) in this case is the average activity over grey
+matter, 
+<!-- MATH: $\int_{T_1}^{T_2}dt$ -->
+<IMG
+ WIDTH="50" HEIGHT="42" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.gif"
+ ALT="$\int_{T_1}^{T_2}dt$">
+represents integration over frames,
+<IMG
+ WIDTH="17" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$\alpha$">,
+<IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$\beta$">,
+and <IMG
+ WIDTH="16" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$\gamma$">
+are the fitting parameters, and
+<I>C</I><SUB><I>a</I></SUB>(<I>t</I>) is the blood data.  The delay itself enters this equation by
+generating <I>C</I><SUB><I>a</I></SUB>(<I>t</I>) from:
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+C_a(t) = \bar{g}(t+\delta)
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:blood_delay">&#160;</A><IMG
+ WIDTH="130" HEIGHT="33"
+ SRC="img19.gif"
+ ALT="\begin{displaymath}C_a(t) = \bar{g}(t+\delta)
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(12)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+<P>
+The function <IMG
+ WIDTH="14" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.gif"
+ ALT="$\bar{g}$">
+is the result of performing dispersion
+correction on the blood sample data.  This is represented by the
+equation:
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+\bar{g}(t) = g(t) + \tau \frac{dg}{dt}
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:dispersion_correct">&#160;</A><IMG
+ WIDTH="142" HEIGHT="46"
+ SRC="img21.gif"
+ ALT="\begin{displaymath}\bar{g}(t) = g(t) + \tau \frac{dg}{dt}
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(13)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+which is an implicit deconvolution of the equation:
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+g(t) = \bar{g}(t) \otimes \left[ \frac{1}{\tau} e^{\frac{-t}{\tau}}
+\right]
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="164" HEIGHT="46"
+ SRC="img22.gif"
+ ALT="\begin{displaymath}g(t) = \bar{g}(t) \otimes \left[ \frac{1}{\tau} e^{\frac{-t}{\tau}}
+\right]
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(14)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+<P>
+
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html117"
+ HREF="node8.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html114"
+ HREF="node3.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html110"
+ HREF="node6.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html116"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html118"
+ HREF="node8.html">MATLAB Implementation</A>
+<B> Up:</B> <A NAME="tex2html115"
+ HREF="node3.html">Mathematical Analysis</A>
+<B> Previous:</B> <A NAME="tex2html111"
+ HREF="node6.html">Triple-Weighted Integration Method</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

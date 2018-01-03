@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Preparing Blood Data</TITLE>
+<META NAME="description" CONTENT="Preparing Blood Data">
+<META NAME="keywords" CONTENT="rcbf">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="rcbf.css">
+<LINK REL="next" HREF="node19.html">
+<LINK REL="previous" HREF="node17.html">
+<LINK REL="up" HREF="node17.html">
+<LINK REL="next" HREF="node19.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html249"
+ HREF="node19.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html246"
+ HREF="node17.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html240"
+ HREF="node17.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html248"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html250"
+ HREF="node19.html">Doing the Analysis</A>
+<B> Up:</B> <A NAME="tex2html247"
+ HREF="node17.html">Using the rCBF Package</A>
+<B> Previous:</B> <A NAME="tex2html241"
+ HREF="node17.html">Using the rCBF Package</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00051000000000000000">
+Preparing Blood Data</A>
+</H2>
+
+<P>
+The EMMA function <TT>resampleblood</TT> that is used in rCBF to get
+the blood data expects the data to either be included in the image
+MINC file, or to be contained in a netCDF file with a <TT>.bnc</TT>
+ending.
+
+<P>
+In order to assist the user by creating the <TT>.bnc</TT> file, there
+is a utility called <TT>bloodtonc</TT>.  This program takes a
+<TT>.cnt</TT> file, and converts it to a <TT>.bnc</TT> file that will be
+read by the rCBF package.
+
+<P>
+To perform the conversion, use FTP to transfer the <TT>.cnt</TT> file
+from the VAX to the SGI using ASCII mode.  Next, type:
+
+<P>
+<PRE>
+     bloodtonc filename.cnt filename.bnc
+</PRE>
+<P>
+where <TT>filename</TT> is the name of the file (eg.
+<TT>arnaud_20547</TT>).  In order for <TT>resampleblood</TT> to find the
+<TT>.bnc</TT> file, it must be in the same directory as the <TT>.mnc</TT>
+file that contains the images.  Therefore, make sure that they are in
+the same directory before performing the analysis using rCBF.
+
+<P>
+<BR><HR>
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

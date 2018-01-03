@@ -1,0 +1,48 @@
+The two command line programs (PointtoTD and ExceltoTD) will run on a Sun system with Solaris 2.5.
+
+PointtoTD -  This program requires three arguments separated by commas.  One is the database (use database 2 for now), followed by x,y,z Talairach coordinates in mm.  It returns anatomical labels from the 1988 Talairach atlas.
+
+For example:  PointtoTD 2,-25,-31,55 will respond with:
+
+Sent: 2,-25,-31,55
+Returned: Left Hemisphere,Parietal Lobe,Postcentral Gyrus,Gray Matter,Brodmann area 3
+
+This information can be used to help users with anatomical labels for various locations within the standardized Talairach space.
+
+
+ExceltoTD - This program requires two arguments "separated by a space".  The first argument is the database (use database 2 for now) and the second is the name of a text file with x,y,z coordinates in a tab-delimited format (can be saved in this format from Excel therefore the name).  The program does not work with regular Excel fine formats.  The program outputs a new file with the same name as that used on the command line but with a .td extension.  The new file contains both coordinates and labels.
+
+For example, if a file named "my_list" contains the following list of coordinates:
+
+-15     -33     55
+-15     -31     55
+-30     -28     55
+-28     -28     55
+-39     -16     55
+-37     -16     55
+-25     -31     55
+-33     -23     55
+
+typing ExceltoTD 2 my_list will create a new file named my_list.td with contents as below:
+
+-15     -33     55      Left Hemisphere Frontal Lobe    Paracentral Lobule White Matter
+-15     -31     55      Left Hemisphere Frontal Lobe    Paracentral Lobule White Matter
+-30     -28     55      Left Hemisphere Frontal Lobe    Precentral Gyrus Gray Matter     Brodmann area 4
+-28     -28     55      Left Hemisphere Frontal Lobe    Precentral Gyrus Gray Matter     Brodmann area 4
+-39     -16     55      Left Hemisphere Frontal Lobe    Precentral Gyrus Gray Matter     Brodmann area 4
+-37     -16     55      Left Hemisphere Frontal Lobe    Precentral Gyrus White Matter    Brodmann area 4
+-25     -31     55      Left Hemisphere Parietal Lobe   Postcentral Gyrus Gray Matter     Brodmann area 3
+-33     -23     55      Left Hemisphere Frontal Lobe    Precentral Gyrus White Matter
+
+We are continually refining this information so some of the values, especially near boundaries may differ slightly from time to time, but this will not affect results for large regions.  Using test points near the target point will help get a better idea of the labels in the region of the target point.
+
+Hope this information is helpful. 
+
+Jack L. Lancaster, Ph.D.
+Research Imaging Center
+UTHSCSA
+San Antonio, TX  78284-6240
+
+e-mail:  jlancaster@uthscsa.edu
+phone:  210-567-8100
+FAX:  210-567-8152

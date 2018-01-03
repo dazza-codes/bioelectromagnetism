@@ -1,0 +1,99 @@
+A.gesichert {
+	FONT-SIZE: 8pt; COLOR: #cccccc; FONT-STYLE: italic; TEXT-DECORATION: none
+}
+A:link {
+	COLOR: #cc3300
+}
+A:visited {
+	COLOR: #cc0000; TEXT-DECORATION: underline
+}
+A:hover {
+	COLOR: #990000; TEXT-DECORATION: none
+}
+A:active {
+	COLOR: #990000; TEXT-DECORATION: none
+}
+ADDRESS {
+	MARGIN-TOP: 20px; FONT-WEIGHT: bolder; FONT-SIZE: 8pt; MARGIN-LEFT: 40px; COLOR: #999999
+}
+BODY {
+	FONT-SIZE: 9pt; MARGIN: 0px 20px; COLOR: #555555; FONT-FAMILY: Verdana, "Trebuchet MS", Geneva, Arial, sans-serif; BACKGROUND-COLOR: #ffffcc
+}
+TD {
+	FONT-SIZE: 9pt; MARGIN: 0px 20px; COLOR: #555555; FONT-FAMILY: Verdana, "Trebuchet MS", Geneva, Arial, sans-serif; BACKGROUND-COLOR: #ffffcc
+}
+H1 {
+	MARGIN-TOP: 15px; FONT-WEIGHT: 600; FONT-SIZE: 16pt; MARGIN-BOTTOM: 5px; MARGIN-LEFT: 20px; COLOR: #ff9900; TEXT-INDENT: -20px
+}
+H1.lang {
+	FONT-WEIGHT: normal; FONT-SIZE: 14pt; LINE-HEIGHT: 110%
+}
+H2 {
+	FONT-WEIGHT: normal; FONT-SIZE: 14pt; MARGIN-BOTTOM: 5px; MARGIN-LEFT: 20px; COLOR: #ff9900
+}
+H3 {
+	MARGIN-TOP: 20px; FONT-WEIGHT: bold; FONT-SIZE: 11pt; MARGIN-BOTTOM: 5px; MARGIN-LEFT: 20px; COLOR: #ff9900
+}
+H4 {
+	MARGIN-TOP: 10px; FONT-WEIGHT: bold; FONT-SIZE: 10pt; MARGIN-BOTTOM: 0px; MARGIN-LEFT: 40px; COLOR: #555555
+}
+H5 {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; MARGIN-BOTTOM: 0px; MARGIN-LEFT: 20px; COLOR: #999999
+}
+H6 {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; MARGIN-BOTTOM: 0px; COLOR: #ff9900
+}
+LI {
+	MARGIN-BOTTOM: 2px; MARGIN-LEFT: 60px; TEXT-INDENT: -60px
+}
+MENU {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; MARGIN-LEFT: 40px; COLOR: #555555
+}
+OL {
+	MARGIN-TOP: 0px; COLOR: #555555; LIST-STYLE-TYPE: decimal
+}
+P {
+	MARGIN-TOP: 0px; FONT-WEIGHT: normal; MARGIN-BOTTOM: 5px; COLOR: #555555; TEXT-INDENT: 0px; TEXT-ALIGN: justify
+}
+P.bild {
+	MARGIN-TOP: 40px; MARGIN-BOTTOM: 30px; COLOR: #999999; TEXT-INDENT: 0px; TEXT-ALIGN: center
+}
+P.gelistet {
+	MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px; MARGIN-LEFT: 40px; TEXT-INDENT: 0px; TEXT-ALIGN: justify
+}
+P.gelistetklein {
+	MARGIN-TOP: 0px; FONT-SIZE: 8pt; MARGIN-BOTTOM: 5px; MARGIN-LEFT: 40px; TEXT-INDENT: 0px; LINE-HEIGHT: 120%; TEXT-ALIGN: justify
+}
+P.gesichert {
+	MARGIN-TOP: 40px; FONT-SIZE: 8pt; MARGIN-LEFT: 0px; COLOR: #cccccc; TEXT-INDENT: 0px; FONT-STYLE: italic; TEXT-ALIGN: center
+}
+P.vorwort {
+	FONT-WEIGHT: lighter; FONT-SIZE: 8pt; MARGIN-LEFT: 40px; COLOR: #999999; TEXT-INDENT: 0px; MARGIN-RIGHT: 40px
+}
+P.zentriert {
+	TEXT-INDENT: 0px; TEXT-ALIGN: center
+}
+TABLE {
+	BORDER-RIGHT: medium none; BORDER-TOP: medium none; MARGIN-BOTTOM: 10px; BORDER-LEFT: medium none; MARGIN-RIGHT: 0px; BORDER-BOTTOM: medium none
+}
+TH {
+	BACKGROUND: #ececec; TEXT-ALIGN: left
+}
+TR {
+	VERTICAL-ALIGN: baseline
+}
+UL {
+	MARGIN-TOP: 0px; LIST-STYLE-TYPE: none
+}
+UL.disc {
+	LIST-STYLE-IMAGE: url(disc.gif)
+}
+UL.klein {
+	FONT-SIZE: 8pt
+}
+.tod {
+	BACKGROUND-COLOR: #ffffff
+}
+.myList {
+	LIST-STYLE-POSITION: outside; LIST-STYLE-TYPE: disc
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html><head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Gandalf the Gray">
+   <meta name="GENERATOR" content="Mozilla/4.51 [en] (Win98; I) [Netscape]"><title>Boundary Value Problems</title></head>
+
+<body text="#000000" bgcolor="#ffffff" link="#0000ee" vlink="#800080" alink="#0000ee">
+
+<center>
+<h1>
+A BVP-Solver for Matlab</h1></center>
+
+<h2>
+Intended use</h2>
+The <a href="http://www.math.tuwien.ac.at/%7Egkneisl/Downloads/BVPs.zip" title="Zipped m-files, 25 kB">BVP-package</a>
+contains functions for solving nonlinear ODE-boundary value problems of
+first and second order on nonequidistant grids.
+<center><img src="Boundary_Value_Problems_files/BVP.gif" vspace="10" nosave="" title="First order BVP" height="53" width="494">
+<br><img src="Boundary_Value_Problems_files/BVP2.gif" nosave="" title="Second order BVP" height="62" width="655"></center>
+
+<p>Dimensions of the systems are arbitrary, local discretisation error
+is O(2). Although every explicit second order BVP can be rewritten as a
+first order BVP, I chose to implement a special solver for second order
+problems, since they appear frequently. Applied to them, this solver is
+more efficient than the general first order solver, because it is adapted
+to the particular form of the problem.
+</p><p>The discretisation method used for first order problems is known as
+the "Trapezoidal Rule", the method used for second order problems is a
+generalisation of the symmetric difference discretisation to nonequidistant
+grids (consult the readme-file for an explicit definition). These methods
+limit the range of applicability to non-stiff problems.
+</p><h2>
+Example</h2>
+To illustrate the capabilities of the BVP-package, I will pick out an example
+that is included in the package's demo-files. Consider a central force
+field like a gravitational field and define the origin to be the center
+of mass. At time t=0, position of a particle shall be given by p=(2,1)
+(note that it is sufficient to treat any two-body problem in two dimensions,
+due to conservation of angular momentum). At time t=T we want our particle
+to have an x-coordinate equal to -2 and speed zero in x-direction.
+<center><img src="Boundary_Value_Problems_files/BVP-gravitation_def.gif" vspace="15" nosave="" title="A gravitational BVP" height="151" width="594"></center>
+How fast and in which direction do we have to shoot off our particle ?
+What path does it take ? The picture below shows the solution to this problem
+obtained by calling the second order BVP-solver. The arrows indicate the
+forces that are exerted on the particle along its path.
+<br>&nbsp;
+<br>&nbsp;
+<br>
+<br>
+<center>
+<p><img src="Boundary_Value_Problems_files/BVP-gravitation.gif" nosave="" title="Mass (red), equipotentials (violet), particle path and forces (yellow)" height="472" width="466"></p></center>
+
+</body></html>

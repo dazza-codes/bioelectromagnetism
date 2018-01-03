@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0074)http://www.kuleuven.ac.be/radiology/Research/fMRI/kulCONV/KULCONVauto.html -->
+<HTML><HEAD><TITLE>KULeuven Scripts for conversion of DICOM to SPM (ANALYZE) format.</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<META content="Sarka Mierisova" name=Author>
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR>
+<META 
+content="Website of the Department of Radiology of the University Hospitals Leuven, about software to automate SPM99, the functional image analysis package of the FIL." 
+name=Description>
+<META 
+content="Functional Magnetic Resonance Imaging, fMRI, SPM99, matlab,conversion,DICOM,SIEMENS SONATA" 
+name=KeyWords></HEAD>
+<BODY text=#000000 vLink=#551a8b aLink=#ff0000 link=#0000ee bgColor=#ffffff 
+background=KULCONVauto_files/BGblueIndex.jpg><B><FONT size=+4>Conversion tools 
+for Siemens Syngo DICOM to SPM</FONT></B> 
+<P><A name=Intro></A><B><FONT size=+2>1. Introduction &amp; Purpose</FONT></B> 
+<P>This tool is intended for those who perform functional MRI on the <A 
+href="http://www.siemensmedical.com/products.asp?NodeStyle=1&amp;NodeID=518&amp;NodeName=syngo&amp;">Siemens 
+Syngo</A> platform and want to <BR>process their functional MRI experiments with 
+Statistical Parametric Mapping (SPM99). 
+<P>We provide (as is - no guarantees) a tool to convert Syngo exported DICOM 
+images (.MR..*.IMA) to SPM <BR>analyze format. With the currect version it is 
+possible to convert: 
+<UL>
+  <LI>single DICOM images (every slice in a separate DICOM file) 
+  <LI>mosaic DICOM images (n slices in one DICOM file) </LI></UL>
+<P><BR><A name=Require></A><B><FONT size=+2>2. Hardware/software 
+requirements</FONT></B> 
+<P>Impatient? Go to <A 
+href="http://www.kuleuven.ac.be/radiology/Research/fMRI/kulCONV/KULCONVauto.html#Download">download</A>. 
+
+<P>The conversion program is supported (and also tested) on two operating 
+systems: 
+<UL>
+  <LI>LINUX 
+  <LI>Windows 2000 
+  <P><BR><I>Note:</I> It should run also on other UNIX systems, if everything is 
+  done as for the LINUX system as well as on other Windows 
+versions.</P></LI></UL>To run the program in general you need: 
+<UL>
+  <LI><TT>matlab5</TT> or <TT>matlab6</TT> 
+  <LI><TT>spm99</TT> (statistical parametric mapping, available from <A 
+  href="http://www.fil.ion.ucl.ac.uk/spm/">http://www.fil.ion.ucl.ac.uk/spm/</A>) 
+
+  <LI><TT>medcon</TT> program (to convert DICOM images, available from: <A 
+  href="http://xmedcon.sourceforge.net/">http://xmedcon.sourceforge.net/</A>) 
+  <LI>and some special things depending on your operating system - please see 
+  below 
+  <P><BR>For a LINUX/UNIX version you need to have installed: 
+  <UL>
+    <LI><TT>mmv</TT> (multiple move command) </LI></UL>
+  <P><BR>For Windows 
+  <UL>
+    <LI>the DOS version of the UNIX command '<TT>strings</TT>' - 
+    <TT>strings.exe</TT> (you may take a Unix 95 Collection Version 7 from <A 
+    href="http://virtunix.itribe.net/mystuff.html">http://virtunix.itribe.net/mystuff.html</A>, 
+    the package includes also <TT>gzip.exe</TT> and <TT>tar.exe</TT> to unzip 
+    and untar our dowloadable file) </LI></UL></LI></UL><B><U>INSTALLATION</U></B> 
+<P>Uncompress the dowloaded file: 
+<UL>
+  <LI>using DOS/UNIX/LINUX commands: 
+  <UL> <BR><TT>gzip -d dcm2spm.tar.gz</TT> <BR><TT>tar -xvf dcm2spm.tar</TT> 
+    <BR><TT></TT>&nbsp;</UL>
+  <LI>on Windows PCs you may use the <TT>WinZIP</TT> program. 
+  <P><BR>The <TT>DCM2SPM</TT> directory is created in your current 
+  directory.</P></LI></UL>Copy files from <TT>DCM2SPM</TT> directory into the 
+directory which is included in your matlab path. <BR>&nbsp; 
+<P><A name=Usage></A><B><FONT size=+2>3. Usage</FONT></B> 
+<P>The use of the conversion is rather easy than difficult - via the graphical 
+user interface. 
+<P>Before running it you need to put your DICOM images on your PC (we do export 
+the data from SIEMENS SONATA and the images are automatically saved as DICOM 
+images). 
+<P>Organise your DICOM images as follow<TT>s:</TT> 
+<BLOCKQUOTE><TT>DICOM_dir&nbsp; -&gt; </TT>directory containing all functional 
+  MRI data - DICOM images; <BR><TT>&nbsp;|</TT> <BR><TT>&nbsp;|- 
+  MPR&nbsp;&nbsp;&nbsp; -&gt; </TT>sub-directory containing anatomical DICOM 
+  images</BLOCKQUOTE>
+<P><BR>Launch <TT>matlab</TT>, start <TT>spm99</TT> and behind the matlab prompt 
+type: <B><TT><FONT color=#993399>sonata</FONT></TT></B>. The window comes up: 
+<P><IMG height=158 src="KULCONVauto_files/v3_sonata.gif" width=508> 
+<P>From the pop-up menu select the type of images to be converted. So far, three 
+types of DICOM images are possible convert: 
+<UL>
+  <LI>Single DICOM images 
+  <LI>Mosaic DICOM images (the latest format available from SIEMENS, see 
+  description below) 
+  <BLOCKQUOTE>Let's start with some history first, with the previous mosaic 
+    format (in fact, the first mosaic format released for the SYNGO platform). 
+    Suppose that you run first localizer (three images), i.e. series #1 and then 
+    your functional MRI experiment (suppose 125 timepoints, 32 slices), i.e. 
+    series #2; you export all the images and this results in the following file 
+    naming: 
+    <BLOCKQUOTE><TT>.MR..1.1.year.month.day.a.b.c.x.y.IMA</TT> 
+      <BR><TT>.MR..1.2.year.month.day.a.b.c.x.y.IMA</TT> 
+      <BR><TT>.MR..1.3.year.month.day.a.b.c.x.y.IMA</TT> <BR><TT>.MR..<FONT 
+      color=#3333ff>2</FONT>.<FONT 
+      color=#ff0000>31</FONT>.year.month.day.a.b.c.x.y.IMA</TT> 
+      <BR><TT>.MR..<FONT color=#3333ff>3</FONT>.<FONT 
+      color=#ff0000>31</FONT>.year.month.day.a.b.c.x.y.IMA</TT> <BR><TT>.</TT> 
+      <BR><TT>.</TT> <BR><TT>.MR..<FONT color=#3333ff>126</FONT>.<FONT 
+      color=#ff0000>31</FONT>.year.month.day.a.b.c.x.y.IMA</TT></BLOCKQUOTE>where 
+    a, b, c are most likely time parameters and x, y are the random numbers. The 
+    localizer images have all the images named as <TT>.MR..1.*.IMA</TT> but the 
+    functional MRI images have every 32 slices grouped in one mosaic image and 
+    the <FONT color=#3333ff>blue</FONT> number is increasing. The <FONT 
+    color=#ff0000>red</FONT> number is the number of slices decreased by 1. This 
+    format has been replaced by the following format and most likely will not be 
+    used further (therefore, the conversion routine for this format is not 
+    supplied). 
+    <P>The <B>latest</B> mosaic format has some little improvement but it is 
+    still not ideal. Again assume that you run first localizer (three images), 
+    i.e. series #1 and then your functional MRI experiment (suppose 125 
+    timepoints, 32 slices), i.e. series #2; you export all the images and this 
+    results in the following file naming: 
+    <BLOCKQUOTE><TT>.MR..1.1.year.month.day.a.b.c.x.y.IMA</TT> 
+      <BR><TT>.MR..1.2.year.month.day.a.b.c.x.y.IMA</TT> 
+      <BR><TT>.MR..1.3.year.month.day.a.b.c.x.y.IMA</TT> <BR><TT>.MR..<FONT 
+      color=#3333ff>2</FONT>.<FONT 
+      color=#ff0000>31</FONT>.year.month.day.a.b.c.x.y.IMA</TT> 
+      <BR><TT>.MR..<FONT color=#3333ff>2</FONT>.<FONT 
+      color=#ff0000>63</FONT>.year.month.day.a.b.c.x.y.IMA</TT> 
+      <BR><TT>.MR..<FONT color=#3333ff>2</FONT>.<FONT 
+      color=#ff0000>95</FONT>.year.month.day.a.b.c.x.y.IMA</TT> <BR><TT>.</TT> 
+      <BR><TT>.</TT> <BR><TT>.MR..<FONT color=#3333ff>2</FONT>.<FONT 
+      color=#ff0000>3999</FONT>.year.month.day.a.b.c.x.y.IMA</TT></BLOCKQUOTE>where 
+    <TT>a</TT>, <TT>b</TT>, <TT>c</TT> are most likely time parameters and 
+    <TT>x</TT>, <TT>y</TT> are the random numbers. Now the <FONT 
+    color=#3333ff>blue</FONT> number stays at the value of 2 (which is quite 
+    logical since we are still in the series #2) but the <FONT 
+    color=#ff0000>red</FONT> number is increasing with the number of slices 
+    (=32). However, it would be more convenient to start the red numbers with 
+    one (first mosaic image) and increase it by 1 up to the number of timepoints 
+    as it is in case of single images (one slice per image). Hopefully, we can 
+    have it some day...</BLOCKQUOTE></LI></UL>Select the appropiate format and press 
+<B><FONT color=#33cc00>Go!</FONT></B> button. Another window comes up, e.g. for 
+the latest mosaic format it is: 
+<P><IMG height=378 src="KULCONVauto_files/v3_mdcm2spm.gif" width=553> 
+<P>Fill in the required fields according to the instructions given by the 
+program and and press the <B><FONT color=#33cc00>Run conversion 
+</FONT></B>button. <BR>After a while you will find your converted images in the 
+SPM directory: 
+<BLOCKQUOTE><TT>SPM_dir</TT> <BR><TT>&nbsp;|- anat&nbsp;&nbsp; -&gt; 
+  </TT>sub-directory with converted anatomical images <BR><TT>&nbsp;|- 
+  ts01&nbsp;&nbsp; -&gt; </TT>time series #1 (default file names 
+  <TT>im_???.img</TT>, can be changed to <TT>ts??_???.img</TT>) <BR><TT>&nbsp;|- 
+  ts02&nbsp;&nbsp; -&gt; </TT>time series #2 <BR><TT>&nbsp;|- 
+  ...&nbsp;&nbsp;&nbsp; -&gt; </TT>etc.</BLOCKQUOTE>
+<P><BR><A name=Download></A><B><FONT size=+2>4. Download</FONT></B> 
+<P>If you are interested, you may download <A 
+href="http://www.kuleuven.ac.be/radiology/Research/fMRI/kulCONV/dcm2spm_v3.tar.gz">here</A>. 
+
+<P>Should you have any problems/comments/suggestions please do not hesitate to 
+contact us. 
+<P>
+<HR width="100%">
+<BR>Last update: September 15, 2001 <BR>Authors: <A 
+href="mailto:Stefan.Sunaert@uz.kuleuven.ac.be">Stefan Sunaert</A> and <A 
+href="mailto:Sarka.Mierisova@uz.kuleuven.ac.be"><SPAN 
+style="FONT-SIZE: 12pt; FONT-FAMILY: 'Times New Roman'; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: NL; mso-fareast-language: NL; mso-bidi-language: AR-SA">Šárka</SPAN> 
+Mierisová</A> <BR>&nbsp; </BODY></HTML>

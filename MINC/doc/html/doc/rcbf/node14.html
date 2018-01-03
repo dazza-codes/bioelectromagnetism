@@ -1,0 +1,430 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>CORRECTBLOOD</TITLE>
+<META NAME="description" CONTENT="CORRECTBLOOD">
+<META NAME="keywords" CONTENT="rcbf">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="rcbf.css">
+<LINK REL="next" HREF="node15.html">
+<LINK REL="previous" HREF="node13.html">
+<LINK REL="up" HREF="node11.html">
+<LINK REL="next" HREF="node15.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html205"
+ HREF="node15.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html202"
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html196"
+ HREF="node13.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html204"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html206"
+ HREF="node15.html">FINDINTCONVO</A>
+<B> Up:</B> <A NAME="tex2html203"
+ HREF="node11.html">Annotated Program Listings</A>
+<B> Previous:</B> <A NAME="tex2html197"
+ HREF="node13.html">RCBF2</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00043300000000000000">&#160;</A>
+<A NAME="sec:correctblood_listing">&#160;</A>
+<BR>
+CORRECTBLOOD
+</H3>
+
+<P>
+<DL COMPACT>
+<DD><P>
+<DT>1.
+<DD>Function declaration and input/output arguments:
+  <PRE>
+function [new_ts_even, Ca_even, delta] = correctblood ...
+      (A, FrameTimes, FrameLengths, g_even, ts_even, options)
+</PRE>The input arguments are:
+ =
+0=
+<DL COMPACT>=-0.25in
+0
+ 
+=<TT><: </TT><879>>
+<DT>new_ts_even
+<DD>Generally the same as <TT>ts_even</TT>, with some
+  elements possibly chopped off from the end due to shifting of the
+  time scale.
+<DT>Ca_even
+<DD><TT>g_even</TT> after correction for blood dispersion
+  and delay.
+<DT>delta
+<DD>The computed delay correction <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">,
+in seconds.
+
+<P>
+<DT>2.
+<DD>Do the initial setup: calculate the mid-frame times, and find
+  frames that fall in the first 60 seconds of the study.  (Although
+  the blood data is corrected over the entire study, the delay
+  correction is based on the PET data from the first 60 seconds only,
+  since the PET time-activity-curve is relatively flat by <I>t</I>=60.)
+  because
+<PRE>
+MidFTimes = FrameTimes + FrameLengths/2;
+first60 = find (FrameTimes &lt; 60);       % all frames in first
+numframes = length(FrameTimes);         %  minute only
+</PRE>
+<P>
+<DT>3.
+<DD>Perform delay dispersion; we use <TT>deriv</TT> to compute a
+  smoothed version of <TT>g_even</TT> and its first derivative, and
+  then replace <TT>g_even</TT> with the dispersion-corrected
+  blood data (<IMG
+ WIDTH="14" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.gif"
+ ALT="$\bar{g}$">
+in equation <A HREF="node7.html#eq:dispersion_correct">13</A>).
+<PRE>
+[smooth_g_even, deriv_g] = ...
+     deriv (3, length(ts_even), g_even, (ts_even(2)-ts_even(1)));
+smooth_g_even(length(smooth_g_even)) = [];
+deriv_g(length(deriv_g)) = [];
+ts_even(length(smooth_g_even)) = [];
+ 
+g_even = smooth_g_even + tau*deriv_g;
+</PRE>
+<P>
+<DT>4.
+<DD>At this point, we are ready to start the delay
+  correction--i.e., we will find the value of <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">
+that gives a
+  function <I>C</I><SUB><I>a</I></SUB> (<I>t</I>) that best fits the PET activity <I>A</I><SUP>*</SUP>(<I>t</I>) in
+  equation <A HREF="node7.html#eq:blood_delay">12</A>.  However, there are three other
+  unknowns in equation <A HREF="node7.html#eq:blood_delay">12</A>, and it was found that a
+  full four-parameter fit was highly unstable.  Therefore, we select a
+  fixed set of values for <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">,
+perform multiple three-parameter
+  fits (for <IMG
+ WIDTH="17" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$\alpha$">,
+<IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$\beta$">,
+and <IMG
+ WIDTH="16" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$\gamma$">), and select the value of
+  <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">
+which resulted in the best fit.
+
+<P>
+First, we prepare for the repeated fits.  The fixed set of
+  <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">-values is selected; we initialize <TT>rss</TT> and
+  <TT>params</TT> (used to select the value of <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">
+which resulted in
+  the best fit); and select values of <IMG
+ WIDTH="17" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$\alpha$">,
+<IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$\beta$">,
+and <IMG
+ WIDTH="16" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$\gamma$">
+to start the fitting.  These values are selected as being fairly
+  representative of real data 
+  [
+<!-- MATH: $\alpha = 0.6 {\rm mL_{blood} / (100 \, g_{tissue} \cdot min)}$ -->
+<IMG
+ WIDTH="270" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img40.gif"
+ ALT="$\alpha = 0.6 {\rm mL_{blood} / (100 \, g_{tissue} \cdot min)}$">,
+   
+<!-- MATH: $\beta = \alpha / 0.8$ -->
+<IMG
+ WIDTH="87" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img41.gif"
+ ALT="$\beta = \alpha / 0.8$">,
+and 
+<!-- MATH: $\gamma = 0.03 \, {\rm g_{blood}/g_{tissue}}$ -->
+<IMG
+ WIDTH="173" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img42.gif"
+ ALT="$\gamma = 0.03 \, {\rm g_{blood}/g_{tissue}}$">],
+  but with <IMG
+ WIDTH="17" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$\alpha$">
+converted to our internal units of 
+  
+<!-- MATH: ${\rm g_{blood} / (g_{tissue} \cdot sec)}$ -->
+<IMG
+ WIDTH="153" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img43.gif"
+ ALT="${\rm g_{blood} / (g_{tissue} \cdot sec)}$">
+and <IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$\beta$">
+to 1/<I>sec</I>.
+  The <TT>init</TT> vector holds these values of <IMG
+ WIDTH="17" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$\alpha$">,
+<IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$\beta$">,
+and 
+  <IMG
+ WIDTH="16" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$\gamma$">.
+<PRE>
+deltas = -5:1:10;
+init = [.0001 .000125 .03];
+rss = zeros (length(deltas), 1);
+params = zeros (length(deltas), 3);
+</PRE>
+<P>
+<DT>5.
+<DD>Now enter the loop through the values of <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">
+in
+  <TT>deltas</TT>.  The first step is to copy the current element,
+  <TT>deltas(i)</TT>, to <TT>delta</TT>; this is done solely to make the
+  code easier to read.
+  <PRE>
+for i = 1:length(deltas)
+   delta = deltas (i);
+</PRE>
+<P>
+<DT>6.
+<DD>Now inside the loop, we perform a three-parameter fit for the
+  current value of <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">.
+This is done by first computing
+  <TT>shifted_g_even</TT>, which is the current ``guess'' at <I>C</I><SUB><I>a</I></SUB> (<I>t</I>)  (see equation <A HREF="node7.html#eq:blood_delay">12</A>).  Note that the shifted
+  activity is computed from <TT>g_even</TT>, which at this point
+  contains 
+<!-- MATH: $\bar g (t)$ -->
+<IMG
+ WIDTH="36" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.gif"
+ ALT="$\bar g (t)$">,
+the dispersion-corrected blood data (equation
+  <A HREF="node7.html#eq:dispersion_correct">13</A>).
+<PRE>
+   shifted_g_even = lookup ((ts_even-delta), g_even, ts_even);
+   g_select = find (~isnan (shifted_g_even));
+</PRE>
+<P>
+<DT>7.
+<DD>Now perform the fit.  The function <TT>delaycorrect</TT>
+  encapsulates the entire fitting procedure into one function; this is
+  equivalent to having one user-supplied function that evaluates the
+  function to minimize, and another function (such as <TT>fmins</TT>) to
+  iteratively evaluate and minimize this function.  However, because
+  this method of delay correction was found to be extremely slow,
+  <TT>delaycorrect</TT> was written entirely in C as a special case.
+
+<P>
+<PRE>
+   final = delaycorrect (init, ...
+                         shifted_g_even(g_select), ...
+                         ts_even(g_select), ...
+                         A, FrameTimes, FrameLengths);
+</PRE>
+<P>
+<DT>8.
+<DD>Save the fit results (<IMG
+ WIDTH="17" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$\alpha$">,
+<IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$\beta$">,
+and <IMG
+ WIDTH="16" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$\gamma$">)
+and
+  compute the residual (sum of the squares of the differences between
+  the data points and points on the fitted curve) for this value of
+  <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">.
+(<TT>fit_b_curve</TT> simply calls <TT>b_curve</TT> to
+  compute the right-hand-side of equation <A HREF="node7.html#eq:delay_correct">11</A>, the
+  ``blood curve,'' for the current values of <IMG
+ WIDTH="17" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$\alpha$">,
+<IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$\beta$">,
+  <IMG
+ WIDTH="16" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$\gamma$">,
+and <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">,
+at each mid-frame time.  Then, it finds the
+  differences between this and the points on the PET activity curve
+  <TT>A</TT>, and returns the sum of the squares of these differences.
+  This is saved to the vector <TT>rss</TT>.
+<PRE>
+   params (i,:) = final;
+   rss(i) = fit_b_curve (final, ...
+              shifted_g_even(g_select), ts_even(g_select), ...
+              A, FrameTimes, FrameLengths);
+</PRE>
+<P>
+<DT>9.
+<DD>Finally, we re-use the current values of <IMG
+ WIDTH="17" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$\alpha$">,
+<IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$\beta$">,
+  <IMG
+ WIDTH="16" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$\gamma$">
+as initial values for the next fit and end the <TT>for</TT> loop.
+<PRE>
+   init = final;
+end      % for delta
+</PRE>
+<P>
+<DT>10.
+<DD>At this point, we have a vector of residual sums of squares (a single
+  number estimating the goodness-of-fit for each value of <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">).
+  To select the ``winning'' <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">,
+we simply find the minimum of
+  this vector.
+<PRE>
+[err, where] = min (rss);
+delta = deltas (where);
+</PRE>
+<P>
+<DT>11.
+<DD>Now that we have a value for <TT>delta</TT>, perform the actual
+delay correction (shift the blood data).  We must also remove NaN's
+from the new data.  These appear if <TT>lookup</TT> cannot perform a
+lookup at a point (i.e., there is no corresponding point in the table).
+They will therefore occur at the end points, where <TT>ts_even</TT>
+does not span <TT>(ts_even-delta)</TT>.
+<PRE>
+Ca_even = lookup ((ts_even-delta), g_even, ts_even);
+
+nuke = find(isnan(Ca_even));
+Ca_even(nuke) = [];
+</PRE>
+<P>
+<DT>12.
+<DD>And finally, make <TT>new_ts_even</TT> a truncated copy of
+  <TT>ts_even</TT> that fits <TT>Ca_even</TT> and reflects the loss of
+  information due to resampling at the very end of the data.
+<PRE>
+new_ts_even = ts_even;
+new_ts_even(nuke) = [];
+</PRE></DL>
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html205"
+ HREF="node15.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html202"
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html196"
+ HREF="node13.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html204"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html206"
+ HREF="node15.html">FINDINTCONVO</A>
+<B> Up:</B> <A NAME="tex2html203"
+ HREF="node11.html">Annotated Program Listings</A>
+<B> Previous:</B> <A NAME="tex2html197"
+ HREF="node13.html">RCBF2</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,880 @@
+<html>
+<head>
+<title>NIfTI-1 Data Format: Rationale and Discussion</title>
+<link rel="SHORTCUT ICON" href="http://nifti.nimh.nih.gov/nifti_icon.ico">
+</head>
+
+<body>
+<center><b>
+<font size="+3" color="#002244">NIfTI-1 Data Format</font><br />
+<font size="+2" color="#004422">Rationale and Discussion</font><br />
+<font size="+1" color="#440044">Robert W Cox, PhD</font><br />
+Director, Scientific and Statistical Computing Core <br />
+National Institute of Mental Health <br />
+National Institutes of Health <br />
+Department of Health and Human Services <br />
+United States of America</b><br />
+26 Feb 2004
+</center>
+
+<hr noshade width="60%" align="center">
+<!----------------------------------------------------------------------->
+
+<p>
+<b><font color="#000044" size="+1">
+<a href="http://dictionary.reference.com/search?q=prolegomenon">Prolegomenon</a>:
+Original Intent</font></b>
+<br />
+
+The idea that grew into the NIfTI-1 format originated as a random
+thought on how to get various pieces of well-established FMRI software to work
+together with the least amount of tinkering.  Since the
+<a href="ANALYZE75.pdf">ANALYZE<sup>TM</sup>&nbsp;7.5 format</a>
+is extremely simple, widely used in the FMRI community, and contains
+some unused or little-used spaces, this format was a logical place to start.
+The idea was to take the ANALYZE&nbsp;7.5 header, squeeze some extra fields
+into it, and get everyone in the DFWG to agree to support it.  Since the
+people in the room included John Ashburner
+(<a href="http://www.fil.ion.ucl.ac.uk/spm/">SPM</a>),
+Steve Smith
+(<a href="http://www.fmrib.ox.ac.uk/fsl/">FSL</a>), and myself
+(<a href="http://afni.nimh.nih.gov/afni">AFNI</a>),
+I&nbsp;figured that if the three of us could agree to use such a
+hybrid format&mdash;<i>for both read and write</i>&mdash;the rest of the FMRI world would perforce come along.
+</p>
+
+<p>
+Roughly speaking, the two goals of the NIfTI-1 format development were:
+<ul>
+ <li> To add information to the header that will be useful for functional
+      neuroimaging (especially FMRI) data analysis and display.
+ <li> To maintain compatibility with non-NIfTI-aware ANALYZE 7.5
+      compatible software.
+</ul>
+Of course, these goals are somewhat in conflict.  The principal
+reason for writing this document is to explain the trade-offs that were
+made, and to capture the reasoning involved before it slips away
+into "the mystic chords of memory".
+</p>
+
+<p>
+Of course, nothing is as simple as it ought to be.
+We had to agree upon which fields in
+the ANALYZE&nbsp;7.5 header were really "little-used" and could be
+over-written with other content.  And we had to agree upon what that
+new content would be, and how it would be interpreted.  The issue
+of coordinate systems was probably the most annoying, as usual.
+And of course, there was the problem of keeping everything in the 348 byte
+length of the ANALYZE&nbsp;7.5 header.
+The result is not fully satisfying; however, I&nbsp;believe
+it is a practical short-term solution for the image data file interoperability
+problem in functional neuroimaging software.
+</p>
+
+<p>
+The next section details the fields jettisoned from the ANALYZE&nbsp;7.5
+header.
+The remainder of this document then discusses the thinking behind each of the
+conceptual components of the NIfTI-1 header.  Along the way, most of the
+features of the NIfTI-1 format are at least outlined.  However, the comments
+in the <a href="src/nifti1.h">NIfTI-1&nbsp;C&nbsp;header</a>
+are more complete about most of these features.
+
+<hr noshade width="60%" align="center">
+<!----------------------------------------------------------------------->
+<p>
+<b><font color="#000044" size="+1">
+What Was Sacrificed from ANALYZE 7.5
+</font></b>
+<br />
+All of the fields marked as "unused" in the ANALYZE 7.5 header have
+been taken for NIfTI-1 purposes.  In addition:
+<ul>
+<li><p>
+    The <tt>compressed</tt> field has been renamed to <tt>slice_duration</tt>.
+    <br />
+    <i>Reasoning</i>: NIfTI-1 doesn't support compressed image data.
+    Also, the meaning of <tt>compressed</tt> is quite unclear.
+    </p>
+
+<li><p>
+    The <tt>verified</tt> field has been renamed to <tt>toffset</tt>.
+    <br />
+    <i>Reasoning</i>: The meaning of <tt>verified</tt> is obscure and
+             we were unaware of any neuroimaging data analysis
+             software that used this field.
+    </p>
+
+<li><p>
+    All the <tt>data_history</tt> sub-structure after the <tt>aux_file</tt>
+    field has been replaced by other contents.
+    <br />
+    <i>Reasoning</i>: The ANALYZE 7.5 documentation describes this entire
+    sub-structure as "not required", and the meanings of most of its
+    fields are unobvious, so deciding to alter it extensively was
+    easy.  The only field within <tt>data_history</tt> that we considered
+    keeping was <tt>orient</tt>, which was a integer code describing the
+    spatial orientation of the 3D volume.  However, this field did not
+    even allow encoding all 48 possible orthogonal orientations, and
+    was seldom set or used in any software of which we were aware.  We
+    therefore decided to completely replace the orientation specification
+    in NIfTI-1.
+    </p>
+
+<li><p>
+    The entire header structure is described in the
+    <a href="src/nifti1.h">NIfTI-1&nbsp;C&nbsp;header</a> as a single C&nbsp;struct,
+    rather than as a struct containing 3 sub-structs.  This cosmetic change
+    is entirely for convenience in programming.
+</ul>
+</p>
+
+<p>
+Various little-used ANALYZE 7.5 header fields have been kept in
+the NIfTI-1 format.  These are marked as <tt>++UNUSED++</tt> in the
+<a href="src/nifti1.h">NIfTI-1&nbsp;C&nbsp;header</a>.
+One reason for keeping these fields is that we
+weren't sure how necessary they are for ANALYZE 7.5 compatibility.
+These unused-but-not-replaced fields
+are <tt>data_type</tt>, <tt>db_name</tt>, <tt>extents</tt>,
+<tt>session_error</tt>, <tt>glmin</tt>, <tt>glmax</tt>, and <tt>regular</tt>.
+The contents of
+none of these fields are specified by the NIfTI-1 standard.
+A&nbsp;"proper" NIfTI-aware program should ignore these fields on input.
+On output, <tt>regular</tt> should be set to the character <tt>'r'</tt>
+for compatibility with ANALYZE&nbsp;7.5;
+the other unused fields may be filled with zero bytes for safety.
+</p>
+
+<p>
+The <tt>glmin</tt> and <tt>glmax</tt> fields are sometimes used to
+hold the global data minimum and maximum values.  We decided against
+mandating this use of these fields
+because we are now allowing vector-valued data to be stored at each
+voxel (in the 5<sup>th</sup> dimension of the image array).
+The concept of data minimum and maximum doesn't apply to such data.
+However, we did not "recycle" these fields since some ANALYZE 7.5
+compatible software uses these values.  In a NIfTI-1 file, these fields
+should either be set to&nbsp;0, or be set to the global minimum
+and maximum of the image data.
+</p>
+
+<hr noshade width="60%" align="center">
+<!----------------------------------------------------------------------->
+<p>
+<b><font color="#000044" size="+1">
+Data Dimensionality
+</font></b>
+<br />
+NIfTI-1, like ANALYZE 7.5, allows data to be stored on a regular
+grid in 1..7 dimensions.  However, the NIfTI-1 standard adds some
+specific interpretations to the dimensions that the ANALYZE 7.5 format
+does not require.
+</p>
+
+<p>
+The number of dimensions is stored in <tt>dim[0]</tt>, as in ANALYZE&nbsp;7.5;
+this may be a value from 1..7.  (If this value is out of range, then that
+is the signal that the header and data should be byte-swapped &mdash; pairwise for
+<tt>short</tt> fields and quadwise for <tt>float</tt> fields.  If <tt>dim[0]</tt>
+is still out of range after byte-swapping, then the file is not interpretable
+as either a NIfTI-1 or ANALYZE&nbsp;7.5 file.  Note that this technique is
+also the correct way to detect if an ANALYZE 7.5 file needs byte-swapping; the
+practice of checking if <tt>sizeof_hdr=348</tt> for this purpose is not correct.)
+</p>
+
+<p>
+As a shorthand, let <tt>N=dim[0]</tt>.
+Then <tt>dim[1]..dim[N]</tt> contain the length of each dimension
+in the <tt>N</tt>-dimensional image data array; again, as in ANALYZE&nbsp;7.5.
+Unlike ANALYZE&nbsp;7.5,
+in NIfTI1-1 each dimension index 1..5 is assigned a specific role.
+Dimensions 1..3 are always interpreted as spatial dimensions,
+here called <tt>x</tt>, <tt>y</tt>, and&nbsp;<tt>z</tt>.  Dimension 4
+is the time dimension, here called&nbsp;<tt>t</tt>.  Dimension 5 is
+reserved for storing multiple values per spatiotemporal voxel
+(e.g.,&nbsp;for storing <i>vector-valued</i> data).  NIfTI-1 does not specify
+any uses for dimensions 6 and&nbsp;7.
+</p>
+
+<p>
+The NIfTI-1 C header comments have a number of examples of how the
+dimensional roles described above should be used.  For example, a&nbsp;spatially
+1D time series of 3-vectors would have
+<pre>  dim[0]=5  dim[1]=dim[2]=dim[3]=1  dim[4]=number_of_time_points  dim[5]=3</pre>
+(Further discussion of how vector-valued data is to be stored can be found in a
+later section.)
+</p>
+
+<p>
+The reason for assigning fixed dimensional roles to each index 1..5 is
+to make the interpretation of the file simple and consistent.  A&nbsp;program
+can tell if an input file is time-dependent simply by checking if
+<tt>dim[0]&ge;4</tt> and then if <tt>dim[4]&gt;1</tt>.
+As another example,
+a&nbsp;single slice FMRI experiment with 155 image acquisitions might have
+<pre>  dim[0]=4  dim[1]=dim[2]=64  dim[3]=1  dim[4]=155</pre>
+Although this is really 3 dimensional data <tt>(x,y,t)</tt>, it is easily
+distinguished from a 3 dimensional volume <tt>(x,y,z)</tt>
+because <tt>dim[4]&gt;1</tt> and <tt>dim[3]=1</tt>.
+</p>
+
+<p>
+It may seem odd that some earlier dimensions might be&nbsp;1, while later
+dimensions are greater than&nbsp;1.  In terms of the actual image data
+storage, this makes no difference, since the data at the
+5D index <tt>(a,b,c,d,e)</tt> is to be stored at byte offset
+<pre> (<b>a</b>+<b>b</b>*dim[1]+<b>c</b>*dim[1]*dim[2]+<b>d</b>*dim[1]*dim[2]*dim[3]+<b>e</b>*dim[1]*dim[2]*dim[3]*dim[4])*bitpix/8</pre>
+into the image data array, for <tt>a=0..dim[1]-1</tt>, <tt>b=0..dim[2]-1</tt>, etc.
+In the spatially 1D time series example above, the only legal value for
+<tt>a</tt>, <tt>b</tt>, and <tt>c</tt> is&nbsp;0.  In this example, the
+offset formula simplifies to
+<pre> (<b>d</b>+<b>e</b>*dim[4])*bitpix/8</pre>
+which is exactly the form one would get by storing the time axis in
+dimension 1 and the vector components along dimension&nbsp;2.
+Thus, there is no computational or storage efficiency loss to assigning
+dimensional roles that result in leading dimensions being set to&nbsp;1.
+</p>
+
+<p>
+There was some discussion in the DFWG about having an option to store
+the vector values along dimension&nbsp;1.  The advantage of using this
+option would be that data that "belongs" together in the same
+spatiotemporal voxel would be stored contiguously in the data array.
+Storing the vector values along dimension 5 means that such data can be
+spaced quite far apart; for example, if <tt>dim[1]=dim[2]=dim[3]=100</tt>,
+<tt>dim[4]=1</tt>, then each unit step along dimension 5 steps across
+<tt>100000*bitpix/8</tt> bytes of image data.  On modern computer systems,
+such non-local access can be quite slow if not programmed very carefully.
+</p>
+
+<p>
+The reason we decided against this "vector-values along dimension&nbsp;1"
+option is that such files would make no sense to a non-NIfTI-aware
+program.  With dimensions 1..3 being assigned to space and dimension 4
+to time, our hope is that most programs reading the ANALYZE 7.5 will
+still be able to at least display NIfTI-1 files in some recognizable way.
+</p>
+
+<hr noshade width="60%" align="center">
+<!----------------------------------------------------------------------->
+<p>
+<b><font color="#000044" size="+1">
+Data Storage: <tt>.hdr/.img</tt> File Pairs and <tt>.nii</tt> Single Files
+</font></b>
+<br />
+The ANALYZE 7.5 format famously stores a dataset in two files:
+<tt>prefix.hdr</tt> to contain just the 348-byte header, and
+<tt>prefix.img</tt> to contain just the binary image data.
+(In principle, the image data could be stored in another filename,
+which would be stored in header field <tt>db_name</tt>, but this
+is very uncommon in the functional neuroimaging community.)
+</p>
+
+<p>
+NIfTI-1 keeps the file pair storage strategy, in part to keep a measure
+of compatibility with ANALYZE&nbsp;7.5.  Another reason for storing the
+binary image data in a separate file is that it becomes easy to
+load the data into memory using the Unix <tt>mmap()</tt> function.  This
+function allow a program to map a file into memory space; the OS then
+takes care of the I/O.
+</p>
+
+<p>
+There are two principal reasons that a single file storage of a dataset
+is desirable:
+<ul>
+ <li> Convenience in file copying, moving, and renaming operations.
+ <li> Making it possible to link to a dataset file on a Web page;
+      the creation of "helper" applications that can then display
+      such files will make it possible for researchers to post
+      3D and 4D neuroimaging data and results for easy viewing.
+</ul>
+The NIfTI-1 single file format is simply a catenation of the 348-byte
+header and the binary image data.  However, the <tt>vox_offset</tt> field
+in the header should be set to the byte offset in the file where the
+image data starts.  (For ANALYZE 7.5 compatibility, <tt>vox_offset</tt>
+is a <tt>float</tt> value.)  Clearly, the minimum value of <tt>vox_offset</tt>
+is&nbsp;348.  In principle, it would be possible to increase <tt>vox_offset</tt>
+and put non-standard data between the header and the image data.
+This tempting practice is strongly discouraged.
+</p>
+
+<p>
+To signal that a 348-byte header is NIfTI-1 compatible, the last 4 bytes
+of this header comprise the <tt>magic</tt> field.  This field should have
+one of these two values:
+<ul>
+ <li> <tt>"ni1\0"</tt> (hexadecimal: 6E 69 31 00) &mdash; indicates a NIfTI-1 dataset
+      stored in <i>two</i> files;
+ <li> <tt>"n+1\0"</tt> (hexadecimal: 6E 2B 31 00) &mdash; indicates a NIfTI-1 dataset
+      stored in <i>one</i> file.
+</ul>
+If neither of these values is encountered, then the header is not NIfTI-1
+compliant and should be treated as an ANALYZE 7.5 header.
+The <tt>"1"</tt> in the <tt>magic</tt> strings indicates the NIfTI version.
+The <tt>magic</tt> string is placed at the <i>end</i> of the header
+since the widely-checked <tt>sizeof_hdr</tt> ANALYZE 7.5 field comes at
+the beginning; we felt that modifying <tt>sizeof_hdr</tt> might too severely
+break ANALYZE 7.5 compatibility.
+</p>
+
+<p>
+The preferred NIfTI-1 suffix for such single files is <tt>.nii</tt>.
+This was chosen because the more obvious <tt>.nif</tt> was already
+spoken for;
+cf.&nbsp;<a href="http://www.icdatamaster.com/n.html">http://www.icdatamaster.com/n.html</a>.
+On the plus side, "nii" can be pronounced as in
+<a href="http://www.mwscomp.com/movies/grail/grail-13.htm">this movie scene</a>.
+However, this filename suffix is <i>not</i> required; the ultimate decision about
+whether the image data is in the same file as the header comes from
+the <tt>magic</tt> field, not from the filename.
+</p>
+
+
+<hr noshade width="60%" align="center">
+<!----------------------------------------------------------------------->
+<p>
+<b><font color="#000044" size="+1">
+Data Scaling
+</font></b>
+<br />
+For years, SPM has used the ANALYZE 7.5 <tt>funused1</tt> field as
+a scaling factor; if the value stored therein is nonzero, then all
+the image data is scaled by <tt>funused1</tt> before being used in
+the program.  NIfTI-1 has formalized and extended this idea.
+The <tt>funused1</tt> field is renamed to <tt>scl_slope</tt> and
+the <tt>funused2</tt> field is renamed to <tt>scl_inter</tt>.
+If <tt>scl_slope</tt> is nonzero, then a voxel value <tt>val</tt>
+read from the file should be interpreted as
+<tt>scl_slope&nbsp;*&nbsp;val&nbsp;+&nbsp;scl_inter</tt> inside the
+program.  This scaling is to apply to all the values in the
+dataset, <i>unless</i> the <tt>datatype</tt> is&nbsp;RGB.
+</p>
+
+<p>
+In general, it is probably better to store floating point values as
+floating point data, rather than try to compress them to 16-bit
+<tt>short</tt>s or 8-bit <tt>byte</tt>s along with a global scaling factor.  However,
+several DFWG members felt that providing a standard way of expressing
+scaling was important, especially for backward compatibility.
+</p>
+
+<hr noshade width="60%" align="center">
+<!----------------------------------------------------------------------->
+<p>
+<b><font color="#000044" size="+1">
+Elementary Data Types
+</font></b>
+<br />
+A large number of DFWG members felt it was important to provide a
+"complete" set of elementary data type codes (stored in the
+<tt>datatype</tt> header field).  The allowable <tt>datatype</tt> codes
+have been extended to allow for 8..128 bit integer, float, and complex
+values.  For more information, see
+<a href="http://nifti.nimh.nih.gov/dfwg/faq.html#Q12">FAQ&nbsp;#12</a>.
+</p>
+
+<p>
+There was some discussion of encoding more complicated structured types
+to be stored at each voxel.  (The structured types allowed in ANALYZE 7.5
+are complex numbers=<tt>float</tt> pairs and RGB colors=<tt>byte</tt> triples.)
+The interpretation of dimension 5 as stored vector-values for each
+spatiotemporal voxel partly elides this issue.  However, since each
+value in the image binary data must have the same <tt>datatype</tt>,
+it is impossible currently to store (say) an <tt>int</tt> and 3 <tt>float</tt>s
+at each location.  Unfortunately, it seems to be impracticable to
+encode such any reasonably general typing mechanism and at the same
+time keep to the 348-byte header length compatibility requirement.
+</p>
+
+<hr noshade width="60%" align="center">
+<!----------------------------------------------------------------------->
+<p>
+<b><font color="#000044" size="+1">
+Storing Statistical Parametric Images
+</font></b>
+<br />
+Direct imaging data (i.e., the output from a scanner) is only a fraction
+of what is stored in functional neuroimaging data analyses.
+A&nbsp;large quantity of derived datasets is created along the way.
+Many of these are statistics of various kinds.  One goal of our efforts
+was to provide a standard way to mark the values in a
+dataset as being <i>t</i>-statistics,
+<i>F</i>-statistics, etc., and to store the auxiliary parameters
+(e.g.,&nbsp;degrees-of-freedom) that go with these parametric distributions.
+</p>
+
+<p>
+"Meaning" is attached to the numbers in a dataset
+by setting the <tt>intent_code</tt> field to a nonzero value.
+Values of <tt>intent_code</tt> in the range 2..22 indicate that the
+dataset numbers are drawn from various standard probability distributions.
+Any particular distribution may have from 0 to 3 parameters.
+The distribution codes and parameters are:
+<!------------------------->
+<center><table border=2 cellpadding=1 cellspacing=2>
+<caption align="bottom"><small>
+  DOF=Degrees Of Freedom; N/A=Not Applicable
+</small></caption>
+
+<tr align="center">
+  <td><b><tt>intent_code</tt></b></td>
+  <td><b>Distribution</b></td>
+  <td><b>Parameter 1</b></td>
+  <td><b>Parameter 2</b></td>
+  <td><b>Parameter 3</b></td>
+</tr>
+
+<tr align="center"><td>2</td>  <td>Correlation</td>              <td>DOF</td>              <td><small>N/A</small></td>                 <td><small>N/A</small></td></tr>
+<tr align="center"><td>3</td>  <td>t-statistic</td>              <td>DOF</td>              <td><small>N/A</small></td>                 <td><small>N/A</small></td></tr>
+<tr align="center"><td>4</td>  <td>F-statistic</td>              <td>numerator DOF</td>    <td>denominator DOF</td>     <td><small>N/A</small></td></tr>
+<tr align="center"><td>5</td>  <td>Standard normal</td>          <td><small>N/A</small></td>              <td><small>N/A</small></td>                 <td><small>N/A</small></td></tr>
+<tr align="center"><td>6</td>  <td>Chi-squared</td>              <td>DOF</td>              <td><small>N/A</small></td>                 <td><small>N/A</small></td></tr>
+<tr align="center"><td>7</td>  <td>Beta</td>                     <td>a</td>                <td>b</td>                   <td><small>N/A</small></td></tr>
+<tr align="center"><td>8</td>  <td>Binomial</td>                 <td>no. trials</td>       <td>prob. per trial</td>     <td><small>N/A</small></td></tr>
+<tr align="center"><td>9</td>  <td>Gamma</td>                    <td>shape</td>            <td>scale</td>               <td><small>N/A</small></td></tr>
+<tr align="center"><td>10</td> <td>Poisson</td>                  <td>mean</td>             <td><small>N/A</small></td>                 <td><small>N/A</small></td></tr>
+<tr align="center"><td>11</td> <td>Normal</td>                   <td>mean</td>             <td>standard deviation</td>  <td><small>N/A</small></td></tr>
+<tr align="center"><td>12</td> <td>Noncentral F-statistic</td>   <td>numerator DOF</td>    <td>denominator DOF</td>     <td>noncentrality</td></tr>
+<tr align="center"><td>13</td> <td>Noncentral Chi-squared</td>   <td>DOF</td>              <td>noncentrality</td>       <td><small>N/A</small></td></tr>
+<tr align="center"><td>14</td> <td>Logistic</td>                 <td>location</td>         <td>scale</td>               <td><small>N/A</small></td></tr>
+<tr align="center"><td>15</td> <td>Laplace</td>                  <td>location</td>         <td>scale</td>               <td><small>N/A</small></td></tr>
+<tr align="center"><td>16</td> <td>Uniform</td>                  <td>lower bound</td>      <td>upper bound</td>         <td><small>N/A</small></td></tr>
+<tr align="center"><td>17</td> <td>Noncentral t-statistic</td>   <td>DOF</td>              <td>noncentrality</td>       <td><small>N/A</small></td></tr>
+<tr align="center"><td>18</td> <td>Weibull</td>                  <td>location</td>         <td>scale</td>               <td>power</td></tr>
+<tr align="center"><td>19</td> <td>Chi distribution</td>         <td>DOF</td>              <td><small>N/A</small></td>                 <td><small>N/A</small></td></tr>
+<tr align="center"><td>20</td> <td>Inverse Gaussian</td>         <td>&mu; (mu)</td         <td>&lambda; (lambda)</td>   <td><small>N/A</small></td></tr>
+<tr align="center"><td>21</td> <td>Extreme Value I</td>          <td>location</td>         <td>scale</td>               <td><small>N/A</small></td></tr>
+<tr align="center"><td>22</td> <td>p-value</td>                  <td><small>N/A</small></td>              <td><small>N/A</small></td>                 <td><small>N/A</small></td></tr>
+
+</table></center>
+<!------------------------->
+</p>
+
+<p>
+Codes 2..10 are chosen to be compatible with <a href="http://afni.nimh.nih.gov/afni">AFNI</a>.
+It is my intention to provide C functions to inter-convert these distributional values
+between p-values and z-scores.
+A little more information about these codes and distributions can be found in the C header file.
+Three books of particular interest are
+<ul>
+ <li> Univariate Discrete Distributions. NL Johnson, S Kotz, AW Kemp.
+ <li> Continuous Univariate Distributions, vol. 1. NL Johnson, S Kotz, N Balakrishnan.
+ <li> Continuous Univariate Distributions, vol. 2. NL Johnson, S Kotz, N Balakrishnan.
+</ul>
+</p>
+
+<p>
+It was my original intention that the statistical parameters for such a dataset
+would be globally fixed in the header; for example, a&nbsp;dataset of t-statistics
+with 23.7 degrees-of-freedom.  (This is the current status in AFNI.)
+Several other members of the DFWG convinced me that allowing the parameters to
+be voxel-dependent was an important feature.  Thus, NIfTI-1 allows a statistical
+dataset to have its parameters specified in two different ways:
+<ul>
+  <li> If <tt>dim[5]=1</tt> (or if <tt>dim[0]&lt;5</tt>),
+       then the parameters are global (voxel-independent)
+       and are stored in <tt>intent_p1</tt>, <tt>intent_p2</tt>, and <tt>intent_p3</tt>.
+  <li> If <tt>dim[5]&gt;1</tt>, then <tt>dim[5]</tt> should equal 1 plus the number
+       of parameters for the <tt>intent_code</tt> distribution.  If we call <tt>e</tt>
+       the index for the 5<sup>th</sup> dimension, then for each 4D voxel index
+       <tt>(a,b,c,d)</tt>, the statistic itself is stored in the 5D location
+       <tt>(a,b,c,d,e=0)</tt>, the first parameter in <tt>(a,b,c,d,e=1)</tt>, et cetera.
+</ul>
+These two methods allow for compact storage if the distributional parameters are
+in fact global, but also allow for the more general case of non-global parameters.
+Note that there is no provision for storing a <i>vector</i> of statistical values,
+since the vector dimension 5 is taken to store distributional parameters.
+</p>
+
+<hr noshade width="60%" align="center">
+<!----------------------------------------------------------------------->
+<p>
+<b><font color="#000044" size="+1">
+Storing Vector-Valued Images
+</font></b>
+<br />
+Values of <tt>intent_code</tt> greater than 1000 are used to signal
+other meanings of the data.  Several of these codes are used to
+signify the interpretation of the 5<sup>th</sup> dimension in a dataset:
+
+<center><table border=2 cellpadding=1 cellspacing=2>
+
+<tr align="center">
+  <td><b><tt>intent_code</tt></b></td>
+  <td><b>Meaning</b></td>
+  <td><b>Comments</b></td>
+</tr>
+
+<tr align="center"><td>1004</td>  <td>M&times;N General Matrix</td>      <td><tt>dim[5]=M*N  intent_p1=M  intent_p2=N</tt></td> </tr>
+<tr align="center"><td>1005</td>  <td>N&times;N Symmetric Matrix</td>    <td><tt>dim[5]=N*(N+1)/2 intent_p1=N</tt></td>         </tr>
+<tr align="center"><td>1006</td>  <td>Displacement N-vector</td>   <td><tt>dim[5]=N</td>                                  </tr>
+<tr align="center"><td>1007</td>  <td>General N-vector</td>        <td><tt>dim[5]=N</td>                                   </tr>
+<tr align="center"><td>1008</td>  <td>N-dimensional Point Set</td> <td><tt>dim[5]=N dim[2]=dim[3]=dim[4]=1</td>           </tr>
+<tr align="center"><td>1010</td>  <td>Triangle Set</td>            <td><tt>dim[5]=3 dim[2]=dim[3]=dim[4]=1</td>           </tr>
+</table></center>
+</p>
+
+<p>
+The difference between "Displacement" and "General" vector is that <tt>intent_code=1006</tt> is used to
+signal that the vectors stored at each location are a geometric displacement (or distortion).  This feature
+can be used to encode nonlinear warps, for example.  <tt>intent_code=1007</tt> just signals that vectors
+are stored at each location, but does not impute any more meaning to them (e.g.,&nbsp;this feature could
+be used to store a diffusion-tensor derived tract direction at each location in space).
+</p>
+
+<p>
+The "Point Set" <tt>intent_code</tt>'s function is to allow storage of random points in space; for
+example, the nodes of a surface mesh.  The "Triangle&nbsp;Set" <tt>intent_code</tt>'s function
+is to allow storage of integer triples that encode a surface mesh.  In both cases, <tt>dim[1]</tt>
+would be set to the number of entries in the dataset.  The combination of a "Point&nbsp;Set" dataset
+and a "Triangle&nbsp;Set" dataset would allow the specification of a surface mesh, where the indexes
+stored in the "Triangle&nbsp;Set" dataset would indicate which nodes from the "Point&nbsp;Set"
+dataset were in each triangle.
+</p>
+
+<p>
+Numerous other specialty vector types could easily be devised.
+Rather than get carried away, we
+decided to stop here and see what comments we get.
+All these features are frankly
+experimental and tentative.
+</p>
+
+<hr noshade width="60%" align="center">
+<!----------------------------------------------------------------------->
+<p>
+<b><font color="#000044" size="+1">
+Storing Other Images with Meaning
+</font></b>
+<br />
+A few remaining <tt>intent_code</tt> values are provided to allow for
+tagging a dataset's values as having particular meanings.  The
+<tt>intent_name</tt> string field can be used to store additional textual
+information about these meanings.
+
+<center><table border=2 cellpadding=1 cellspacing=2>
+
+<tr align="center">
+  <td><b><tt>intent_code</tt></b></td>
+  <td><b>Meaning</b></td>
+  <td><b>Comments</b></td>
+</tr>
+
+<tr align="center"><td>1001</td>  <td>Values are estimates</td>       <td><tt>intent_name</tt>=what's being estimated</td> </tr>
+<tr align="center"><td>1002</td>  <td>Values are label indexes</td>   <td><tt>aux_file</tt>=file with labels</td>         </tr>
+<tr align="center"><td>1003</td>  <td>Values are NeuroNames indexes</td>   <td>in my dreams</td>                                  </tr>
+</table></center>
+</p>
+
+<p>
+Values 1002 and 1003 for <tt>intent_code</tt> are there to let a dataset
+be a set of labels; for example, to mark each voxel in a brain volume
+with an anatomical structure name (or names, if <tt>dim[5]&gt;1</tt>).
+Code 1002 is for a custom set of labels; the integer values in the
+dataset are supposed to correspond to an external file, perhaps
+specified in header field <tt>aux_file</tt>.  Code 1003 is for
+a standard set of labels, from the NeuroNames list.  (This feature is
+still in development, and not available yet.)
+</p>
+
+<hr noshade width="60%" align="center">
+<!----------------------------------------------------------------------->
+<p>
+<b><font color="#000044" size="+1">
+Coordinate Systems and Data Orientation
+</font></b>
+<br />
+The issue of specifying the orientation and location in space
+of a volumetric dataset is moderately annoying.  On the one
+hand, it seems basically trivial.  On the other hand, no one
+agrees on what is the "right way" to do this.  The choices
+in NIfTI-1 are the result of a compromise between John Ashburner,
+Steve Smith, and myself, worked out via e-mail and
+at the bar in the Marquis Marriott
+during the 9<sup>th</sup> Annual Meeting of the
+<a href="http://www.humanbrainmapping.org/">OHBM</a>.
+</p>
+
+<p>
+When dealing with a single volume, or a set of spatially
+identical volumes, the orientation and location of the raster grid
+are relatively unimportant when processing the data.
+But in FMRI and other neuroimaging applications, one usually
+needs to deal with sets of volumes acquired on different
+grid sizes, in different orientations, and with different
+coverage of the brain.  For example, one usually wants to
+overlay low-resolution FMRI results onto high-resolution
+MP-RAGE/SPGR type structural reference volumes.  To do this
+correctly and automatically requires that the spatial
+relationship between different volumes be encoded somehow.
+</p>
+
+<p>
+One way to encode such relationships (adopted here) is to
+postulate a master coordinate system, and then store the
+location/orientation of each dataset with respect to that
+master system.  Then the spatial relationship between any two
+datasets can be found.  The basic such spatial relationship
+question is,
+"What value of <tt>(i,j,k)<sub>1</sub></tt>
+in dataset #1 corresponds to a given
+<tt>(i,j,k)<sub>2</sub></tt> in dataset&nbsp;#2?"
+With a common master coordinate system, each dataset #p
+contains a transformation from <tt>(i,j,k)<sub>p</sub></tt>
+to <tt>(x,y,z)</tt>; call this transformation
+<tt>(x,y,z)&nbsp;=&nbsp;T<sub>p</sub>[(i,j,k)]</tt>.
+Then the answer to the basic question is
+<tt>(i,j,k)<sub>1</sub>&nbsp;=&nbsp;T<sub>1</sub><sup>-1</sup><big>[</big>T<sub>2</sub>[(i,j,k)<sub>2</sub>]<big>]</big></tt>.  When <tt>T<sub>p</sub></tt>
+is an affine transformation, then <tt>T<sub>p</sub><sup>-1</sup></tt> is also
+affine, and so is
+<tt>T<sub>1</sub><sup>-1</sup>T<sub>2</sub></big></tt>.
+(The transformations stored in the NIfTI-1 header are affine.)
+</p>
+
+<p>
+An alternative way encode the spatial relationship between
+datasets (<i>not</i> adopted here) is to eschew the use
+of an arbitrary master coordinate system.
+Instead, the pairwise relationship
+between any two datasets is stored separately.  This approach
+is followed in FSL, where external files with names
+like <tt>example_func2highres.mat</tt>
+encode the spatial
+transformation between the EPI data (<tt>example_func.hdr</tt>)
+and the high-resolution anatomical volume (<tt>highres.hdr</tt>).
+The main drawback to this scheme is that it is hard to
+generalize to cases with many different types of images, each
+gathered in a different way.  For this reason, we did not use
+this approach in NIfTI-1.
+</p>
+
+<p>
+NIfTI-1 allows the master coordinate system to be
+labeled as one of the following:
+<ul>
+ <li> Scanner-based anatomical coordinates (e.g.,&nbsp;from the DICOM image header);
+ <li> Scanner-based anatomical coordinates, realigned to some "truth"
+ <li> Coordinates aligned to the Talairach-Tournoux Atlas;
+      (e.g.,&nbsp;<tt>(0,0,0)</tt>=Anterior Commissure);
+ <li> Coordinates aligned to the MNI-152 standard template.
+</ul>
+We agreed that <tt>(x,y,z)</tt> <i>always</i> refers to a coordinate system
+where <tt>+x</tt>=Right, <tt>+y</tt>=Anterior</tt>, and <tt>+z</tt>=Superior.
+(This is a right-handed system, unlike the ANALYZE 7.5 standard coordinates.)
+Note that in the NIfTI-1 coordinate model,
+<tt>x</tt> and <tt>y</tt> are the negative of DICOM standard
+<tt>x</tt> and <tt>y</tt> values.  We adopted this coordinate convention
+since it is widely used (e.g.,&nbsp;in SPM and FSL), and is the basis for most
+"activation" coordinates reported in the neuroimaging literature.
+</p>
+
+<p>
+The NIfTI-1 format allows the storage of
+<i>two</i> affine transformations from <tt>(i,j,k)</tt>
+to <tt>(x,y,z)</tt>.
+The first transformation ("qform") is intended to encode
+the orthogonal orientation of the 3D volumes in the master
+coordinate space.  The second transformation ("sform") is intended
+to encode a general affine transformation to a standard space
+(i.e.,&nbsp;Talairach-Tournoux or MNI-152).
+Each transform can be useful in different contexts:
+the "qform" for displaying the data on its original grid
+(what the scanner reported), and
+the "sform" for displaying the data scaled to a standard space.
+For example, the "qform" can be constructed from the attributes
+from a set of DICOM files; the "sform" can be computed and
+inserted into the header later.  Image display software can
+use either transform, depending on its needs.
+</p>
+
+<p>
+To save space, the
+"qform" orthogonal
+transformation is encoded using a quaternion in the header file.
+the "sform" general transformation is stored as a 4&times;3 matrix.
+The details are described in the
+<a href="src/nifti1.h">NIfTI-1&nbsp;C&nbsp;header</a> at length.
+</p>
+
+<p>
+An important point is that the <tt>(x,y,z)</tt> value assigned by
+the header transformations to a voxel 3D index <tt>(i,j,k)</tt>
+refers to the <i>center</i> of the voxel.  This point was the subject
+of some debate at the Marquis Marriott meeting.  The alternative
+proposal was to define <tt>(x,y,z)</tt> as being a corner of a voxel,
+where <tt>(i,j,k)=(0,0,0)</tt> would correspond to the outermost
+corner of the first voxel in the dataset.  This proposal has the advantage
+that the 3D bounding box of the volume is then given by
+<tt>T([0,0,0])..T([dim[1]-1,dim[2]-1,dim[3]-1])</tt>, where again
+<tt>T</tt> represents the affine transformation from
+<tt>(i,j,k)</tt> to <tt>(x,y,z)</tt>.  After some mild debate, the
+center proposal won the vote.  This is consistent with the custom
+in scanner-supplied image headers (including DICOM), where pixel coordinates
+invariably refer to the center.
+
+<hr noshade width="60%" align="center">
+<!----------------------------------------------------------------------->
+<p>
+<b><font color="#000044" size="+1">
+Units of Coordinates
+</font></b>
+<br />
+Codes are supplied to indicate the spatial units of the <tt>(x,y,z)</tt>
+axes: millimeter, micrometers, and meters.  Codes are also available to
+indicate the units of the <tt>t</tt> (4<sup>th</sup>&nbsp;dimension)
+axis: seconds, milliseconds, and microseconds.  If the "<tt>t</tt>" axis
+is really frequency (e.g.,&nbsp;after Fourier transforming), then
+codes are supplied to indicate the 4<sup>th</sup>&nbsp;dimension units
+are Hz or ppm.  If necessary, codes could similarly be added to indicate
+that the spatial axes are in <i>k</i>-space (e.g.,&nbsp;units of cycles/mm).
+</p>
+
+<p>
+Note that centimeters are not an available code.  This is because cm
+is not an SI unit, and its use is deprecated in the scientific literature.
+</p>
+
+<p>
+The time step is given in <tt>pixdim[4]</tt>; the time origin is
+given in <tt>toffset</tt>; that is, the <tt>q</tt><sup>th</sup> time
+point is at time <tt>toffset+q*pixdim[4]</tt> for <tt>q=0..dim[4]-1</tt>.
+</p>
+
+<hr noshade width="60%" align="center">
+<!----------------------------------------------------------------------->
+<p>
+<b><font color="#000044" size="+1">
+MRI-Specific Image Information
+</font></b>
+<br />
+Since FMRI is the most widely used functional neuroimaging technique,
+and since the DFWG's charter from the main NIfTI committee was to
+help make FMRI analysis software interoperable, several features in
+the NIfTI-1 format are specialized for multislice echo-planar image (EPI)
+acquisition:
+<ul>
+ <li> A field to specify which of <tt>(x,y,z)</tt> corresponds to
+      the frequency, phase, and slice encoding directions.  This
+      is essential information when trying to apply a magnetic field map
+      to unwarp an echo-planar image.
+ <li> A field to specify the amount of time required to gather a single
+      slice.  Clustered acquisition schemes may have
+      <tt>slice_duration*dim[slice_dim]</tt> less than <tt>pixdim[4]</tt>,
+      with the rest of the TR=<tt>pixdim[4]</tt> time silent.
+ <li> A field to indicate the slice acquisition order (e.g., interleaved).
+      These last two fields are essential when trying to estimate
+      hemodynamic delays from EPI time series.
+</ul>
+Obviously, more information about the data acquisition could be useful
+in various circumstances.  We chose these attributes because they seemed
+the most important for the near-term needs, as perceived by the DFWG.
+</p>
+
+
+<hr noshade width="60%" align="center">
+<!----------------------------------------------------------------------->
+<p>
+<b><font color="#000044" size="+1">
+Miscellaneous Notes
+</font></b>
+<br />
+<ul>
+ <li>
+  The ANALYZE 7.5 fields <tt>cal_min</tt> and <tt>cal_max</tt> have been
+  left untouched; however, the meaning of these values is not specifically
+  defined by the NIfTI-1 standard.  One possible use is to map
+  data values to some color display scale; for example, map
+  values at (or below) <tt>cal_min</tt> to "black", values at or above
+  <tt>cal_max</tt> to "white", and values in between linearly to intermediate
+  colors.  Here, "black" and "white" can be the extreme ends of any color
+  scheme, of course.
+
+ <li>
+   Integer types are implicitly assumed to be stored in twos-complement
+   form.  Floating point types are implicitly assumed to be stored
+   in IEEE-754 format (so that binary floats are interchangeable, with
+   at most byte-swapping required).
+   These assumptions should be valid for all modern
+   microprocessors one is likely to encounter.
+
+ <li>
+   Explicit use in the header is made of the assumptions that
+   <tt>sizeof(short)==2</tt> and <tt>sizeof(float)==4</tt>.
+   Implicitly, we are also assuming that <tt>sizeof(int)==4</tt>,
+   <tt>sizeof(double)==8</tt>, and that the complex types
+   are stored with no padding.
+
+ <li>
+   We are assuming that there are only two byte orders possible,
+   and that correctly swapping data values that occupy N bytes
+   is done by swapping end-for-end (e.g.,&nbsp;<tt>ABCD</tt>&harr<tt>DCBA</tt>).
+   Also, we are assuming that the header and data are both stored
+   in the same endian-ness, so that by examining <tt>dim[0]</tt> one can
+   determine whether to byte swap the rest of the header <i>and</i>
+   the image data.
+
+</ul>
+</p>
+
+<hr noshade width="60%" align="center">
+<!----------------------------------------------------------------------->
+<p>
+<b><font color="#440044" size="+1">
+Personal Comments
+</font></b>
+<br />
+Although I am the author of
+<a href="http://afni.nimh.nih.gov/afni">AFNI</a> and its
+<a href="http://afni.nimh.nih.gov/pub/dist/doc/README.attributes">file format</a>,
+very little of that material has crept into the NIfTI-1 format.
+About the only place where my AFNI work has <i>directly</i> impacted the new
+format is my insistence on including intent codes for indicating that
+the values in a dataset are drawn from various common probability distributions.
+The actual codes used for this are drawn from the AFNI format.
+</p>
+
+<p>
+I'm not particularly enamored of the AFNI file format any more.
+I&nbsp;"designed" it in about an hour in July 1994.  I&nbsp;would prefer
+an XML-based format to become a <i>de facto</i> FMRI standard, but
+that doesn't seem to be an option at this time (i.e.,&nbsp;the enthusiasm
+level for this in the DFWG was non-existent).
+I&nbsp;chose to put forward
+the idea of adapting the ANALYZE 7.5 format to FMRI needs because I
+felt this would be the most likely way to make progress in a short
+amount of time.  Here, "progress" is defined as being able to get the
+major FMRI software packages to exchange data without the users
+experiencing <i>too</i> much anguish.  To my mind, the biggest issue
+was (and is) coordinate systems.
+</p>
+
+<p>
+One of the FAQs is
+<a href="http://nifti.nimh.nih.gov/dfwg/faq.html#Q2">"Why didn't the committee choose the DICOM format?"</a>  My personal answer to this question includes the following points:
+<ul>
+<li> DICOM is far too complex to understand easily.
+     A&nbsp;reasonably competent programmer should be able to write
+     a NIfTI-1 read/write set of functions in a day or so.  (Less if they
+     start with <a href="src/">the existing software</a>.)
+<li> DICOM doesn't allow storage of floating point values.
+     (This "feature" is perhaps the biggest objection in my mind.)
+<li> We'd need to add a bunch of attributes to describe neuroimaging-specific needs
+     (e.g.,&nbsp;statistical codes and parameters; vector-valued datasets).
+     These additions would make NIfTI-1 datasets not particularly
+     readable in standard DICOM programs.
+</ul>
+</p>
+
+<p>
+Another obvious question is "Why didn't the DFWG work a little longer and
+come up with a more comprehensive solution?"  The answer is that we started
+down this path (and are continuing these efforts), but the road to a
+better file format is much longer than it appears .  By working within the
+constraints of "turbo-charging" an existing format, we were able to
+make some limited progress immediately.
+
+<!----------------------------------------------------------------------->
+</body>
+</html>

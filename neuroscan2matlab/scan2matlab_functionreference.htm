@@ -1,0 +1,1523 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0065)http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<META content="MSHTML 5.50.4134.600" name=GENERATOR></HEAD>
+<BODY><A name=top>(this file is automatically created by <A 
+href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#creahtml">creahtml.m</A> 
+based on file contents.m) 
+<P><B>NeuroScan and Macro Utilities toolbox</B> 
+<P><B>Version 2.1 1999-Apr-8 Small modifications</B> 
+<P><B>Version 2.0 10-Feb-1999 For PCWIN Matlab 5.2</B> 
+<P><B>Copyright (c) 1994-1999 Jussi Virkkala</B> 
+<P><B>For PCWIN Matlab 5.2</B> 
+<P><B>Functions to be executed: startup</B> 
+<P><B>NeuroScan data translation</B>
+<UL>
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#loadcnt"><B>loadcnt</B> 
+  Load continuous NeuroScan data.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#scanhead"><B>scanhead</B> 
+  General part of the NeuroScan header.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#scanelec"><B>scanelec</B> 
+  Electrode specific part of the NeuroScan header.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#scaneven"><B>scaneven</B> 
+  Eventtable of NeuroScan file.</A> </LI></UL>
+<P><B>Display data</B>
+<UL>
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#axes1020"><B>axes1020</B> 
+  Return axes handles for each electrode position.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#convtext"><B>convtext</B> 
+  Convert plottext output into separate text objects.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#getband"><B>getband</B> 
+  Get bands from axes.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#grid1020"><B>grid1020</B> 
+  Interpolate values between electrodes.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#makeblt"><B>makeblt</B> 
+  Prepare current figures for gray screen capture.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#plotband"><B>plotband</B> 
+  Plots vertical bands with multiple values.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#plotdata"><B>plotdata</B> 
+  Plot data with labels into current axes.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#plottext"><B>plottext</B> 
+  Plot text with numerical values into current axes.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#pos1020"><B>pos1020</B> 
+  Plot scalp electrode positions in XY or XYZ.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#scrollda"><B>scrollda</B> 
+  To scroll data, with uiscroll.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#uiscroll"><B>uiscroll</B> 
+  Add slide control to x-axes.</A> </LI></UL>
+<P><B>Analyze data</B>
+<UL>
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#fftspect"><B>fftspect</B> 
+  Calculate power, amplitude spectrum using FFT. </A></LI></UL>
+<P><B>UserInterface</B>
+<UL>
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#claa"><B>claa</B> 
+  Clears figure's axes inside normalized box.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#creafig"><B>creafig</B> 
+  Create figure at wanted location.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#creafigs"><B>creafigs</B> 
+  Create figures spacely around screen.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#crearefe"><B>crearefe</B> 
+  Create LaTex reference.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#creahtml"><B>creahtml</B> 
+  Create HTML reference, new for 2.0</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#errorr"><B>errorr</B> 
+  Error response.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#o2s"><B>o2s</B> 
+  Return handles as strings.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#figtext"><B>figtext</B> 
+  Create figure text.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#showwait"><B>showwait</B> 
+  Show calculation time on figures name.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#startup"><B>startup</B> 
+  Startup for Utilities.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#mutexc"><B>mutexc</B> 
+  Create mutually exclusive uicontrols.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#selelec"><B>selelec</B> 
+  Select EEG electrodes from scalp.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#seltext"><B>seltext</B> 
+  Select strings.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#setscan"><B>setscan</B> 
+  Workspace for NeuroScan Utilities functions.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#setobj"><B>setobj</B> 
+  Set object properties.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#startup"><B>startup</B> 
+  Startup for utilities.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#uihelp"><B>uihelp</B> 
+  Read ascii string and shows it in help figure. </A>
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#uicput"><B>uicput</B> 
+  Create uicontrols.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#uicsetup"><B>uicsetup</B> 
+  Setup basic uicontrols at the top of figure.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#uicval"><B>uicval</B> 
+  Return string which return objects property.</A> </LI></UL>
+<P><B>Developing macros</B>
+<UL>
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#editmacr"><B>editmacr</B> 
+  Create figure to load, edit and save macros.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#evalstr"><B>evalstr</B> 
+  Evaluate string as m file.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#loadedit"><B>loadedit</B> 
+  Load ascii string for editmacr and scanedit.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#makem"><B>makem</B> 
+  Create m files name0..9.m from R0..R9 macro.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#maker"><B>maker</B> 
+  Create macro R0..R9 from m files name0..9.m.</A> </LI></UL>
+<P><B>General extensions to matlab functions</B>
+<UL>
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#deblanks"><B>deblanks</B> 
+  Strip blanks in the beginning and end.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#filename"><B>filename</B> 
+  Return name from fid</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#findpath"><B>findpath</B> 
+  Return given path from MATLAB directory search path.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#fpos"><B>fpos</B> 
+  Reposition fid.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#freeze"><B>freeze</B> 
+  Freeze/Unfreeze figure by toggling visible.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#loadstr"><B>loadstr</B> 
+  Load ascii file.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#putstr"><B>putstr</B> 
+  Put rows of string into another string.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#rmrow"><B>rmrow</B> 
+  Remove indicated rows from matrice.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#savestr"><B>savestr</B> 
+  Save string as ascii into file.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#scrimage"><B>scrimage</B> 
+  Display handle as image.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#sortstr"><B>sortstr</B> 
+  Sort string in ascending order.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#strfind"><B>strfind</B> 
+  Extension to findstr, accept matrices.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#tiestr"><B>tiestr</B> 
+  Tie rows of strings into one matrice.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#untiestr"><B>untiestr</B> 
+  Untie strings from matrice.</A> </LI></UL>
+<P><B>Example files</B>
+<UL>
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#demorgb"><B>demorgb</B> 
+  Demonstrate RGB colors, using uicontrols.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#scantut0"><B>scantut0</B> 
+  Create tutorial text files.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#uicview"><B>uicview</B> 
+  Add uicontrols to fig to control view in 3D.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#qeega1"><B>qeega1</B> 
+  Quantitative EEG analysis, start this.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#qeega2"><B>qeega2</B> 
+  Quantitative EEG analysis, electrode plotting. </A>
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#qeega3"><B>qeega3</B> 
+  Quantitative EEG analysis, calculation.</A> </LI></UL>
+<P><B>Auxiliary files</B>
+<UL>
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#header"><B>header</B> 
+  Directory, saved calibration values.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#files"><B>files</B> 
+  Directory, data files.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#help"><B>help</B> 
+  Directory, help and documentation files.</A> 
+  <LI><A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#results"><B>results</B> 
+  Directory, result files.</A> </LI></UL>
+<UL></UL><A name=axes1020></A><B>axes1020</B>
+<UL>
+  <LI><B>Purpose</B>: Return axes for each electrode position. 
+  <LI><B>Synopsis</B>: [hdl,rhdl]=axes1020(label) 
+  <LI><B>Description</B>: label can be matrix of electrode positions or labels. 
+  hdl are corresponding axes. rhdl gives handles for old axes and handles for 4 
+  additional axes, one in each corner which can be used to show scale for 
+  example. \\ Old axes, rhdh(1) x, y and z coordinates colors are made black to 
+  make them invisible. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>creafig([0 0 1 1])          % 3 axes
+subplot(211);title('3 axes of small size')
+[hdl,rhdl]=axes1020([-0.5 -0.5;0 0;0.5 0.5])
+subplot(212);plot(randn(1,512));
+set(gca,'xlim',[1 512])
+print axes1020 -djpeg
+</PRE></UL>
+  <LI><B>See also</B>: Uses pos1020. See also grid1020. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/axes1020.jpg">axes1020.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/AXES1020.M">axes1020.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=claa></A><B>claa</B>
+<UL>
+  <LI><B>Purpose</B>: Clear figure's axes inside normalized box. 
+  <LI><B>Synopsis</B>: claa(x0,x1,y0,y1) 
+  <LI><B>Description</B>: Clear axes, unit normalized which begin inside box 
+  defined by [x0,x1,y0,y1]. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>claa;        % all axes, not handles
+subplot(221);subplot(224);
+claa(0,0.5); % left half
+</PRE></UL>
+  <LI><B>Diagnostics</B>: With subplot some objects in corners are left. With 
+  clf also uicontrols deleted. 
+  <LI><B>See also</B>: Cla, clf. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/CLAA.M">claa.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=convtext></A><B>convtext</B>
+<UL>
+  <LI><B>Purpose</B>: Convert plottext output into separate text objects. 
+  <LI><B>Synopsis</B>: h=convtext(h2,dx,dy,com) 
+  <LI><B>Description</B>: Convert edit uicontrol into text objects in same axes 
+  for styling and, or printing. From text tabulator, char(9) are searched and 
+  printed with spacing (dx,dy) with fontsize 9 and aligment right. \\ If dx, dy 
+  not given 61, 16 is supposed. com is used to changeproperties of each text 
+  object. #1 is replace with "if ," #2 with ";set(h,')" and #3 with ");end;" and 
+  variables to use are x, y, h and t. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>a=abs(5*randn(15,12));          % random numbers
+creafig([0 0.4 1 0.6]);
+axes('position',[0.01 0.01 0.95 0.90]);
+com=['#1j&lt;2|i==2#2''horizontala'',''left''#3#1j==3#2'...
+ '''position'',[x+45 y]#3'];com=strrep(com,'''','''''');
+ph=plottext('QEEGA.PLT',a);     % adding uicontrols
+h=uicput('b123456bb12356b/b123456b',0.9);
+set(h(1),'String','Text','callback',['th=convtext(' ...
+       o2s(ph) ',''' com ''');']);
+set(h(2),'String','Back','callback',['convtext(' ...
+             o2s(ph) ',-1);']);
+set(h(3),'String','Print','callback',['convtext('...
+             o2s(ph) ',''' com ''');print;convtext('...
+ o2s(ph) ',-1);']);
+print convtext -djpeg
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Use Uicontrols Font as Courier New 9 from Matlab 
+  Command Window, Options. 
+  <LI><B>See also</B>: plottext, scrimage. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/convtext.jpg">convtext.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/CONVTEXT.M">convtext.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=creafig></A><B>creafig</B>
+<UL>
+  <LI><B>Purpose</B>: Create figure at wanted location. 
+  <LI><B>Synopsis</B>: hdl=creafig(pos,set1,val1,...,set3,val3) 
+  <LI><B>Description</B>: Create figure at pos(1), pos(2) with width pos(3) and 
+  height pos(4). If pos&lt;1 then normalized, if pos&lt;10 then pos indicates 
+  divisions otherwise pixels. If scalar 1..4 then one fourth of screen. If val 
+  and set given these properties are set for all figures 
+  <LI><B>Examples</B>: 
+  <UL><PRE>creafig(4,'name','right bottom corner');
+creafig([2 3 5 5]);
+creafig([100 100 500 100]);
+</PRE></UL>
+  <LI><B>See also</B>: creafigs. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/CREAFIG.M">creafig.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=creafigs></A><B>creafigs</B>
+<UL>
+  <LI><B>Purpose</B>: Create figures spacely around screen. 
+  <LI><B>Synopsis</B>: [hdl]=creafigs(n,set1,val1,...,set3,va3) 
+  <LI><B>Description</B>: Create n figures spacely around screen, not 
+  overlapping. Return figure handles. If val and set given these properties are 
+  set for all figures. With property, menubar, figure there will be some 
+  overlapping. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>creafigs(7,'name','name','numbertitle','off')
+           % maximum number of figures
+h=creafigs(81,'buttondownfcn','close');
+for i=1:81,
+ figure(h(i));hh=title(['FIG ' int2str(i)]);set(hh,'fontsize',20);
+end
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Creating maximum of 9*9=81 figures. 
+  <LI><B>See also</B>: Uses creafig. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/CREAFIGS.M">creafigs.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=creahtml></A><B>creahtml</B>
+<UL>
+  <LI><B>Purpose</B>: Create reference text. 
+  <LI><B>Synopsis</B>: cont=creahtml(file,fcn,what) 
+  <LI><B>Description</B>: Create reference file from current Contents file. File 
+  is base for toolbox reference manual. An description line is added in the 
+  beginning of file. \\ Use tabulator in creating m files, not spaces, except in 
+  Examples part. Multiple paragraphs are only allowed in Description part. If 
+  name.jpg file exist that is added. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>h=creahtml('loadcnt',1)         % return parts
+creahtml(h,2,'Purpose')
+creahtml('Help\scanrefe.html'); % create reference part
+</PRE></UL>
+  <LI><B>Diagnostics</B>: If error encourted look that function's help is made 
+  in correct format, using tabulator and correct headers. For WWW remove 
+  <LI><B>See also</B>: Uses findstr, loadstr, savestr, crearefe. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/CREAHTML.M">creahtml.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=crearefe></A><B>crearefe</B>
+<UL>
+  <LI><B>Purpose</B>: Create HTML reference text. 
+  <LI><B>Synopsis</B>: cont=crearefe(file,fcn,what) 
+  <LI><B>Description</B>: Create reference file from current Contents file. File 
+  is base for toolbox reference manual. \\ Use tabulator in creating m files, 
+  not spaces, except in Examples part. Multiple paragraphs are only allowed in 
+  Description part. Notice that there some forbidden characters for LaTex, some 
+  of those are converted. Style file used is utildocu. If name.eps file exist 
+  that is added by refeentf. Referred Latex definitions are refesecb, refeseci, 
+  refesece, refeentb, fereenti, refeents, refeente, refeentv and refeentf. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>h=crearefe('loadcnt',1)         % return parts
+crearefe(h,2,'Purpose')
+crearefe('Help\scanrefe.tex'); % create reference part
+</PRE></UL>
+  <LI><B>Diagnostics</B>: If error encourted look that function's help is made 
+  in correct format, using tabulator and correct headers. This file is going to 
+  <LI><B>See also</B>: Uses creahtml, findstr, loadstr, savestr. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/CREAREFE.M">crearefe.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=deblanks></A><B>deblanks</B>
+<UL>
+  <LI><B>Purpose</B>: Strip blanks in the beginning and end. 
+  <LI><B>Synopsis</B>: s1=deblanks(s) 
+  <LI><B>Description</B>: Removes blanks. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>['+' deblanks('  remove blanks  ') '+']
+</PRE></UL>
+  <LI><B>See also</B>: Uses deblank. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/DEBLANKS.M">deblanks.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=demorgb></A><B>demorgb</B>
+<UL>
+  <LI><B>Purpose</B>: Demonstratate RGB colors. 
+  <LI><B>Synopsis</B>: demorgb(n) 
+  <LI><B>Description</B>: Gives some basic ideas of uicontrols. If n given it 
+  tells how many subdivisions there are for each axes, $n^3$ colors. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>demorgb
+print demorgb -djpeg
+</PRE></UL>
+  <LI><B>See also</B>: Uses showwait, uicview, uicput, uicval. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/demorgb.jpg">demorgb.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/DEMORGB.M">demorgb.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=editmacr></A><B>editmacr</B>
+<UL>
+  <LI><B>Purpose</B>: Create figure to load, edit and save macro. 
+  <LI><B>Synopsis</B>: editmacr(ta,ls,f) 
+  <LI><B>Description</B>: Calling, without parameters creates figure to edit 
+  global variable R0...R9, which can then be evaluated by streval function. Use 
+  script setscan to define R0..R9 global. \\ Use this page/all pages to select 
+  which are affected by load/merge and save/append command. With loading %PAGE R 
+  in file indicates where to put the text. MAKEM text is for converting macro to 
+  m file by makem with name given in the box. \\ With parameters you can run 
+  desired operation for f(ile): Ta is for t(his page) or a(all pages) and ls is 
+  for selecting l(oad), m(erge) or s(ave) command 
+  <LI><B>Examples</B>: 
+  <UL><PRE>editmacr;                   % setting up
+editmacr('a','l','test.r1');% loading
+</PRE></UL>
+  <LI><B>Diagnostics</B>: When saving macros it is wise to use *.r1, *.r2 for 
+  differentversions. If you exit Matlab, macros aren't saved automatically. Used 
+  global variables are R0..R9, OLDR, EDITMACR_HDL, EDITMACR_FILE, DIALOGX, 
+  DIALOGY, BORDERX, BORDERY and BORDERB. Plotting to figure is 
+  <LI><B>See also</B>: Uses uigetfile and loadedit. See also evalstr, savestr, 
+  loadstr, makem and maker. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/EDITMACR.M">editmacr.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=errorr></A><B>errorr</B>
+<UL>
+  <LI><B>Purpose</B>: Error response. 
+  <LI><B>Synopsis</B>: errorr(typ,cal) 
+  <LI><B>Description</B>: Displays figure for error message. Typ is extension 
+  for errorr ascii file. Last characters of typ and cal is shown in figure's 
+  name. Used extensions are: hff) File not found or couldn't be created, hpw) 
+  Parameter wrong given or wrong type. hfe) Fatal error or rare error. \\ If 
+  without parameters global variables existance is tested and note given if they 
+  are missing. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>errorr('hff setup.txt not found','loadstr.m');  % hff file not found
+errorr('hpw n was too large','cal.m');    % hpw parameter wrong
+</PRE></UL>
+  <LI><B>See also</B>: Uses uihelp. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/ERRORR.M">errorr.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=evalstr></A><B>evalstr</B>
+<UL>
+  <LI><B>Purpose</B>: Evaluate string as m file. 
+  <LI><B>Synopsis</B>: [v1,...,v10]=evalstr(str,p1,...p10) 
+  <LI><B>Description</B>: String str is saved to temp file which is then called 
+  with parameters prm. Files tempfilx.m are reserved for such temporal files. 
+  Global variable FILETMP_INDEX points current index in temporal file. \\ Line 
+  'function [o1...o10]=tmp(i1...i10)' is added to beginning of str and these 
+  variables should be used inside str. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>FILETMP_INDEX=1;
+evalstr('o1=mean([i1(:) i2(:)]);',[2 3 4],[5 6 7])
+                              % use of input parameters
+run=str2mat('i1','o1=randn(i1(1),1);','o2=plot(o1);');
+[o1,o2]=evalstr(run,5)        % parameters as ascii
+evalstr(run,10)
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Used global variable FILETMP_INDEX. 
+  <LI><B>See also</B>: Uses savestr. See also evalmcw, editmacr, makem. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/EVALSTR.M">evalstr.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=fftspect></A><B>fftspect</B>
+<UL>
+  <LI><B>Purpose</B>: Calculate power and amplitude spectrum using FFT. 
+  <LI><B>Synopsis</B>: 
+  [hz,pow,amp,ahz,a1,a2]=fftspect(y,rate,limits,type,window) 
+  <LI><B>Description</B>: Rows of different data. pow power spectrum density, 
+  rate is sampling rate (Hz). If limits [] then [0 rate/2]. With [h1 h2 h3] a1 
+  has powerspectrum sum between h1...h2 and h2...h3. ah gives actual range (Hz) 
+  and amp amplitude spectrum and a2 sum of amplitudespectrum. \\ type=[N n o] 
+  defines n*N samples with o*100 % overlapping which are averaged for analysis. 
+  If n*N too big for data then zeropad. Window is vector of size N, used before 
+  fft and averaging. Mean from data is removed before analysis. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>t=0:0.001:1.023;                % defined signal
+y=10*sin(2*pi*50*t)+15*sin(2*pi*120*t)+20*randn(size(t));
+hb=[0 100 200 300];              % analyze
+run=[...
+'subplot(311);plot(t(1:100),y(1:100));title(''signal'');'...
+'subplot(312);plot(h,log10(po));title(''power (dB)'');'...
+'set(gca,''ylim'',[min(log10(po)) max(log10(po))]);'...
+'plotband(ah,a1);subplot(313);plot(h,2*am*norm(w)/sum(w));'...
+'plotband(ah,2*a2*norm(w)/sum(w));'];
+run=run';run=run(:)';
+f=1000;l1=1024;l2=256;		% with window
+figure;w=ones(l1,1);[h,po,am,ah,a1,a2]=fftspect(y,f,hb,...
+[l1 1 0],'');eval(run);title('amplitude, 1*1024');
+figure;w=hanning(l1);[h,po,am,ah,a1,a2]=fftspect(y,f,hb,...
+[l1 1 0],w);;eval(run);title('amplitude, hanning');
+figure;w=hanning(l2);[h,po,am,ah,a1,a2]=fftspect(y,f,hb,...
+[l2 7 0.5],w);eval(run);
+title('amplitude, 50 % overlap hanning');
+print Help\fftspect -djpeg
+				% test with psd, sp 3.0
+y=randn(1,32);y=y-mean(y);
+[p1,h1]=psd(y,32,100);
+[h2,p2]=fftspect(y,100,[],[32 1 0],hanning(32));
+[h1 p1 [0 0;h2' p2']]
+</PRE></UL>
+  <LI><B>Diagnostics</B>: To get correct amplitude multiple $2 norm(w)/sum(w)$, 
+  where w is window. 
+  <LI><B>See also</B>: Uses fft. Used by qeega. See also psd, spectrum from 
+  signal processing toolbox. 
+  <LI><B>References</B>: Signal processing toolbox 3.0, 1-67 \cite{sp3}. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/fftspect.jpg">fftspect.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/FFTSPECT.M">fftspect.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=figtext></A><B>figtext</B>
+<UL>
+  <LI><B>Purpose</B>: Create figure text. 
+  <LI><B>Synopsis</B>: hdl=figtext(t1,t2) 
+  <LI><B>Description</B>: Creates figure's text at top of current figure. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>figure;figtext('demo');
+figure;figtext('demo','test');
+print fixtext -djpeg
+</PRE></UL>
+  <LI><B>See also</B>: Uses clock. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/FIGTEXT.M">figtext.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=filename></A><B>filename</B>
+<UL>
+  <LI><B>Purpose</B>: Return name, path from file identification number. 
+  <LI><B>Synopsis</B>: [name,pat]=filename(fid) 
+  <LI><B>Description</B>: Return name, path. Extension is removed from name. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>f1=fopen('c:\autoexec.bat');
+[n,p]=filename(f1)
+</PRE></UL>
+  <LI><B>See also</B>: Findpath. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/FILENAME.M">filename.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=findpath></A><B>findpath</B>
+<UL>
+  <LI><B>Purpose</B>: Return given path from Matlab path. 
+  <LI><B>Synopsis</B>: dir=findpath(what) 
+  <LI><B>Description</B>: Return directory from path. Path has directory 
+  separator at end. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>findpath('scanutil')
+</PRE></UL>
+  <LI><B>See also</B>: Uses path. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/FINDPATH.M">findpath.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=fpos></A><B>fpos</B>
+<UL>
+  <LI><B>Purpose</B>: Reposition file. 
+  <LI><B>Synopsis</B>: fpos(fid,pos) 
+  <LI><B>Description</B>: Reposition the file, fid identification number, to 
+  position pos from beginning. If pos&gt;size(file) adds zeros to end, file must 
+  be opened for writing. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>fpos(fid,100);
+</PRE></UL>
+  <LI><B>See also</B>: Uses fseek. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/FPOS.M">fpos.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=freeze></A><B>freeze</B>
+<UL>
+  <LI><B>Purpose</B>: Freeze, unfreeze figure by toggling visible. 
+  <LI><B>Synopsis</B>: freeze(def) 
+  <LI><B>Description</B>: Freezed figure is shown by selecting it's axes and to 
+  figures name is added /F=(total size of all x,y,z and c). Function is called 
+  by clicking any axes (not border). \\ With parameters defines operation. With 
+  'no preview', def 1 first click show total size and second click draws. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>freeze(0)                            % normal setup
+freeze(1)                            % no preview setup
+[X,Y]=meshgrid(-2:.2:2,-2:0.2:2);		
+Z=X.*exp(-X.^2-Y.^2);                % many subplots
+subplot(221);mesh(Z);subplot(222);meshc(Z);
+subplot(223);surf(Z);subplot(224);contour(Z);
+[X,Y]=meshgrid(-2:.05:2,-2:0.05:2);  % one large plot
+Z=X.*exp(-X.^2-Y.^2);mesh(Z);
+
+</PRE></UL>
+  <LI><B>Diagnostics</B>: There is also figure property DrawMode, fast/normal to 
+  fasten redrawing. Selection shown by gcf, selected. Redrawing inhibited (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/FREEZE.M">freeze.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=getband></A><B>getband</B>
+<UL>
+  <LI><B>Purpose</B>: Get bands from axes. 
+  <LI><B>Synopsis</B>: hdl=getband(band,x) 
+  <LI><B>Description</B>: Where band is vector of x-positions and x is width of 
+  each band. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>a1=subplot(211);plot(randn(1,1024)),set(gca,'xlim',[1 1024])
+h1=uiscroll;getband(10:100:1000,10);					
+a2=subplot(212);plot(randn(1,1024)),set(gca,'xlim',[1 1024])
+h2=uiscroll;getband(10:100:1000,10);	
+print Help\uiscroll -djpeg
+                      % after selecting bands
+d=get(a1,'userdata');d(:,1)
+d=get(a2,'userdata');d(:,1)
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Press mouse button on x-axis, not on any other object. 
+  Used objects are gca, userdata. 
+  <LI><B>See also</B>: Uses uiscroll. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/GETBAND.M">getband.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=grid1020></A><B>grid1020</B>
+<UL>
+  <LI><B>Purpose</B>: Interpolate values between electrodes. 
+  <LI><B>Synopsis</B>: 
+  [x,y,z,hdl1,hdl2,hdl3]=grid1020(label,value,grid,n,legend) 
+  <LI><B>Description</B>: Plot map of EEG label's values on head and 
+  interpolates with griddata values between electrodes. XY-values are [-1 1]x[-1 
+  1], default grid is 20x20. Scalar n gives number of color to legendtext. 
+  Vector n gives value of each legendtext. \\ With legend you can change 
+  defaultstyle %1.1f, if matrice different text for each legend. If one row and 
+  has #, creates matrice with # replaced with corresponding label text. Returned 
+  hdl1 is for legend text, hdl2(1) for surface, hdl2(2) for electrode markers 
+  and hdl3 for electrode text and pointtext. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>subplot(221);title('TYPE ELECTRODES');h=plottext;
+                      % 3 different outputs from values
+run=['t' uicval(h,'string') '[l,v]=untiestr(''='',t);n=size(l,1),'...
+ 'v=[v ones(n,1)*'' ''];v=v'';v=eval([''['' v(:)'' '']'']);'...
+ 'claa(0.5,1);subplot(222);colormap(cool);grid1020(l,v,10,v,'...
+ '''%2.2f #'');subplot(223);[X Y Z h1 h2 h3]=grid1020(l,v,10,v,'...
+ '''%2.2f #'');close(h1);set([h2(2);h3],''color'',[1 1 1]);'...
+ 'colorbar;subplot(224);set(gca,''vis'',''off'');axes(''posit'','...
+ '[0.4 0 0.6 0.6]);[dx dy]=gradient(Z);quiver(X,Y,dx,dy);hold ',...
+ 'on;pos1020(l,0,1,''x'',1);set(gca,''visible'',''off'');'];
+set(h,'string',['FZ=10';'O1=20';'O2=30'],'callback',run);
+eval(run)
+</PRE></UL>
+  <LI><B>See also</B>: Pos1020, griddata. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/GRID1020.M">grid1020.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=loadcnt></A><B>loadcnt</B>
+<UL>
+  <LI><B>Purpose</B>: Load continuous NeuroScan data. 
+  <LI><B>Synopsis</B>: [x,y,lab,elec,cal,oth]=loadcnt(filen,elec,start,last) 
+  <LI><B>Description</B>: elec defines which electrodes are read, size - rows 
+  data in y. If elec=[] then reads all channels data between start and end 
+  points. If elecis string then only matched are read and with elec 
+  corresponding channelnumbers are returned. lab is lab(elec). Text oth is ['rev 
+  ' ;'date ';'time ';'nchan';'rate ';'datas';'Chann';'size';'TeegT'] read by 
+  scanhead. \\ filen can be filename or file identifier. Because function 
+  scanelec, scanhead are slow, variables lab, cal and oth are saved into 
+  file.mat file in directory "Headers". If *.cnt file is changed you have to 
+  remove file.mat for new parameters to be read. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>                % load and show first 1000 points
+[x,y,la,el,ca,ot]=loadcnt('x70001a1.cnt',[],1,1000);	
+figure
+plotdata(x,y,la,[50 50]);ot,xlabel('t (s');ylabel('100 uV');
+print Help\loadcnt -djpeg
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Perhaps sensitive to different SynAmps parameters. 
+  Used global variable is DIRS. 
+  <LI><B>See also</B>: Uses scanhead, scanelec, showwait. 
+  <LI><B>References</B>: Neurosoft. Structure of data headers. 1993. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/loadcnt.jpg">loadcnt.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/LOADCNT.M">loadcnt.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=loadedit></A><B>loadedit</B>
+<UL>
+  <LI><B>Purpose</B>: Load ascii string for editmacr and editscan. 
+  <LI><B>Synopsis</B>: [fid]=loadedit(file,type,which) 
+  <LI><B>Description</B>: Loads strings from ascii file into R, uicedit with 
+  type true or into ES, editscan with type false. \\ If which given it defines 
+  which "PAGE R or "SCAN ES is returned and if nothing found returns hole file, 
+  use to transfer pages. Function works atleast with SUN4, SGI and PCWIN. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>loadedit('qeega.r0',1,0)         % page R0
+R0
+
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Referred scanedit is not included in this version of 
+  ScanUtil toolbox. Used global variables are R0...R9, EE0...EE2. 
+  <LI><B>See also</B>: Uses fgetl. See also loadstr, savestr, editmacr. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/LOADEDIT.M">loadedit.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=loadstr></A><B>loadstr</B>
+<UL>
+  <LI><B>Purpose</B>: Load ascii file. 
+  <LI><B>Synopsis</B>: [txt,p]=str(file) 
+  <LI><B>Description</B>: Loads strings from file. Works atleast with SUN4, SGI 
+  and PCWIN. Returns text and path of file. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>[str p]=loadstr('uiscroll.hlp')      % load help file
+</PRE></UL>
+  <LI><B>See also</B>: Uses fgetl, feof. See also loadstr, savestr. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/LOADSTR.M">loadstr.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=makeblt></A><B>makeblt</B>
+<UL>
+  <LI><B>Purpose</B>: Prepare current figures for gray screen capture. 
+  <LI><B>Synopsis</B>: makeblt 
+  <LI><B>Description</B>: Toggle gray and colors for current figures. First time 
+  converts all figures to gray for screen capture and second time restores old 
+  colors. \\ If doing lot of screen captures you may find it usuful to change 
+  Windows colors and screen background. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>c=creafigs(4);
+figure(c(1));plotdata(1:100,randn(10,100));
+figure(c(2));pos1020('',1,1)
+figure(c(3));surf(randn(5));
+delete(c(4));editmacr;uihelp
+makeblt
+!snapshot % platform dependent, Print Screen in Windows
+makeblt
+</PRE></UL>
+  <LI><B>See also</B>: Uses blt, cinvert. See also scrimage. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/MAKEBLT.M">makeblt.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=makem></A><B>makem</B>
+<UL>
+  <LI><B>Purpose</B>: Create m files name0..9.m from R0..R9 macro. 
+  <LI><B>Synopsis</B>: makem(name) 
+  <LI><B>Description</B>: Create m files from current macro which can be 
+  evaluated as function with name0. For DOS compatible use only names size of 7 
+  characters. Strings evalstr(RX,'Y') in beginning are replaced with 
+  corresponding nameX(Y). 
+  <LI><B>Examples</B>: 
+  <UL><PRE>R0='0';R1='1';R2='2';R3='3';R4='4';R5='5';R6='6';R7='7';R8='8';
+makem('testmac')          % converting macros
+type testmac0
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Remember that transfer parameters are i1..i9 and 
+  o1..o9. There cann't be many evalstr in same row in macros. 
+  <LI><B>See also</B>: Uses strfind, putstr, savestr, showwait. See also 
+  evalstr, maker. Used global variables are R0..R9. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/MAKEM.M">makem.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=maker></A><B>maker</B>
+<UL>
+  <LI><B>Purpose</B>: Create macro R0..R9 from m files name0..9.m. 
+  <LI><B>Synopsis</B>: maker(name) 
+  <LI><B>Description</B>: Read files created by makem and transform them 
+  tocurrent R0...R9. If using editmacr select an another page to see changes. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>R0=[];R1=[];R2=[];R3=[];R4=[];R5=[];R6=[];R7=[];R8=[];R9=[];
+maker('test');         % convering m files
+R1
+maker('qeega');        % from m files into macro
+R0
+</PRE></UL>
+  <LI><B>Diagnostics</B>: All the text NAME are replaced by eval(Rx,...). One 
+  error possibility is strings with NAME. Used globals are R0..R9. 
+  <LI><B>See also</B>: Uses loadstr, strfind, putstr, showwait. See also makem. 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/MAKER.M">maker.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=mutexc></A><B>mutexc</B>
+<UL>
+  <LI><B>Purpose</B>: Create mutually exclusive uicontrols. 
+  <LI><B>Synopsis</B>: handles=mutexc(handle,offset,command) 
+  <LI><B>Description</B>: For creating mutually exclusive radio and check 
+  buttons. Returns handle numbers. Handle defines how many buttons or 
+  handlevector for them. \\ Object handles(1), userdata(offset+1) has data which 
+  one is selected and userdata(offset+2) is command which is run when button is 
+  selected. In command string #1 is replaced with handles and #2 with selected 
+  button, tmp has value, see example. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>set(gcf,'units','pixels','position',[10 100 300 225]);
+subplot(1,2,2);	                % plotting randn
+b0=uicontrol('style','pushbut','string','Close figure',...
+'callback','close;','position',[5 205 100 15]);
+                                % button commands
+b1=mutexc(10,1,'#2;plot(randn(2^tmp,1),1:2^tmp);');
+for i=1:10;set(b1(i),'position',[5 20*i-15 100 15],...
+'string',['randn ',int2str(2^i)],'horiz','left');end;
+                                % position, allow resize
+set([b0 b1],'units','norm')		
+</PRE></UL>
+  <LI><B>See also</B>: Uses putstr. See also uicval, o2s. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/MUTEXC.M">mutexc.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=o2s></A><B>o2s</B>
+<UL>
+  <LI><B>Purpose</B>: Return object as string. 
+  <LI><B>Synopsis</B>: s=o2s(h) 
+  <LI><B>Description</B>: Return object number as string. Use when creating 
+  uicontrols. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>o2s(gco)
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Created for 4.2c.1 where mat2str doesn't work all the 
+  time, h must be a vector. 
+  <LI><B>See also</B>: Mat2str. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/O2S.M">o2s.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=plotband></A><B>plotband</B>
+<UL>
+  <LI><B>Purpose</B>: Plots vertical bands with multiple values. 
+  <LI><B>Synopsis</B>: [hdl]=plotband(x,value,yl,format,style) 
+  <LI><B>Description</B>: Where hdl's first column for lines and second column 
+  for text handles. Format is for line format and style for printing values with 
+  sprintf. Values first row is printed on top and following below that, x has 
+  one more column than matrice of value. \\ Use possible other plot and xlim to 
+  axes before this command, this should last command to axis. Rows of values are 
+  printed between top half of axes. If yl given that defines absolute position 
+  in yl(1,:). Vertical lines between yl(2,1)-yl(3,1). 
+  <LI><B>Examples</B>: 
+  <UL><PRE>y=5*randn(4,5)               % plotting different bands
+a1=subplot(311);plot(randn(1,25));set(gca,'ylim',[-5 5]);
+ 	h1=plotband([0 5 10 15 25],y,[],'-','%1.1f');
+a2=subplot(312);plot(randn(1,25));set(gca,'ylim',[-5 5]);
+ 	h2=plotband([0 5 10 15 25],y(1,:),[4;-5;5],':','%1.2f');
+a3=subplot(313);plot(randn(1,25));set(gca,'ylim',[-5 5]);
+ 	h3=plotband([0 5 10 15 25],y,[4:-2:-2],'-.','%1.3f');
+set(h1(1:2:5,1),'linest',':')% every second dotted
+set(h3(1:4:13,2),'fontsi',12)% top row large
+print help\plotband -djpeg
+</PRE></UL>
+  <LI><B>See also</B>: Getband, uiscroll. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/plotband.jpg">plotband.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/PLOTBAND.M">plotband.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=plotdata></A><B>plotdata</B>
+<UL>
+  <LI><B>Purpose</B>: Plot data with labels into current axes. 
+  <LI><B>Synopsis</B>: [hdl]=plotdata(x,y,labels,height,ticks,ticklab,tictext) 
+  <LI><B>Description</B>: Y is a matrice where rows are different datasets. 
+  Height(1:2) gives point below and upper to zero for each chanels. Ticks gives 
+  relative minor ticks for each channels, zeros aren't printed. Those matrices 
+  are expanded to match the height of y. First row in y is shown at top. Labels 
+  can also be [] or format for sprintf. \\ Ticklabel is corresponding boolean 
+  matrice whether to print minortick text: 0 don't print, 1 print value with %g, 
+  &gt;1 print text in ticktext (i,:). If ticktext given, first gives number 
+  format for value 1. Hdl returns handles for lineobjects. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>x=1:100;y=randn(3,100);		% random numbers
+y(1,:)=y(1,:)/2;
+subplot(211);title('data');
+plotdata(x,y,['a)';'b)';'c)'],[2 2],[-1 1])
+subplot(212);title('more vertical space');
+plotdata(x,y,['a)';'b)';'c)'],[4 2;2 2;2 2],[-1 1;-1 1;-1 1],...
+[0 2;0 1 ;0 1],str2mat('%1.1g','signal'));
+print Help\plotdata -djpeg
+</PRE></UL>
+  <LI><B>Diagnostics</B>: If height not given maximum 2*std from datasets is 
+  used. 
+  <LI><B>See also</B>: map1020, uiscroll. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/plotdata.jpg">plotdata.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/PLOTDATA.M">plotdata.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=plottext></A><B>plottext</B>
+<UL>
+  <LI><B>Purpose</B>: Plot text with numerical values into current axes. 
+  <LI><B>Synopsis</B>: hdl=plottext(text,array) 
+  <LI><B>Description</B>: Plots numerical values from array into current axes in 
+  format defined in text. If text has one row then it defines file name. In text 
+  % defines places where to print values. \\ Text is shown in edit uicontrol. 
+  Text can be edited. Text can be printed by transforming it into image by 
+  scrimage or to text objects by scrimage or convtext. With Matlab 5.2 also 
+  direct priting is available. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>subplot(211),title('VALUES')
+h=plottext(str2mat('TABLE','%1.2f	%1.2f','END'),[0.12 2.22]);print datah\plottext -djpeg
+              % continue in scrimage
+</PRE></UL>
+  <LI><B>See also</B>: Scrimage, convtext. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/PLOTTEXT.M">plottext.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=pos1020></A><B>pos1020</B>
+<UL>
+  <LI><B>Purpose</B>: Plot scalp electrode positions in XY or XYZ. 
+  <LI><B>Synopsis</B>: [pos,label,hdls]=pos1020(label,xyz,points,pst,oline,z) 
+  <LI><B>Description</B>: Plot EEG electrodes into current axes. Also return 
+  electrodes's xy coordinates, xyz if xyz given. \\ Xyz, points and oline are 
+  boolean whether to print them. Pst is stylestring for points and z is used 
+  with xy option. Returned handles (1,:) is for text, (2,1) for markers and 
+  (2,2) for outline curve. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>t=0:1/100:1;creafig([0 0 1 1])  % sine signals in electrodes
+la=['FZ';'O1';'O2';'OZ'];
+[xy,label,hdls]=pos1020(la,0,1,'x',1,10);
+title('1020 SYSTEM')
+[hdl,rhdl]=axes1020(la);        % return axes after plotting
+for i=1:size(la,1);
+	  axes(hdl(i));plot(sin(2*t*pi*i));title(la(i,:))
+end
+set(rhdl(5),'visible','on');    % common scale
+set([hdl rhdl(2:5)],'xlim',[1 100],'ylim',[-1 1]);
+set(hdl,'xticklabels','','yticklabels','');
+print pos1020 -djpeg	
+</PRE></UL>
+  <LI><B>See also</B>: Map1020. 
+  <LI><B>References</B>: Principles of neural Science, 3rd edition. Neurosoft 
+  manual, version 3.0. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/pos1020.jpg">pos1020.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/POS1020.M">pos1020.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=putstr></A><B>putstr</B>
+<UL>
+  <LI><B>Purpose</B>: rows of string into another string. 
+  <LI><B>Synopsis</B>: [old]=putstr(what,old,pos,replace) 
+  <LI><B>Description</B>: Adds what to old(pos,:) If nargin=2 then what adds to 
+  end. What, old can have multiple rows. If pos greater than size of old+1 [] 
+  are added before what. With replace=1 doesn't insert rows, but replaces. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>putstr(str2mat('is','almost'),str2mat('today','monday'),2)
+putstr('is',str2mat('today','isn''t','monday'),1,1)
+putstr('is',str2mat('today','isn''t','monday'),2,1)
+putstr('is',str2mat('today','isn''t','monday'),3,1)
+</PRE></UL>
+  <LI><B>See also</B>: Rmrow. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/PUTSTR.M">putstr.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=qeega1></A><B>qeega1</B>
+<UL>
+  <LI><B>Purpose</B>: Creating selection figure for qEEGa.. 
+  <LI><B>Synopsis</B>: hdl=qeega1(name) 
+  <LI><B>Description</B>: Returns handle for axes. Reads and plots electrodes 
+  'FZ','EOGL','EOGL'. To change these edit qeega1, qeega2 and pos1020. Changed 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/qeega1.jpg">qeega1.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/QEEGA1.M">qeega1.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=qeega2></A><B>qeega2</B>
+<UL>
+  <LI><B>Purpose</B>: Calculating spectrum and showing raw data. 
+  <LI><B>Synopsis</B>: qeega2(i1) 
+  <LI><B>Description</B>: If parameter given uses global y as input. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/qeega2.jpg">qeega2.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/QEEGA2.M">qeega2.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=qeega3></A><B>qeega3</B>
+<UL>
+  <LI><B>Purpose</B>: Plotting FFT and derived parameters. 
+  <LI><B>Synopsis</B>: qeega3 
+  <LI><B>Description</B>: \\ % 
+  <LI><B>See also</B>: Uses convtext. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/qeega3.jpg">qeega3.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/QEEGA3.M">qeega3.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=rmrow></A><B>rmrow</B>
+<UL>
+  <LI><B>Purpose</B>: indicated rows from matrice. 
+  <LI><B>Synopsis</B>: [new]=rmrow(line,pos) 
+  <LI><B>Description</B>: Rows indicated in pos are removed from matrice line 
+  and result is given in new. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>rmrow(str2mat('mond','tues','wedn','thurs','frid','end'),[3;6])
+rmrow([1;2;3;4;5;6],[3;6])
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Works with numbers and strings. 
+  <LI><B>See also</B>: Strfind. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/RMROW.M">rmrow.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=savestr></A><B>savestr</B>
+<UL>
+  <LI><B>Purpose</B>: Save string as ascii into file. 
+  <LI><B>Synopsis</B>: savestr(text,file,opt) 
+  <LI><B>Description</B>: If opt not given 'w' is assumed. Works atleast with 
+  SUN4, SGI and PCWIN. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>savestr(str2mat('Choose:','1) save','2) load','...'),...
+'temp.hlp');
+type temp.hlp
+</PRE></UL>
+  <LI><B>See also</B>: Loadstr. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/SAVESTR.M">savestr.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=scanelec></A><B>scanelec</B>
+<UL>
+  <LI><B>Purpose</B>: Electrode specific part of the NeuroScan header. 
+  <LI><B>Synopsis</B>: [va,text,data,style]=scanelec(var,elec,filen,dataw) 
+  <LI><B>Description</B>: Variable names, helptext, data from filen and 
+  stylestring for fread are returned. \\ In va text "ELECTRODE begins and ends 
+  electrode fields. Those fields are returned for 1..elec. If var=[], all fields 
+  and elec=[] all electrodes. If dataw is given dataw is written to file. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>[v,t]=scanelec([]);     % list of all variables
+subplot(211);plottext(v);
+                        % load 5 first channels
+[v1,t1,data,st]=scanelec(['lab  ';'basel';'sensi'],5,...
+   'testec.cnt');
+subplot(212);plottext(tiestr(['=';'{';'}'],v1,data,t1));
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Writing only to existing files. If filen is changed 
+  remove file.mat for new calibration values. 
+  <LI><B>See also</B>: Uses scanhead, putstr, fpos. See also scaneven, loadcnt. 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/SCANELEC.M">scanelec.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=scaneven></A><B>scaneven</B>
+<UL>
+  <LI><B>Purpose</B>: Eventtable of NeuroScan file. 
+  <LI><B>Synopsis</B>: [va,text,data,style,ele]=scaneven(var,events,filen,dataw) 
+
+  <LI><B>Description</B>: Variable names, helptext, data from file and 
+  stylestrings for fread are returned. Extra record is data position (*) where 
+  sweep's position is in points. \\ In var text "EVENT begin and end events 
+  fields. Those fields are returned for 1..events. If var=[], then all fields 
+  and events=[] all events are returned. If dataw is given data is written to 
+  file. \\ Fourth returned parameter E is a matrice with columns evaluated from 
+  var. If only file given, [ele]=scaneven(filen) where ele=['Stim' 'posi']. Ele 
+  is saved into mat like oth, from scanelec. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>[v1,t1]=scaneven([],[]);  % list of all variables
+subplot(211);plottext(v1);
+                        % load 5 first events
+[v,t,d]=scaneven([],5,'testp3.cnt');
+subplot(212);plottext(tiestr(['=';'{';'}'],v,d,t));
+                        % load all events
+[ele]=scanevent('testp3.cnt')
+                        % calculate two averages
+s=[-0.1 0.9];r=250;el=[];[x,y,el]=loadcnt('testp3.cnt',...
+el,1,2);s=s(1)*r:s(2)*r;y11=zeros(size(el,1),size(s,2));
+y12=y11;y21=y11;y22=y11;n1=0;n2=0;
+for i=1:size(ele,1),et=ele(i,1);x=ele(i,2);
+  disp(sprintf('event %3.0f/%3.0f type %1.0f at %3.1f s',...
+  i,size(ele,1),et,x/r));
+  [x,y,el]=loadcnt('testp3.cnt',el,x+min(s),x+max(s));
+  if et==1,n1=n1+1;     % show events
+  if i/2==floor(i/2),y11=y11+y; else y12=y12+y;end
+  else,n2=n2+1;
+  if i/2==floor(i/2),y21=y21+y; else y22=y22+y;end
+end
+end;y11=y11/n1;y12=y12/n1;y21=y21/n2;y22=y22/n2;
+x=1000*s/r;save testp3a x y11 y12 y21 y22 el n1 n2
+                        % load data ans plot figure
+load testp3a
+f1=creafigs(1);title('event 1');f2=creafigs(1);
+title('event 2');set([f1 f2],'defaulttextfontsize',8);
+figure(f1);pos1020(el,0,1,'.',1,10);a1=axes1020(el);
+figure(f2);pos1020(el,0,1,'x',1,10);a2=axes1020(el);
+for i=1:size(el,1);
+  axes(a1(i));plot(x,-y11(i,:),x,-y12(i,:));title(el(i,:));
+  axes(a2(i));plot(x,-y21(i,:),x,-y22(i,:));title(el(i,:));
+end;set([a1 a2],'xlim',[-100 500],'xtick',[-100 100 400]);
+</PRE></UL>
+  <LI><B>Limitations</B>: Reading all events is too slow to do online. Use batch 
+  to do it overnight or write more spesific scaneven, or mex file. First time 
+  <LI><B>Diagnostics</B>: Writing works only into existing files, use to change 
+  copies of old files. If file is changed remove file.mat for new events. There 
+  are 
+  <LI><B>See also</B>: Uses scanhead, putstr, fpos. See also scanelec, loadcnt. 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/SCANEVEN.M">scaneven.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=scanhead></A><B>scanhead</B>
+<UL>
+  <LI><B>Purpose</B>: General part of the NeuroScan header. 
+  <LI><B>Synopsis</B>: [va,text,data,style]=scanhead(var,filen,dataw) 
+  <LI><B>Description</B>: Variable names, helptext, data from file and 
+  stylestring for fread are returned. After last headerfield reserved10, there 
+  are elect_pos (electrode position), data_pos (data position), event_pos 
+  (events position) and datas (data size). They have (*) at the end of helptext. 
+  Reserved variables have * as helptext. From eventtable is returned TeegType, 
+  size, offset. \\ If var=(1,:) all matched data will be listed otherwise only 
+  first match and if no macth then text, data=[] and va=var(i,:). Lines starting 
+  with * or " are no match. If variables has same string many times only first 
+  will be returned. \\ Without file will data=[position size1], electpos etc. 
+  -1. If dataw given dataw will be written into file otherwise data will be 
+  read. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>[v,t]=scanhead([]);     % list of all variables
+subplot(211);plottext(v);
+                              % load 17 first from file
+[v1,t1,data,st]=scanhead(v(1:17,:),'testec.cnt');
+subplot(212);plottext(tiestr(['=';'{';'}'],v1,data,t1));
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Writing works only into existing files. Can be 
+  considered as a slow functions. 
+  <LI><B>See also</B>: Uses putstr, fpos. See also scanelec, scaneven, loadcnt. 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/SCANHEAD.M">scanhead.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=scantut0></A><B>scantut0</B>
+<UL>
+  <LI><B>Purpose</B>: Create tutorial text files. 
+  <LI><B>Synopsis</B>: scantut0 
+  <LI><B>Description</B>: Following pages are ones to use: 1) Create pages R7, 
+  R8, R9 for scanhead, scanelec and scaneven variables. 2) Save those pages 
+  after your edit into corresponding datah\*.tex files and pages R3...R6 to 
+  headv, eventv, loadv and analv.tex and figure util1.eps and util2.eps 
+  <LI><B>Examples</B>: 
+  <UL><PRE>SCANTUT2;     % or as macro
+evalstr(R2);
+</PRE></UL>(<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/SCANTUT0.M">scantut0.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=scrimage></A><B>scrimage</B>
+<UL>
+  <LI><B>Purpose</B>: Display handle as image. 
+  <LI><B>Synopsis</B>: [x,c]=scrimage(hdl,rec) 
+  <LI><B>Description</B>: Uses roots properties to get image and changes current 
+  colormap before displaying image. Hdl can be 0 (hole screen) or figure or axes 
+  handle. If rect not given hole handle is captured, &lt;1 normalized units [x y 
+  width height] and with &gt;1 pixels. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>makeblt;        % copy bottom half of screen
+scrimage(0,[0 0 1 0.5]);
+makeblt
+                % continue from scrimage
+scrimage(h)
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Created colormap not correct, 'getframe' not supported 
+  in 16 color mode. 
+  <LI><B>See also</B>: Uses image, colormap. See also makeblt. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/SCRIMAGE.M">scrimage.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=scrollda></A><B>scrollda</B>
+<UL>
+  <LI><B>Purpose</B>: To scroll data, with uiscroll. 
+  <LI><B>Synopsis</B>: scroll(run,div,ma,di,ax) 
+  <LI><B>Description</B>: Run is evaluated when current xlim goes beyond xdata 
+  in objects. Run must be functions of x and y, see example. Div is ]0 1[, 0.5 
+  normally, 0.9 if not likely to change scroll direction. Ma is minimum and 
+  maximum x value for run and if di given run is shown with loading. Ax is axis 
+  handle. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>                % frequency modulated signal 1-11 Hz.
+run='x=x:1/1000:(x+d);y=sin(2*pi*(1+x./10).*x);'
+x=0;d=20;eval(run);plot(x,y);
+uiscroll([0 100],1,[],['scrollda(''' run ''',0.5,[0 100],1']);	
+                % showing 200 Hz sampled closed.cnt
+run='x=x*200;[x,y,la,e,c,o]=loadcnt(''closed.cnt'',[],x+1,x+3000);'
+x=0;eval(run);plotdata(x,y,la,[50 50]);
+run=strrep(run,'''','''''');
+uiscroll([0 eval(o(6,:))/200-2],2,[],['scrollda('''...
+  run ''',0.5,[0 ' int2str((eval(o(6,:))-3000)/200-1) '],1']);
+print Help\scrollda -djpeg
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Works only with line objects, like plot or plotdata. 
+  Created line objects are supposed to be in reversed order of rows in y. 
+  <LI><B>See also</B>: plotdata, plot. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scrollda.jpg">scrollda.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/SCROLLDA.M">scrollda.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=selelec></A><B>selelec</B>
+<UL>
+  <LI><B>Purpose</B>: Select EEG electrodes from scalp. 
+  <LI><B>Synopsis</B>: [seleceted,hdl]=selelec(ele,num) 
+  <LI><B>Description</B>: Checkbuttons for selecting EEG electrodes. Calling 
+  with two parameters creates figure with buttons in ELE and callbacks to return 
+  selected text to variable S[num]. Scalp figure is created with pos1020. \\ 
+  With eke=[] sets figures buttons on and with no parameters returns which 
+  buttons are on. There are buttons for help, for file S[num] and for selecting 
+  all on or off. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>[x1,y1,l1]=loadcnt('eyes-closed.cnt','',1,1000);
+h1=selelec(l1,1);S1=selelec('',1:5); % plotting data
+run=['showwait(''wait...'');figure(pf);clf,plotdata(x1,y1(S1,:),'...
+  'l1(S1,:));showwait([])'];
+set(gcf,'windowbuttonupfcn',run);    % press at S1 backgroundprint Help\selelec -djpeg
+figure;
+uicsetup('selelec.hlp',1);
+title('Channels S1, Range S2 in f1');
+pf=gcf;
+eval(run);                           % continue in seltext
+</PRE></UL>
+  <LI><B>See also</B>: Uses uicsetup, pos1020. See also seltext. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/selelec.jpg">selelec.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/SELELEC.M">selelec.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=seltext></A><B>seltext</B>
+<UL>
+  <LI><B>Purpose</B>: Select strings. 
+  <LI><B>Synopsis</B>: [selected,hdl]=seltext(tex,num,width) 
+  <LI><B>Description</B>: Checkbuttons for selecting text. Calling with two 
+  parameters creates figure with buttons in tex and callbacks to return selected 
+  text to variable S[num]. \\ With tex=[] sets figures buttons num on and with 
+  no parameters returns which buttons are on. There are buttons for help and for 
+  selecting all on or off. If width not given box width 80 pixels is assumed. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>[v,t,d]=scanhead('datas','eyes-closed.cnt')		
+row='';	         % continue from selelec
+for i=1:1000:eval(d);
+  row=putstr(sprintf('%g',i),row);
+end;             % select range with S2 and
+seltext(row,2);	 % press at background to update.
+S2=seltext('',[1 2]);
+run=['showwait(''wait...'');x0=(min(S2)-1)*1000+1;x1='...
+'(max(S2)-1)*1000+1;[x1,y1]=loadcnt(''eyes-closed.cnt'',[],x0,x1)'...
+';figure(pf);clf;plotdata(x1,y1(S1,:),l1(S1,:));showwait([]);'];
+set(gcf,'windowbuttondownfcn',run);
+eval(run);
+</PRE></UL>
+  <LI><B>See also</B>: Uses uicsetup. See also selelec, loadcnt, plotdata (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/SELTEXT.M">seltext.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=setobj></A><B>setobj</B>
+<UL>
+  <LI><B>Purpose</B>: Set object properties. 
+  <LI><B>Synopsis</B>: setobj(what,ext) 
+  <LI><B>Description</B>: Set object properties based on given parameter what: 
+  keep) Keep the relative dimensions as same as in scren for printing. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>setobj('keep');     % keep same scale as in screen
+print datah\test -deps
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Used object properties PaperOrientation and PaperSize. 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/SETOBJ.M">setobj.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=setscan></A><B>setscan</B>
+<UL>
+  <LI><B>Purpose</B>: Workspace for NeuroScan and Macro Utilities. 
+  <LI><B>Synopsis</B>: setscan 
+  <LI><B>Description</B>: Set up some variables needed with utilities. Should be 
+  run at the beginning of session to avoid errors, use startup. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>Setscan
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Used global variables are R0...R9 OLD_R, S0...S9, 
+  UIHELP_FIG,UIHELP_TXT, UIHELP_FILES, PATHS, SHOWWAIT_TXT, BRK, DIALOGX, 
+  DIALOGY, (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/SETSCAN.M">setscan.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=showwait></A><B>showwait</B>
+<UL>
+  <LI><B>Purpose</B>: Show calculation time on figures name. 
+  <LI><B>Synopsis</B>: showwait(text) 
+  <LI><B>Description</B>: Text is used by sprintf to print toc when showwait is 
+  called without parameters. \\ When text&lt;&gt;[] it is saved to recursivly 
+  into global variable SHOWWAIT and with text=[] figure's old name is restored. 
+  Pointer is also changed to watch when running. Use showwait(-1) after error to 
+  to clear showwait variable and to restore arrow pointer. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>showwait('calculating %1.1f s');
+for i=1:1000;showwait;end;
+showwait('');
+    % remember old names
+for i=1:5;showwait(['index i' int2str(i)])
+  pause(1)
+  for j=1:5;showwait(['index j' int2str(j)]);pause(1)
+    showwait('');end;
+  showwait('')
+end;
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Global variable used is SHOWWAIT. 
+  <LI><B>See also</B>: Uses tic, toc. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/SHOWWAIT.M">showwait.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=sortstr></A><B>sortstr</B>
+<UL>
+  <LI><B>Purpose</B>: Sort in ascending order. 
+  <LI><B>Synopsis</B>: [sorted,i]=loadedit(str) 
+  <LI><B>Description</B>: Sort string str into sorted. Index idefines 
+  sorted=str(i,:). 
+  <LI><B>Examples</B>: 
+  <UL><PRE>str=str2mat('Jan','Feb','Mar','Apr','May','Jun','Jul');
+sortstr(str)
+</PRE></UL>
+  <LI><B>See also</B>: Uses sort. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/SORTSTR.M">sortstr.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=startup></A><B>startup</B>
+<UL>
+  <LI><B>Purpose</B>: Startup for utilities. 
+  <LI><B>Synopsis</B>: startup 
+  <LI><B>Description</B>: Setup some needed globals and looks for utilities 
+  toolboxes installed. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>startup
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Used global variables are DIRS, DIRSS and PCWIN. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/STARTUP.M">startup.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=startup></A><B>startup</B>
+<UL>
+  <LI><B>Purpose</B>: Startup for utilities. 
+  <LI><B>Synopsis</B>: startup 
+  <LI><B>Description</B>: Setup some needed globals and looks for utilities 
+  toolboxes installed. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>startup
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Used global variables are DIRS, DIRSS and PCWIN. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/STARTUP.M">startup.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=strfind></A><B>strfind</B>
+<UL>
+  <LI><B>Purpose</B>: Extension to findstr, accept matrice. 
+  <LI><B>Synopsis</B>: [k]=strfind(where,what,break) 
+  <LI><B>Description</B>: Finds string what from string where with findstr 
+  function and returns k(:,1) containing rownumbers in ascending order and 
+  k(:,2:...) positions in that row. If break given stops with first match. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>strfind(str2mat('monday','tuesday','wednesday','thursday'),'d')
+strfind(str2mat('monday','tuesday','wednesday','thursday'),'d',1)
+</PRE></UL>
+  <LI><B>See also</B>: Uses showwait. See also findstr. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/STRFIND.M">strfind.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=tiestr></A><B>tiestr</B>
+<UL>
+  <LI><B>Purpose</B>: Tie rows of strings into one matrice. 
+  <LI><B>Synopsis</B>: [line]=tiestr(sep,t1...t10) 
+  <LI><B>Description</B>: Create a string with rows line= [sep(1,:) t1 
+  sep(2,:).. t10 sep(11,:)]. Strings are deblanked. Up to 10 strings can be used 
+  as parameters. If sep has less rows than parameters+1 [] is put to the 
+  beginning (and to end). Lines in t1 starting with * or " are returned as same 
+  to line. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>tiestr(str2mat('=','{','}'),str2mat('name','address'),...
+	str2mat('jussi','messi'),str2mat('firstname','internet'))
+tiestr([],'first','last')
+</PRE></UL>
+  <LI><B>See also</B>: Uses showwait. See also untiestr. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/TIESTR.M">tiestr.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=uicput></A><B>uicput</B>
+<UL>
+  <LI><B>Purpose</B>: Create uicontrols. 
+  <LI><B>Synopsis</B>: [hdls]=uicput(what,y) 
+  <LI><B>Description</B>: Returns handles for controls. If y&lt;1 it's 
+  normalized pixels otherwise pixels. If y&lt;0 then it's pixels from the top 
+  down. \\ What is string with t(ext), e(dit), c(echkbox), r(adiobutton), 
+  b(pusbutton), p(opupmenu), s(lider) and f(rame) which twice used defines 
+  position of uicontrols. Backslash separes uicontrols on left and right. Other 
+  characters are ignored. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>h1=uicput('12345678 t123t e   e/t123t e   e 12345678',0.5);
+h2=uicput('12345678 t123t e   e/t123t e   e 12345678',0);
+uicsetup('uicput.hlp',1);         % past in parts
+set([h1(1) h2(1)],'String','XGrid');
+set([h1(3) h2(3)],'String','YGrid');
+	% callbacks
+tmp=['set(',int2str(gcf),',''currentaxes'','];
+r1=['[X,Y]=meshgrid(-2:4/G1:2,-2:4/G2:2);Z=X.*exp(-X.^2',...
+'-Y.^2);',tmp,o2s(subplot(2,1,1)),');mesh(X,Y,Z);'];
+r2=['[X,Y]=meshgrid(-2:4/G3:4,-2:4/G4:2);Z=X.*exp(-X.^2',...
+'-Y.^2);',tmp,o2s(subplot(2,1,2)),');surf(X,Y,Z);'];
+G1=4;G2=4;G3=4;G4=4;
+set([h1(2) h1(4) h2(2) h2(4)],'String','4');
+        % upper screen, mesh
+set(h1(2),'callback',['G1' uicval(h1(2),'string',1) 'eval(r1);']);
+set(h1(4),'callback',['G2' uicval(h1(4),'string',1) 'eval(r1);']);
+eval(get(h1(2),'callback'));
+uicview(0.5);
+        % lower screen, surf
+set(h2(2),'callback',['G3' uicval(h2(2),'string',1) 'eval(r2);']);
+set(h2(4),'callback',['G4' uicval(h2(4),'string',1) 'eval(r2);']);
+eval(get(h2(2),'callback'));
+uicview(0);
+print uicput -djpeg
+</PRE></UL>
+  <LI><B>See also</B>: Uicview. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/uicput.jpg">uicput.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/UICPUT.M">uicput.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=uicsetup></A><B>uicsetup</B>
+<UL>
+  <LI><B>Purpose</B>: Setup basic uicontrols at the top of figure. 
+  <LI><B>Synopsis</B>: [hdl]=uicsetup(file,style,string,extra) 
+  <LI><B>Description</B>: Setup uicontrols at the top of figure for closing 
+  figure and to view help. File is filename for calling uichelp. Styles are 
+  following: \\ 1) Cls and Hlp buttons, uses file for uihelp. 2) Cls, R0...R9 
+  and Hlp buttons. 3) Cls, F0...F9 and Hlp buttons, uses file for eval F. \\ If 
+  no parameters given [],2 is assumed and new figure opened for use with 
+  uicedit. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>uicsetup                        % different controls
+uicsetup('test.hlp',1);
+uicsetup('macro.hlp',2);        % some other controls
+h=uicsetup('test.hlp',2,'  ','s123sp123p')
+print uicsetup -djpeg
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Used global is BRK. 
+  <LI><B>See also</B>: Uses mutexc, uicput, uihelp. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/uicsetup.jpg">uicsetup.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/UICSETUP.M">uicsetup.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=uicval></A><B>uicval</B>
+<UL>
+  <LI><B>Purpose</B>: Return string which return object's property. 
+  <LI><B>Synopsis</B>: str=uicval(ind,hdl,what,evl) 
+  <LI><B>Description</B>: Return string "ind=get(hdl,what);". For uicontrol use. 
+  If hdl is string then "=get(ind,hdl);". Default what is 'value'. With evl 
+  given eval(...) is added to string. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>hdl=uicput('p12p/p12p');v1=1;v2=1; % create 2 popupmenus
+set(hdl,'string',['1';'2';'3';'4';'5']);
+for i=1:2                          % return v1 and v2
+set(hdl(i),'callback',['v' uicval(i,hdl(i)) '[v1 v2]']);end
+</PRE></UL>
+  <LI><B>See also</B>: Uses o2s. See also uicput. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/UICVAL.M">uicval.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=uicview></A><B>uicview</B>
+<UL>
+  <LI><B>Purpose</B>: Add uicontrols to fig to control view in 3D. 
+  <LI><B>Synopsis</B>: [hdl,fig]=uicview(y) 
+  <LI><B>Description</B>: Returns 2*(text, edit, slide) handlevectors. Y is 
+  position where to add controls to current figure, if y&lt;1 then normalized 
+  otherwise pixels and &lt;0 from top. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>subplot(211);surf(randn(10,10));uicview(-1);
+subplot(212);surf(randn(10,10));uicview(0);
+print uicview -djpeg
+</PRE></UL>
+  <LI><B>See also</B>: Uses uicput, uicval. See also demorgb, view. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/uicview.jpg">uicview.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/UICVIEW.M">uicview.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=uihelp></A><B>uihelp</B>
+<UL>
+  <LI><B>Purpose</B>: Read ascii string and show it in help figure. 
+  <LI><B>Synopsis</B>: uichelp(file) 
+  <LI><B>Description</B>: If file not found from path then uses file 
+  notfound.hlp to display error message or 'PATH ERROR...' if notfound.hlp not 
+  found. User only files with lower case. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>uihelp('default.hlp')
+uihelp('notfound.hlp')
+print Help\uihelp -djpeg
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Setscan should be run to set variables global and path 
+  should be correct. Save button saves text into help file directory, don't use 
+  if you don't have access. \\ Used global variables are UIHELP_FIG, UIHELP_TXT, 
+  UIHELP_FILE, 
+  <LI><B>See also</B>: Uses loadstr, savestr, uicsetup. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/uihelp.jpg">uihelp.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/UIHELP.M">uihelp.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=uiscroll></A><B>uiscroll</B>
+<UL>
+  <LI><B>Purpose</B>: Add slide control to axes. 
+  <LI><B>Synopsis</B>: [h,limit,width]=uiscroll(limit,width,y,c) 
+  <LI><B>Description</B>: Add slide bar to current axes at position y. Limit 
+  [low high] for xlim and width is length of screen shown at one time. If not 
+  given they are derived from current axes. \\ Parameter c is command which is 
+  executed everytime when view is changed. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>subplot(211);plot(randn(1,1024));
+h=uiscroll([1 1024],10);        % to scroll data
+print Help\uiscroll -djpeg
+</PRE></UL>
+  <LI><B>Diagnostics</B>: Uses axes xlim property. 
+  <LI><B>See also</B>: Scrollda, getband. Uses o2s. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/uiscroll.jpg">uiscroll.jpg</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/UISCROLL.M">uiscroll.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL><A name=untiestr></A><B>untiestr</B>
+<UL>
+  <LI><B>Purpose</B>: Untie strings from matrice. 
+  <LI><B>Synopsis</B>: [t1..t10]=untiestr(sep,line) 
+  <LI><B>Description</B>: Untie strings to separate string t1...t10. Line has 
+  separator marks, line=[sep(1,:) t1 sep(2,:)... sep(11,:)]. If not enough 
+  parameters then sep(1,:) and sep(10,:) are []. Lines starting with * or " are 
+  returned to t1. 
+  <LI><B>Examples</B>: 
+  <UL><PRE>[var val]=untiestr(['!';'=';'{'],['  !name=jussi{firstname}';'!addr=messi{internet)   '])
+</PRE></UL>
+  <LI><B>See also</B>: Uses showwait. See also tiestr. (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/UNTIESTR.M">untiestr.m</A>) 
+  (<A 
+  href="http://www.occuphealth.fi/users/jussi.virkkala/Help/scanrefe.html#top">top</A>) 
+  </LI></UL></BODY></HTML>

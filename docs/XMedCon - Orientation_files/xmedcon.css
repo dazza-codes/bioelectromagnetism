@@ -1,0 +1,72 @@
+BODY {
+	FONT-FAMILY: arial,helvetica,sans-serif; BACKGROUND-COLOR: #ffffff
+}
+A {
+	TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #6666aa; TEXT-DECORATION: none
+}
+A:link {
+	COLOR: #6666aa; TEXT-DECORATION: none
+}
+A:active {
+	COLOR: #6666aa; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #ff6666; TEXT-DECORATION: none
+}
+OL {
+	COLOR: #333333; FONT-FAMILY: arial,helvetica,sans-serif
+}
+UL {
+	COLOR: #333333; FONT-FAMILY: arial,helvetica,sans-serif
+}
+P {
+	COLOR: #333333; FONT-FAMILY: arial,helvetica,sans-serif
+}
+BODY {
+	COLOR: #333333; FONT-FAMILY: arial,helvetica,sans-serif
+}
+TD {
+	COLOR: #333333; FONT-FAMILY: arial,helvetica,sans-serif
+}
+TR {
+	COLOR: #333333; FONT-FAMILY: arial,helvetica,sans-serif
+}
+TH {
+	COLOR: #333333; FONT-FAMILY: arial,helvetica,sans-serif
+}
+FORM {
+	COLOR: #333333; FONT-FAMILY: arial,helvetica,sans-serif
+}
+SPAN {
+	COLOR: #333333; FONT-FAMILY: arial,helvetica,sans-serif
+}
+H1 {
+	FONT-FAMILY: arial,helvetica,sans-serif
+}
+H2 {
+	FONT-FAMILY: arial,helvetica,sans-serif
+}
+H3 {
+	FONT-FAMILY: arial,helvetica,sans-serif
+}
+H4 {
+	FONT-FAMILY: arial,helvetica,sans-serif
+}
+H5 {
+	FONT-FAMILY: arial,helvetica,sans-serif
+}
+H6 {
+	FONT-FAMILY: arial,helvetica,sans-serif
+}
+PRE {
+	FONT-FAMILY: courier, sans-serif
+}
+TT {
+	FONT-FAMILY: courier, sans-serif
+}
+TT.small {
+	FONT-SIZE: small; FONT-FAMILY: courier, sans-serif
+}

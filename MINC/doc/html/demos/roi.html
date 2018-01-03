@@ -1,0 +1,59 @@
+<HTML>
+<TITLE>Region of Interest (ROI) Analysis Using MATLAB and EMMA</TITLE>
+<H2>Region of Interest (ROI) Analysis Using MATLAB and EMMA</H2>
+
+There are existing packages at the MNI for performing ROI analysis,
+the foremost of which is <TT>roi</TT>.  However, none of these was
+designed to work explicitly with MATLAB.   Since much analysis is
+currently being done within the MATLAB environment, a ROI package was
+developed for MATLAB.  The package consists of the following MATLAB
+functions:
+
+<UL>
+<LI> <TT>drawboxroi</TT>    - Draw a simple box ROI on a figure
+<LI> <TT>drawpolyroi</TT>   - Draw a general polygonal ROI on a figure
+<LI> <TT>drawroi</TT>       - Draws a given ROI on a given figure
+<LI> <TT>getroi</TT>        - Get the normalized vertices of a ROI 
+<LI> <TT>makeroimask</TT>   - Create a mask from a set of ROIs
+<LI> <TT>transferroi</TT>   - Copies ROIs from one figure to another
+</UL>
+
+Use of this package is reasonably straight forward.  The following
+short example demonstrates the use of the ROI package for creating a
+mask to be applied to PET images:
+
+<PRE>
+>> h=openimage('kunl1_avg.mnc')
+>> PET=getimages(h,8);
+>> closeimage(h);
+>> h=openimage('kunl1_mrirsl_21.mnc');
+>> MRI=getimages(h,8);
+>> viewimage(MRI);
+>> drawpolyroi;
+Click on the vertices of the ROI...
+Click outside the figure to quit
+>> mask=makeroimask(1,2,[128 128]);
+>> figure
+>> viewimage(mask.*PET);
+</PRE>
+
+In this example, we load a PET image and an MRI image (which have been
+registered to each other and resampled so that slice 8 of one
+corresponds to slice 8 of the other).  The MRI slice is displayed, and
+the <TT>drawpolyroi</TT> function is called to create an ROI.  Once
+the ROI has been drawn, a 128x128 mask is created, and this is applied
+to the PET image.
+
+<P>
+This same technique could be applied for the creation of any number of
+ROIs on a single slice, and then all of the ROIs could be included in
+a single mask.
+
+<hr>
+
+<ADDRESS>
+This page was created by Mark Wolforth
+(wolforth@bic.mni.mcgill.ca)
+</ADDRESS>
+
+</HTML>

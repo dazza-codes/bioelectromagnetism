@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Basic EMMA MATLAB Functions</TITLE>
+<META NAME="description" CONTENT="Basic EMMA MATLAB Functions">
+<META NAME="keywords" CONTENT="emma">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="emma.css">
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="emma.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html76"
+ HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html73"
+ HREF="emma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html67"
+ HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html75"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html77"
+ HREF="node5.html">Some Basic Examples: Masking</A>
+<B> Up:</B> <A NAME="tex2html74"
+ HREF="emma.html">EMMA: Extensible MATLAB Medical</A>
+<B> Previous:</B> <A NAME="tex2html68"
+ HREF="node3.html">Basic Concepts</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Basic EMMA MATLAB Functions</A>
+</H1>
+
+<P>
+The basic MATLAB interface to EMMA is performed through the following
+MATLAB functions (.m files).  This section is only meant to provide a
+brief introduction to the most important functions.  See section
+<A HREF="node14.html#emma_reference">5.3</A> for full help on every EMMA function.
+
+<P>
+<DL>
+<DD><P>
+<DT><DD><TT><B>openimage</B></TT> - Prepares a MINC file for reading.
+<TT><B>openimage</B></TT> determines the image size, reads in the frame start
+times and lengths if applicable, and returns a handle which can be
+used to access the MINC file with <TT><B>getimages</B></TT>,
+<TT><B>getimageinfo</B></TT>, <TT><B>getblooddata</B></TT>, etc.
+<PRE>
+     handle = openimage (filename)
+</PRE>
+<P>
+<DT><DD><TT><B>getimages</B></TT> - Gets images from a MINC file.  If the file
+has no frame dimension, the parameter <code>frames</code> should be empty
+or not provided.  For files with no slices (only frames), the
+<code>slices</code> parameter should be made empty (a matrix of the form
+<code>[]</code>).  Also, <TT><B>getimages</B></TT> can read several frames from a
+single slice or several slices from a single frame--but it can not
+read multiple slices and multiple frames simultaneously.  (This
+restriction is also imposed for writing images, mainly to avoid
+complications and reduce the software's ability to easily read in far
+more data than can be handled by MATLAB.)
+
+<P>
+Two important features of <TT><B>getimages</B></TT> are the ability to re-use
+memory, and the ability to read partial images.  Both of these
+features are intended to reduce the amount of memory used by MATLAB
+when processing images.
+<PRE>
+     Images = getimages (handle [, slices [, frames [, old_matrix ...
+                         [, start_row [, num_rows]]]]])
+</PRE>
+<P>
+<DT><DD><TT><B>newimage</B></TT> - Creates a MINC file for a new set of images.
+Returns a handle to the newly created data set that is used in calls
+to other functions (such as <TT><B>putimages</B></TT> and <TT><B>closeimage</B></TT>).
+<TT><B>newimage</B></TT> has a number of optional parameters, the most
+important of which is the ``parent file.''  If this is supplied,
+<TT><B>newimage</B></TT> will copy a number of important attributes (such as
+the patient, study, and acquisition data) from the parent to the new
+file, as well as using the parent file to provide the default image
+size and type.
+<PRE>
+     handle = newimage (filename, dim_sizes [, parent_file [, image_type ...
+                        [, valid_range [, orientation]]]]);
+</PRE>
+<P>
+<DT><DD><TT><B>putimages</B></TT> - Writes entire images to a file created with
+<TT><B>newimage</B></TT>.  (<B>Warning:</B> there are currently no provisions
+made to deny the user from writing to a MINC file opened with
+<TT><B>openimage</B></TT>.)  The syntax is similar to <TT><B>getimages</B></TT>, except
+that the image data is of course an input argument to <TT><B>putimages</B></TT>
+rather than an output argument.
+<PRE>
+     putimages (handle, images [, slices [, frames]])
+</PRE>
+<P>
+<DT><DD><TT><B>getimageinfo</B></TT> - Gets information about an open image.
+Currently, <TT><B>getimageinfo</B></TT> will return the filename, number of
+frames or slices, image height, width, or size, the dimension sizes,
+frame start times, lengths, and mid-frame times.  The desired
+information is specified as a character string, eg. 'NumFrames',
+'ImageHeight', etc.
+<PRE>
+     info = getimageinfo (handle, info_descriptor)
+</PRE>
+<P>
+<DT><DD><TT><B>viewimage</B></TT> - Displays an image on the workstation screen.
+On a monochrome display, the <TT><B>gray</B></TT> colourmap will be used;
+otherwise, the <TT><B>spectral</B></TT> will be used.  The image will be scaled
+such that the highest point in the image is always the last colour in
+the colourmap, and the lowest image point will be the first element of
+the colourmap.  Also, a colourbar relating colours in the image to the
+values will be displayed, unless the optional <TT><B>colourbar_flag</B></TT>
+argument is set to zero.
+
+<P>
+<PRE>
+     viewimage (image [, colourbar_flag])
+</PRE>
+<P>
+<DT><DD><TT><B>closeimage</B></TT> - Destroys the appropriate variables in the workspace.
+<PRE>
+     closeimage (IMhandle)
+</PRE>
+<P>
+</DL>
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html76"
+ HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html73"
+ HREF="emma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html67"
+ HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html75"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html77"
+ HREF="node5.html">Some Basic Examples: Masking</A>
+<B> Up:</B> <A NAME="tex2html74"
+ HREF="emma.html">EMMA: Extensible MATLAB Medical</A>
+<B> Previous:</B> <A NAME="tex2html68"
+ HREF="node3.html">Basic Concepts</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

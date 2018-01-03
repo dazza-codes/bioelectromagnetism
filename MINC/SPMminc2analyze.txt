@@ -1,0 +1,10 @@
+MINC to Analyze, SPM99, Matlab The following functions help convert 3D and 4D minc files to analyze files.
+spm_vol_minc.m
+spm_write_4dvol.m
+(Backup the original spm_vol_minc.m file)
+
+They work as follows:
+V = spm_vol(mincfilename);
+spm_write_4dvol(V,analyzefilename,'prefix');
+
+In the case of a single 3D volume, it just creates a file called analyzefilename_prefix00001.img and the corresponding header and mat files. In the case of a 4D volume containing 100 volumes, it just creates a timeseries from analyzefilename_prefix00001.img to analyzefilename_prefix00100.img and the corresponding header and mat files.

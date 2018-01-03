@@ -1,0 +1,113 @@
+<HTML>
+<TITLE>Advanced EMMA Image Manipulation</TITLE>
+<H1>Advanced EMMA Image Manipulation</H1>
+
+This tutorial covers advanced image manipulation using MATLAB and the
+EMMA toolkit.  It assumes that the reader already has a familiarity
+with EMMA and basic image manipulation.  If not, please see the <A
+HREF="emma1.html">basic EMMA image manipulation</A> tutorial.
+
+<H3>Creating and Using a Mask</H3>
+
+Let's start by assuming that we have loaded 21 frames from one slice
+of a dynamic PET study into a variable called <TT>PET</TT>.  We want
+to create a mask that contains 1's where the brain is, and 0's
+everywhere else.  If this is an oxygen study, one simple approach is
+to integrate the image over time, and then choose values for mask
+pixels by using a threshold.  We can calculate the integrated image
+the same way as we did in the <A HREF="emma1.html">basic EMMA
+image manipulation</A> tutorial.  Assuming a variable called
+<TT>ftimes</TT> that contains the mid-frame times of the frames:
+
+<PRE>
+img = ntrapz(ftimes,PET')';
+</PRE>
+
+is the integrated image.  We now wish to choose pixels for the mask.
+MATLAB is able to perform boolean operations on a vector of values, so
+this is very easy:
+
+<PRE>
+mask = img>(mean(img)*threshold);
+</PRE>
+
+In this case, pixels in <TT>mask</TT> will be set to 1 if the value of
+the integrated image is greater than the mean of the entire image
+times some threshold.  To create a mask that masks out everything
+except brain, we would generally choose a threshold of one (all pixels
+in the integrated image that have a value greater than the mean of the
+integrated image are chosen):
+
+<PRE>
+mask = img>(mean(img));
+</PRE>
+
+This produces an image that looks like:
+
+<P><IMG SRC="emma2mask.gif">
+
+<P>This mask can be easily applied to the original images by simply
+multiplying the two together:
+
+<PRE>
+masked_frame = PET(:,17) .* mask;
+</PRE>
+
+This will produce a masked version of frame 17, which looks like:
+
+<P><IMG SRC="emma2masked.gif">
+
+<H3>Averaging a Set of Images</H3>
+
+When performing a PET study, a set of data from several subjects is usually
+collected.  Once all of the data is collected, the data from the various
+separate studies must be averaged together.  MATLAB allows math to be
+performed on images in a very straight forward way.  Assuming that we have a
+set of images stored in variables <TT>P1</TT>, <TT>P2</TT>, <TT>P3</TT>,
+<TT>P4</TT>, and that we wish to average these four images, the result is
+simply:
+
+<PRE>
+average_image = (P1+P2+P3+P4)/4;
+</PRE>
+
+<H3>Producing Time Activity Curves</H3>
+
+Time activity curves are very simple to produce using MATLAB.  EMMA provides a
+function called <TT>maketac</TT> that given the x and y coordinates of a
+point, and a set of dynamic PET images, will return a time-activity curve
+based on a 5 pixel square region of interest (ROI).  The methods used in the
+<TT>maketac</TT> function can be extended to any size/shape ROI.  One example
+of its use is:
+
+<PRE>
+viewimage(img);
+[x,y]=getpixel(1);
+tac = maketac(x,y,PET);
+figure;
+plot(ftimes,tac);
+</PRE>
+
+The first line displays the integrated image (calculated previously), the
+second line prompts the user to click on a point in the image (returning the x
+and y coordinates of the point), the third line creates the time activity
+curve and saves it in the variable <TT>tac</TT>, and the last two lines create
+a plot of the curve (remember that <TT>ftimes</TT> contains the mid-frame
+times, retrieved previously).  The resulting plot might look something like
+this:
+
+<P><IMG SRC="emma2tac.gif">
+
+<hr>
+
+For more information on the EMMA toolkit, please see the <A
+HREF="../doc/emma/"> documentation</A>.
+
+<hr>
+
+<ADDRESS>
+This page was created by Mark Wolforth
+(wolforth@bic.mni.mcgill.ca)
+</ADDRESS>
+
+</HTML>

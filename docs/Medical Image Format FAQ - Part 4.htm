@@ -1,0 +1,1347 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0056)http://www.dclunie.com/medical-image-faq/html/part4.html -->
+<HTML><HEAD><TITLE>Medical Image Format FAQ - Part 4</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY text=#000000 vLink=#52188c aLink=#000000 link=#ff0000 bgColor=#ffffff>
+<H1><IMG src="Medical Image Format FAQ - Part 4_files/title.gif"> Medical Image 
+Format FAQ - Part 4</H1>
+<HR>
+
+<H1>Proprietary Formats (Continued)</H1>
+<HR>
+
+<H2>Access to other parts ...</H2>
+<UL>
+  <LI><A 
+  href="http://www.dclunie.com/medical-image-faq/html/index.html">preface</A> 
+  <LI><A 
+  href="http://www.dclunie.com/medical-image-faq/html/changes.html">latest 
+  changes</A> 
+  <LI><A href="http://www.dclunie.com/medical-image-faq/html/toc.html">table of 
+  contents</A> 
+  <LI><A href="http://www.dclunie.com/medical-image-faq/html/part1.html">part1 - 
+  general information &amp; standard formats</A> 
+  <LI><A href="http://www.dclunie.com/medical-image-faq/html/part2.html">part2 - 
+  standard formats (continued)</A> 
+  <LI><A href="http://www.dclunie.com/medical-image-faq/html/part3.html">part3 - 
+  proprietary CT formats</A> 
+  <LI><A href="http://www.dclunie.com/medical-image-faq/html/part4.html">part4 - 
+  proprietary MR formats</A> 
+  <LI><A href="http://www.dclunie.com/medical-image-faq/html/part5.html">part5 - 
+  proprietary other formats</A> 
+  <LI><A href="http://www.dclunie.com/medical-image-faq/html/part6.html">part6 - 
+  hosts &amp; compression</A> 
+  <LI><A href="http://www.dclunie.com/medical-image-faq/html/part7.html">part7 - 
+  general information sources</A> 
+  <LI><A href="http://www.dclunie.com/medical-image-faq/html/part8.html">part8 - 
+  DICOM information sources</A> 
+  <LI><A href="http://www.dclunie.com/medical-image-faq/html/keyword.html">index 
+  by keyword</A> </LI></UL><BR>START OF PART 4<BR>
+<H3>3.3 <A name=ProprietaryMR>MR - Proprietary Formats</A></H3>
+<H4>3.3.1 <A name=MRGE>General Electric MR</A></H4>
+<H5>3.3.1.1 <A name=Signa3X4X>GE MR Signa 3.x,4.x</A></H5>
+<P>References (see the <A 
+href="http://www.dclunie.com/medical-image-faq/html/part7.html#GEContactFormats">GEMS 
+image format information contacts</A> section): </P>
+<UL>
+  <LI>46-021858 MR Signa 4.x Mag Tape/Image Fmt <BR></LI></UL>
+<H6>3.3.1.1.1 <A name=Signa3X4XImage>GE MR Signa 3.x,4.x Image data</A></H6>
+<UL>
+  <LI>"fixed format" header 
+  <LI>image data is not compressed 
+  <LI>image data fixed offset 14336 bytes 
+  <LI>Data General host 
+  <LI>AOS/VS </LI></UL>
+<P>The image files are of fixed layout, described here as a series of 256 by 16 
+bit word blocks (512 bytes), blocks numbered from 0. The headers start at the 
+following block offsets: </P><PRE>        block 0  - length 4 blocks   - System configuration
+        block 4  - length 2 blocks   - Site customization
+        block 6  - length 2 blocks   - Study header
+        block 8  - length 2 blocks   - Series header
+        block 10 - length 2 blocks   - Image header
+        block 12 - length 4 blocks   - Raw database header
+        block 16 - length 10 blocks  - Pulse sequence description
+        block 26 - length 2 blocks   - Pixel map (? not ever used)
+        block 28 - length 256 blocks - Image data
+</PRE>
+<P>As decribed earlier, the header is a fixed length of 14336 bytes, after which 
+the uncompressed image data starts. </P>
+<P>Some of the more important fields are described here. Integers are 16 bit 
+words (big-endian), ascii strings are Fortran style specifications with length 
+in bytes, and reals are 4 bytes long (see Host machines - Data General), word 
+offsets are numbered from 0: </P><PRE>        block 6 - study header
+
+               word  32      - 5A   - Study number
+               word  39      - 9A   - Date of study (dd-mmm-yy)
+               word  47      - 8A   - Time of study (hh:mm:ss)
+               word  54      - 32A  - Patient name
+               word  70      - 12A  - Patient ID
+               word  78      - 3A   - Age xxx years or xxD or W or M or Y
+               word  80      - 1A   - Sex
+
+
+        block 8 - series header
+
+               word  31      - 3A   - Series number
+               word  52      - 120A - Series description
+               word  112     - Int  - Series type (0=normal,1=screensave,
+                                          2=composite)
+               word  113     - Int  - Coil type (0=head,1=body,2=surface)
+               word  114     - 16A  - Coil name
+               word  122     - Int  - Contrast description
+               word  138     - Int  - Plane type (0=axial,1=sagittal,2=coronal,
+                                          3=oblique,4=screen save)
+               word  147     - Int  - Image mode (0=2D single,1=2D multiple,
+                                          2=3D volume,3=cine,4=spectroscopy)
+               word  148     - Int  - Field strength (gauss)
+               word  149     - Int  - Pulse sequence (0=memp,1=ir,2=ps,3=rm,
+                                          4=rmge,5=gre,6=vemp,7=mpgr,8=mpgrv,
+                                          9=mpirs,10=mpiri,11=3d/gre,
+                                          12=cine/gre,13=spgr,14=sspf,
+                                          15=cin/spgr,16=3d/spgr,17=fse,
+                                          18=fve,19=fspgr,20=fgr,21=fmpspgr,
+                                          22=fmpgr,23=fmpir,24=probe.s,
+                                          25=probe.p)
+               word  150     - Int  - Pulse sequence subtype (0=chopper)
+               word  151     - Real - Field of view mm
+               word  153     - Real - Center (3 values;R+L-,A+P-,S+I-)
+               word  159     - Int  - Orientation (0=supine,1=prone,2=Lt,3=Rt)
+               word  160     - Int  - Position (0=head first,1=feet first)
+               word  161     - 32A  - Longitudinal anatomical reference
+               word  177     - 32A  - Vertical anatomical reference
+               word  199     - Int  - Scan matrix X
+               word  200     - Int  - Scan matrix Y
+               word  201     - Int  - Image matrix
+
+
+        block 10 - image header
+
+               word  44      - 3A   - Image number
+               word  73      - Real - Image location
+               word  75      - Real - Table position
+               word  77      - Real - Image thickness
+               word  79      - Real - Image spacing
+               word  82      - Real - TR uS
+               word  86      - Real - TE uS
+               word  88      - Real - TI uS
+               word  98      - Int  - Number of echos
+               word  99      - Int  - Echo number
+               word  101     - Int  - NEX (if not fractional)
+               word  146     - Real - NEX
+               word  175     - Int  - Flip angle
+</PRE>
+<H6>3.3.1.1.2 <A name=Signa3X4XTape>GE MR Signa 3.x,4.x Tape format</A></H6>
+<H6>3.3.1.1.3 <A name=Signa3X4XRaw>GE MR Signa 3.x,4.x Raw data</A></H6>
+<H5>3.3.1.2 <A name=Signa5X>GE MR Signa 5.x - Genesis</A></H5>
+<P>References (see the <A 
+href="http://www.dclunie.com/medical-image-faq/html/part7.html#GEContactFormats">GEMS 
+image format information contacts</A> section): </P>
+<UL>
+  <LI>46-021861 Image Data Format <BR>
+  <LI>46-021863 Optical Disk Raw Partition <BR>
+  <LI>46-021864 Image Extract Tool <BR>
+  <LI>46-021865 DAT Archive Format <BR></LI></UL>
+<P>General Electric now uses the same Sun based architecture for its HighLite 
+Advantage (HLA) and High Speed Advantage (HSA) CT and Signa 5X MR family, 
+referred to as Genesis. The general details of this scheme will be discussed 
+here, as well as the description of the MR image header. Specifics related to 
+the CT modality are described elsewhere. </P>
+<H6>3.3.1.2.1 <A name=Signa5XImage>GE MR Signa 5.x Image data</A></H6>
+<P>Genesis is a system running under SunOS 3.5G (NOT Solaris) on, believe it or 
+not, a sun3 68000 architecture, not a sun4 sparc. </P>
+<P>It would appear that unlike in the previous Data General based system, the 
+active database is stored as one large monolithic file in a raw partition, which 
+doesn't make it very easy to extract single imgaes. Fortunately, GE have saved 
+the day by kindly providing, and thoroughly documenting in the material that 
+they send you when you ask for the image file format, an Image Extract Tool that 
+lives in "/usr/g/insite/bin" and is called "ximg". To see what options are 
+available just type "ximg -h" for help. Note that ximg's default is to strip out 
+the patient's name and ID number which is annoying, so don't forget the "-s" 
+flag. The default directory to put the extracted images in is 
+"/usr/g/insite/tmp". The input names to select images in silent (non-menu) mode 
+are of the following form: </P><PRE>                EeeeeeSsssIiii
+
+                eeeee =  exam number   or "all"
+                sss   =  series number or "all"
+                iii   =  image number  or "all"
+</PRE>
+<P>and the resultant filenames are the same with an extension of ".MR" or ".CT" 
+depending. For example: </P><PRE>                % /usr/g/insite/bin/ximg -i e673s1i1 -s -t
+                % ls -l /usr/g/insite/tmp
+                E673S1I1.MR
+</PRE>
+<P>which extracts the selected image in silent mode (-i) without stripping the 
+identification (-s) in rectangular (-t) mode, ie. not compressed or packed. </P>
+<P>One nifty feature that allows you to keep up to date with the latest version 
+header contents is the "-g" switch which invokes the GenIncl utility that 
+produces a file called "imageFileOffsets.h" that lists the type and offsets of 
+each field in the header ! Remarkable, huh ? </P>
+<P>How does one get access to the operating system on the Signa ? Let me count 
+the ways. First, from the Advantage console one can just call up a command shell 
+from the Utilities menu, or one can invoke the Ftp option uner Networks and then 
+use the "!" command to ftp, which like in many Unix tools, spawns a shell. Or 
+from another workstation on the network one can just telnet or rsh across. If 
+you are connected using an Advantage Windows workstation you can pull up a 
+command shell by using the right menu button with the cursor on the desktop. 
+Doing a few "cat /etc/hosts" around the place will let you know what all the 
+machines are called. </P>
+<P>One can also access the console directly from the plasma screen by toggling 
+"L1-B" on or off. </P>
+<P>Once you have extracted them, the Genesis file contains headers consisting of 
+several components in common with CT and then a specific CT or MR header. The 
+file is structured as a "block type" header with a brief "control header" of 
+fixed size, followed by a bunch of optional headers, some of which reflect 
+internal database structures and are of no interest, others (such as the 
+suite/exam/series/image) headers that contain descriptive and identification 
+information, and two that are of importance for deciphering the pixel data 
+(unpack control &amp; compression control). Some of the more important fields 
+are described here: </P>
+<P>Sun3 <A 
+href="http://www.dclunie.com/medical-image-faq/html/part6.html#SunData">Sun 
+Data</A> Types: 
+<UL>
+  <LI>short is 16 bits 
+  <LI>int is 32 bits 
+  <LI>float is 32 bits IEEE 
+  <LI>double is 64 bits IEEE 
+  <LI>byte offsets from 0 start of file 
+  <LI>length ==0 means header absent/empty </LI></UL>
+<P></P><PRE>        control header (offset 0):
+
+                0   - int      - magic number = 0x494d4746 = "IMGF"
+                4   - int      - byte displacement to pixel data
+                8   - int      - width
+                12  - int      - height
+                16  - int      - depth (bits)
+                20  - int      - compression (0=asis,1=rectangular,2=packed,
+                                 3=compressed,4=compressed&amp;packed)
+                32  - int      - background shade to use for non-image
+                54  - u_short  - 16 bit end_around_carry sum of pixels
+                56  - int      - ptr to unique image identifier
+                60  - int      - length of unique image identifier
+                64  - int      - ptr to unpack header
+                68  - int      - length of unpack header
+                72  - int      - ptr to compression header
+                76  - int      - length of compression header
+                80  - int      - ptr to histogram header
+                84  - int      - length of histogram header
+                88  - int      - ptr to text plane
+                92  - int      - length of text plane
+                96  - int      - ptr to graphics plane
+                100 - int      - length of graphics plane
+                104 - int      - ptr to data base header
+                108 - int      - length of data base header
+                112 - int      - value to add to stored pixels
+                116 - int      - ptr to user defined data
+                120 - int      - length of user defined data
+                124 - int      - ptr to suite header
+                128 - int      - length of suite header
+                132 - int      - ptr to exam header
+                136 - int      - length of exam header
+                140 - int      - ptr to series header
+                144 - int      - length of series header
+                148 - int      - ptr to image header
+                152 - int      - length of image header
+
+        unpack header:
+
+                // used when compression is packed, or compressed &amp; packed
+                // contains perimeter encoding map ... cf. GE 9800
+
+                struct {
+                        short pixels_to_left_of_line;
+                        short pixels_in_stored_line;
+                } table [height_of_image];
+
+        compression header:
+
+                Not necessary for decompressing entire image ... rather it
+                contains seeds for various "strips" of the image to allow
+                jumping into the compressed pixel data ... see the GE docs.
+
+        histogram header:
+
+                Contains statistical information for determining optimum
+                windowing ... see the GE docs and GenIncl produced header
+
+        exam header:
+
+                0   - char[4]  - suite ID
+                8   - u_short  - exam number
+                84  - char[13] - patient ID
+                97  - char[25] - patient name
+                122 - short    - patient age
+                126 - short    - patient sex
+                305 - char[3]  - exam type - "MR" or "CT"
+
+        series header:
+
+                10  - short    - series number
+                84  - char[3]  - anatomical reference
+                92  - char[25] - scan protocol name
+
+        image header - common to CT and MR:
+
+                12  - short    - image number
+                26  - float    - slice thickness mm
+                30  - short    - matrix size - X
+                32  - short    - matrix size - Y
+                34  - float    - display field of view - X (mm)
+                38  - float    - display field of view - Y (mm)
+                42  - float    - image dimension - X
+                46  - float    - image dimension - Y
+                50  - float    - pixel size - X
+                54  - float    - pixel size - Y
+                58  - char[14] - pixel data ID
+                72  - char[17] - iv contrast agent
+                89  - char[17] - oral contrast agent
+
+                126 - float    - image location
+                130 - float    - image centre R mm (ie. X +ve to right)
+                134 - float    - image centre A mm (ie. Y +ve to anterior)
+                138 - float    - image centre S mm (ie. Z +ve to superior)
+                154 - float    - image TLHC R mm (ie. X +ve to right)
+                158 - float    - image TLHC A mm (ie. Y +ve to anterior)
+                162 - float    - image TLHC S mm (ie. Z +ve to superior)
+                166 - float    - image TRHC R mm (ie. X +ve to right)
+                170 - float    - image TRHC A mm (ie. Y +ve to anterior)
+                174 - float    - image TRHC S mm (ie. Z +ve to superior)
+                178 - float    - image BRHC R mm (ie. X +ve to right)
+                182 - float    - image BRHC A mm (ie. Y +ve to anterior)
+                186 - float    - image BRHC S mm (ie. Z +ve to superior)
+
+        image header - for MR (1022 bytes long):
+
+                194 - int      - repetition time(usec)
+                198 - int      - inversion time(usec)
+                202 - int      - echo time(usec)
+                210 - short    - number of echoes
+                212 - short    - echo number
+                218 - float    - NEX
+                308 - char[33] - pulse sequence name
+                362 - char[17] - coil name
+                640 - short    - ETL for FSE
+</PRE>
+<P>So much for the headers. Now how does one deal with the image data ? The 
+easiest way of course is to save it as "rectangular", that is not compressed and 
+not packed. If you want to do it the hard way, then if the data is packed, then 
+unpack it, then if it is compressed, uncompress it. The packing is a perimeter 
+encoding method like the CT 9800, except that instead of using a map containing 
+just the width of the stored data, both a left offset and a width are stored for 
+each row, as described in the "unpack header". The compression scheme is DPCM 
+again but with a difference ... three alternative encodings are possible ... a 7 
+bit difference (one byte), a 14 bit difference (two bytes), or a flag byte 
+followed by a true 16 bit pixel value (three bytes). Presumably this scheme was 
+devised to handle a greater dynamic range than in the CT 9800 scheme when 
+necessary, but produce a similar degree of compression otherwise. </P><PRE>             0  +/- &lt;------ 6 bits -------&gt;
+            _______________ _______________ 
+           |   |   |   |   |   |   |   |   |
+           |_______________|_______________|
+             7           4   3           0  
+
+    or
+
+             1   0  +/- &lt;------------------ 13 bits ----------------------&gt;
+            _______________ _______________ _______________ _______________ 
+           |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+           |_______________|_______________|_______________|_______________|
+            15           12 11           8   7           4   3           0  
+
+    or
+
+             1   1  &lt;----- discarded -----&gt;  Then two bytes for 16 bit word
+            _______________ _______________ 
+           |   |   |   |   |   |   |   |   |
+           |_______________|_______________|
+             7           4   3           0  
+</PRE>
+<P>The following piece of C++ code pulled out of a Genesis to DICOM translator 
+will give you the general idea. Note that the perimeter encoding map has already 
+been read in (map_left and map_wide). Note in particular the need to deal with 
+sign extension of the difference values. Unlike the CT 9800 example earlier, one 
+has to use a separate loop for the compressed data stream as all 16 bits are 
+potentially in use. </P><PRE>static void
+copygenesisimage(ifstream&amp; instream,DC3ofstream&amp; outstream,
+	Uint16 width,Uint16 height,Uint16 depth,Uint16 compress,
+	Uint16 *map_left,Uint16 *map_wide)
+{
+	unsigned row;
+	Int16 last_pixel=0;
+	for (row=0; row&lt;height; ++row) {
+		unsigned j;
+		unsigned start;
+		unsigned end;
+
+		if (compress == 2 || compress == 4) { // packed/compacked
+			start=map_left[row];
+			end=start+map_wide[row];
+		}
+		else {
+			start=0;
+			end=width;
+		}
+		// Pad the first "empty" part of the line ...
+		for (j=0; j&lt;start; j++) outstream.write16(0);
+
+		if (compress == 3 || compress == 4) { // compressed/compacked
+			while (start&lt;end) {
+				unsigned char byte;
+				instream.read(&amp;byte,1);
+				if (!instream) return;
+				if (byte &amp; 0x80) {
+					unsigned char byte2;
+					instream.read(&amp;byte2,1);
+					if (!instream) return;
+					if (byte &amp; 0x40) {	// next word
+						instream.read(&amp;byte,1);
+						if (!instream) return;
+						last_pixel=
+						    (((Uint16)byte2&lt;&lt;8)+byte);
+					}
+					else {			// 14 bit delta
+						if (byte &amp; 0x20) byte|=0xe0;
+						else byte&amp;=0x1f;
+						last_pixel+=
+						    (((Int16)byte&lt;&lt;8)+byte2);
+					}
+				}
+				else {				// 7 bit delta
+					if (byte &amp; 0x40) byte|=0xc0;
+					last_pixel+=(signed char)byte;
+				}
+				outstream.write16((Uint16)last_pixel);
+				++start;
+			}
+		}
+		else {
+			while (start&lt;end) {
+				Uint16 u=readUint16(instream);
+				if (!instream) return;
+				outstream.write16(u);
+				++start;
+			}
+		}
+
+		// Pad the last "empty" part of the line ...
+		for (j=end; j&lt;width; j++) outstream.write16(0);
+	}
+}
+</PRE>
+<H6>3.3.1.2.2 <A name=Signa5XArchive>GE MR Signa 5.x Archive format</A></H6>
+<P>GE supply both DAT tape and 5.25" write once and rewriteable optical disk 
+drives. </P>
+<P>The optical drives are made by Pioneer. This is an unfortunate choice as the 
+media format is incompatible with any other vendor so you need a Pioneer (DEC 
+702 ?) drive to read it. The person who made this choice tells me the 
+fundamental technology seemed more sound on the Pioneer side than from the other 
+companies, and there were also two sources for the Pioneer and no one was 
+producing any other interchangeable systems. Interestingly Siemens made the same 
+choice. </P>
+<P>As for the file system, there seem to be two methods in use. One is to use a 
+monolithic file system on a raw partition. I haven't seen it but there is now 
+apparently a document from GE available describing this format "direction 
+46-021863 CT HLA/HSA MR Signa 5.x Optical Disk Raw Partition". See the <A 
+href="http://www.dclunie.com/medical-image-faq/html/part7.html#GEContactFormats">GEMS 
+image format information contacts</A> section. This is what is used on the MOD. 
+</P>
+<P>For the WORM, a different choice was made, to use a commericially available 
+filesystem product that made the disk look like a unix filesystem with the 
+ability to store and replace and update on a write once medium. It is available 
+from <A 
+href="http://www.dclunie.com/medical-image-faq/html/part7.html#DoroTech">DoroTech</A> 
+of France and called DoroFile. Because it is a commerical product, GE are 
+restrained from disclosing the file structure. </P>
+<P>The formats have been reverse engineered by Jeffrey Siegel of <A 
+href="http://www.dclunie.com/medical-image-faq/html/part7.html#EvergreenTechnologies">Evergreen 
+Technologies</A> however, and he can supply you with software to read both GE 
+and Siemens MOD and WORM formats, on a PC or Mac for $495. He can sell you the 
+drive as well if necessary for $2800. It can run on a Mac or on a PC with an 
+Adaptec card and driver. Some driver software for the Pioneer drive is also 
+available from Corel. </P>
+<P>If you have an GE Advantage Windows workstation, there is an optional 
+MOD/WORM drive and software for that. </P>
+<P>As far as the DAT format is concerned, this format is available though I 
+don't have it (yet). Examining a tape reveals the following however: </P>
+<UL>
+  <LI>One file used as a tape label (single 8192 byte record) 
+  <LI>Tape mark 
+  <LI>Series of image files separated by tape marks </LI></UL>
+<P>There does not seem to be a tape directory per se. </P>
+<P>Each image file is a modification of the format created by the ximg utility 
+to extract images from the database. </P>
+<P>The ximg format is described as a file header beginning with the magic number 
+"IMGF" and then a short header that contains byte offsets to the image data, and 
+various suite, exam, series and image headers. </P>
+<P>The DAT images are NOT organized like this, but do use exactly the same 
+headers and image data layout (and compression schemes). The difference is in 
+the order of the header. </P>
+<P>The first record of the file is 3180 bytes long and contains: </P><PRE>        0-113      suite  header   (length 114)
+        114-1137   exam   header   (length 1024)
+        1138-2157  series header   (length 1020)
+        2158-3079  image  header   (length 1022 for mr)
+                                   (length 1020 for ct)
+        3080-3179  zero padding
+</PRE>
+<P>NB. this record DOES NOT begin with "IMGF" ! </P>
+<P>The second record of the file is 5208 bytes long (in my case anyway) and 
+followed by 8192 byte records and a final record of whatever is left over. </P>
+<P>This 5208 byte record contains a "proper" header in the ximg output format 
+and starts with "IMGF". The subsequent byte offsets to the image data, 
+compression headers, histogram header etc. are correct and offset from the 
+beginning of this second record and NOT the start of the file. Furthermore the 
+pointers to those headers in the first record (suite, exam, series and image 
+headers) are TOTALLY WRONG and must be ignored ... I don't know how their values 
+are derived but it is not obvious. </P>
+<P>I presume that the files were reorganized this way in order to make it easy 
+for simple utilities to access the demographic data to index the tape or 
+something. Anyway it is easy to rewrite utilities that read the ximg format to 
+take all this into account and extract the tags and the images. </P>
+<P>The image data byte offset (eg. 5204) in the file header is 4 bytes too 
+short, eg. 3180 + 5204 + 4 -&gt; 3188 which is where the image data starts. </P>
+<P>If you are not familiar with the Genesis ximg format, on a Signa at least, 
+you can run "/usr/g/insite/bin/ximg -g" to extract a prototype C header file 
+describing the file format. </P>
+<H6>3.3.1.2.3 <A name=Signa5XRaw>GE MR Signa 5.x Raw data</A></H6>
+<H5>3.3.1.3 <A name=Max>GE MR Max</A></H5>
+<P>References (see the <A 
+href="http://www.dclunie.com/medical-image-faq/html/part7.html#GEContactFormats">GEMS 
+image format information contacts</A> section): </P>
+<UL>
+  <LI>46-021856 CT Pace Image Data Format <BR>
+  <LI>46-021862 MR Max Image Data Format <BR></LI></UL>
+<P>I do not have any MR Max images to try this on, but am told that the format 
+is essentially the same as the CT <A 
+href="http://www.dclunie.com/medical-image-faq/html/part3.html#Pace">GE CT 
+Pace</A>, with some different fields in the image header: </P><PRE>    For MR only:
+
+        0xc0    string  5       Tilt ordered by user Axis+/-Angle [xx+/-xx]
+        0x100   string  2       Echo number
+        0x102   string  2       Number of echoes
+        0x104   string  2       Slice number
+        0x106   string  2       Number of slices
+        0x108   string  2       Number of excitations
+        0x10a   string  5       Repetition time ms
+        0x110   string  5       Inversion time ms
+        0x115   string  5       Echo time ms
+        0x130   string  4       Magnetic flux density (T)
+</PRE>
+<H5>3.3.1.4 <A name=Vectra>GE MR Vectra</A></H5>
+<P>Same comments as pertain to the Sytec/Pace entry in the CT section. A few 
+sample files on a floppy would be much appreciated. </P>
+<H4>3.3.2 <A name=MRSiemens>Siemens MR</A></H4>
+<P>It would seem that two formats are used on Siemens MR scanners, modern ones 
+at least. There is a native format that is specific to each family of scanners, 
+and an "exported" ACR/NEMA based <A 
+href="http://www.dclunie.com/medical-image-faq/html/part3.html#SPI">SPI</A> 
+format. The earlier scanners define fewer useful elements in the exported 
+format, and encapsulate parts of the native header in private elements, whereas 
+the more recent forms are more complete implementations. The comments below are 
+based on limited experience, and in most cases either the native or the exported 
+format has been examined, but not both. </P>
+<P>A fairly common feature of all the native formats seems to be so-called 
+"image text" portion of the header which contains a more or less exact replica 
+of what is annotated on the film ... in the earlier models it is indeed an exact 
+replica, being 24 rows of 40 characters or whatever. This can be very helpful in 
+deciphering un unknown format. Interestingly enough, though many values are 
+repeated in string form from binary values in the header, patient identification 
+information often occurs only in the text header and nowhere else ! </P>
+<H5>3.3.2.1 <A name=GBS>Siemens Magnetom GBS/GBS II</A></H5>
+<H6>3.3.2.1.1 <A name=GBSNative>Siemens Magnetom GBS/GBS II Native 
+Format</A></H6>
+<P>Simply speaking the image data can be accessed in most cases as: </P>
+<UL>
+  <LI>files 133120 bytes 
+  <LI>image pixel data 256*256*2 little endian 
+  <LI>image pixel offset 4096 bytes </LI></UL>
+<P>In more detail, there is an initial brief fixed "Entry header" that contains 
+pointers to subsequent headers, where pointers are offsets to 512 byte records, 
+indexed from 1, and lengths are in 512 byte records, and binary values are Vax 
+data types, including type F floats. The image data is usually uncompressed 
+little endian two byte words, and it probably isn't worth going into details of 
+the compression scheme here. I have never tested it. Only the more important 
+header values are listed here: </P><PRE>    Entry header (first 128 bytes of first 512 byte record):
+
+        0    short          Number of entries (==9)
+        2    short          Entry length      (==2)
+        4    short          Bytes per record  (==512)
+        20   short          Installation header pointer (usually == 2)
+        22   short          Installation header length  (usually == 1)
+        24   short          Measurement header pointer  (usually == 3)
+        26   short          Measurement header length   (usually == 2)
+        28   short          Image text header pointer   (usually == 5)
+        30   short          Image text header length    (usually == 2)
+        32   short          Image data header pointer   (usually == 9)
+        34   short          Image data header length    (usually == 256)
+
+    Image header (last 394 bytes of first 512 byte record):
+
+        0    short          Data code (-1=raw data,1=image data,...)
+        10   short          Rows
+        12   short          Columns
+        24   short          Bit depth of image
+        26   short          Bit depth of ROI
+        28   short          Bit map of ROI in use
+        54   short          Pixels per 10cm
+        126  short          Archive code
+                            (10/12=128 uncompressed/compressed,
+                             20/22=256 uncompressed/compressed,
+                             50/52=512 uncompressed/compressed)
+        256  short          View direction (-1=caudal,1=cranial)
+        258  short          Orientation (-1=head first,1=feet first)
+        260  short          Orientation (1=supine,2=prone,
+                             3=right lateral,4=left lateral)
+
+    Installation header:
+
+        64    char[32]      Serial number
+
+    Measurement header:
+
+        48    char[60]      Protocol name
+        120   char[8]       Sequence name
+        132   short         Measurement type
+                            (100=SE,200=IR,500=FID,
+                             502=FID,600=SEM,800=FW)
+        138   short         Number of echoes
+        140   short         Number of averages
+        150   short         Rows in acquisition
+        152   short         Columns in acquisition
+        222   short         Echo number
+        224   short         Slice number
+        226   short         Number of slices
+        228   short         Slice orientation (1=X,2=Y,3=Z)
+        230   short         X angle
+        232   short         Y angle
+        234   short         Z angle
+        236   short         3D resolution factor
+        238   short         3D partition
+        398   short         Acquisition number
+        400   float_f       Slice thickness (3D partition thickness)
+        440   short         NMR frequency Hz
+        476   float_f       TR secs
+        480   float_f       TI secs
+        488   float_f[32]   TE[echo 1..32] mS
+        756   float_f       Field strength Tesla
+        772   float_f       Slice thickness mm
+        776   float_f       Slice gap mm
+        780   float_f[32]   Slice distance[slice 1..32] mm
+        952   char[8]       Imaged nucleus
+        972   short         Flip angle
+        1004  float_f       Patient weight kg
+        1020  float_f       Table position mm
+
+    Image text header:
+
+        0    char[9]       Installation name
+        9    char[5]       Field strength &lt;xxxx&gt;T
+        15   char[25]      Hospital name
+        40   char[25]      Patient name
+        66   char[1]       Trigger ('T'=ecg)
+        67   char[1]       Gating ('H'=respiratory high,'L'=respiratory low)
+        68   char[3]       Software version
+        71   char[1]       Lookup table number
+        72   char[1]       Measurement matrix size
+                           ('A'=128*128,'B'=256*256,'C'=512*512,
+                            'D'=128*256,'E'=128*512,'F'=256*512,
+                            '*'=raw data set incomplete)
+        73   char[1]       Reproduction matrix size
+                           ('A'=128*128,'B'=256*256,'C'=512*512)
+        74   char[4]       Number of acquisitions
+        78   char[2]       Technique
+                           ('SE'=spin echo,'SU'=spin echo summation,
+                            'SM'=spin echo multiecho,
+                            'IR'=inversion recovery,
+                            'IS'=inversion recovery summation,
+                            'FD'=free induction decay,
+                            'PU'=phase image uncorrected,
+                            'PC'=phase image corrected,
+                            'W '=lipid separation water image,
+                            'F '=lipid separation fat image,
+                            '3D'=image from 3D data,
+                            'T1'=longitudinal relaxation time,
+                            '1R'=T1 weighted density,
+                            'T2'=transverse relaxation time,
+                            '2F'=T2 fit,'2R'=T2 weighted density,
+                            'RH'=density,'SI'=synthetic image)
+        80   char[12]      Patient ID
+        113  char[2]       View direction ('CR'=cranial,'CU'=caudal)
+        116  char[1]       View direction ('H'=head first,'F'=feet first)
+        118  char[2]       View direction ('SP'=supine,'PR'=prone,
+                            'RP'=right lateral posterior,
+                            'LP'=left lateral posterior)
+        120  char[2]       Date - DD
+        123  char[3]       Date - MMM
+        127  char[2]       Date - YY
+        160  char[2]       Time - HH
+        163  char[2]       Time - MM
+        166  char[2]       Time - SS
+        201  char[5]       Image number
+        640  char[6]       Inversion time TI&lt;xxxx&gt; mSecs,
+                            flip angle FI&lt;xxxx&gt;,FL&lt;xxxx&gt;,FA&lt;xxxx&gt;
+        680  char[6]       Repetition time TR&lt;xxxx&gt; Secs
+        680  char[6]       Echo time TE&lt;xxxx&gt; mSecs
+        760  char[7]       Slice thickness SL&lt;xxxxx&gt; mm
+        800  char[8]       Slice position  SP&lt;xxxxx&gt; mm
+        880  char[7]       Slice orientation X  &lt;xxxx&gt;,Y  &lt;xxxx&gt;,Z  &lt;xxxx&gt;,
+                            zoom factor ZF &lt;xxxx&gt;, field of view FOV &lt;xxx&gt;
+        912  char[8]       Acquisition time TA&lt;mmm:ss&gt;
+        920  char[6]       Trigger delay for ecg TD&lt;xxxx&gt;
+        929  char[24]      Image comments
+</PRE>
+<P>A sample text header follows: </P><PRE>        MAGNETOM 1.5 T              HOSPITAL    
+        NONAME,JOHN 010199           D2 BB   2SE
+        14802 F            FRONT         CU-H-SP
+        04-FEB-94                               
+        19:06:06                                
+        &gt;   74                              R   
+                                            I   
+                                            G   
+                                            H   
+                                            T   
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+        TR .60                                  
+        TE  15                                  
+        SL  5.0                                 
+        SP -28.4                                
+        Z   21                                  
+        FOV 210                         TA  5:10
+</PRE>
+<H6>3.3.2.1.2 <A name=GBSSPI>Siemens Magnetom GBS/GBS II SPI Format</A></H6>
+<P>Unknown, perhaps doesn't exist. </P>
+<H5>3.3.2.2 <A name=MagnetomSP>Siemens Magnetom SP</A></H5>
+<H6>3.3.2.2.1 <A name=MagnetomSPNative>Siemens Magnetom SP Native 
+Format</A></H6>
+<P>Unknown. </P>
+<H6>3.3.2.2.2 <A name=MagnetomSPSPI>Siemens Magnetom SP SPI Format</A></H6>
+<UL>
+  <LI>ACR/NEMA data stream starts immediately 
+  <LI>big-endian byte order 
+  <LI>lots of private groups containing SPI &amp; MR specific tags, but much 
+  useful information in standard tags 
+  <LI>12 bit allocated data in 16 bits stored, high bit 11 
+  <LI>after ACR/NEMA data, trailing garbage </LI></UL>
+<P>Similar story as for the <A 
+href="http://www.dclunie.com/medical-image-faq/html/part3.html#SomatomPlus">Siemens 
+Somatom Plus</A>. Siemens version of <A 
+href="http://www.dclunie.com/medical-image-faq/html/part3.html#SPI">SPI</A>, 
+containing the following private data elements. Note that there is overlayed 
+data in the high four bytes of the image pixel data, and that there seems to be 
+a bunch of padding in the middle. The intent seems to be to store the "original 
+header" and the image pixel data at accessible, presumably standard locations, 
+presumably indexed by the byte offsets and lengths described in group 9. This is 
+a shame because it seems that none of the really interesting MR attributes have 
+been included in the SPI form, although SPI private tags are available for lots 
+of MR parameters. This is in contrast to the <A 
+href="http://www.dclunie.com/medical-image-faq/html/part4.html#Impact">Siemens 
+Magnetom Impact</A> which contains more interesting SPI tags. </P><PRE>SPI private tags:
+    
+(0009,0010)                                      &lt;SPI RELEASE 1&gt;
+(0009,0011)                                        &lt;SIEMENS MED&gt;
+(0009,1010) SPI RELEASE 1   Comments        &lt;SPI VERSION  01.00&gt;
+(0009,1015) SPI RELEASE 1   UID     &lt;000S00MR001994122719161248&gt;
+(0009,1110) SIEMENS MED     RecognitionCode             &lt;MR 2.0&gt;
+(0009,1130) SIEMENS MED     ByteOffsetOfOriginalHeader   [0x800]
+(0009,1131) SIEMENS MED     LengthOfOriginalHeader      [0x1600]
+(0009,1140) SIEMENS MED     ByteOffsetOfPixelmatrix     [0x2000]
+(0009,1141) SIEMENS MED     LengthOfPixelmatrixInBytes [0x20000]
+
+(0011,0010)                                      &lt;SPI RELEASE 1&gt;
+
+(0021,0010)                                        &lt;SIEMENS MED&gt;
+(0021,1010) SIEMENS MED     Zoom                          &lt;01.0&gt;
+(0021,1011) SIEMENS MED     Target                            &lt;&gt;
+(0021,1020) SIEMENS MED     ROIMask                     [0x0000]
+
+Overlay descriptions (overlays already in image pixel data):
+
+(6000,0010)                 OverlayRows                 [0x0100]
+(6000,0011)                 OverlayColumns              [0x0100]
+(6000,0040)                 ROI                              &lt;R&gt;
+(6000,0050)                 OverlayOrigin        [0x5c31,0x2031]
+(6000,0060)                 OverlayCompressionCode        &lt;NONE&gt;
+(6000,0100)                 OverlayBitsAllocated        [0x0010]
+(6000,0102)                 OverlayBitPosition          [0x000c]
+(6000,0110)                 OverlayFormat                 &lt;RECT&gt;
+(6000,0200)                 OverlayLocation             [0x7fe0]
+
+(6002,0010)                 OverlayRows                 [0x0100]
+(6002,0011)                 OverlayColumns              [0x0100]
+(6002,0040)                 ROI                              &lt;R&gt;
+(6002,0050)                 OverlayOrigin        [0x5c31,0x2031]
+(6002,0060)                 OverlayCompressionCode        &lt;NONE&gt;
+(6002,0100)                 OverlayBitsAllocated        [0x0010]
+(6002,0102)                 OverlayBitPosition          [0x000d]
+(6002,0110)                 OverlayFormat                 &lt;RECT&gt;
+(6002,0200)                 OverlayLocation             [0x7fe0]
+
+(6004,0010)                 OverlayRows                 [0x0100]
+(6004,0011)                 OverlayColumns              [0x0100]
+(6004,0040)                 ROI                              &lt;R&gt;
+(6004,0050)                 OverlayOrigin        [0x5c31,0x2031]
+(6004,0060)                 OverlayCompressionCode        &lt;NONE&gt;
+(6004,0100)                 OverlayBitsAllocated        [0x0010]
+(6004,0102)                 OverlayBitPosition          [0x000e]
+(6004,0110)                 OverlayFormat                 &lt;RECT&gt;
+(6004,0200)                 OverlayLocation             [0x7fe0]
+
+(6006,0010)                 OverlayRows                 [0x0100]
+(6006,0011)                 OverlayColumns              [0x0100]
+(6006,0040)                 ROI                              &lt;R&gt;
+(6006,0050)                 OverlayOrigin        [0x5c31,0x2031]
+(6006,0060)                 OverlayCompressionCode        &lt;NONE&gt;
+(6006,0100)                 OverlayBitsAllocated        [0x0010]
+(6006,0102)                 OverlayBitPosition          [0x000f]
+(6006,0110)                 OverlayFormat                 &lt;RECT&gt;
+(6006,0200)                 OverlayLocation             [0x7fe0]
+
+More SPI private stuff ... padding and original header ...
+
+(7001,0010)                                        &lt;SIEMENS MED&gt;
+(7001,1010) SIEMENS MED     Dummy
+
+(7003,0010)                                        &lt;SIEMENS MED&gt;
+(7003,1010) SIEMENS MED     Header
+
+(7005,0010)                                        &lt;SIEMENS MED&gt;
+(7005,1010) SIEMENS MED     Dummy
+</PRE>
+<P>NB. Siemens VR for OverlayOrigin seems to be wrong. ACR/NEMA says it should 
+be binary, but [0x5c31,0x2031] translates to a string &lt;1\1&gt; which seems 
+more plausible! </P>
+<P>The models in this family include the SP (which the SPI describes as a GBS 3 
+!), the SP/4000 which got a faster Vax, and the new Vision. I have only examined 
+the files from the SP so far, but they are bog standard SPI with no surprises, 
+and I have no reason to doubt the same is true of the later models. </P>
+<P>The usual Vax VMS problems apply. Use the console serial port on the back of 
+the Vax. There is a C compiler supplied so you can compile the more recent C 
+version of kermit ... although the old Bliss version works fine. Unlike the 
+Philips, there is no problem with CR delimited file attributes being set on the 
+binary files. Kermit transfers are glacially slow as always. </P>
+<H5>3.3.2.3 <A name=Impact>Siemens Magnetom Impact</A></H5>
+<H6>3.3.2.3.1 <A name=ImpactNative>Siemens Magnetom Impact Native 
+Format</A></H6>
+<P>Unknown. </P>
+<H6>3.3.2.3.2 <A name=ImpactSPI>Siemens Magnetom Impact SPI Format</A></H6>
+<UL>
+  <LI>skip the 1st 128 bytes to get to ACR/NEMA data stream (may be artifact of 
+  transfer process though rather than real) 
+  <LI>big-endian byte order 
+  <LI>lots of private groups containing SPI &amp; MR specific tags, but much 
+  useful information in standard tags 
+  <LI>12 bit allocated data in 16 bits stored, high bit 11 
+  <LI>after ACR/NEMA data, file is padded to 512 byte mark </LI></UL>
+<P>Siemens version of <A 
+href="http://www.dclunie.com/medical-image-faq/html/part3.html#SPI">SPI</A>, 
+containing the following private data elements. More comprehensive attributes 
+than the <A 
+href="http://www.dclunie.com/medical-image-faq/html/part3.html#SomatomPlus">Siemens 
+Somatom Plus</A> or <A 
+href="http://www.dclunie.com/medical-image-faq/html/part4.html#MagnetomSP">Siemens 
+Magnetom SP</A>. There is no overlayed data in the high four bytes of the image 
+pixel data, and that there is no padding in the middle or "original header", or 
+byte offsets and lengths described in group 9. Only some of the more significant 
+elements are described here in the interest of brevity. Sources for a more 
+comprehensive dictionary are described under <A 
+href="http://www.dclunie.com/medical-image-faq/html/part3.html#SPI">SPI</A>. 
+</P><PRE>SPI private tags:
+    
+(0009,0010)                 PrivateCreator                &lt;SPI RELEASE 1&gt;
+(0009,0012)                 PrivateCreator          &lt;SIEMENS CM VA0  CMS&gt;
+(0009,0013)                 PrivateCreator          &lt;SIEMENS CM VA0  LAB&gt;
+(0009,1010) SPI RELEASE 1   Comments                 &lt;SPI VERSION  01.00&gt;
+(0009,1015) SPI RELEASE 1   UID              &lt;000S00MR001994021614211710&gt;
+(0009,1040) SPI RELEASE 1   DataObjectSubtype                    [0x0000]
+(0009,1041) SPI RELEASE 1   DataObjectSubtype                  &lt;MRUPNONE&gt;
+(0009,1210) SIEMENS CM VA0  CMS  StorageMode                   &lt;EXPANDED&gt;
+(0009,1212) SIEMENS CM VA0  CMS  EvaluationMask                  [0x0000]
+(0009,1226) SIEMENS CM VA0  CMS  LastMoveDate                &lt;1994.02.16&gt;
+(0009,1227) SIEMENS CM VA0  CMS  LastMoveTime              &lt;13:41:52.000&gt;
+(0009,1320) SIEMENS CM VA0  LAB  HeaderVersion                      &lt;VB6&gt;
+
+(0011,0011)                 PrivateCreator          &lt;SIEMENS CM VA0  CMS&gt;
+(0011,1110) SIEMENS CM VA0  CMS RegistrationDate             &lt;1994.02.16&gt;
+(0011,1111) SIEMENS CM VA0  CMS RegistrationTime          &lt;113:43:49.000&gt;
+(0011,1123) SIEMENS CM VA0  CMS UsedPatientWeight                &lt;000050&gt;
+
+(0019,0010)                 PrivateCreator          &lt;SIEMENS CM VA0  CMS&gt; 
+(0019,0012)                 PrivateCreator          &lt;SIEMENS MR VA0  GEN&gt; 
+(0019,0014)                 PrivateCreator         &lt;SIEMENS MR VA0  COAD&gt; 
+(0019,0015)                 PrivateCreator         &lt;SIEMENS CM VA0  ACQU&gt; 
+(0019,1060) SIEMENS CM VA0  CMS NumberOfDataBytes                &lt;310127&gt; 
+(0019,1220) SIEMENS MR VA0  GEN NominalNumberOfFourierLines      &lt;000128&gt; 
+(0019,1226) SIEMENS MR VA0  GEN NumberOfFourierLinesafterZero    &lt;000063&gt; 
+(0019,1228) SIEMENS MR VA0  GEN FirstMeasuredFourierLine         &lt;-00064&gt; 
+(0019,1230) SIEMENS MR VA0  GEN AcquisitionColumns               &lt;000512&gt; 
+(0019,1231) SIEMENS MR VA0  GEN ReconstructionColumns            &lt;000512&gt; 
+(0019,1250) SIEMENS MR VA0  GEN CurrentNumberOfAverages          &lt;000010&gt; 
+(0019,1260) SIEMENS MR VA0  GEN FlipAngle                &lt;00.8000000+E00&gt; 
+(0019,1290) SIEMENS MR VA0  GEN NumberOfSaturationRegions        &lt;000000&gt; 
+(0019,1294) SIEMENS MR VA0  GEN ImageRotationAngle       &lt;00.0000000+E00&gt; 
+(0019,1412) SIEMENS MR VA0  COAD MagneticFieldStrength   &lt;009.500702E-01&gt; 
+(0019,1456) SIEMENS MR VA0  COAD ReceiverFilterFrequency         &lt;500000&gt; 
+
+(0021,0010)                     PrivateCreator              &lt;SIEMENS MED&gt; 
+(0021,0011)                     PrivateCreator      &lt;SIEMENS CM VA0  CMS&gt; 
+(0021,0013)                     PrivateCreator      &lt;SIEMENS MR VA0  GEN&gt; 
+(0021,1010) SIEMENS MED Zoom                                           &lt;&gt; 
+(0021,1011) SIEMENS MED Target                                         &lt;&gt; 
+(0021,1020) SIEMENS MED ROIMask                                     [0x0]
+(0021,1120) SIEMENS CM VA0  CMS FoV        &lt;00.2050000+E200\.2050000+E20&gt; 
+(0021,1122) SIEMENS CM VA0  CMS ImageMagnificationFactor &lt;001.000000E+00&gt; 
+(0021,1130) SIEMENS CM VA0  CMS ViewDirection                      &lt;HEAD&gt; 
+(0021,1132) SIEMENS CM VA0  CMS RestDirection                      &lt;HEAD&gt; 
+(0021,1160) SIEMENS CM VA0  CMS ImagePosition        &lt;000.000000E+00\.\.&gt; 
+(0021,1161) SIEMENS CM VA0  CMS ImageNormal          &lt;-00.000000E+00\.\.&gt; 
+(0021,1163) SIEMENS CM VA0  CMS ImageDistance            &lt;002.787480E+01&gt; 
+(0021,116a) SIEMENS CM VA0  CMS ImageRow             &lt;001.000000E+00\.\.&gt; 
+(0021,116b) SIEMENS CM VA0  CMS ImageColumn          &lt;000.000000E+00\.\.&gt; 
+(0021,1170) SIEMENS CM VA0  CMS PatientOrientationSet1          &lt;R\AH\HP&gt; 
+(0021,1171) SIEMENS CM VA0  CMS PatientOrientationSet2          &lt;L\PF\FA&gt; 
+(0021,1180) SIEMENS CM VA0  CMS StudyName    &lt;routine_brain/6_opt3_mprag&gt; 
+(0021,1182) SIEMENS CM VA0  CMS StudyType                           &lt;MEA&gt; 
+(0021,1334) SIEMENS MR VA0  GEN NumberOf3DImagePartitions        &lt;000128&gt; 
+(0021,1339) SIEMENS MR VA0  GEN SlabThickness            &lt;001.800000E+02&gt; 
+(0021,1342) SIEMENS MR VA0  GEN CurrentSliceNumber               &lt;000001&gt; 
+(0021,1343) SIEMENS MR VA0  GEN CurrentGroupNumber               &lt;000001&gt; 
+(0021,134f) SIEMENS MR VA0  GEN OrderofSlices                 &lt;ASCENDING&gt; 
+(0021,1370) SIEMENS MR VA0  GEN NumberOfEchoes                   &lt;000001&gt; 
+
+(0029,0011)                     PrivateCreator      &lt;SIEMENS CM VA0  CMS&gt; 
+(0029,1120) SIEMENS CM VA0  CMS PixelQualityCode         &lt;NONE\NONE\NONE&gt; 
+
+(0051,0010)                     PrivateCreator      &lt;SIEMENS CM VA0  CMS&gt; 
+(0051,1010) SIEMENS CM VA0  CMS ImageText                           &lt;...&gt; 
+</PRE>
+<H5>3.3.2.4 <A name=MagnetomVision>Siemens Magnetom Vision</A></H5>
+<H6>3.3.2.4.1 <A name=MagnetomVisionNative>Siemens Magnetom Vision Native 
+Format</A></H6>
+<P>The exact details of the format are not known, but a little guess work has 
+determined what follows. The data types are <A 
+href="http://www.dclunie.com/medical-image-faq/html/part6.html#Sun">Sun</A>, 
+hence the byte order is big-endian and the all the floats I have found are 
+doubles. Offsets here are in bytes from the start of the header. The 
+uncompressed image data starts at offset 6144. </P><PRE>        0         u_int      SiemensStudyDateYYYY 
+        4         u_int      SiemensStudyDateMM 
+        8         u_int      SiemensStudyDateDD 
+        12        u_int      AcquisitionDateYYYY 
+        16        u_int      AcquisitionDateMM 
+        20        u_int      AcquisitionDateDD 
+        24        u_int      ImageDateYYYY             
+        28        u_int      ImageDateMM             
+        32        u_int      ImageDateDD             
+        36        u_int      SiemensStudyTimeHH 
+        40        u_int      SiemensStudyTimeMM 
+        44        u_int      SiemensStudyTimeSS
+        52        u_int      AcquisitionTimeHH 
+        56        u_int      AcquisitionTimeMM 
+        60        u_int      AcquisitionTimeSS 
+        68        u_int      ImageTimeHH             
+        72        u_int      ImageTimeMM             
+        76        u_int      ImageTimeSS             
+        96        char[7]    Manufacturer
+        105       char[25]   InstitutionName 
+        186       char[4]    Annotation             
+        281       char[15]   ModelName 
+        412       u_int      LastMoveDateYYYY 
+        416       u_int      LastMoveDateMM 
+        420       u_int      LastMoveDateDD 
+        424       u_int      LastMoveTimeHH 
+        428       u_int      LastMoveTimeMM 
+        432       u_int      LastMoveTimeSS 
+        768       char[25]   PatientName
+        795       char[12]   PatientID
+        808       u_int      DOBYYYY             
+        812       u_int      DOBMM                   
+        816       u_int      DOBDD                   
+        851       char[3]    PatientAge             
+        854       char       PatientAgeUnits      ('Y'=years) 
+        1052      u_int      RegistrationDateYYYY 
+        1056      u_int      RegistrationDateMM 
+        1060      u_int      RegistrationDateDD 
+        1064      u_int      RegistrationTimeHH 
+        1068      u_int      RegistrationTimeMM 
+        1072      u_int      RegistrationTimeSS 
+        1544      double     SliceThickness 
+        1560      double     RepetitionTime
+        1568      double     EchoTime
+        1592      double     FrequencyMHz
+        1639      char[5]    Station             
+        1712      u_int      CalibrationDateYYYY 
+        1716      u_int      CalibrationDateMM 
+        1720      u_int      CalibrationDateDD 
+        1724      u_int      CalibrationTimeHH 
+        1728      u_int      CalibrationTimeMM 
+        1732      u_int      CalibrationTimeSS 
+        1767      char[16]   ReceivingCoil
+        1828      char[4]    ImagedNucleus
+        2112      double     FlipAngle
+        2560      double     MagneticFieldStrength
+        2864      u_int      DisplayMatrixSize 
+        2944      char[65]   SequencePrgName
+        3009      char[65]   SequenceWkcName 
+        3074      char[9]    SequenceAuthor 
+        3083      char[8]    SequenceType
+        3744      double     FOVRow             
+        3752      double     FOVColumn             
+        3768      double     CenterPointX             
+        3776      double     CenterPointY             
+        3784      double     CenterPointZ             
+        3792      double     NormalVectorX             
+        3800      double     NormalVectorY             
+        3808      double     NormalVectorZ             
+        3816      double     DistanceFromIsocenter 
+        3832      double     RowVectorX             
+        3840      double     RowVectorY             
+        3848      double     RowVectorZ             
+        3856      double     ColumnVectorX             
+        3864      double     ColumnVectorY             
+        3872      double     ColumnVectorZ             
+        3880      char[3]    OrientationSet1Top 
+        3884      char[3]    OrientationSet1Left 
+        3888      char[3]    OrientationSet1Back 
+        3892      char[3]    OrientationSet2Down 
+        3896      char[3]    OrientationSet2Right 
+        3900      char[3]    OrientationSet2Front 
+        3904      char[32]   SequenceName             
+        5000      double     PixelSizeRow             
+        5008      double     PixelSizeColumn 
+
+        5504      char[12]   TextPatientID             
+        5517      char       TextPatientSex 
+        5518      char[3]    TextPatientAge 
+        5521      char       TextPatientAgeUnits       ('Y'=years) 
+        5529      char[7]    TextPatientPosition 
+        5541      char[5]    TextImageNumberFlag       ('IMAGE'=image) 
+        5546      char[3]    TextImageNumber
+        5559      char[2]    TextDateDD             
+        5562      char[3]    TextDateMM             
+        5566      char[4]    TextDateYYYY             
+        5571      char[2]    TextTimeHH             
+        5574      char[2]    TextTimeMM             
+        5577      char[2]    TextAcquisitionTimeFlag   ('TA'=acquisition time) 
+        5583      char[2]    TextAcquisitionTimeMM             
+        5586      char[2]    TextAcquisitionTimeSS             
+        5601      char[4]    TextAnnotation
+        5655      char[25]   TextOrganization             
+        5682      char[5]    TextStation                   
+        5695      char[3]    TextAcquisitionMatrixPhase
+        5698      char       TextAcquisitionMatrixPhaseAxis  ('h'=horizontal,' '=vertical) 
+        5700      char[3]    TextAcquisitionMatrixFreq 
+        5703      char       TextAcquisitionMatrixFreqO      ('o'=o,' '=blank) 
+        5704      char       TextAcquisitionMatrixFreqS      ('s'=s,' '=blank) 
+        5706      char[8]    TextSequence                   
+        5714      char[3]    TextFlipAngle                   
+        5718      char[4]    TextScanNumberFlag        ('SCAN'=scan) 
+        5723      char[3]    TextScanNumberA             
+        5726      char[3]    TextScanNumberB             
+        5730      char[2]    TextRepetitionTimeFlag    ('TR'=tr) 
+        5734      char[7]    TextRepetitionTime             
+        5742      char[2]    TextEchoTimeFlag          ('TE'=te) 
+        5746      char[5]    TextEchoTime                   
+        5752      char       TextEchoNumber             
+        5790      char[2]    TextSliceThicknessFlag    ('SL'=slice thickness) 
+        5794      char[7]    TextSliceThickness
+        5802      char[2]    TextSlicePositionFlag     ('SP'=slice position) 
+        5806      char[7]    TextSlicePosition
+        5814      char[3]    TextAngleFlag1            ('Sag'=sagittal,'Cor'=coronal,'Tra'=transverse) 
+        5817      char       TextAngleFlag2            ('&gt;'=gt,'&lt;'=lt) 
+        5818      char[3]    TextAngleFlag3            ('Sag'=sagittal,'Cor'=coronal,'Tra'=transverse) 
+        5821      char[4]    TextAngle                   
+        5838      char[3]    TextFOVFlag               ('FoV'=field of view) 
+        5842      char[3]    TextFOVH                   
+        5846      char[3]    TextFOVV                   
+        5874      char[2]    TextTablePositionFlag     ('TP'=table position) 
+        5878      char[7]    TextTablePosition             
+        5938      char[5]    TextStudyNumberFlag       ('STUDY'=study) 
+        5943      char[2]    TextStudyNumber
+        5956      char[2]    TextDOBDD                   
+        5959      char[3]    TextDOBMM                   
+        5963      char[4]    TextDOBYYYY                   
+        5992      char[3]    TextStudyNumberFlag2      ('STU'=study) 
+        5996      char[3]    TextImageNumberFlag2      ('IMA'=study) 
+        5999      char[2]    TextStudyNumber2             
+        6002      char[2]    TextImageNumber2             
+        6013      char[5]    TextStudyImageNumber3             
+        6031      char[15]   TextModelName                   
+        6058      char[25]   TextPatientName             
+        6085      char[2]    TextScanStartTimeHH             
+        6088      char[2]    TextScanStartTimeMM             
+        6091      char[2]    TextScanStartTimeSS             
+</PRE>
+<H6>3.3.2.4.2 <A name=MagnetomVisionSPI>Siemens Magnetom Vision SPI 
+Format</A></H6>
+<P>Unknown. </P>
+<H4>3.3.3 <A name=MRPhilips>Philips MR</A></H4>
+<H5>3.3.3.1 <A name=PhilipsS5>Philips Gyroscan S5</A></H5>
+<UL>
+  <LI>can export as ACR/NEMA (actually SPI) files 
+  <LI>little endian byte order 
+  <LI>12 bit packed data </LI></UL>
+<P>This description pertains to "exported ACR/NEMA", not the native image files, 
+which I am not familiar with. In fact I am not even sure in which directory they 
+live. </P>
+<P>Use the ADMIN menu on the operator's console to find the import/export 
+ACR/NEMA utility, with which you can select an exam, series or image to export 
+as an ACR/NEMA file. The default directory is the GYROVIEW home directory, which 
+is already pretty cluttered so it is better to make another subdirectory like 
+"ANI" to keep exported files in. The exported files have huge names composed of 
+identification information, but all have a ".ANI" extension. For example: </P><PRE>        DIR SYS$SYSROOT:[GYROSCAN]*.ANI;*
+
+        SMITH__FA02010801010001.ANI;1
+</PRE>
+<P>These files are stored as, wait for it, fixed length 512 byte records, with 
+the "carriage return carriage control" record attributes set from some bizarre 
+reason, which totally messes up kermit which starts messing with adding and 
+changing CR/LF characters. See the Vax diatribe below for a method of getting 
+around this, by using DUMP as a poor man's uuencode permitting ascii transfer. 
+Unfortunately the nature of fixed length records under VMS means that the last 
+record will be padded out to 512 bytes without any indication of the "real" 
+end-of-file. This means your ACR/NEMA reader has to cope with trailing garbage 
+gracefully. </P>
+<P>Unlike the Siemens SPI files, the Philips ones are stored in little-endian 
+format. There is no fixed size header to skip, just go straight into the 
+ACR/NEMA data stream. For the image pixel data four 12 bit words are packed 
+without padding into 16 bit words, without any compression sheme. See the 
+ACR/NEMA section for description of the packing organization. Lots of private 
+tags are defined, but these can be ignored. Some of the identifying tags present 
+are as follows: </P><PRE>(0000x8,000x10) CS RecognitionCode       VR=&lt;CS&gt;   VL=&lt;0xc&gt;  &lt;ACR-NEMA 1.0&gt; 
+(0000x8,000x70) LO Manufacturer          VR=&lt;LO&gt;   VL=&lt;0x8&gt;  &lt;Philips &gt; 
+(0000x8,0x1090) LO ManufacturerModelName VR=&lt;LO&gt;   VL=&lt;0x2&gt;  &lt;S5&gt; 
+(0000x9,000x10) LT SPIComments   VR=&lt;LT&gt;   VL=&lt;0xe&gt;   &lt;SPI Release 1 &gt; 
+(000x19,000x10)                  VR=&lt;LT&gt;   VL=&lt;0x14&gt;  &lt;PHILIPS MR R5.6/PART&gt; 
+</PRE>
+<P>To get the files off, I plug a portable with a serial cable into one of the 
+spare serial ports inside one of the Vax cabinets, at 9600 baud, and login as 
+"GYROVIEW/NOCOM" without any password needed. This dumps you in the same 
+directory as the files will be stored by default. You will probably need to set 
+local echo on on your portable, or "SET TERMINAL/ECHO" on the Vax. Kermit was 
+already loaded on my system, accessed as "RUN [SYSEXE]KERMIT". See the Vax 
+section later for more help. </P>
+<H5>3.3.3.2 <A name=#PhilipsMRACS>Philips Gyroscan ACS</A></H5>
+<H5>3.3.3.3 <A name=PhilipsT5>Philips Gyroscan T5</A></H5>
+<H5>3.3.3.4 <A name=PhilipsNT>Philips Gyroscan NT5 &amp; NT15</A></H5>
+<H4>3.3.4 <A name=MRPicker>Picker MR</A> - another black hole</H4>
+<H4>3.3.5 <A name=MRToshiba>Toshiba MR</A> - another black hole</H4>
+<H4>3.3.6 <A name=MRHitachi>Hitachi MR</A> - another black hole</H4>
+<H4>3.3.7 <A name=MRShimadzu>Shimadzu MR</A></H4>
+<P>The following information pertains to Revision 3 of the Shimadzu MRI format. 
+The new Revision 4 doesn't change this apparently. </P>
+<UL>
+  <LI>words are big endian 
+  <LI>fixed layout header 
+  <UL>
+    <LI>standard 512 bytes 
+    <LI>extended 2048 bytes (1st 512 same) 
+    <LI>extended indicated by high byte of ZHREV non-zero </LI></UL>
+  <LI>16 bit uncompressed image pixel data 
+  <LI>starting block of image pixel data is ZIBLKA (from 1) 
+  <LI>multiple images per file, number specified in ZIMAGE 
+  <LI>offset to image pixel data specified by index after header 
+  <UL>
+    <LI>each index entry is 48 bytes for standard 
+    <LI>each index entry is 256 bytes for extended 
+    <LI>starting block for image added to ZIBLKA is 
+    <UL>
+      <LI>int16 at byte 30 (from 0) of entry (standard) 
+      <LI>int16 at byte 50 + (int16 at byte 52 &lt;&lt; 16) (extended)<BR>(NB. 
+      Not the same at big-endian int32 at byte 50) </LI></UL></LI></UL>
+  <LI>physical location of each slice is encoded in 
+  <UL>
+    <LI>ZSLOC slice Location 
+    <LI>ZSLOC int16 at byte offset 8 (from 0) of index entry 
+    <LI>ZSLOC is relative to isocenter (same units as ZCLOC) </LI></UL>
+  <LI>elapsed time of each slice is encoded in 
+  <UL>
+    <LI>ZPTIM1 int16 at byte offset 6 (from 0) of index entry 
+    <LI>ZPTIM1 units are seconds since first slice </LI></UL>
+  <LI>field of view 
+  <UL>
+    <LI>ZVIEW give the real field of view in mm*10 units 
+    <LI>better than the mnemonic code in the ZAAREA field </LI></UL></LI></UL>
+<P>The following information pertains to Revision 3 of the Shimadzu MRI format. 
+The new Revision 4 doesn't change this apparently. The offsets are specified in 
+both bytes from 0 and words from 1 (the Shimadzu convention). </P><PRE>	Standard Header or 1st 512 bytes of Extended Header:
+
+	Offset	Offset	Type	Keyword	Description	Units	Example
+	(Bytes)	(Words)
+
+	0	1	char 8	ZASYSID	SYS-ID
+	8	5	char 16	ZANAME	NAME
+	24	13	char 12	ZAID	ID
+	36	19	char 2	ZASEX	SEX			"M ","F "
+	38	20	char 4	ZAAGE	AGE		years
+	42	22	char 20	ZACOMM	COMMENT
+	62	32	char 18	ZAHOSP	HOSPITAL
+	80	41	char 8	ZADATW	DATE			"YY-MM-DD"
+	88	45	char 8	ZATIME	TIME			"HH:MM:SS"
+	96	49	char 8	ZAAREA	Zoom Size/NSlices	"1.0 S/10"
+						ES = 100mm
+						VS = 150mm
+						SS = 200mm
+						 S = 250mm
+						 M = 300mm
+						 L = 350mm
+						LL = 400mm
+	104	53	char 8	ZASEQ	TYPE/MODE		"IR/256" where 256 is Max(Nx,Ny)
+						IR = Inversion Recovery
+						SE = Spin Echo
+						FE = Field Echo
+	112	57	char 8	ZATR	TR		mS	"TR=1500"
+	120	61	char 8	ZATE	TE		mS	"TE=150"
+	128	65	char 8	ZATI	TI		mS	"TI=200"
+	136	69	char 8	ZALOK	LOCATION	MM	"OM+125","CN+50"
+	144	73	char 8	ZAECG	ECG		?	"ECG=100"
+	152     77      char 6	ZADIRL	Left side of image
+						"RIGHT","LEFT","ANTR","POSTR","HEAD","FEET"
+	158     80      char 6	ZADIRB	Bottom side of image
+						"RIGHT","LEFT","ANTR","POSTR","HEAD","FEET"
+	164     83      char 4	ZATCS
+						"TRN","COR",'SAG"
+	168     85      char 8	ZAMTE	Interslice rest ms      "MTE=50"
+	176     89      char 6	ZAPIT	Interslice skip mm      "PT=10"
+	182     92      char 8	ZAFLIP	FLIP ANGLE      DEGREES "FLIP=90"
+	190     96      char 8	ZAENCD	ENCODE          %       "ECD=80%"
+	198     100     char 6	ZADIREP
+						"(P,F)" OR "(F,P)"
+	204     103     char 8	ZANSEQ	Sequence Name
+	212     107     char 8	ZAMATER1	SYSTEM-ID 1
+	220     111     char 8	ZAMATER2	SYSTEM-ID 2
+	228     115     char 8	ZAMATER3	SYSTEM-ID 3
+	236     119     char 2	ZASITE
+	238     120     char 8		AVERAGE                 "NEX=2"
+	246     124     char 2	ZADIRL2	Left direction
+						"RT","LT","HD","FT","DO","AN"
+	248     125     char 2	ZADIRB2	Down direction
+						"RT","LT","HD","FT","DO","AN"
+	250     126     char 6		SCAN (?)
+
+	256     129     int16   ZMAGN				5000
+	258     130     int16   ZSCSW				1-199
+	260     131     int16   ZIMAGE	Images in series                        
+	262     132     int16   ZSLICE                                  
+	264     133     int16   ZECHO				1,2,4
+	266     134     int16   ZXSIZE	columns                 
+	268     135     int16   ZYSIZE	rows                    
+	270     136     int16   ZTBLK                                   
+	272     137     int16   ZNEGSW	Even line DC neg
+						0=No,1=Yes
+	274     138     int16   ZFTYPE
+						0,1,2,3=1+2
+	276     139     int16   ZCALB	Max
+						0=No,1=Yes
+	278     140     int16   ZLBLK
+	280     141     int16   ZRBLK
+	282     142     int16   ZIBLKA
+	284     143     int16   ZCOIL
+	286     144     int16   ZDTYPE
+	288     145     int16   ZETYPE
+	290     146     int16   ZKRNL
+	292     147     int16   ZPTOR1
+						0=head first,1=feet first
+	294     148     int16   ZPTOR2
+						0=supine,1=prone,2=right side down,3=left side down,4=other
+	296     149     int16   ZLRVS
+						0=Up,1=Down
+	298     150     int16   ?
+	300     151     int16   ZRCDMODE	Mode
+	302     152     int16   ZVDBAND
+	304     153     int16   ZYSTL
+	306     154     int16   ZPWGHT
+	308     155     int16   ZPFUSE	RF power ratio  %
+	310     156     char 2	ZSATON				"P","H","Na"
+	312     157     int16   ZSFREQ			10kHz
+	314     158     int16   ZIMFLT
+						0=No
+	316     159     int16   ZSLANT2				192 2
+	318     160     int16   ZROTPHS	Recon
+	320     161     int16   ZWIDE	Slice width     *10mm
+	322     162     int16   ZPITCH	Interslice skip *10mm
+	324     163     int16   ZCLOC	Center location	*10mm	(offset from isocenter in ZDIR direction (SAG L+,COR A+,TRN F+) FOR CENTER OF SERIES)
+	326     164     int16   ZMAG			*100
+	328     165     int16   ZCNTX	X               mm
+	330     166     int16   ZCNTY	Y               mm
+	332     167     int16   ZVIEW	Actual FOV	mm*10
+	334     168     int16   ZDIR	Orientation
+						1=Trn,2=Cor,3=Sag,6=Non,7=Point
+	336     169     int16   ZANG1	Alpha           *10 degrees (tilt angle of vertical, up-to-down direction relative to base plane (C,S,T))
+	338     170     int16   ZANG2	Beta            *10 degrees (tilt angle of horizontal, left-to-right direction)
+	340     171     char 8	ZPSID1
+	348     175     char 2	ZPSIM1
+	350     176     char 2	ZPSCR1
+	352     177     char 8	ZPSID2
+	360     181     char 2	ZPSIM2
+	362     182     char 2	ZPSCR2
+	364     183     int16   ZANG3S	system          *10 degrees
+	366     184     int16   ZANG3U	user            *10 degrees
+	368     185     int16   ZTILTSW	TILT
+						1=?,2=?,3=Trn,4=Cor
+	370     186     int16   ZPSOR1	location                +/-512
+	372     187     int16   ZPSOA1	location        *10 degrees
+	374     188     int16   ZPSOR2	location                +/-512
+	376     189     int16   ZPSOA2	location        *10 degrees
+	378     190     int16   ZPSOD1	loc 0-100mm
+	380     191     int16   ZPSOD2	loc 0-100mm
+	382     192     int16   ZSLANT	orthog=10000
+	384     193     char 2	ZPMOD
+					IR,SE,FE
+	386     194     int16   ZTR	TR              ms
+	388     195     int16   ZTE	TE              ms
+	390     196     int16   ZTI	TI              ms
+	392     197     int16   ZNX	X Encode
+	394     198     int16   ZNY	Y Encode
+	396     199     int16   ZXAV	X NEX
+	398     200     int16   ZYAV	Y NEX
+	400     201     int16   ZEAV	Echo
+	402     202     int16   ZSTIM
+	404     203     char 2	ZCONST
+						2D,3D
+	406     204     int16   ZFLIP			degrees
+	408     205     int16   ZRESP
+						0=No,1=Yes
+	410     206     int16   ZECG
+						0=No,1=Yes
+	412     207     int16   ZDIXON	CH-SHFT         *10ppm
+	414     208     int16   ZMTE	Interslice rest
+	416     209     int16   ZHALF
+	418     210     int16   ZSGNSW
+	420     211     int16   ZCINE
+	422     212     int16   ZPKZ
+	424     213     int16   ZTEALN	TE ALIGN
+						0=In phase,1=Opposed
+	426     214     int16   ZCSSW	Chemical Shift Switch
+	428     215     int16   ZIMDIR          
+	430     216     int16   ZPSSP1
+	432     217     int16   ZPSSP2
+	434     218     int16   ZXWD	X Dimension	*10mm
+	436     219     int16   ZXLOC1			*10mm
+	438     220     int16   ZXLOC2			*10mm
+	440     221     int16   ZYWD	Y Dimension	*10mm
+	442     222     int16   ZYLOC1			*10mm
+	444     223     int16   ZYLOC2			*10mm
+	446     224     int16   ZHREV	Header Revision
+	448     225     int16   ZSYSMAG
+	450     226     int16   ZSCOPT	Optional Control
+	452     227     int16   ZANGIO
+					0=No,1=Yes
+	454     228     int16	?
+	456     229     int16	?
+	458     230     int16	?
+	460     231     int16   ZSXADR	blk#
+	462     232     int16   ZSPMOD	KSPM	
+</PRE>
+<H4>3.3.8 <A name=MRElscint>Elscint MR</A> - another black hole</H4>
+<P>The next part is <A 
+href="http://www.dclunie.com/medical-image-faq/html/part5.html">part5 - 
+proprietary other formats</A>. </P>END OF PART 4<BR>
+<HR>
+
+<CENTER><A href="http://www.dclunie.com/index.html">Home</A>|<A 
+href="mailto:dclunie@dclunie.com">Feedback</A></CENTER>
+<H1>END</H1></BODY></HTML>

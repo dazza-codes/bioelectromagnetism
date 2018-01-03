@@ -1,0 +1,23 @@
+NUFFT - nonuniform FFT toolbox for Matlab
+by Jeff Fessler and Brad Sutton
+
+The interpolation methods have been optimized by a min-max criterion
+that minimizes the worst-case error.
+
+See "Nonuniform fast Fourier transforms using min-max interpolation"
+by Jeff Fessler and Brad Sutton, to appear in IEEE Trans. Signal Processing.
+
+This work was inspired by collaboration on MR imaging with Doug Noll.
+For more details, look for MR-related papers on Fessler's web site:
+	http://www.eecs.umich.edu/~fessler/
+
+The main routines are nufft1.m and nufft2.m, which each have
+their own built-in "test" routine that illustrates example usage.
+
+The routines in the "private" subdirectory are used by the routines
+in this directory but are probably not useful otherwise.
+Hiding them that way is a little-known but useful Matlab convention!
+
+The very first version of these files was written by Brad Sutton:
+	ir6:/x/bpsutton/Nufft
+But they have evolved considerably since then.

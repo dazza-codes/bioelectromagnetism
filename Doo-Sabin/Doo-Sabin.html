@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html><head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Eomer">
+   <meta name="GENERATOR" content="Mozilla/4.51 [en] (Win98; I) [Netscape]"><title>Wallner</title></head>
+
+<body text="#000000" bgcolor="#ffffff" link="#0000ee" vlink="#800080" alink="#0000ee">
+
+<center>
+<h1>
+Doo-Sabin Subdivision</h1></center>
+In the late seventies, D.Doo and M.A.Sabin proposed an algorithm to define
+B-Spline surfaces over topologically arbitrary polygon meshes. The idea
+behind it is quite simple, and can be refered to as "corner- and edgecutting".
+Nowadays, there exist several variants of this algorithm, including weighted
+versions that use additional parameters to adjust details of the resulting
+shape. Here is one generic Doo-Sabin step.
+<br>&nbsp;
+<br>&nbsp;
+<center><table cellspacing="10" cols="3" width="100%">
+<tbody><tr align="center">
+<td><img src="Doo-Sabin_files/initial_mesh.gif" nosave="" height="212" width="200"></td>
+
+<td><img src="Doo-Sabin_files/subdivision.gif" nosave="" height="212" width="200"></td>
+
+<td><img src="Doo-Sabin_files/refined_mesh.gif" nosave="" height="212" width="200"></td>
+</tr>
+
+<tr align="center" valign="CENTER">
+<td>Initial Mesh</td>
+
+<td>Subdivision</td>
+
+<td>Refined Mesh</td>
+</tr>
+</tbody></table></center>
+
+<p>It can be shown, that the sequence of shapes obtained by recursive subdivision
+converges to a biquadratic B-Spline surface, except perhaps in the neighbourhood
+of a finite number of points, where it converges to a C^1 surface.
+</p><p>The Doo-Sabin subdivision surface on the previous page and the following
+images were created using the MATLAB 5.0 m-files available <a href="http://www.math.tuwien.ac.at/%7Egkneisl/Downloads/Doo-Sabin.zip" title="Zipped m-files, 16 kB">here</a>.
+Documentation and demos are included.
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+</p><center><table cellspacing="10" cellpadding="10" cols="2" width="100%">
+<tbody><tr align="center" valign="CENTER">
+<td><img src="Doo-Sabin_files/tetris0.jpg" nosave="" title="Initial mesh" height="171" width="300"></td>
+
+<td><img src="Doo-Sabin_files/tetris1.jpg" nosave="" border="0" title="First Doo-Sabin step" height="151" width="300"></td>
+</tr>
+
+<tr align="center" valign="CENTER">
+<td><img src="Doo-Sabin_files/tetris2.jpg" nosave="" border="0" title="Second Doo-Sabin step" height="145" width="300"></td>
+
+<td><img src="Doo-Sabin_files/tetris3.jpg" nosave="" border="0" title="Final B-Spline surface" height="144" width="300"></td>
+</tr>
+</tbody></table></center>
+
+<br>&nbsp;
+</body></html>

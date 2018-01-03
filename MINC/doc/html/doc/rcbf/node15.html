@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>FINDINTCONVO</TITLE>
+<META NAME="description" CONTENT="FINDINTCONVO">
+<META NAME="keywords" CONTENT="rcbf">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="rcbf.css">
+<LINK REL="next" HREF="node16.html">
+<LINK REL="previous" HREF="node14.html">
+<LINK REL="up" HREF="node11.html">
+<LINK REL="next" HREF="node16.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html216"
+ HREF="node16.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html213"
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html207"
+ HREF="node14.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html215"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html217"
+ HREF="node16.html">B_CURVE</A>
+<B> Up:</B> <A NAME="tex2html214"
+ HREF="node11.html">Annotated Program Listings</A>
+<B> Previous:</B> <A NAME="tex2html208"
+ HREF="node14.html">CORRECTBLOOD</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00043400000000000000">&#160;</A>
+<A NAME="sec:findintconvo_listing">&#160;</A>
+<BR>
+FINDINTCONVO
+</H3>
+
+<P>
+<TT>findintconvo</TT> (``find integrals of convolutions'') computes the
+values of
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+\int_{0}^{T} \frac{\int\limits_{T_1}^{T_2}
+    \left[ C_{a}(u) \otimes e^{-k_{2}u} \right] du}{T_2 - T_1} \, w_i \, dt
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:conv_int">&#160;</A><IMG
+ WIDTH="242" HEIGHT="76"
+ SRC="img45.gif"
+ ALT="\begin{displaymath}
+\int_{0}^{T} \frac{\int\limits_{T_1}^{T_2}
+\left[ C_{a}(u) \otimes e^{-k_{2}u} \right] du}{T_2 - T_1} \, w_i \, dt
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(17)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+at many different values of <I>k</I><SUB>2</SUB>, for up to three weighting functions
+<I>w</I><SUB><I>i</I></SUB>.  Here, <I>T</I><SUB>1</SUB> and <I>T</I><SUB>2</SUB> represent the start and end time any
+particular frame; in concrete terms, the inner integrand is just the
+average of 
+<!-- MATH: $C_{a}(u) \otimes e^{-k_{2}u}$ -->
+<IMG
+ WIDTH="116" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.gif"
+ ALT="$C_{a}(u) \otimes e^{-k_{2}u}$">
+across each frame, and is
+computed once for each frame.  The outer integral then integrates across
+all frames to arrive at a single value for each weighting function
+<I>w</I><SUB><I>i</I></SUB> and each value of <I>k</I><SUB>2</SUB>.
+
+<P>
+<DL COMPACT>
+<DT>1.
+<DD>The function declaration line.
+<PRE>
+function [int1, int2, int3] = ...
+   findintconvo (Ca_even, ts_even, k2_lookup,...
+                 midftimes, flengths, w1, w2, w3, progress)
+</PRE>The input arguments are:
+=
+0=
+<DL COMPACT><879>>=-0.25in
+0
+ 
+=<TT><: </TT><879>>
+<DT>Ca_even
+<DD>the blood data resampled at an evenly-spaced time
+  domain.  Usually, this is as returned by <TT>resampleblood</TT>, and
+  possibly delay- and dispersion-corrected by <TT>correctblood</TT>.
+<DT>ts_even
+<DD>the time domain at which <TT>Ca_even</TT> was resampled.
+<DT>k2_lookup
+<DD>the list of <I>k</I><SUB>2</SUB> values at which to evaluate equation
+  <A HREF="#eq:conv_int.__The_output_will_consist_of_one_value_per___weighting_function_per_value_of_k2._midftimes_the_mid-frame_times__used_to_perform_the___frame-by-frame_integration_._flengths_the_length_of_each_frame__also_used_in_the___frame-by-frame_integration_._w1_w2_w3_the_three_weighting_functions_wi.__w1_must_be___supplied__but_if_it_is_an_empty_matrix__then_a_weighting_function_of___1_is_assumed.__w2_and_w3_are_not_required__and_if_they___are_not_given__then_int2_and_int3__respectively__will___not_be_defined_in_the_output.__Generally__the_weighting_funtions_are___simple_functions_of_t_space_such_as_1__t__or_t2._progress_an_optional_argument_indicating_whether_progress_should___be_reported__in_the_form_of_printing_a_dot_when_the_weighted___integrals_for_each_value_of_k2_space_have_been_computed_.__This_is___quite_useful__as_findintconvo_is_one_of_the_most___time-consuming_steps_of_RCBF_analysis.__endttdescription___The_output_arguments_int1__int2__and_int3_are_simply_vectors_containing_the_value_of_equation__refeq:conv_int_for_the_three_different_weighting_functions__each_element_of_these_vectors_corresponds_to_one_value_of_k2_space_as_supplied_in_k2_lookup.___Do_some_initial_setup.__We_need_to_get_the_sizes_of_various_vectors__and_initialize_vectors_that_we_will_fill_element_by_element_later.__Initializing_vectors_to_all_zero_before_filling_them_allows_better_memory_management_by_MATLAB._verbatim47___Calculate_each_element_of_the_integrals__one_at_a_time._Unfortunately__there_does_not_seem_to_be_any_way_to_vectorize_this_operation__and_it_must_therefore_be_performed_within_an_inefficient_for_loop.___verbatim48___First_calculate_the_innermost_terms_of_equation____refeq:conv_int.__exp_fun_is__math109_e-k2_t__and_convo___is__math110__tex2html_wrap_inline1528_.__We_then_perform_the_inner___integration__i.e._average_across_all_frames.__This_is_performed_by___nframeint__a_special_CMEX_routine_that_has_been_carefully___optimised_for_this_very_common_operation_in_RCBF_analysis.__Type___help_nframeints_in_MATLAB_for_more_information._verbatim49___Find_any_frames_that_are_not_completely_covered_by_the___ts_even_time_domain.__nframeint_actually_does_this___for_us__returning_NaN__not-a-number__in_any_such_element_of_its___output_vector.__Thus__we_only_use_data_from_frames_that_are___not_equal_to_NaN__selected_using_the_built-in_isnan___function._verbatim50___Now_we_calculate_the_outer_integral__the_weighted_integral___across_all_frames__for_each_weighting_function_with_the_current___value_of_k2.__Again__we_use_a_CMEX_routine_to_enhance___performance__ntrapz_is_a_replacement_for_MATLAB_s___trapz_function_that_is_much_faster__as_well_as_having_an___optional_argument_to_allow_weighting_of_the_integrand.__Note_the_use___of_select_to_make_sure_that_we_only_use_frames_actually___spanned_by_the_blood_data._verbatim51__We_have_omitted_the_code_that_makes_w2_and_w3_optional_in_favour_of_concentrating_on_the_numerical_analysis.____End_the_for_loop._verbatim52_____labelsep_-0.25in__rightmargin_0.25in__leftmargin__dimen0____labelwidth__leftmargin__let_makelabel__Ca_even_the_blood_data_resampled_at_an_evenly-spaced_time___domain.__Usually__this_is_as_returned_by_resampleblood__and___possibly_delay-_and_dispersion-corrected_by_correctblood._ts_even_the_time_domain_at_which_Ca_even_was_resampled._k2_lookup_the_list_of_k2_space_values_at_which_to_evaluate_equation____refeq:conv_int"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="/icons/latex2html/cross_ref_motif.gif"></A>.  The output will consist of one value per
+  weighting function per value of <I>k</I><SUB>2</SUB>.
+<DT>midftimes
+<DD>the mid-frame times (used to perform the
+  frame-by-frame integration).
+<DT>flengths
+<DD>the length of each frame (also used in the
+  frame-by-frame integration).
+<DT>w1,w2,w3
+<DD>the three weighting functions <I>w</I><SUB><I>i</I></SUB>.  <TT>w1</TT> must be
+  supplied, but if it is an empty matrix, then a weighting function of
+  1 is assumed.  <TT>w2</TT> and <TT>w3</TT> are not required, and if they
+  are not given, then <TT>int2</TT> and <TT>int3</TT> (respectively) will
+  not be defined in the output.  Generally, the weighting funtions are
+  simple functions of <I>t</I> such as 1, <I>t</I>, or <I>t</I><SUP>2</SUP>.
+<DT>progress
+<DD>an optional argument indicating whether progress should
+  be reported (in the form of printing a dot when the weighted
+  integrals for each value of <I>k</I><SUB>2</SUB> have been computed).  This is
+  quite useful, as <TT>findintconvo</TT> is one of the most
+  time-consuming steps of RCBF analysis.
+
+<P>
+The output arguments <TT>int1</TT>, <TT>int2</TT>, and <TT>int3</TT> are
+simply vectors containing the value of equation <A HREF="node15.html#eq:conv_int">17</A> for
+the three different weighting functions; each element of these vectors
+corresponds to one value of <I>k</I><SUB>2</SUB> as supplied in <TT>k2_lookup</TT>.
+
+<P>
+<DT>2.
+<DD>Do some initial setup.  We need to get the sizes of various
+vectors, and initialize vectors that we will fill element by element
+later.  Initializing vectors to all zero before filling them allows
+better memory management by MATLAB.
+<PRE>
+NumEvenTimes = length(ts_even);
+NumFrames = length(midftimes);
+fstart = midftimes - (flengths / 2);
+
+TableSize = length (k2_lookup);
+integrand = zeros (NumFrames, 1);
+
+if (nargin &gt;= 6); int1 = zeros (1, TableSize); end;
+if (nargin &gt;= 7); int2 = zeros (1, TableSize); end;
+if (nargin == 8); int3 = zeros (1, TableSize); end;
+
+% if w1 is empty, assume that it should be all ones
+
+if isempty (w1)
+   w1 = ones (size(NumFrames));
+end
+</PRE>
+<P>
+<DT>3.
+<DD>Calculate each element of the integrals, one at a time.
+Unfortunately, there does not seem to be any way to vectorize this
+operation, and it must therefore be performed within an inefficient
+<TT>for</TT> loop.
+
+<P>
+<PRE>
+for i = 1:TableSize
+</PRE>
+<P>
+<DT>4.
+<DD>First calculate the innermost terms of equation
+  <A HREF="node15.html#eq:conv_int">17</A>.  <TT>exp_fun</TT> is 
+<!-- MATH: $e^{-k_2 t}$ -->
+<I>e</I><SUP>-<I>k</I><SUB>2</SUB> <I>t</I></SUP>, and <TT>convo</TT>
+  is 
+<!-- MATH: $C_a (t) \otimes e^{-k_2 t}$ -->
+<IMG
+ WIDTH="109" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
+ SRC="img47.gif"
+ ALT="$C_a (t) \otimes e^{-k_2 t}$">.
+We then perform the inner
+  integration, i.e. average across all frames.  This is performed by
+  <TT>nframeint</TT>, a special CMEX routine that has been carefully
+  optimised for this very common operation in RCBF analysis.  Type
+  <TT>help nframeints</TT> in MATLAB for more information.
+<PRE>
+   exp_fun = exp(-k2_lookup(i) * ts_even);
+   convo = nconv(Ca_even, exp_fun, ts_even(2) - ts_even(1));
+
+   integrand = nframeint (ts_even, convo(1:length(ts_even)),...
+                          fstart, flengths);
+</PRE>
+<P>
+<DT>5.
+<DD>Find any frames that are not completely covered by the
+  <TT>ts_even</TT> time domain.  <TT>nframeint</TT> actually does this
+  for us, returning NaN (not-a-number) in any such element of its
+  output vector.  Thus, we only use data from frames that are <EM>  not</EM> equal to NaN, selected using the built-in <TT>isnan</TT>
+  function.
+<PRE>
+   select = ~isnan(integrand);
+</PRE>
+<P>
+<DT>6.
+<DD>Now we calculate the outer integral (the weighted integral
+  across all frames) for each weighting function with the current
+  value of <I>k</I><SUB>2</SUB>.  Again, we use a CMEX routine to enhance
+  performance; <TT>ntrapz</TT> is a replacement for MATLAB's
+  <TT>trapz</TT> function that is much faster, as well as having an
+  optional argument to allow weighting of the integrand.  Note the use
+  of <TT>select</TT> to make sure that we only use frames actually
+  spanned by the blood data.
+<PRE>
+  int1 (i) = ntrapz(midftimes(select), integrand(select), w1(select));
+  int2 (i) = ntrapz(midftimes(select), integrand(select), w2(select));
+  int3 (i) = ntrapz(midftimes(select), integrand(select), w3(select));
+</PRE>(We have omitted the code that makes <TT>w2</TT> and <TT>w3</TT>
+optional in favour of concentrating on the numerical analysis.)
+
+<P>
+<DT>7.
+<DD>End the <TT>for</TT> loop.
+<PRE>
+end
+</PRE>
+<P>
+</DL>
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html216"
+ HREF="node16.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html213"
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html207"
+ HREF="node14.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html215"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html217"
+ HREF="node16.html">B_CURVE</A>
+<B> Up:</B> <A NAME="tex2html214"
+ HREF="node11.html">Annotated Program Listings</A>
+<B> Previous:</B> <A NAME="tex2html208"
+ HREF="node14.html">CORRECTBLOOD</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

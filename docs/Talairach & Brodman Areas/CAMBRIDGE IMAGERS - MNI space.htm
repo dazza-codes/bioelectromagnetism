@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0050)http://www.mrc-cbu.cam.ac.uk/Imaging/mnispace.html -->
+<HTML><HEAD><TITLE>CAMBRIDGE IMAGERS - MNI space</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2800.1126" name=GENERATOR></HEAD>
+<BODY text=#000000 vLink=#800080 aLink=#ff0000 link=#0000ff bgColor=#ffffff 
+background="CAMBRIDGE IMAGERS - MNI space_files/lashley.jpg">
+<CENTER>
+<H1>The MNI brain and the Talairach atlas</H1></CENTER>
+<P>This page discusses the MNI brain, and the difference between the MNI brain 
+and the brain in the Talairach atlas. These issues are also discussed in less 
+detail in my <A 
+href="http://www.mrc-cbu.cam.ac.uk/~matthew.brett/articles/location.html">localization 
+paper</A>. 
+<P>SPM 96 and SPM 99 use standard brains from the Montreal Neurological 
+Institute. The MNI defined a new standard brain by using a large series of MRI 
+scans on normal controls. Recall that the Talairach brain is the brain dissected 
+and photographed for the famous Talairach and Tournoux atlas. The atlas has 
+Brodmann's areas labelled, albeit in a rather approximate way. In fact what the 
+authors did was to look at pictures of the Brodmann map and estimate where the 
+same place was on their brain. To quote from the atlas, p 10: "The brain 
+presented here was not subjected to histological studies and the transfer of the 
+cartography of Brodmann usually pictured in two dimensional projections 
+sometimes possesses uncertainties". 
+<P>The MNI wanted to define a brain that is more representative of the 
+population. They created a new template that was approximately matched to the 
+Talairach brain in a two-stage procedure. First, they took 241 normal MRI scans, 
+and manually defined various landmarks, in order to identify a line very similar 
+to the AC-PC line, and the edges of the brain. Each brain was scaled to match 
+the landmarks to equivalent positions on the Talairach atlas. They then took 305 
+normal MRI scans (all right handed, 239 M, 66 F, age 23.4 +/- 4.1), and used an 
+automated 9 parameter linear algorithm to match the brains to the average of the 
+241 brains that had been matched to the Talairach atlas. From this they 
+generated an average of 305 brain scans thus transformed - the MNI305. See <A 
+href="http://www.bic.mni.mcgill.ca/users/louis/papers/phd_thesis">Louis Collins' 
+thesis</A> for a detailed description; the <A 
+href="http://www.mrc-cbu.cam.ac.uk/Imaging/mnispace.html#evans_proc">conference 
+paper by Evans et al</A> also describes the process. 
+<P>The MNI305 was the first MNI template. The current standard MNI template is 
+the ICBM152, which is the average of 152 normal MRI scans that have been matched 
+to the MNI305 using a 9 parameter affine transform. The <A 
+href="http://www.loni.ucla.edu/ICBM">International Consortium for Brain 
+Mapping</A> adopted this as their standard template; it is the standard template 
+in SPM99. 
+<P>In addition, one of the MNI lab members, Colin Holmes, was scanned 27 times, 
+and the scans were coregistered and averaged to create a very high detail MRI 
+dataset of one brain. This average was also matched to the MNI305, to create the 
+image known as "colin27". colin27 is used in the <A 
+href="http://www.bic.mni.mcgill.ca/brainweb/">MNI brainweb simulator</A>. SPM96 
+used colin27 as its standard template. You can <A 
+href="ftp://ftp.mrc-cbu.cam.ac.uk/pub/imaging/Colin">download a copy of this 
+image at 1mm resolution</A> from our site; SPM96 contains a 2mm resolution copy 
+of the same image, called T1.img in the SPM canonical directory. Note that the 
+images in the SPM "templates" directories have all been presmoothed to 8mm for 
+use with the normalization routines. 
+<P>The problem introduced by the MNI standard brains is that the MNI linear 
+transform has not matched the brains completely to the Talairach brain. As a 
+result the MNI brains are slightly larger (in particular higher, deeper and 
+longer) than the Talairach brain. The differences are larger as you get further 
+from the middle of the brain, towards the outside, and are at maximum in the 
+order of 10mm. In particular, MNI brain is ~5mm taller (from the AC to the top 
+of the brain) and ~5mm longer. The temporal lobes go about 10mm deeper in MNI 
+(see e.g. MNI coordinate X = 32 Y = -4 Z = -50; the lowest slice in the 
+Talairach atlas is at -40). Another example of the mismatch is that at -8 -76 -8 
+you are firmly in the occipital cortex in the MNI brain, whereas the same 
+coordinates in the Talairach atlas put you in CSF. 
+<P>The differences are not obvious on axial sections, but are clear on coronal 
+slices. The picture below shows the MNI 152 averate brain section from the SPM 
+distribution, next to the equivalent section of the Talairach atlas. The section 
+is at y = -4; there is a vertical line at 30mm in x, and horizontal lines at z = 
+0, 73 and -41, the AC top and bottom of the Talairach brain. As the picture 
+shows, the top of the brain is higher in MNI, and the temporal lobes are 
+considerably lower and larger than for the Talairach brain: 
+<P><IMG src="CAMBRIDGE IMAGERS - MNI space_files/mnitalcor.jpg"> 
+<P>
+<P>As we discussed above, SPM uses the brains from the MNI for its templates. 
+SPM99b uses the MNI average of 152 scans, and SPM96 uses the scan data from the 
+individual brain that has been scanned many times. 
+<P>This means that the Talairach atlas is not exactly accurate for interpreting 
+coordinates from SPM analyses, if (as is almost always the case) the scans have 
+been spatially normalized (coregistered) to the SPM 99 or SPM 96 template. This 
+can be problem, as, to my knowledge, there is currently no published MNI atlas, 
+defining Brodmann's areas on the MNI brain. In contrast there is extensive 
+information on Brodmann's areas for the Talairach atlas. 
+<P>However, the SPM authors have referred to the coordinates from SPM96,99 
+analyses (matched to the MNI brain) as being 'in Talairach space' (see <A 
+href="http://www.mailbase.ac.uk/lists/spm/1998-06/0076.html">message on SPM 
+mailing list</A>). By this they mean that the coordinates are reported in terms 
+of the system that Talairach developed, with coordinate 0,0,0 being at the <A 
+href="http://www.mrc-cbu.cam.ac.uk/Imaging/antcomm.html">anterior commissure</A> 
+(AC), and with the anterior / posterior commissural line (AC/PC line) defining 
+the the plane where z = 0. (In fact the AC is not exactly at 0,0,0 in the MNI 
+brain, but about 4mm below - see the 152 T1 average brain in the canonical 
+directory). However, they do <B>not</B> mean by this that the coordinates match 
+the brain in the Talairach atlas, because this is not precisely the case. 
+<P>
+<P>
+<H2>Converting MNI coordinates to Talairach coordinates</H2>
+<P>So, if you have coordinates for an image already normalized to SPM-MNI space, 
+what are the equivalent cooordinates in Talairach? 
+<P>There is no definitive answer to this. The problem is that the Talairach 
+brain is a significantly different shape to the MNI brain. In particular the 
+temporal lobes are relatively larger in the MNI brain. Recall that the MNI has 
+already been coregistered to the Talairach brain with linear transforms; the 
+reason that this has not resulted in a very good match is the difference in 
+brain shape. 
+<P>So, here are two approaches to translating MNI coordinates to Talairach. 
+<P>
+<H3>Approach 1: redo the affine transform</H3>This very reasonable approach has 
+been <A href="http://www.mailbase.ac.uk/lists/spm/1998-06/0079.html">posted to 
+the SPM mailing list</A> by <A href="mailto:meyera@intra.nimh.nih.gov">Andreas 
+Meyer-Lindenberg</A>, of NIMH. The following is copied from the text of that 
+message, with a small correction (kindly pointed out to me by Darren Gitelman on 
+the SPM mailing list): 
+<P>"I have taken the SPM 95 PET template (which is reasonably "Talairach 
+88-compatible", as far as I know) and used the spatial normalization algorithm 
+of SPM 96 with an affine transform to map it onto the SPM 96 template (which is 
+"MNI compatible"). If you do this and disregard parameter values for the affine 
+transform that are very small, you come up with the following formulae for 
+translating between the two coordinate systems: 
+<P>To get from McGill [MNI] -SPM96-coordinates to Talairach 88-SPM 95 
+coordinates: 
+<P>X' = 0.88X-0.8 
+<P>Y' = 0.97Y-3.32 
+<P>Z' = 0.05Y+0.88Z-0.44" 
+<P>So, to get a best guess at where your MNI point would be on the Talairach 
+atlas, using the method described above, you can use matlab. Place the following 
+matlab function somewhere in your matlab path (save the following as 
+aff_mni2tal.m): 
+<P><PRE>function outpoint = aff_mni2tal(inpoint)
+Tfrm = [0.88 0 0 -0.8;0 0.97 0 -3.32; 0 0.05 0.88 -0.44;0 0 0 1];
+tmp = Tfrm * [inpoint 1]';
+outpoint = tmp(1:3)';
+</PRE>
+<P>Let us say that you have a point, from the MNI brain, that you want some 
+Talairach equivalent coordinate for. The point might be: X = 10mm, Y = 12mm, Z = 
+14mm. 
+<P>With this function on your path, you could type the following at the matlab 
+prompt: 
+<P><PRE>aff_mni2tal([10 12 14])
+</PRE>
+<P>Which would give the following output (see above): 
+<P><PRE>ans =
+
+    8.0000    8.3200   12.4800
+
+</PRE>
+<P>This gives you the affine method's estimate of the equivalent X, Y and Z 
+coordinates in the Talairach brain. 
+<P>There are two problems with this approach: 
+<UL>
+  <LI>The first problem is very simple; we have no MRI scan of the brain in the 
+  Talairach atlas. The SPM95 brain was smaller than the MNI brain, but it is 
+  still not a perfect match for the Talairach atlas; see <A 
+  href="http://www.mailbase.ac.uk/lists/spm/1997-12/0061.html">another message 
+  on the SPM mailing list</A>. 
+  <LI>The second problem is the same as the problem with the orginal transform 
+  done by the MNI: the brains are a different shape. For example, because the 
+  temporal lobes are fatter in the MNI brain, the affine transform needs to 
+  squeeze these down, by multplying the Z coordinates by a factor of about 0.88. 
+  However, this results in the top of the brain being pulled rather too far 
+  down, so that it is about 6mm below the highest point on the Talairach atlas. 
+  </LI></UL>
+<P>
+<H3>Approach 2: a non-linear transform of MNI to Talairach</H3>An alternative is 
+to use some sort of transformation that may differ for different brain areas. 
+One method might be to do an automated non-linear match of the MNI to the 
+Talairach brain. For example, you could apply an SPM or AIR warping algorithm. 
+However, there are two problems here. First, as we stated above, we do not have 
+an MRI image of the brain in the Talairach atlas, which was a post-mortem 
+specimen. Second, the automated non-linear transforms produce quite complex 
+equations relating the two sets of coordinates. 
+<P>An alternative is to apply something like the transform that Talairach and 
+Tournoux designed; here different linear transforms are applied to different 
+brain regions. This is the approach I describe below. 
+<P>To get a good match for both the temporal lobes and the top of the brain, I 
+used different zooms, in the Z (down/up) direction, for the brain above the 
+level of the AC/PC line, and the brain below. The algorithm was:
+<UL>
+  <LI>I assumed that the AC was in the correct position in the MNI brain, and 
+  therefore that no translations were necessary; 
+  <LI>Assumed that the MNI brain was in the correct orientation in terms of 
+  rotation around the Y axis (roll) and the Z axis (yaw); 
+  <LI>Using the SPM99b display tool, I compared the MNI brain to the images in 
+  the Talairach atlas; 
+  <LI>Compared to the atlas, the MNI brain seemed tipped backwards, so that the 
+  cerebellar / cerebral cortex line in the sagittal view, at the AC, was too 
+  low. Similarly, the bottom of the anterior part of the corpus collosum seemed 
+  too high. I therefore applied a small (0.05 radian) pitch correction to the 
+  MNI brain; 
+  <LI>Matching the top of the MNI brain to the top of the brain in the atlas, 
+  required a zoom of 0.92 in Z. Similarly a Y zoom of 0.97 was required as a 
+  best compromise in matching the front and back of the MNI brain to the atlas. 
+  The left / right match required a 0.99 zoom in X; 
+  <LI>The transform above provided a good match for the brain superior to the 
+  AC/PC line, but a poor match below, with the temporal lobes extending further 
+  downwards in the MNI brain than in the atlas. I therefore derived a transform 
+  for the brain below the AC/PC line, that was the same as the transform above, 
+  except with a Z zoom of 0.84; </LI></UL>
+<P>This algorithm gave me the following transformations: 
+<P>Above the AC (Z &gt;= 0): 
+<P>X'= 0.9900X 
+<P>Y'= 0.9688Y +0.0460Z 
+<P>Z'= -0.0485Y +0.9189Z 
+<P>
+<P>Below the AC (Z &lt; 0): 
+<P>X'= 0.9900X 
+<P>Y'= 0.9688Y +0.0420Z 
+<P>Z'= -0.0485Y +0.8390Z 
+<P>
+<P>The matlab function <A 
+href="ftp://ftp.mrc-cbu.cam.ac.uk/pub/imaging/MNI2tal/mni2tal.m" 
+target=display_area>mni2tal.m</A> implements these transforms. It returns 
+estimated Talairach coordinates, from the transformations above, for given 
+points in the MNI brain. To use it, save as mni2tal.m somewhere on your matlab 
+path. 
+<P>So, taking our example point in the MNI brain, X = 10mm, Y = 12mm, Z = 14mm: 
+<P>With the mni2tal.m function above on your path, you could type the following 
+at the matlab prompt: 
+<P><PRE>mni2tal([10 12 14])
+</PRE>
+<P>Which would give the following output (see above): 
+<P><PRE>ans =
+
+    9.9000   12.2692   12.2821
+
+</PRE>
+<P>which is, again, an estimate of the equivalent X, Y and Z coordinates in the 
+Talairach brain. 
+<P>The inverse function, <A 
+href="ftp://ftp.mrc-cbu.cam.ac.uk/pub/imaging/MNI2tal/tal2mni.m" 
+target=display_area>tal2mni.m</A>, gives MNI coordinates for given Talairach 
+coordinates, using the same algorithm. 
+<P>We could of course do a more complex transform to attempt to make a closer 
+match between the two brains. The approach above is only intended to be 
+preliminary. It does have the advantage that it is very simple, and therefore 
+the distortions involved are easy to visualise, and unlikely to have dramatic 
+unexpected effects. 
+<P>Incidentally, if you use the above transform, and you want to cite it, I 
+suggest that you cite this web address. The transform is also mentioned briefly 
+in the following papers: Duncan, J., Seitz, R.J., Kolodny, J., Bor, D., Herzog, 
+H., Ahmed, A., Newell, F.N., Emslie, H. "A neural basis for General 
+Intelligence", Science (21 July 2000), 289 (5478), 457-460; Calder, A.J., 
+Lawrence, A.D. and Young,A.W. "Neuropsychology of Fear and Loathing" Nature 
+Reviews Neuroscience (2001), Vol.2 No.5 352-363 
+<P>
+<P>
+<H2>Other methods for locating your activation</H2>
+<P>Other methods that you can use to work out where your activation is are; 
+<UL>
+  <LI>Use the SPM 99 and 96 overlay displays to show you the activations on the 
+  MNI brain. If you know your anatomy well, or can see the equivalent structures 
+  in the Talairach atlas, then you may know where your activation is. 
+  Unfortunately, outside the primary sesorimotor cortices, the relation of 
+  functional areas to sulcal anatomy can be very variable; 
+  <LI>Use the Talairach atlas, and try by eye to take into account the 
+  difference in brain size (given that the differences are relatively small). 
+  Obviously this can be inaccurate, and it is very difficult to standardise 
+  across labs. </LI></UL>
+<P><I>
+<P>Matthew Brett 5/8/99, updated 14/2/02</P></I>
+<P><U>References</U> 
+<P>J. Talairach and P. Tournoux, "Co-planar Stereotaxic Atlas of the Human 
+Brain: 3-Dimensional Proportional System - an Approach to Cerebral Imaging", 
+Thieme Medical Publishers, New York, NY, 1988 
+<P>J. C. Mazziotta and A. W. Toga and A. Evans and P. Fox and J. Lancaster, "A 
+Probablistic Atlas of the Human Brain: Theory and Rationale for Its 
+Development", NeuroImage 2:89-101, 1995 
+<P>A. C. Evans and D. L. Collins and B. Milner, "An MRI-based stereotactic atlas 
+from 250 young normal subjects", Journal Soc. Neurosci. Abstr. 18: 408, 1992 
+<P><A name=evans_proc></A><A 
+href="http://ieeexplore.ieee.org/iel4/1093/8547/00373602.pdf?isNumber=8547&amp;prod=CNF&amp;arnumber=373602&amp;arSt=1813&amp;ared=1817+vol.3&amp;arAuthor=Evans%2C+A.C.%3B+Collins%2C+D.L.%3B+Mills%2C+S.R.%3B+Brown%2C+E.D.%3B+Kelly%2C+R.L.%3B+Peters%2C+T.M">A. 
+C. Evans and D. L. Collins and S. R. Mills and E. D. Brown and R. L. Kelly and 
+T. M. Peters</A>, "3D statistical neuroanatomical models from 305 MRI volumes", 
+Proc. IEEE-Nuclear Science Symposium and Medical Imaging Conference, 1813-1817, 
+1993. 
+<P>
+<P>
+<CENTER><IMG height=21 src="CAMBRIDGE IMAGERS - MNI space_files/timecourse.gif" 
+width="95%"></CENTER>
+<P><B><A href="http://www.mrc-cbu.cam.ac.uk/Imaging/index.html" target=_top><IMG 
+height=37 alt=HOME src="CAMBRIDGE IMAGERS - MNI space_files/cbuihome.gif" 
+width=37></A> Cambridge Imagers Home Page.</B></P>
+<P>© Copyright MRC Cognition and Brain Sciences Unit 1999.<BR>
+<ADDRESS>Page maintained by: <A 
+href="mailto:matthew.brett@mrc-cbu.cam.ac.uk">matthew.brett@mrc-cbu.cam.ac.uk</A></ADDRESS><!-- hhmts start -->Last 
+Refreshed: Wed Sep 11 15:10:55 BST 2002 <!-- hhmts end --></BODY></HTML>

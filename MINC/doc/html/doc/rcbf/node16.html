@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>B_CURVE</TITLE>
+<META NAME="description" CONTENT="B_CURVE">
+<META NAME="keywords" CONTENT="rcbf">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="rcbf.css">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="node11.html">
+<LINK REL="next" HREF="node17.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html225"
+ HREF="node17.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html222"
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html218"
+ HREF="node15.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html224"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html226"
+ HREF="node17.html">Using the rCBF Package</A>
+<B> Up:</B> <A NAME="tex2html223"
+ HREF="node11.html">Annotated Program Listings</A>
+<B> Previous:</B> <A NAME="tex2html219"
+ HREF="node15.html">FINDINTCONVO</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00043500000000000000">
+B_CURVE</A>
+</H3>
+
+<P>
+<TT>bcurve</TT> computes the right-hand-side of equation
+<A HREF="node7.html#eq:delay_correct">11</A>, that is,
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<!-- MATH: \begin{equation}
+\frac{\int\limits_{T_1}^{T_2}
+\left( \alpha 
+    \left[ C_a(t) \otimes  e^{-\beta t} \right] 
+  + \gamma C_a(t) \right) dt} {T_2 - T_1}
+\end{equation} -->
+
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:b_curve">&#160;</A><IMG
+ WIDTH="264" HEIGHT="76"
+ SRC="img48.gif"
+ ALT="\begin{displaymath}\frac{\int\limits_{T_1}^{T_2}
+\left( \alpha
+\left[ C_a(t)...
+...e^{-\beta t} \right]
++ \gamma C_a(t) \right) dt} {T_2 - T_1}
+\end{displaymath}"></TD>
+<TD WIDTH=10 ALIGN="RIGHT">
+(18)</TD></TR>
+</TABLE>
+</DIV>
+<BR CLEAR="ALL"><P></P>
+In the early stages of the development of RCBF, <TT>b_curve</TT> was
+used in the non-linear fitting required for delay correction.  Now,
+the entire fitting procedure for delay correction is encapsulated in
+the CMEX routine <TT>delaycorrect</TT>.  However, <TT>delaycorrect</TT>
+simply performs one fit (optimising <IMG
+ WIDTH="17" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$\alpha$">,
+<IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$\beta$">,
+and <IMG
+ WIDTH="16" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$\gamma$">for a single value of <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">); it is called multiple times, and
+<TT>b_curve</TT> is used to pick which value of <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">
+resulted in
+the best fit (in the least squares sense).  In particular, we wish to
+satisfy equation <A HREF="node7.html#eq:delay_correct">11</A>; therefore, the sum of the
+squares of the differences between its two sides (<I>A</I><SUP>*</SUP> (<I>t</I>) and
+equation <A HREF="node16.html#eq:b_curve">18</A>) for a particular value of <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">
+is
+computed, and the value of <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">
+that results in the smallest
+residual is picked as the delay factor.  The finding of the residual
+is actually done in <TT>fit_b_curve</TT>, which due to its simplicity
+(it has only two line of interesting code, one of which is a call to
+<TT>b_curve</TT>) is not shown here.
+
+<P>
+<DL COMPACT>
+<DD><P>
+<DT>1.
+<DD>Input and output arguments:
+<PRE>
+function integral = b_curve ...
+    (args, shifted_g_even, ts_even, A, fstart, flengths)
+</PRE>  The output argument <TT>integral</TT> is just the values of equation
+  <A HREF="node16.html#eq:b_curve">18</A> after frame-by-frame integration, i.e. there is one
+  number for each frame.
+
+<P>
+The input arguments are
+  
+ =
+0=
+<DL COMPACT><879>>=-0.25in
+0
+ 
+=<TT><: </TT><879>>
+  <DT>args
+<DD>a three element vector containing <IMG
+ WIDTH="17" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$\alpha$">,
+<IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$\beta$">,
+and
+    <IMG
+ WIDTH="16" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$\gamma$">
+from equation <A HREF="#eq:b_curve.__Keep_in_mind_in_the_____following_code_that_args_1__is__tex2html_wrap_inline1554___args_1__is______tex2html_wrap_inline1556___and_args_1__is__tex2html_wrap_inline1558_.___g_even_the_blood_data_resampled_at_an_evenly-spaced_time_____domain__and_possibly_shifted_by_some_delay_factor__tex2html_wrap_inline1560_.__We_____are_not_interested_here_in_what_that_value_of__tex2html_wrap_inline1562__space_is______however.___ts_even_the_evenly-spaced_time_domain_at_which_g_even_____is_sampled.___A_the_PET_activity__averaged_over_gray_matter__for_the_current_____slice.___This_isn_t_actually_used_in_b_curve__but_the_____argument_is_still_here_for_historical_reasons_and_to_make_calls_____to_b_curve_and_fit_b_curve_look_the_same.____fstart_the_frame_start_times.___flengths_the_frame_lengths.____endttdescription___Evaluate_the_first_term_of_the_integrand_in_equation__refeq:b_curve._verbatim54___Evaluate_the_second_term_of_the_integrand__and_the_two_terms___together_to_get_the_integrand__i._verbatim55___Perform_the_frame-by-frame_integration._verbatim56___Clean_up_any_NaN_s_that_have_cropped_up_by_setting_them_to_zero._Also__truncate_the_function_to_whatever_length_A_is._verbatim57___labelsep_-0.25in__rightmargin_0.25in__leftmargin__dimen0____labelwidth__leftmargin__let_makelabel____args_a_three_element_vector_containing__tex2html_wrap_inline1548____tex2html_wrap_inline1550___and______tex2html_wrap_inline1552__space_from_equation__refeq:b_curve"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="/icons/latex2html/cross_ref_motif.gif"></A>.  Keep in mind in the
+    following code that <TT>args(1)</TT> is <IMG
+ WIDTH="17" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$\alpha$">,
+<TT>args(1)</TT> is
+    <IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$\beta$">,
+and <TT>args(1)</TT> is <IMG
+ WIDTH="16" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$\gamma$">.
+  <DT>g_even
+<DD>the blood data resampled at an evenly-spaced time
+    domain, and possibly shifted by some delay factor <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">.
+We
+    are not interested here in what that value of <IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\delta$">
+is,
+    however.
+  <DT>ts_even
+<DD>the evenly-spaced time domain at which <TT>g_even</TT>
+    is sampled.
+  <DT>A
+<DD>the PET activity, averaged over gray matter, for the current
+    slice.  (This isn't actually used in <TT>b_curve</TT>, but the
+    argument is still here for historical reasons and to make calls
+    to <TT>b_curve</TT> and <TT>fit_b_curve</TT> look the same.)
+  <DT>fstart
+<DD>the frame start times.
+  <DT>flengths
+<DD>the frame lengths.
+  
+<P>
+<DT>2.
+<DD>Evaluate the first term of the integrand in equation <A HREF="node16.html#eq:b_curve">18</A>.
+<PRE>
+expthing = exp(-args(2)*ts_even);
+c = nconv(shifted_g_even,expthing,ts_even(2)-ts_even(1));
+c = c (1:length(ts_even));
+i1 = args(1)*c;                   % alpha * (convolution)
+</PRE>
+<P>
+<DT>3.
+<DD>Evaluate the second term of the integrand, and the two terms
+  together to get the integrand, <TT>i</TT>.
+<PRE>
+i2 = args(3)*shifted_g_even;            % gamma * g(t - delta)
+
+i = i1+i2;
+</PRE>
+<P>
+<DT>4.
+<DD>Perform the frame-by-frame integration.
+<PRE>
+integral = nframeint (ts_even, i, fstart, flengths);
+</PRE>
+<P>
+<DT>5.
+<DD>Clean up any NaN's that have cropped up by setting them to zero.
+Also, truncate the function to whatever length <TT>A</TT> is.
+<PRE>
+nuke = find (isnan (integral));
+integral (nuke) = zeros (size (nuke));
+
+integral = integral (1:length(A));
+</PRE></DL>
+<P>
+
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html225"
+ HREF="node17.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html222"
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html218"
+ HREF="node15.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html224"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html226"
+ HREF="node17.html">Using the rCBF Package</A>
+<B> Up:</B> <A NAME="tex2html223"
+ HREF="node11.html">Annotated Program Listings</A>
+<B> Previous:</B> <A NAME="tex2html219"
+ HREF="node15.html">FINDINTCONVO</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

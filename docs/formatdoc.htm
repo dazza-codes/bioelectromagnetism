@@ -1,0 +1,1724 @@
+<html><head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><title>Mayo/SPM "Analyze" Format Spec Compilation</title>
+
+<style>
+<!--
+.GWCell      { font-family: Arial; font-size: 8pt }
+.GWCommand   { font-family: Courier New; font-size: 8pt }
+.gwc         { font-family: Microsoft Sans Serif; font-size: 8pt }
+-->
+</style></head>
+
+<body bgcolor="#ffffff">
+
+<table border="0" cellpadding="4" width="100%">
+  <tbody><tr>
+    <td width="50%">&nbsp;<a href="http://www.wideman-one.com/">
+    <img src="formatdoc_files/logo_small.gif" alt="wideman-one_small_07.gif (1982 bytes)" border="0" align="top" width="164" height="22">
+    </a><em><small><small>&nbsp; </small></small><br>
+    <small><small>Last edit: 
+    <!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%y-%m-%d" startspan -->04-04-18<!--webbot bot="Timestamp" i-checksum="13292" endspan --> Graham 
+    Wideman</small></small></em></td>
+    <td width="50%" valign="top" align="right">
+    <h3 align="right">Analyze Format</h3>
+    </td>
+  </tr>
+</tbody></table>
+<table border="1" cellpadding="2" width="100%">
+  <tbody><tr>
+    <td><strong><font size="5">Mayo/SPM</font><big><big> "Analyze" Format Spec 
+    Compilation</big></big></strong><br>
+    <em><small><small>Article created: 2003-06-22</small></small> </em></td>
+  </tr>
+</tbody></table>
+<h3>Contents</h3>
+<ul>
+  <li>Overview</li>
+  <li>See Also <a href="http://www.wideman-one.com/gw/brain/analyze/orientterms.htm">Orientation and Voxel-Order Terminology</a> 
+  Page</li>
+  <li>Header File (.hdr)</li>
+  <li>&nbsp;Image file (.img) Overview</li>
+  <li>Voxel Order</li>
+  <li>"Strict" Analyze 7.5 Voxel Order Treatment</li>
+  <li>The Problem With hist.orient Field</li>
+  <li>Analyze Format "In The Wild"</li>
+  <li>Future</li>
+  <li><b>2003-11-04 Update: Darren Weber&nbsp; posted some relevent links to the 
+  FreeSurfer list, here are some pointers.</b></li>
+  <li><b>2004-04-18 Update: Expanded notes on hist.orient in response to 
+  apparent error in NIfTI interpretation.</b></li>
+  <li>Acknowledgements</li>
+</ul>
+<h3>Overview</h3>
+<p>Mayo Clinic Analyze 7.5 format is a file format for storing MRI data. An 
+Analyze 7.5 data set consists of two files:</p>
+<ul>
+  <li>Header file (something.hdr): Provides dimensional, identifying and some 
+  processing history information</li>
+  <li>Image file (something.img): Stream of voxels, whose datatype and ordering 
+  are described by the header file</li>
+</ul>
+<p>Although this is conceptually straightforward, there is enough variation in 
+how different software treats voxel ordering (orientation) that getting the 
+desired results can be tricky.</p>
+<p>This document is an attempt to compile definitive information from a number 
+of sources. It may continue to be a work-in-progress.</p>
+<h3>See Also Orientation/Voxel-Order Terminology Page</h3>
+<p>The following discussion relies on some familiarity with terminology for 
+axes, orientation, voxel order and so on. Some of this terminology is used in 
+multiple and sometimes contradictory or opposite ways. For details see the
+<a href="http://www.wideman-one.com/gw/brain/analyze/orientterms.htm">Orientation and Voxel-Order Terminology</a> page.</p>
+<h3>Header File (.hdr)</h3>
+<p>The following table lists the Analyze format as specified by Mayo Clinic, 
+showing variations used in SPM and by Darren Weber's mri_toolbox. Not all 
+software understands all fields, as further discussed in the Image File section 
+later. See also the list of notes below this table.</p>
+<table border="1" cellpadding="2" cellspacing="0" bordercolor="#b0b0b0" style="border-collapse: collapse;">
+  <tbody><tr>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">&nbsp;</td>
+    <td class="gwc" valign="top" colspan="2" bgcolor="#f4f4f4"><b>Mayo Analyze 
+    7.5</b></td>
+    <td class="gwc" valign="top" colspan="3" bgcolor="#f4f4f4"><b>SPM99</b></td>
+    <td class="gwc" valign="top" colspan="3" bgcolor="#f4f4f4"><b>SPM2</b></td>
+    <td class="gwc" valign="top" colspan="2" bgcolor="#f4f4f4"><b>mri_toolbox
+    </b></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+  </tr>
+  <tr>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"><b>Row</b></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"><b>OS</b></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"><b>Sec</b></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"><b>name</b></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"><b>type</b></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"><b>name</b></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"><b>type</b></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"><b>AKA</b></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"><b>name</b></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"><b>type</b></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"><b>AKA</b></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"><b>name</b></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"><b>type</b></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"><b>Short Description (Mayo 
+    doc, plus other notes)</b></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">1</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">0</td>
+    <td class="gwc" valign="top"><b>key</b></td>
+    <td class="gwc" valign="top">sizeof_hdr</td>
+    <td class="gwc" valign="top">int32</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">Must indicate the byte size of the header file.
+    <br>
+    Non SPM2: Always 348, used to test big/little-endian).<br>
+    SPM2: If &gt;348 indicates extended header</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">2</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">4</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">data_type</td>
+    <td class="gwc" valign="top">uchar[10]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">3</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">14</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">db_name</td>
+    <td class="gwc" valign="top">uchar[18]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">4</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">32</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">extents</td>
+    <td class="gwc" valign="top">int32</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">Should be 16384, the image file is created as 
+    contiguous with a minimum extent size.</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">5</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">36</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">session_error</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">6</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">38</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">regular</td>
+    <td class="gwc" valign="top">uchar</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">Must be "r" to indicate that all images and 
+    volumes are the same size.</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">7</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">39</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">hkey_un0</td>
+    <td class="gwc" valign="top">uchar</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">8</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">40</td>
+    <td class="gwc" valign="top"><b>dim</b></td>
+    <td class="gwc" valign="top">dim[0]</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">Number of dimensions in database; usually 4</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">9</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">42</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">dim[1]</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">DIM</td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">Image X dimension; number of pixels in an image 
+    row</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">10</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">44</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">dim[2]</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">DIM</td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">Image Y dimension; number of pixel rows in 
+    slice</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">11</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">46</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">dim[3]</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">DIM</td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">Volume Z dimension; number of slices in a 
+    volume</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">12</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">48</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">dim[4]</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">Time points, number of volumes in database.</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">13</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">50</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">dim[5]</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">undoc</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">14</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">52</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">dim[6]</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">undoc</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">15</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">54</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">dim[7]</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">undoc</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">16</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">56</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">vox_units</td>
+    <td class="gwc" valign="top">uchar[4]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">spatial units of measure for a voxel</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">17</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">60</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">cal_units</td>
+    <td class="gwc" valign="top">uchar[8]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">name of the calibration unit</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">18</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">68</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">unused1</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">19</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">70</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">datatype</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">See DT_xxx values</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">20</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">72</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">bitpix</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">bits per pixel; 1, 8, 16, 32, or 64.</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">21</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">74</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">dim_un0</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">unused</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">22</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">76</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">pixdim[0]</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">23</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">80</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">pixdim[1]</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">voxel width in mm.</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">24</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">84</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">pixdim[2]</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">voxel height in mm.</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">25</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">88</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">pixdim[3]</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">slice thickness in mm.</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">26</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">92</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">pixdim[4]</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">undoc</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">27</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">96</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">pixdim[5]</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">undoc</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">28</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">100</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">pixdim[6]</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">undoc</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">29</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">104</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">pixdim[7]</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">undoc</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">30</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">108</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">vox_offset</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">Byte offset in the .img file at which voxels 
+    start. This value can be negative to specify that the absolute value is 
+    applied for every image in the file.</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">31</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">112</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">funused1</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">funused1</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">SCALE</td>
+    <td x:str="funused1     " class="gwc" valign="top">funused1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top">scal</td>
+    <td x:str="roi_scale    " class="gwc" valign="top" bgcolor="#f4f4f4">
+    roi_scale&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">float</td>
+    <td class="gwc" valign="top">SPM: Scale factor</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">32</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">116</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">funused2</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">funused2</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td x:str="funused2     " class="gwc" valign="top">funused2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top">dcoff</td>
+    <td x:str="funused1     " class="gwc" valign="top" bgcolor="#f4f4f4">
+    funused1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">float</td>
+    <td class="gwc" valign="top">SPM2: image intensity zero-intercept</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">33</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">120</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">funused3</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">funused3</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td x:str="funused3     " class="gwc" valign="top">funused3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top"></td>
+    <td x:str="funused2     " class="gwc" valign="top" bgcolor="#f4f4f4">
+    funused2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">float</td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">34</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">124</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">cal_max</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">max calibration value</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">35</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">128</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">cal_min</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">min calibration value</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">36</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">132</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">compressed</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">37</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">136</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">verified</td>
+    <td class="gwc" valign="top">float</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">38</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">140</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">glmax</td>
+    <td class="gwc" valign="top">int32</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">max pixel value for entire database</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">39</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">144</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">glmin</td>
+    <td class="gwc" valign="top">int32</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">min pixel value for entire database</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">40</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">148</td>
+    <td class="gwc" valign="top"><b>hist</b></td>
+    <td class="gwc" valign="top">descrip</td>
+    <td class="gwc" valign="top">uchar[80]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">41</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">228</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">aux_file</td>
+    <td class="gwc" valign="top">uchar[24]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">42</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">252</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">orient</td>
+    <td class="gwc" valign="top">uchar</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">slice orientation for this dataset: See 
+    separate note</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">43</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">253</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">originator</td>
+    <td class="gwc" valign="top">uchar[10]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">origin[0]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">ORIGIN</td>
+    <td class="gwc" valign="top">origin[0]</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top"></td>
+    <td x:str="originator   " class="gwc" valign="top" bgcolor="#f4f4f4">
+    originator&nbsp;&nbsp;&nbsp;</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">uchar[10]</td>
+    <td class="gwc" valign="top">SPM99: X near Anterior Commissure</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">44</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">origin[1]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">ORIGIN</td>
+    <td class="gwc" valign="top">origin[1]</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">SPM99: Y near Anterior Commissure</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">45</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">origin[2]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">ORIGIN</td>
+    <td class="gwc" valign="top">origin[2]</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">SPM99: Z near Anterior Commissure</td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">46</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">origin[3]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">ORIGIN</td>
+    <td class="gwc" valign="top">origin[3]</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">47</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">origin[4]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">int16</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4">ORIGIN</td>
+    <td class="gwc" valign="top">origin[4]</td>
+    <td class="gwc" valign="top">int16</td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">48</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">263</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">generated</td>
+    <td class="gwc" valign="top">uchar[10]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">49</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">273</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">scannum</td>
+    <td class="gwc" valign="top">uchar[10]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">50</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">283</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">patient_id</td>
+    <td class="gwc" valign="top">uchar[10]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">51</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">293</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">exp_date</td>
+    <td class="gwc" valign="top">uchar[10]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">52</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">303</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">exp_time</td>
+    <td class="gwc" valign="top">uchar[10]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">53</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">313</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">hist_un0</td>
+    <td class="gwc" valign="top">uchar[3]</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">54</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">316</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">views</td>
+    <td class="gwc" valign="top">int32</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">55</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">320</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">vols_added</td>
+    <td class="gwc" valign="top">int32</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">56</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">324</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">start_field</td>
+    <td class="gwc" valign="top">int32</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">57</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">328</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">field_skip</td>
+    <td class="gwc" valign="top">int32</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">58</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">332</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">omax</td>
+    <td class="gwc" valign="top">int32</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">59</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">336</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">omin</td>
+    <td class="gwc" valign="top">int32</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">60</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">340</td>
+    <td x:str="smax " class="gwc" valign="top">&nbsp;</td>
+    <td x:str="smax " class="gwc" valign="top">smax&nbsp;</td>
+    <td class="gwc" valign="top">int32</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">61</td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">344</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">smin</td>
+    <td class="gwc" valign="top">int32</td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td align="right" class="gwc" valign="top" bgcolor="#f4f4f4">348</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">TOTAL BYTES</td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top" bgcolor="#f4f4f4"></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+</tbody></table>
+<p>.<br>
+</p>
+<table border="1" cellpadding="3" cellspacing="0" bordercolor="#c0c0c0" style="border-collapse: collapse;">
+  <tbody><tr>
+    <td class="gwc" valign="top" align="left"><b>Key</b></td>
+    <td class="gwc" valign="top"><b>Source</b></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>Mayo Analyze 7.5</b></td>
+    <td class="gwc" valign="top">Mayo Clinic Analyze 7.5 Format:
+    <a href="http://www.mayo.edu/bir/PDF/ANALYZE75.pdf">
+    www.mayo.edu/bir/PDF/ANALYZE75.pdf</a></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>SPM99</b></td>
+    <td class="gwc" valign="top">SPM99 spm_hread.m&nbsp;&nbsp;&nbsp; SPM Home:
+    <a href="http://www.fil.ion.ucl.ac.uk/spm/">www.fil.ion.ucl.ac.uk/spm</a></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>SPM2</b></td>
+    <td class="gwc" valign="top">SPM2 spm_read_hdr.m</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>mri_toolbox </b></td>
+    <td class="gwc" valign="top">Darren Weber's mri_toolbox v1.8:
+    <a href="http://eeg.sourceforge.net/">Matlab EEG-MRI Toolbox</a></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+  </tr>
+</tbody></table>
+<p>.<br>
+</p>
+<table border="1" cellpadding="3" cellspacing="0" bordercolor="#c0c0c0" style="border-collapse: collapse;">
+  <tbody><tr>
+    <td class="gwc" valign="top" align="left"><b>datatype DT_xxx</b></td>
+    <td class="gwc" valign="top"><b>Value</b></td>
+    <td class="gwc" valign="top"><b>Description</b></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">DT_NONE</td>
+    <td class="gwc" valign="top" align="right">0</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">DT_UNKNOWN</td>
+    <td class="gwc" valign="top" align="right">0</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">DT_BINARY</td>
+    <td class="gwc" valign="top" align="right">1</td>
+    <td class="gwc" valign="top">1 bit per voxel</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">DT_UNSIGNED_CHAR</td>
+    <td class="gwc" valign="top" align="right">2</td>
+    <td class="gwc" valign="top">8 bits per voxel</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">DT_SIGNED_SHORT</td>
+    <td class="gwc" valign="top" align="right">4</td>
+    <td class="gwc" valign="top">16 bits per voxel</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">DT_SIGNED_INT</td>
+    <td class="gwc" valign="top" align="right">8</td>
+    <td class="gwc" valign="top">32 bits per voxel</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">DT_FLOAT</td>
+    <td class="gwc" valign="top" align="right">16</td>
+    <td class="gwc" valign="top">32 bits per voxel (single)</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">DT_COMPLEX</td>
+    <td class="gwc" valign="top" align="right">32</td>
+    <td class="gwc" valign="top">2 x 32 bit single</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">DT_DOUBLE</td>
+    <td class="gwc" valign="top" align="right">64</td>
+    <td class="gwc" valign="top">64 bits per voxel</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">DT_RGB</td>
+    <td class="gwc" valign="top" align="right">128</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">DT_ALL</td>
+    <td class="gwc" valign="top" align="right">255</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+  </tr>
+</tbody></table>
+<p>.<br>
+</p>
+<table border="1" cellpadding="2" cellspacing="0" bordercolor="#c0c0c0" style="border-collapse: collapse;">
+  <tbody><tr>
+    <td class="gwc" valign="top" align="left"><b>Notes</b></td>
+    <td class="gwc" valign="top"></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>unused8 to unused14</b></td>
+    <td class="gwc" valign="top">The Mayo Format Doc ANALYZE75.pdf lists fields 
+    unused8-14 at Offsets 56-69. However, their dbh.h file lists vox_units and 
+    cal_units in this area, and even the comments in the pdf file refer to 
+    vox_units --&nbsp; indicating that perhaps their unused8-14 fields are left 
+    over from an earlier generation of source code.</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>sizeof_hdr</b></td>
+    <td class="gwc" valign="top">This field implies that Analyze format was 
+    originally intended to be extensible, but in practice this did not happen, 
+    and instead the file size (and hence the value of this field) is 348. 
+    Software commonly tests the value in this field to detect whether the byte 
+    ordering is Big-Endian or Little-Endian.<br>
+    (Note that future variants of Analyze format with longer files are 
+    anticipated. See also SPM2 note below. Hopefully each extended format will 
+    be readily identifiable if longer than 348 bytes even if byte-order is not 
+    known).</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>MatLab array indices</b></td>
+    <td class="gwc" valign="top">I have shown array indices as based at 0, as 
+    for example from C language. If using them from MatLab I believe it's 
+    necessary to treat arrays as one-based.</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>hist.orient</b></td>
+    <td class="gwc" valign="top">Subject of more discussion below</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>SPM2 extension</b></td>
+    <td class="gwc" valign="top">SPM2 source code (spm_read_hdr.m) indicates 
+    that it can employ an extension to the size of the hdr file to contain 
+    further info. </td>
+  </tr>
+</tbody></table>
+<p>.<br>
+</p>
+<h3>Image file (.img) Overview</h3>
+<p>An Analyze 7.5 image file&nbsp; consists of one long stream of voxel 
+intensities. The format and ordering of the img file is described as follows:</p>
+<table border="1" cellpadding="3" cellspacing="0" bordercolor="#c0c0c0" style="border-collapse: collapse;">
+  <tbody><tr>
+    <td class="gwc" valign="top" align="left"><b>Format aspect</b></td>
+    <td class="gwc" valign="top" align="left"><b>Field etc</b></td>
+    <td class="gwc" valign="top"><b>Discussion</b></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>Data type</b></td>
+    <td align="left" class="gwc" valign="top">dim.datatype</td>
+    <td class="gwc" valign="top">A particular img file represents voxel 
+    intensities using from one bit to 8 bytes per voxel, according to the value 
+    of this field. See the DT_xxx values.</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>byte order</b></td>
+    <td align="left" class="gwc" valign="top">---</td>
+    <td class="gwc" valign="top">Little-endian vs Big-Endian-- software must 
+    test for which byte-order is in use in this file. See note on sizeof_hdr as 
+    a test field.</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>Voxel order</b></td>
+    <td align="left" class="gwc" valign="top">hist.orient<br>
+    dim.pixdim<br>
+    others?</td>
+    <td class="gwc" valign="top">See further details in discussion below</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>Multiple volumes</b></td>
+    <td align="left" class="gwc" valign="top">---</td>
+    <td class="gwc" valign="top">One after another in the file. The key.regular 
+    field suggests that volumes could be different sizes etc, but that would 
+    presumably also require multiple dim sections, and this does not seem to 
+    occur.</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">&nbsp;</td>
+    <td align="left" class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+  </tr>
+</tbody></table>
+<h3>Voxel Order</h3>
+<p>Of crucial importance is the ordering of voxels within the img file. 
+Unfortunately, the document "Mayo Clinic Analyze 7.5 Format" omits some 
+essential details on this (possibly an oversight). Whether as a result of this 
+or not, there is considerable variation in the way different software developers 
+have treated voxel storage order.</p>
+<p>Consequently, there are two different stories to be told: </p>
+<ul>
+  <li><b>The "strictly correct" way</b> to use Analyze 7.5 format -- if you have 
+  control of all aspects or are working only with similarly correct software.<br>
+&nbsp;</li>
+  <li><b>In The Wild: </b>What might we expect from real world files operated 
+  upon by a variety of software?</li>
+</ul>
+<h3>"Strict" Analyze 7.5 Voxel Order Treatment</h3>
+<p>My understanding of this owes a great deal to the patient persuasion of 
+Darren Weber (and his thoroughly researched mri_toolbox source code). I have 
+since corroborated his detective work with inputs from another group, so this 
+looks like a solid case, even if the info is hard to come by (less so thanks to 
+Darren of course).</p>
+<ul>
+  <li>There is a default voxel ordering<br>
+&nbsp;</li>
+  <li>A different ordering may be specified using the <b>hist.orient</b> field. 
+  Mayo's Format document describes the history structure as optional, but since 
+  all hdr files include it, "optional" must correspond to hist.orient having a 
+  value of zero.</li>
+</ul>
+<p>Consolidating the notes in Darren's source code, which is based on email from 
+AnalyzeSupport.com, we get.</p>
+<table border="1" cellpadding="3" cellspacing="0" bordercolor="#c0c0c0" style="border-collapse: collapse;" width="527">
+  <tbody><tr>
+    <td class="gwc" valign="top" align="left" rowspan="2"><b>hist.orient</b></td>
+    <td class="gwc" valign="top" align="left" rowspan="2"><b>Mayo name</b></td>
+    <td class="gwc" valign="top" align="left" colspan="3"><b>Voxel[Index0, 
+    Index1, Index2] </b></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>Index0</b></td>
+    <td align="left" class="gwc" valign="top"><b>Index1</b></td>
+    <td align="left" class="gwc" valign="top"><b>Index2</b></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">0 (default)</td>
+    <td align="left" class="gwc" valign="top">transverse unflipped</td>
+    <td align="left" class="gwc" valign="top">R-L</td>
+    <td align="left" class="gwc" valign="top">P-A</td>
+    <td align="left" class="gwc" valign="top">I-S</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">1</td>
+    <td align="left" class="gwc" valign="top">coronal unflipped</td>
+    <td align="left" class="gwc" valign="top">R-L</td>
+    <td align="left" class="gwc" valign="top">I-S</td>
+    <td align="left" class="gwc" valign="top">P-A</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">2</td>
+    <td align="left" class="gwc" valign="top">sagittal unflipped</td>
+    <td align="left" class="gwc" valign="top">P-A</td>
+    <td align="left" class="gwc" valign="top">I-S</td>
+    <td align="left" class="gwc" valign="top">R-L</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">3</td>
+    <td align="left" class="gwc" valign="top">transverse flipped</td>
+    <td align="left" class="gwc" valign="top">R-L</td>
+    <td align="left" class="gwc" valign="top">A-P</td>
+    <td align="left" class="gwc" valign="top">I-S</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">4</td>
+    <td align="left" class="gwc" valign="top">coronal flipped</td>
+    <td align="left" class="gwc" valign="top">R-L</td>
+    <td align="left" class="gwc" valign="top">S-I</td>
+    <td align="left" class="gwc" valign="top">P-A</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">5</td>
+    <td align="left" class="gwc" valign="top">sagittal flipped</td>
+    <td align="left" class="gwc" valign="top">P-A</td>
+    <td align="left" class="gwc" valign="top">S-I</td>
+    <td align="left" class="gwc" valign="top">R-L</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top" colspan="5">Note: Index0 is 
+    fastest-varying (innermost-nested) index, Index2 the outermost. <br>
+    Index0..Index2 are often called X, Y, Z, but I am trying to avoid confusion 
+    with spatial coordinates.<br>
+    2004-04-18: See later section for comparison to NIfTI</td>
+  </tr>
+</tbody></table>
+<h3>The Problem With hist.orient Field</h3>
+<p>Aside from the hard-to-come-by documentation of hist.orient, the major 
+shortcoming of this field as a code for voxel order is that it only covers 6 of 
+the 48 possible orders.&nbsp; This means that software authors who wanted to be 
+able to honor some voxel-order scheme did not have a field provided. In 
+particular, though hist.orient provides the popular (R-L, P-A, I-S) orientation, 
+it omits the L-R flip of this, (L-R, P-A, I-S).</p>
+<p>This has proven to be a critical issue. Neither end users nor software 
+authors have been held back from reorienting their data, either to create 
+different views in viewers which lack orientation control, or for convenience in 
+processing the data.</p>
+<p>In recognition of this fact, one of the most hopeful thrusts of the NIfTI 
+initiative (more below) is to establish a standard way to use this field. (It 
+can't arrive soon enough!).</p>
+<h3>Analyze Format "In The Wild"</h3>
+<p>Below are some variations in the way software deals with Analyze format voxel 
+order, with implications for results when using these packages, or files 
+produced by these packages. (This is not a criticism of these packages so much 
+as simply a caution that given the uncertainty in the way voxel-order is 
+actually handled by software it's important to be aware of the hazard and 
+prepare to take remedial action.)</p>
+<p>Some important factors:</p>
+<ul>
+  <li><b>hist.orient:</b> Software may or may not attend to the hist.orient 
+  field<br>
+&nbsp;</li>
+  <li><b>negative dim.pixdim values: </b>Some have adopted negative pixdims to 
+  indicate voxels stored in reverse order for that dimension<br>
+&nbsp;</li>
+  <li><b>SPM99 normalization: </b>SPM99's normalization flips the R-L ordering 
+  of data, and SPM99 does not use the hist.orient field. This would tend to 
+  create a mix of (R-L, P-A, I-S) and (L-R, P-A, I-S) files in the same 
+  environment. (Note that (L-R, P-A, I-S) is not one of the orientations that 
+  can be specified by the hist.orient field anyway).</li>
+</ul>
+<p>In the list below, I won't attempt to get the exact details correct enough 
+for programmer satisfaction, but simply to indicate where the particular 
+software differs from "Strict" Analyze 7.5 format in some manner. The main point 
+is to raise awareness that orientation can't be taken for granted. </p>
+<table border="1" cellpadding="2" cellspacing="0" bordercolor="#c0c0c0" style="border-collapse: collapse;">
+  <tbody><tr>
+    <td class="gwc" valign="top" align="left"><b>Software</b></td>
+    <td class="gwc" valign="top"><b>Version</b></td>
+    <td class="gwc" valign="top"><b>hist.orient</b></td>
+    <td class="gwc" valign="top"><b>-negative pixdims</b></td>
+    <td class="gwc" valign="top"><b>Orientation Treatment</b></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">
+    <a href="http://www.fil.ion.bpmf.ac.uk/spm/distrib.html">SPM</a></td>
+    <td class="gwc" valign="top">99</td>
+    <td class="gwc" valign="top">ignores</td>
+    <td class="gwc" valign="top">not sure</td>
+    <td class="gwc" valign="top">Pre-normalization: assumes voxels in (R-L, P-A, 
+    I-S) order.<br>
+    Normalization creates data in (L-R, P-A, I-S) order<br>
+    SPM adds a third file (something.mat) with a transformation matrix -- not 
+    sure how this impacts data order <br>
+    There is also a sptl_Ornt variable</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">SPM</td>
+    <td class="gwc" valign="top">2</td>
+    <td class="gwc" valign="top">ignores</td>
+    <td class="gwc" valign="top">not sure</td>
+    <td class="gwc" valign="top">Change in voxel order: "images spatially 
+    normalised using SPM99 or earlier will need to be spatially normalised 
+    again" according to SPM docs.</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">
+    <a href="http://afni.nimh.nih.gov/">AFNI</a></td>
+    <td class="gwc" valign="top">2003-04</td>
+    <td class="gwc" valign="top">ignores</td>
+    <td class="gwc" valign="top">ignores</td>
+    <td class="gwc" valign="top">Various AFNI utilities convert to or from 
+    Analyze format. Generally you can set parameters to describe any input voxel 
+    order, or to specify any output voxel order, disregarding hist.orient or -ve 
+    pixdims.&nbsp; Program to3d attempts to detect SPM-normalized files by 
+    looking for SPM's special usage of the hist.origin fields.<br>
+    According to AFNI docs, the AFNI viewer assumes (L-R P-A I-S) unless the 
+    AFNI_ANALYZE_ORIENT environment variable is set.</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">MRIcro Viewer</td>
+    <td class="gwc" valign="top">1.36</td>
+    <td class="gwc" valign="top">ignores</td>
+    <td class="gwc" valign="top">ignores</td>
+    <td class="gwc" valign="top">File-to-screen mapping is such that a RPI (R-L, 
+    P-A, I-S) file will appear with patient right on screen left, superior at 
+    top, and&nbsp; anterior at top or right depending on view. Files with 
+    different ordering of axes will display, but oriented in ways that don't 
+    correspond to MRIcro's controls. See screenshots on
+    <a href="http://www.wideman-one.com/gw/brain/analyze/orientterms.htm">Orientation page</a></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">
+    <a href="http://www.fmrib.ox.ac.uk/fsl/index.html">FSL</a></td>
+    <td class="gwc" valign="top">3.0</td>
+    <td class="gwc" valign="top">ignores</td>
+    <td class="gwc" valign="top">aware of</td>
+    <td class="gwc" valign="top">FSL programs do not use the history.orient 
+    field. As for pixdims, accordingto Mark Jenkinson: "Negative pixdims are 
+    used to determine the Talairach coordinates in fsl programs. They are not 
+    used to flip the data order or change the display, only to work out the 
+    Talairach (technically the MNI) coordinate in mm."</td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+    <td class="gwc" valign="top">&nbsp;</td>
+  </tr>
+</tbody></table>
+<p>&nbsp;</p>
+<h3>Future</h3>
+<p>Brought to my attention by several correspondents is the
+<a href="http://www.nimh.nih.gov/diva/nifti2002.cfm">NIfTI initiative</a> to 
+define a new descendant of the Analyze format which would fix some of the 
+shortcomings of the existing situation.&nbsp; Given that the group includes 
+participants from a number of the more active Analyze-format-supporting software 
+development groups, this holds promise that a format spec might result that will 
+be more consistently adhered to. </p>
+<h3>2003-11-04 Update: More via Darren Weber</h3>
+<p>Darren posted some additional related info to the FreeSurfer list, of 
+interest to those who really need to understand Analyze data. I feel that DW's 
+work and articles on this subject are the most authoritative available, 
+particularly the notes in his avw_img_read source code that includes email from 
+Analyze support documenting the hist.orient field.</p>
+<p>Readers should be aware that his use of data-orientation notation is 
+different from mine -- probably based on our different perceptions of which 
+notations can be relied upon to be understood by others.&nbsp; I've more or less 
+concluded that the three-letter notation for volume data orientation is 
+sufficiently wobbly that I should always use 6-letter notation (eg: (R-L, P-A, 
+I-S).</p>
+<p><b>Darren's MRI Orientation Notes:</b> <br>
+<a href="http://eeg.sourceforge.net/mri_orientation_notes.html">
+eeg.sourceforge.net/mri_orientation_notes.html</a><br>
+<a href="http://eeg.sourceforge.net/mridoc/mri_toolbox/avw_img_read.html">
+Description of avw_img_read.m</a></p>
+<p>Darren is hosting two pdf docs that are versions of the Mayo Analyze 7.5 
+format spec. Linked from: <a href="http://eeg.sourceforge.net/">Matlab 
+EEG_Toolbox and MRI_Toolbox</a> page, under the "MRI_Toolbox Features" head. You 
+can read these docs in conjunction with the tables above that provide additional 
+notes on the various header fields.</p>
+<h3><b>Note 2004-04-15: More on NIfTI Interpretation of </b></h3>
+<p>YT on the FreeSurfer list pointed out that the NIfTI 2004-04-15
+<a href="http://nifti.nimh.nih.gov/dfwg/nifti_revised.html">NIfTI-1 Data Format 
+Extension and Customization</a> spec reports an interpretation of the sagittal 
+flipped value (5) that is at odds with Darren W's research, and the 
+distaillation I provided above.</p>
+<table border="1" cellpadding="3" cellspacing="0" bordercolor="#c0c0c0" style="border-collapse: collapse;" width="527">
+  <tbody><tr>
+    <td class="gwc" valign="top" align="left" rowspan="2"><b>hist.orient</b></td>
+    <td class="gwc" valign="top" align="left" rowspan="2"><b>Mayo name</b></td>
+    <td class="gwc" valign="top" align="left" colspan="3"><b>Voxel[Index0, 
+    Index1, Index2] </b></td>
+    <td class="gwc" valign="top" align="left">
+    <a href="http://nifti.nimh.nih.gov/dfwg/nifti_revised.html">NIfTI 
+    (2004-4-15)</a></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top"><b>Index0</b></td>
+    <td align="left" class="gwc" valign="top"><b>Index1</b></td>
+    <td align="left" class="gwc" valign="top"><b>Index2</b></td>
+    <td class="gwc"><b>Index0..2</b></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">0 (default)</td>
+    <td align="left" class="gwc" valign="top">transverse unflipped</td>
+    <td align="left" class="gwc" valign="top">R-L</td>
+    <td align="left" class="gwc" valign="top">P-A</td>
+    <td align="left" class="gwc" valign="top">I-S</td>
+    <td><tt>R&#8594;L P&#8594;A I&#8594;S</tt></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">1</td>
+    <td align="left" class="gwc" valign="top">coronal unflipped</td>
+    <td align="left" class="gwc" valign="top">R-L</td>
+    <td align="left" class="gwc" valign="top">I-S</td>
+    <td align="left" class="gwc" valign="top">P-A</td>
+    <td><tt>R&#8594;L I&#8594;S P&#8594;A</tt></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">2</td>
+    <td align="left" class="gwc" valign="top">sagittal unflipped</td>
+    <td align="left" class="gwc" valign="top">P-A</td>
+    <td align="left" class="gwc" valign="top">I-S</td>
+    <td align="left" class="gwc" valign="top">R-L</td>
+    <td><tt>P&#8594;A I&#8594;S R&#8594;L</tt></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">3</td>
+    <td align="left" class="gwc" valign="top">transverse flipped</td>
+    <td align="left" class="gwc" valign="top">R-L</td>
+    <td align="left" class="gwc" valign="top">A-P</td>
+    <td align="left" class="gwc" valign="top">I-S</td>
+    <td><tt>R&#8594;L A&#8594;P I&#8594;S</tt></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">4</td>
+    <td align="left" class="gwc" valign="top">coronal flipped</td>
+    <td align="left" class="gwc" valign="top">R-L</td>
+    <td align="left" class="gwc" valign="top">S-I</td>
+    <td align="left" class="gwc" valign="top">P-A</td>
+    <td><tt>R&#8594;L S&#8594;I P&#8594;A</tt></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top">5</td>
+    <td align="left" class="gwc" valign="top">sagittal flipped</td>
+    <td align="left" class="gwc" valign="top">P-A</td>
+    <td align="left" class="gwc" valign="top">S-I</td>
+    <td align="left" class="gwc" valign="top">R-L</td>
+    <td><tt>P&#8594;A <span style="background-color: rgb(255, 255, 0);">I&#8594;S L&#8594;R</span></tt></td>
+  </tr>
+  <tr>
+    <td align="left" class="gwc" valign="top" colspan="6">Note: Index0 is 
+    fastest-varying (innermost-nested) index, Index2 the outermost. <br>
+    2004-04-15: NIfTI's interpretation of "sagittal flipped" looks off to me. 
+    See further notes below.</td>
+  </tr>
+</tbody></table>
+<p>To resolve this it would be great to see what source NIfTI's interpretation 
+is based upon, and for my part I'll further detail the basis used here.</p>
+<p>Darren W at some point received email from <span class="comment">support at 
+AnalyzeDirect.com, and includes it in the source code for
+<a href="http://eeg.sourceforge.net/mridoc/mri_toolbox/avw_img_read.html">
+avw_img_read.m</a>. The salient parts are:</span></p>
+<table border="1" cellpadding="4" cellspacing="0" style="border-collapse: collapse;" bordercolor="#111111" width="100%" id="AutoNumber1">
+  <tbody><tr>
+    <td class="gwc" valign="top"><b><span class="comment">From avw_img_read.m, 
+    sections of the email from AnalyzeDirect.com</span></b></td>
+    <td class="gwc" valign="top"><b><span class="comment">My comments</span></b></td>
+  </tr>
+  <tr>
+    <td class="gwc" valign="top"><span class="comment">orient = 2:&nbsp; The 
+    primary orientation of the data on disk is in the sagittal</span>
+    <span class="comment">plane relative to the object scanned.&nbsp; Most 
+    commonly, the fastest moving</span> <span class="comment">index through the 
+    voxels that are part of this sagittal image would span the</span>
+    <span class="comment">posterior-anterior extent of the structure imaged, 
+    with the next fastest</span> <span class="comment">moving index spanning the 
+    inferior-superior extent of the structure.&nbsp; </span></td>
+    <td class="gwc" valign="top"><span class="comment">[P-A, I-S, ??]</span></td>
+  </tr>
+  <tr>
+    <td class="gwc" valign="top"><span class="comment">This</span>
+    <span class="comment">'orient' flag would indicate to Analyze that this data 
+    should be placed in</span> <span class="comment">the Y-Z plane of the 3D 
+    Analyze Coordinate System, with the X dimension</span> <span class="comment">
+    being the slice direction.</span></td>
+    <td class="gwc" valign="top"><span class="comment">[P-A, I-S, R-L] for 
+    orient.hist=2</span></td>
+  </tr>
+  <tr>
+    <td class="gwc" valign="top"><span class="comment">Orient values 3-5 have 
+    the second index reversed in order, </span></td>
+    <td class="gwc" valign="top"><span class="comment">so orient.hist=5 says to 
+    flip the I-S axis, giving us:<br>
+    [P-A, S-I, R-L]...</span></td>
+  </tr>
+  <tr>
+    <td class="gwc" valign="top"><span class="comment">essentially</span>
+    <span class="comment">'flipping' the images relative to what would most 
+    likely become the vertical</span> <span class="comment">axis of the 
+    displayed image.</span></td>
+    <td class="gwc" valign="top"><span class="comment">... with this comment 
+    confirming that it's a "vertical" flip that's intended (relative to a 
+    viewer), and not an R-L flip.</span></td>
+  </tr>
+  <tr>
+    <td class="gwc" valign="top"><span class="comment">Left-handed coordinate 
+    system</span><br>
+    <span class="comment">X-Y plane is Transverse</span><br>
+    <span class="comment">X-Z plane is Coronal</span><br>
+    <span class="comment">Y-Z plane is Sagittal</span><br>
+    <span class="comment">X axis runs from patient right (low X) to patient left 
+    (high X)</span><br>
+    <span class="comment">Y axis runs from posterior (low Y) to anterior (high 
+    Y)</span><br>
+    <span class="comment">Z axis runs from inferior (low Z) to superior (high Z)</span></td>
+    <td class="gwc" valign="top"><span class="comment">And for what it's worth, 
+    here we have X, Y and Z being used as synonyms for RL, PA and IS spatial 
+    axes (and thus not as synonyms for index 0..2).</span></td>
+  </tr>
+  <tr>
+    <td class="gwc" valign="top"><span class="comment">For the 'sagittal 
+    flipped' type, the voxels are stored with</span><br>
+    <span class="comment">Pixels in 'y' axis (varies fastest) - from patient 
+    posterior to Anterior</span><br>
+    <span class="comment">Rows
+in&nbsp;&nbsp; 'z'
+axis&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- from patient superior to Inferior*</span><br>
+    <span class="comment">Slices in 'x' axis&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    - from patient right to Left</span></td>
+    <td class="gwc" valign="top"><span class="comment">And finally, Darren's 
+    summary of orient.hist=5</span></td>
+  </tr>
+</tbody></table>
+<h3>Acknowledgements</h3>
+<p><b><a href="http://brain.mhri.edu.au/%7Edlw/homepages/">Darren Weber</a>: </b>
+First for researching and debating this problem at length in the past. Extensive 
+posts on FSL and SPM lists. Some of Darren's discoveries are worked into
+<a href="http://eeg.sourceforge.net/">Matlab EEG-MRI Toolbox</a>. The 
+avw_img_read.m file quotes crucial correspondence from Mayo on the meaning of 
+hist.orient.&nbsp; Second for extensive and patient correspondence on these 
+issues.</p>
+<p><b><a href="http://www.cla.sc.edu/psyc/faculty/rorden/" name="ChrisRemail">
+Chris Rorden</a>, Author of
+<a href="http://www.cla.sc.edu/psyc/faculty/rorden/mricro.html">MRIcro</a> 
+Viewer (and MRI Swiss Army Knife)</b>: A number of illuminating emails, 
+explanations and background info.</p>
+<p>Steve Smith and Mark Jenkinson of
+<a href="http://www.fmrib.ox.ac.uk/fsl/index.html">FMRIB</a> for answering a 
+number of questions relating to FSL.</p>
+<h3>Copyright Acknowledgement</h3>
+<p>The Analyze 7.5 File Format document contains the following copyright notice 
+regarding the header file format:<br>
+ANALYZE TM Header File Format <br>
+(c) Copyright, 1986-1995 <br>
+Biomedical Imaging Resource <br>
+Mayo Foundation</p>
+<hr>
+<p><em>Go to:</em>&nbsp; <a href="http://www.wideman-one.com/">
+<img src="formatdoc_files/logo_small.gif" alt="wideman-one_small_07.gif (1982 bytes)" border="0" align="top" width="164" height="22">
+</a>&nbsp;or back to <a href="http://www.wideman-one.com/gw/brain/index.htm">Brain Topics</a></p>
+
+</body></html>

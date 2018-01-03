@@ -1,0 +1,177 @@
+<HTML>
+<TITLE>Basic EMMA Image Manipulation</TITLE>
+<H1>Basic EMMA Image Manipulation</H1>
+
+EMMA (Extensible Matlab Medical Analysis) is a general purpose toolkit
+of MATLAB functions intended to help researchers with image analysis
+performed under MATLAB.  It provides functions for reading MINC
+(Medical Image Net CDF) files, writing MINC files, displaying images,
+and performing general manipulations on images.
+
+<H3>Reading in Images from File</H3>
+
+<P> Let's start with a quick demonstration.  We will read in 21 frames
+from a dynamic PET stored in a MINC file, and display one frame from
+this data set.  First, we must open the file.  The EMMA function
+<TT>openimage</TT> opens the image file for reading, and returns a
+handle.  Therefore, we call it like this:
+
+<PRE>
+h=openimage('/local/matlab/toolbox/emma/examples/yates_19445.mnc');
+</PRE>
+
+The variable <TT>h</TT> is now the handle used for dealing with this
+image file (its actual value is unimportant to the user).  Now that
+the file is open, we can read it with the EMMA <TT>getimages</TT>
+function.  We will read all 21 frames from slice 8 of the study:
+
+<PRE>
+PET=getimages(h,8,1:21);
+</PRE>
+
+The variable <TT>PET</TT> now contains the images for each frame of
+slice 8.  We can see what variables we have and their sizes by using
+the MATLAB <TT>whos</TT> command:
+
+<PRE>
+>> whos
+              Name        Size       Elements     Bytes    Density   Complex
+
+               PET   16384 by 21       344064   2752512       Full      No 
+                 h       1 by 1             1         8       Full      No 
+
+Grand total is 344065 elements using 2752520 bytes
+</PRE>
+The images themselves are 128 pixels by 128 pixels (16384 elements),
+and are stored by EMMA in column form.  When the <TT>getimages</TT>
+function reads in the image, it concatenates the lines of the image
+together to form one column.  Therefore, the <TT>PET</TT> variable
+read in previously contains 16384 rows (128x128=16384), and 21 columns
+(21 images).  Although this may seem somewhat unwieldy at first, it
+allows for efficient image manipulation under MATLAB.
+
+<H3>Viewing an Image</H3>
+
+<P>We may view one image from this data set by using the EMMA
+<TT>viewimage</TT> function.  It takes an image stored in either
+column format like that just described, or as a matrix, and displays
+it in a figure window.  If we want to view the 17th image in the
+variable <TT>PET</TT> (the seventeenth frame from the eighth slice of
+the study opened previously), we want to view <TT>PET(:,17)</TT>,
+since this will return all elements of the 17th column of the matrix
+PET:
+
+<PRE>
+viewimage(PET(:,17));
+</PRE>
+
+This will produce an image that looks something like this:
+
+<P><IMG SRC="emma1PET.gif">
+
+<H3>Creating a New MINC File</H3>
+
+<P>We may also create a new MINC file and write images into it, using
+the EMMA <TT>newimage</TT> function.  If we wanted to save the
+variable <TT>PET</TT> in a new MINC file called <TT>new.mnc</TT>, we
+would first create the MINC file with the <TT>newimage</TT> function:
+
+<PRE>
+h2 = newimage('new.mnc', [21 1 128 128]);
+</PRE>
+
+Like the <TT>openimage</TT> function, <TT>newimage</TT> also returns a
+handle to an open MINC file (this time the MINC file is open for
+writing).  The above command creates a MINC file with 21 frames, 1
+slice, and images that are 128x128.  When the file is created with
+<TT>newimage</TT>, it is empty, and should be filled with images.
+This can be done with the EMMA <TT>putimages</TT> function:
+
+<PRE>
+putimages(h2,PET,1,1:21);
+</PRE>
+
+This writes the 21 images in the variable PET into the MINC file
+(represented by <TT>h2</TT>) as slice one, frames one through
+twenty-one.
+
+<H3>A More Complex Example</H3>
+
+<P>Let's try something a little more involved.  We will take the
+variable <TT>PET</TT> that we already read in from disk, integrate
+each pixel over the frames (time), and write out the resulting image.
+First, we require the mid-frame times for the 21 frames loaded.  We
+can use the EMMA <TT>getimageinfo</TT> function to get this
+information:
+
+<PRE>
+ftimes = getimageinfo(h,'MidFrameTimes');
+</PRE>
+
+This will create a new variable called <TT>ftimes</TT> that contains
+the mid-frame times for each frame.  We may now integrate with the
+EMMA <TT>ntrapz</TT> function (which has the same functionality as the
+MATLAB <TT>trapz</TT> function, but performs its calculations an order
+of magnitude more quickly):
+
+<PRE>
+img = ntrapz(ftimes,PET')';
+</PRE>
+
+We must transpose the <TT>PET</TT> variable before passing it to the
+<TT>ntrapz</TT> function since <TT>ntrapz</TT> expects the second
+variable to have the same number of rows as the first variable
+(<TT>PET</TT> is 16384x21, so <TT>PET'</TT> is 21x16384, and
+<TT>ftimes</TT> is 21x1, satisfying the requirement).  The answer must
+also be transposed so that <TT>img</TT> is a column vector (not a row
+vector) representation of the image. (<B>Note:</B> This example is
+<I>not</I> the most memory efficient way to calculate the integrated
+image.  Please consult <A HREF="matlab_memory.html"> Controlling
+MATLAB Memory Use</A> for more information.)
+
+
+<P>One might imagine a situation where we wanted to calculate the
+integrated image for each slice in a study, and then write the result
+into a new MINC file.  We would want the new MINC file to have the
+same dimensional information as the original MINC file, except with no
+frames.  This can be easily accomplished, since newimage allows the
+specification of a "parent image" from which to take the required
+dimensional information.  So, using the original MINC file as the
+parent, we can create a new MINC file:
+
+<PRE>
+h3 = newimage('new2.mnc', [0 15], ...
+     '/local/matlab/toolbox/emma/examples/yates_19445.mnc');
+</PRE>
+
+This new file contains no frames, fifteen slices, and the same spacing
+as the parent image.  We could then write our integrated image into
+this new MINC file using the <TT>putimages</TT> function:
+
+<PRE>
+putimages(h3,img,8);
+</PRE>
+
+This writes the data from the variable <TT>img</TT> into the MINC file
+represented by the handle <TT>h3</TT> as slice 8 (remember that we
+originally read the data from slice 8).  In order to write data for
+every slice into the new MINC file, we would need to repeat the above
+procedure (read, integrate, write result) for each slice.
+
+<hr>
+
+At this stage, you may wish to move on to more complex image
+manipulation.  If so, consult the <A HREF="emma2.html">advanced EMMA
+image manipulation</A> demo.
+
+<P>For more information on the EMMA toolkit, please see the <A
+HREF="../doc/emma/"> documentation</A>.
+
+<hr>
+
+<ADDRESS>
+This page was created by Mark Wolforth
+(wolforth@pet.mni.mcgill.ca)
+</ADDRESS>
+
+</HTML>

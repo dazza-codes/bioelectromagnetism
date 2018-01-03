@@ -1,0 +1,151 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>SPLTRAK Abstract Submission</title>
+<link rel="SHORTCUT ICON" href="http://nifti.nimh.nih.gov/nifti_icon.ico">
+</head>
+
+<body>
+		<div align="center">
+			<table border="0" cellpadding="0" cellspacing="0" width="600">
+				<tr>
+					<td colspan="3"><font size="4" face="Times New Roman,Georgia,Times"><b>10th Annual Meeting of the Organization for Human Brain Mapping</b></font></td>
+					</td></tr>
+				<tr>
+					<td colspan="3"><font size="3" face="Times New Roman,Georgia,Times">
+							<hr>
+						</font></td>
+				</tr>
+				<tr>
+					<td><font size="3" face="Times New Roman,Georgia,Times">Abstract Number:  214.110001</font></td>
+					<td></td>
+					<td>
+						<div align="right">
+							<font size="3" face="Times New Roman,Georgia,Times">Submitted By:  Robert Cox</font></div>
+					</td>
+				</tr>
+				<td><font size="3" face="Times New Roman,Georgia,Times">Last Modified: 9 Jan 04</font></td>
+				<td></td>
+				<td></td>
+				<tr>
+					<td><br>
+					</td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+			<table border="0" cellspacing="1" width="600">
+				<tr>
+					<td width="100%">
+						<div align="center">
+	
+
+
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+<title>SPLTRAK Abstract Submission</title>
+
+</head>
+
+<body>
+
+<div align="left">
+
+<table border="0" cellspacing="1" width="770">	
+
+<tr>
+
+<td width="100%">
+
+<div align="center">
+
+<table border="0" cellspacing="1" width="650">
+
+<tr>
+
+<td width="100%">
+
+<div align="center"></div>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td width="100%"><br>
+
+<b>
+
+<center>
+
+A (Sort of) New Image Data Format Standard: NIfTI-1<sup></sup><sub></sub><i></i><b></b></b></center>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td width="100%"><center>Robert W Cox<SUP><font size='2'>1</font></SUP> , John Ashburner,<SUP><font size='2'>2</font></SUP> , Hester Breman,<SUP><font size='2'>3</font></SUP> , Kate Fissell,<SUP><font size='2'>4</font></SUP> , Christian Haselgrove,<SUP><font size='2'>5</font></SUP> , Colin J Holmes,<SUP><font size='2'>6</font></SUP> , Jack L Lancaster,<SUP><font size='2'>7</font></SUP> , David E Rex,<SUP><font size='2'>8</font></SUP> , Stephen M Smith,<SUP><font size='2'>9</font></SUP> , Jeffrey B Woodward,<SUP><font size='2'>10</font></SUP> , Stephen C Strother,<SUP><font size='2'>11</font></SUP>  <br><font size='2'><SUP>1</SUP></font>NIMH/NIH/DHHS/Bethesda, <font size='2'><SUP>2</SUP></font>FIL/London, <font size='2'><SUP>3</SUP></font>Brain Innovation/Maastricht, <font size='2'><SUP>4</SUP></font>U Pittsburgh/Pittsburgh, <font size='2'><SUP>5</SUP></font>MGH/Charlestown, <font size='2'><SUP>6</SUP></font>SGI/Mountain View, <font size='2'><SUP>7</SUP></font>RIC/UTHSCSA/San Antonio, <font size='2'><SUP>8</SUP></font>LONI/UCLA/Los Angeles, <font size='2'><SUP>9</SUP></font>FMRIB/Oxford, <font size='2'><SUP>10</SUP></font>Dartmouth College/Hanover, <font size='2'><SUP>11</SUP></font>U Minnesota/Minneapolis and <b>DFWG Chair</b> </center><br></td>
+
+    </tr>
+
+    <tr>
+
+      <td width='100%'></b>The problem of interoperability of neuroimaging data analysis software is being addressed by the NIfTI (Neuroimaging Informatics Technology Initiative) task force.  The Data Format Working Group (DFWG) within NIfTI was chartered to deal with the  particular issue of <i>data</i> interoperability; that is, making it simpler to interchange image (etc.) data between analysis packages.<br />
+<br />
+The DFWG decided to proceed in two phases: near- and long-terms.  Since the ANALYZE&trade;-7.5 file format (.hdr/.img file pairs) is simple, widely used, and contains some unused/little-used fields, for the first phase we decided to modify this format to add features that the DFWG agreed were highly desirable for FMRI analysis purposes.  In outline, new features include:<br />
+(1) <i>Two</i> affine coordinate definitions relating voxel index to spatial location:<br />
+  &rarr; one orthogonal transform, to indicate orientation/location of data in scanner coordinates;<br />
+  &rarr; one general affine transform, to indicate mapping to a "normalized" space;<br />
+  &rarr; global coordinates are +<i>x</i>=Right, +<i>y</i>=Anterior, +<i>z</i>=Superior.<br />
+(2) Codes to indicate spatial normalization type (e.g., MNI-152).<br />
+(3) Codes to indicate units of spatial and temporal dimensions.<br />
+(4) Codes to indicate temporal and spatial acquisition ordering for MRI.<br />
+(5) "Complete" set of 8..128 bit data type codes.<br />
+(6) Standardized way to store vector-valued datasets (e.g., a matrix at each voxel).<br />
+(7) Affine data scaling (i.e., true-data-value&equiv;&alpha;*data-in-file+&beta;; &alpha;, &beta; stored in header).<br />
+(8) Codes and parameters for data "meaning" (e.g., values are <i>t</i>-statistics with 23.7 DOF):<br />
+  &rarr; 21 types of statistics are encodable; parameters can be global or voxel-dependent.<br />
+(9) "Magic" string indicates if header is NIfTI-1 compliant:<br />
+  &rarr; i.e., contains "extra" data not defined in ANALYZE&trade;-7.5.<br />
+(10) Single or dual file storage (<B>.nii</B> or <B>.hdr</B>/<B>.img</B>).<br />
+<br />
+The NIfTI-1 format has been carefully designed so that unmodified FMRI analysis programs that read ANALYZE&trade;-7.5 files are likely to work with NIfTI-1 files; for example, the NIfTI-1 header is still 348 bytes long.  Another goal was to reduce the uncertainty about diverse ANALYZE&trade;-7.5 extensions used in this community.  The developers of Brain Voyager, FSL, SPM, and AFNI have agreed to adapt their codes to read and write NIfTI-1 files; other sites (including those represented by the DFWG committee) have also agreed to support this format.<br />
+<br />
+The complete definition of the NIfTI-1 format (as a heavily-commented C .h file) is available at the Web site <B>nifti.nimh.nih.gov</B>.  In addition, sample C source code for reading and writing NIfTI-1 files is available at this site; Matlab code is planned.<br />
+<br />
+The primary goal of NIfTI-1 is to foster near-term data interchangeability between FMRI analysis and visualization tools.  The format is simple, and programs already using the ANALYZE&trade;-7.5 format should be easily adapted to use NIfTI-1.  We are aware that many desiderata are missing from this format; work is underway to define and agree upon a more ambitious and extensible NIfTI-2 format.<br />
+<br />
+<b>Acknowledgments</b>: NIfTI and the DFWG are sponsored by NINDS and NIMH.  Mark Jenkinson of the FMRIB aided significantly in formulating some aspects of NIfTI-1.  The Mayo Foundation granted permission to use components of the ANALYZE&trade;-7.5 header dbh.h.<sup></sup><sub></sub><i></i><b></b><br><br>
+
+	</tr>
+
+    <tr>
+
+</table>
+
+	</td>
+
+	</tr>
+
+  </table>
+
+ 
+
+</body>
+
+</html>
+
+ 
+
+  </body>
+
+</html>
+

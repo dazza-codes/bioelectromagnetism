@@ -1,0 +1,732 @@
+<html><head><title>FAQ for NIfTI-1 Data Format</title>
+
+<link rel="SHORTCUT ICON" href="http://nifti.nimh.nih.gov/nifti_icon.ico"></head>
+<body>
+
+<!---------------------------------------------------------------------->
+<hr noshade="noshade" width="80%" align="left">
+<table summary="logos" border="0" cellspacing="0" cellpadding="0" width="80%">
+<tbody><tr>
+<td><a href="http://www.os.dhhs.gov/"><img src="faq_files/dhhsLogo.gif" width="47" height="47" border="0" alt="H H S logo - link to U. S. Department of Health and Human Services" align="left" longdesc="images/longdesc/dhhs.txt"> <font size="-2">Department of Health<br>
+and Human Services<br>(DHHS)</font></a></td>
+
+<td><a href="http://www.nih.gov/"><img src="faq_files/nihLogo.gif" width="47" height="47" border="0" alt="NIH Logo" align="left"> <font size="-2">National Institutes of Health (NIH)<br>
+9000 Rockville Pike<br>
+Bethesda, Maryland 20892</font></a></td>
+
+<td><a href="http://www.nimh.nih.gov/"><img src="faq_files/nimhlogo.gif" width="47" height="47" border="0" alt="NIMH Logo" align="left">
+<font size="-2">National Institute<br>of Mental Health<br>(NIMH)</font></a>
+</td>
+
+<td><a href="http://www.ninds.nih.gov/"><img src="faq_files/nindslogo.gif" width="47" height="47" border="0" alt="NINDS Logo" align="left">
+<font size="-2">National Institute of<br>Neurological Disorders<br>and Stroke (NINDS)</font></a>
+</td>
+
+</tr>
+</tbody></table>
+<hr noshade="noshade" width="80%" align="left">
+<!---------------------------------------------------------------------->
+
+<p style="font-family: Times New Roman,Helvetica,Arial,sans-serif; font-size: 24pt; font-weight: bold; color: rgb(0, 51, 102);">
+&nbsp; NIfTI-1 FAQ List <br>
+
+<font size="-2">&nbsp; &nbsp; &nbsp; Brought to you by
+ <a href="#members">the members</a> of the Data Format Working Group</font>
+</p>
+
+<hr noshade="noshade" width="80%" align="left">
+<!---------------------------------------------------------------------->
+
+<ul>
+<li> <a href="#Q1">Q1. What are NIfTI and the DFWG?</a>
+</li><li> <a href="#Q2">Q2. Why didn't the committee choose the DICOM format?  The MINC-2 format?</a>
+</li><li> <a href="#Q3">Q3. Can you add my favorite variable X to the header?</a>
+</li><li> <a href="#Q4">Q4. What is the minimum set of fields required to create a NIfTI-1 header?</a>
+</li><li> <a href="#Q5">Q5. What format converters are available?</a>
+</li><li> <a href="#Q6">Q6. What I/O libraries are available?</a>
+</li><li> <a href="#Q7">Q7. How do I tell if an ANALYZE<sup>TM</sup> 7.5 header is NIfTI-1 compatible?</a>
+</li><li> <a href="#Q8">Q8. Is NIfTI-1 compatible with the ANALYZE 7.5 file format?</a>
+</li><li> <a href="#Q9">Q9. Do I need to convert all of my files to this format?</a>
+</li><li> <a href="#Q10">Q10. Is the NIfTI-1 header extensible?</a>
+</li><li> <a href="#Q11">Q11. What modalities does this format support?</a>
+</li><li> <a href="#Q12">Q12. What types of data can I store in the format?</a>
+</li><li> <a href="#Q13">Q13. Does NIfTI-1 solve the problem of data interchange in fMRI?</a>
+</li><li> <a href="#Q14">Q14. What is the default orientation?</a>
+</li><li> <a href="#Q15">Q15. Is the default radiological or neurological orientation?</a>
+</li><li> <a href="#Q16">Q16. What is a quaternion?</a>
+</li><li> <a href="#Q17">Q17. What alignment information is stored in the NIfTI-1 header?</a>
+</li><li> <a href="#Q18">Q18. Does NIfTI-1 support a single file format for header and data?</a>
+</li></ul>
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q1">
+<b>Q1. What are NIfTI and the DFWG?</b> (Mike Huerta)
+
+</a><p>
+<a name="Q1">The purpose of the Neuroimaging Informatics Technology Initiative (NIfTI)
+is to support service, training, and research to develop and enhance
+the utility of informatics tools used in neuroimaging, with a focus on
+functional magnetic resonance imaging (fMRI).  NIfTI is jointly sponsored
+by the National Institute of Mental Health (NIMH) and the National Institute
+of Neurological Disorders and Stroke (NINDS), which are part of the
+National Institutes of Health (NIH) and the Department of Health and
+Human Services (DHHS).  Further background can be found at
+</a><a href="http://nifti.nimh.nih.gov/webinfo1c.html">this link</a>.
+NIfTI was developed and has been implemented with input from the community
+of neuroscientists who use neuroimaging in their research, and from the
+community of developers of informatics tools used to make sense of
+neuroimaging data (with an emphasis on fMRI).  
+</p>
+
+<p>
+There are two major activities of NIfTI, thus far.  The first is the
+support of a cluster of grants to characterize, compare, and validate
+informatics tools used in fMRI studies.  
+</p>
+
+<p>
+The second is the support of the Data Format Working Group.  The DFWG
+is charged with arriving at a technical solution to the problem of
+multiple data formats used in fMRI research.  This was identified by
+many investigators as a fundamental obstacle to fMRI fulfilling the
+promise it has to elucidate brain function.  The solution arrived at
+by the DFWG will not be imposed on the research community, but several
+groups that develop fMRI-related software have already indicated their
+willingness to adopt the solution.  Suggestions for membership on the
+DFWG were broadly solicited from the research community.
+</p>
+
+<a name="members">
+</a><p>
+<a name="members">The DFWG members are:
+</a></p><ul>
+<li><a name="members"> <i>Chair</i>:
+     Stephen C. Strother (Veterans Affairs Medical Center, Minneapolis, Minnesota)
+</a><p>
+</p></li><li><a name="members"> John Ashburner (Functional Imaging Laboratory, London, United Kingdom)
+</a></li><li><a name="members"> Hester Breman (Brain Innovation B.V., Maastricht, The Netherlands)
+</a></li><li><a name="members"> Robert W. Cox (National Institute of Mental Health, NIH, DHHS, Bethesda, Maryland)
+</a></li><li><a name="members"> Kate Fissell (University of Pittsburgh, Pittsburgh, Pennsylvania)
+</a></li><li><a name="members"> Christian Haselgrove (Massachusetts General Hospital, Charlestown, Massachusetts)
+</a></li><li><a name="members"> Colin J. Holmes (Silicon Graphics, Inc., Mountain View, California)
+</a></li><li><a name="members"> Peter Kochunov (University of Texas Health Science Center, San Antonio, Texas)
+</a></li><li><a name="members"> David E. Rex (University of California, Los Angeles)
+</a></li><li><a name="members"> Stephen M. Smith (Oxford University Centre for Functional MRI of the Brain, United Kingdom)
+</a></li><li><a name="members"> Jeffrey B. Woodward (Dartmouth College, Hanover, New Hampshire).
+</a><p>
+</p></li><li><a name="members"> <i>ex officio</i>: Michael F. Huerta (National Institute of Mental
+     Health, NIH, DHHS)
+</a></li><li><a name="members"> <i>ex officio</i>: Yuan Liu (National Institute of Neurological Disorders and Stroke, NIH, DHHS)
+</a></li></ul>
+<p></p>
+
+<p>
+<a name="members">It should be noted that <b><i>in no way</i></b> is the NIfTI-1 format
+an official format whose use is mandated by the NIH.  This effort has
+been made to help developers and users of functional neuroimaging software.
+What use is made of the format is now up to the community.
+</a></p>
+
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q2">
+<b>Q2. Why didn't the committee choose the DICOM format?  The MINC-2 format?</b> (Steve Strother)
+
+</a><p>
+<a name="Q2"><b>DICOM</b>:
+The DICOM standard attempts to address the extremely general requirements of
+digital imaging in diagnostic and therapeutic healthcare environments
+(</a><a href="http://medical.nema.org/dicom/">http://medical.nema.org/dicom/</a>),
+while the DFWG has a much narrower focus.
+The DFWG committee's strategy has been to adopt a two-pronged approach
+to developing a technical solution to the problem of multiple fMRI data
+formats by initially focusing on a relatively simple format that has
+low storage overhead, resolves some immediate format problems in the
+fMRI community and is not difficult for developers to learn and use.
+The NIfTI-1 format specification represents the simple first prong of
+this approach with the goal of consolidating the variants of the
+ANALYZE 7.5 format currently being used by the major fMRI software packages
+while staying mostly ANALYZE 7.5 compatible and explicitly dealing
+with the specification and storage of a data coordinate system.
+</p>
+
+<p>
+The committee felt that DICOM did not satisfy the general requirements
+of a simple format for the fMRI community with DICOM's large, clinically
+focused storage overhead and the relatively complex specifications for
+multiframe MRI and spatial registration.  In addition, the DICOM
+specification is also heavily concerned with data communication,
+something the committee felt was well beyond the scope of NIfTI-1.
+</p>
+
+<p>
+<b>MINC-2</b>:
+The DFWG committee is very aware of the latest MINC developments through
+Colin Holmes' able and enthusiastic advocacy of MINC to the committee.
+MINC is being actively and seriously considered as a candidate for a
+NIfTI-2 format specification (see below).
+In addition, we have been provided
+with MINC 1.0 namespace (7/5/2003) and MINC 2.0 file format (11/18/2003)
+documents by Robert Vincent in Montreal. Most of the DFWG committee meet
+with Alan Evans, John Sled, Robert Vincent and several others to discuss
+MINC and its proposed developments at the last OHBM meeting in New York.
+</p>
+
+<p>
+<b>NIfTI-2</b>:
+The second prong of the committee's approach (NIfTI-2) will be a more
+complex format specification to address the problem of comprehensive
+data interchange within the fMRI research community. Development of
+NIfTI-2 and inclusion of specifications for such data as nonlinear
+registrations, surfaces and various types of metadata
+(e.g.,&nbsp;data analysis design matrices)
+are under discussion by the committee.
+</p>
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q3">
+<b>Q3. Can you add my favorite variable X to the header?</b> (Jeff Woodward)
+
+</a><p>
+<a name="Q3">[Temporary answer by RW Cox]<br>
+<b><i>Not very likely</i></b>.  We stayed within the restriction of a 348 byte
+header to keep compatibility with ANALYZE&nbsp;7.5.  Most of the space is now
+taken by new fields, agreed upon by the DFWG committee after extensive wrangling.
+</a></p>
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q4">
+<b>Q4. What is the minimum set of fields required to create a NIfTI-1 header?</b>
+(Christian Haselgrove)
+
+</a><p>
+<a name="Q4">While not all of the NIfTI-1 header fields are necessary to describe a
+volume, most fields require a specific value to indicate the field's
+non-use.
+</a></p>
+<p>
+<a name="Q4">Required fields are:
+</a></p><pre><a name="Q4">    FIELD         NOTES
+    -----------------------------------------------------
+    sizeof_hdr    must be 348
+    -----------------------------------------------------
+    dim           dim[0] and dim[1] are always required; 
+                  dim[2] is required for 2-D volumes, 
+                  dim[3] for 3-D volumes, etc.
+    -----------------------------------------------------
+    datatype      needed to specify type of image data
+    -----------------------------------------------------
+    bitpix        should correspond correctly to datatype
+    -----------------------------------------------------
+    pixdim        with the exception of pixdim[0] (which 
+                  is required when qform_code != 0), 
+                  pixdim[n] is required when dim[n] is 
+                  required
+    -----------------------------------------------------
+    vox_offset    required for an "n+1" header
+    -----------------------------------------------------
+    magic         must be "ni1\0" or "n+1\0"
+    -----------------------------------------------------
+</a></pre>
+<a name="Q4">The <tt>descrip</tt> and <tt>aux_file</tt> fields are not required.
+The NIfTI-1 standard does not specify any use or interpretation of
+these fields.
+</a><p></p>
+<p>
+<a name="Q4">The remaining fields are not required, but their non-use must be indicated 
+as in the following table.  The simplest way to ensure this when creating
+a 348-byte header structure is to fill it with zeros
+(e.g.,&nbsp;with <tt>calloc()</tt>) before setting any desired fields
+to their appropriate values.
+</a></p><pre><a name="Q4">    FIELD           NON-USE INDICATOR
+    ---------------------------------------------------
+    intent_code    intent_code = NIFTI_INTENT_NONE = 0
+    intent_name    and intent_name[0] = '\0'
+    intent_p1
+    intent_p2
+    intent_p3
+    ---------------------------------------------------
+    scl_slope      scl_slope = 0
+    scl_inter
+    ---------------------------------------------------
+    xyzt_units     xyzt_units = NIFTI_UNITS_UNKNOWN = 0
+    ---------------------------------------------------
+    cal_max        cal_max = 0 and cal_min = 0
+    cal_min
+    ---------------------------------------------------
+    toffset        toffset = 0
+    ---------------------------------------------------
+    slice_code     slice_code = 0 and dim_info = 0
+    dim_info
+    slice_start
+    slice_end
+    slice_duration
+    ---------------------------------------------------
+    qform_code     qform_code = 0 (see note below)
+    quatern_b
+    quatern_c
+    quatern_d
+    qoffset_x
+    qoffset_y
+    qoffset_z
+    pixdim[0]
+    ---------------------------------------------------
+    sform_code     sform_code = 0
+    srow_x
+    srow_y
+    srow_z
+    ---------------------------------------------------
+</a></pre>
+<a name="Q4"><b>N.B.</b>: Using <tt>qform_code=0</tt> is legal, but <i>not</i> recommended.  This case
+is intended for the case when you don't want to encode <i>any</i> orientation
+information in the header.  It is mainly intended for compatibility with
+older ANALYZE 7.5 files; however, the ANALYZE 7.5 <tt>orient</tt> field is
+not contained in a NIfTI-1 header.  If <tt>qform_code=0</tt>, a&nbsp;program
+may treat the orientation of a NIfTI-1 file in any way; this is unlikely to
+be portable or inter-operable.
+</a><p></p>
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q5">
+<b>Q5. What format converters are available?</b> (David Rex)
+
+</a><p>
+
+<!----------------------------------------->
+</p><hr noshade="noshade"><a name="Q6">
+<b>Q6. What I/O libraries are available?</b> (Kate Fissell)
+
+</a><p>
+<a name="Q6">A C/C++ I/O library for NIfTI-1 is available at
+</a><a href="http://nifti.nimh.nih.gov/dfwg/src">
+<tt>http://nifti.nimh.nih.gov/dfwg/src</tt></a>&nbsp;:
+</p><ul>
+   <li> <a href="http://nifti.nimh.nih.gov/dfwg/src/nifti1.h">nifti1.h</a>
+       -- The header file for the NIfTI-1 format. 
+   </li><li> <a href="http://nifti.nimh.nih.gov/dfwg/src/nifti1_io.c">nifti1_io.c</a>
+       -- The I/O functions for the NIfTI-1 format. 
+   </li><li> <a href="http://nifti.nimh.nih.gov/dfwg/src/nifti1_io.h">nifti1_io.h</a>
+       -- The header file for the I/O functions for the NIfTI-1 format.
+   </li><li> <a href="http://nifti.nimh.nih.gov/dfwg/src/nifti1_test.c">nifti1_test.c</a>
+       -- A short sample program to read and write NIfTI-1 files.
+</li></ul>
+These files were contributed by Robert Cox, NIH, and contain functions
+to read and write NIfTI-1 headers and data blocks, print header
+fields, and, functions to manipulate some of the more complicated
+data items in the NIfTI-1 header (e.g.,&nbsp;transform matrices).
+<p></p>
+
+<p>
+We expect that I/O libraries in MATLAB and Java will be available
+in the not too distant future.  Any and all contributed libraries
+are welcome.
+</p>
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q7">
+<b>Q7. How do I tell if an ANALYZE header is NIfTI-1 compatible?</b> (Christian Haselgrove)
+
+</a><p>
+<a name="Q7">NIfTI-1 headers must contain a specific sequence of bytes in the last four 
+bytes of the header (bytes 344-348):
+</a></p><ul>
+<li><a name="Q7"> When there is a separate file for the image data, these bytes must be 
+     "ni1\0" (hexadecimal 6e 69 31 00).
+</a><p>
+</p></li><li><a name="Q7"> When the image data is in the same file as the header, these bytes must 
+     be "n+1\0" (hexadecimal 6e 2b 31 00).
+</a></li></ul>
+<p></p>
+<a name="Q7">If neither of these conditions is satisfied, then a program should <i>not</i> presume
+that the NIfTI-1 additions/changes to the ANALYZE format are present in the
+header.
+
+
+<!----------------------------------------->
+</a><hr noshade="noshade"><a name="Q8">
+<b>Q8. Is NIfTI-1 compatible with the ANALYZE 7.5 file format?</b> (Jeff Woodward)
+
+</a><p>
+<a name="Q8">[Temporary answer by RW Cox]<br>
+<b><i>We hope so</i></b>.  The interpretation of many of the fields in the ANALYZE 7.5 header 
+is not very clear.  Most such fields aren't widely used by software other than
+</a><a href="http://www.analyzedirect.com/">ANALYZE itself</a>.  After considerable discussion,
+we kept the ANALYZE 7.5-defined fields that seemed widely used in the FMRI community.
+The goal was to have non-NIfTI-aware FMRI packages that use the ANALYZE 7.5 format
+still be able to read most NIfTI-1 files.  Time and experience will tell if this goal
+has been met.
+</p>
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q9">
+<b>Q9. Do I need to convert all of my files to this format?</b> (Colin Holmes)
+
+</a><p>
+<a name="Q9"><b><i>No</i></b>.
+NIfTI-1 was created to provide a common and widely acceptable version of
+the ANALYZE-7.5 format that could act as an image data interchange format
+between neuroimaging programs and analysis packages.
+As it provides little support for storage of required metadata
+(e.g.,&nbsp;image acquisition parameters), it is not a complete solution
+for long-term archiving of neuroimaging data.
+For this function, please see the NIfTI-2 format (coming soon to a lab near you).
+</a></p>
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q10">
+<b>Q10. Is the NIfTI-1 header extensible?</b> (Hester Breman)
+
+</a><p>
+<a name="Q10">The NIfTI-1 files can exist in two forms.
+There can be a single *.nii file or two separate files,
+a&nbsp;*.hdr and a *.img file (see the NIfTI-1 header file for more details). 
+</a></p>
+<p>
+<a name="Q10">When the information is separated into a *.hdr and *.img file,
+which resembles the original ANALYZE 7.5 format,
+any programs that read the ANALYZE format will expect a header of 348 bytes.
+Therefore the NIfTI-1 header is not extensible in this form,
+since any program is likely to
+fail when it detects that the header file is not the expected size.
+</a></p>
+<p>
+<a name="Q10">While it is possible to store data between the header and the
+image part of a single *.nii file,
+this is non-standard and no other program will
+will be able to interpret these data.
+Therefore it is not recommended to produce such files.
+</a></p>
+<p>
+<a name="Q10">In the current NIfTI-1 format,
+there are many possibilities to store different kinds of data in the
+image part of the file.
+Datasets, many types of statistical values, vectors, meshes, etc.,
+all can be stored in NIfTI-1. 
+Each NIfTI-1-aware program will be able to read these files.
+Interpretation of the files will also be possible,
+since the meaning of the fields is determined,
+when the intent of the file is known.
+</a></p>
+<p>
+<a name="Q10">For any other types of data that cannot be stored in the NIfTI-1 format,
+eventually a NIfTI-2 format for complex data is to come.
+</a></p>
+
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q11">
+<b>Q11. What modalities does this format support?</b> (Colin Holmes)
+
+</a><p>
+<a name="Q11">NIfTI-1 can store image data
+from any modality such as PET, MRI, CT, EEG that produces regularly
+sampled 1-5D rasters.
+No support is provided for modality-specific metadata such as dose,
+pulse sequence or indeed the majority of subject oriented descriptive items.
+</a></p>
+<p>
+<a name="Q11">A limited amount of information specific to FMRI time series acquisition
+is available in the NIfTI-1 header:
+</a></p><ul>
+<a name="Q11"> <li> Marking the frequency, phase, and slice encoding directions.
+ </li><li> Storing the per-slice acquisition time.
+ </li><li> Storing the slice acquisition order (e.g., interleaving).
+</li></a></ul>
+<a name="Q11">This particular information is present since the primary thrust of
+the DFWG has been to make FMRI data analysis software inter-operable.
+</a><p></p>
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q12">
+<b>Q12. What types of data can I store in the format?</b> (Colin Holmes)
+
+</a><p>
+<a name="Q12">NIfTI-1 provides support for regularly sampled raster-oriented data of
+up to five dimensions (e.g.,&nbsp;image data).
+The data type of each value stored in the raster grid must be the
+same, and is indicated in the <tt>datatype</tt> header field.
+These data types are intended to encompass a wide range of
+commonly usages.  Expressed in C language syntax, these basic
+data types are:
+</a></p><pre><a name="Q12">   unsigned char      = 8-bit byte     [     0..  255]
+   signed char        = 8-bit byte     [  -128..  127]
+   signed short       = 16-bit integer [-32768..32767]
+   unsigned short     = 16-bit integer [     0..65535]
+   signed int         = 32-bit integer
+   unsigned int       = 32-bit integer
+   signed long long   = 64-bit integer
+   unsigned long long = 64-bit integer
+
+   float              = 32-bit floating point value
+   double             = 64-bit floating point value
+   long double        = 128-bit floating point value
+
+   { float r,i ; }    = 64-bit complex = 2 32-bit floats
+   { double r,i ; }   = 128-bit complex = 2 64-bit floats
+   {long double r,i;} = 256-bit complex = 2 128-bit floats
+
+   {unsigned char r,g,b;} = RGB triple = 3 8-bit bytes
+</a></pre>
+<a name="Q12">Not all data types will be supported by all programs; in fact, most
+programs will probably only operate on a limited set of these
+data types.  A well-crafted NIfTI-1 compatible program should detect
+when it cannot deal with an input file's data type, and exit gracefully.
+</a><p></p>
+<p>
+<a name="Q12">The first 3 dimensions are reserved for space; the fourth dimension
+for time (or frequency); the fifth dimension is intended to allow
+storing multiple values at each spatio-temporal location.
+In addition, the <tt>intent_code</tt> field can be used to describe
+if and how the fifth dimension of the image data is organized.  Possible
+organizations include vector, general matrix, symmetric matrix, and
+quaternion.
+</a></p>
+<p>
+<a name="Q12">NIfTI-1 does not provide for the storage of data sets defined over
+irregularly sampled domains, such as cortical surface models.
+Nor does NIfTI-1 provide for storage of the definitions of such domains.
+</a></p>
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q13">
+<b>Q13. Does NIfTI-1 solve the problem of data interchange in fMRI?</b> (Colin Holmes)
+
+</a><p>
+<a name="Q13"><b><i>Yes and no</i></b>.  NIfTI-1 can act as a conduit for image data
+(only) being exchanged between programs in an analysis sequence.
+It does not provide for the long-term and complete storage of image
+<i>and</i> metadata <i>and</i> associated computed results (e.g.,&nbsp;surfaces)
+that is necessary to provide for the complete and
+robust preservation of data for historical, archival or full-fledged
+interlaboratory exchange of neuroimaging data.
+</a></p>
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q14">
+<b>Q14. What is the default orientation?</b> (John Ashburner)
+
+</a><p>
+<a name="Q14">The NIfTI format allows storage on disk to be in either a left- or
+right-handed coordinate system.  However, the format includes an
+implicit
+spatial transformation into a RIGHT-HANDED coordinate system.  This
+transform maps from data coordinates (e.g. column i, row j, slice k),
+into some real world (x,y,z) positions in space.  These positions could
+relate to Talairach-Tournoux (T&amp;T) space, MNI space,
+or patient-based scanner coordinates.
+</a></p>
+
+<p>
+<a name="Q14">For T&amp;T, and MNI coordinates, x increases from left to right, y
+increases
+from posterior to anterior, and z increases in the inferior to superior
+direction.  Directions in the scanner coordinate system are similar.
+MRI
+data is usually exported as DICOM format, which encodes the positions
+and
+orientations of the slices. When data are converted from DICOM to
+NIfTI-1
+format, the relevant information can be determined from the Pixel
+Spacing,
+Image Orientation (Patient) and Image Position (Patient) fields of the
+DICOM files.
+</a></p>
+
+<p>
+<a name="Q14">NIfTI-1 also allows the space of one image to be mapped to that of
+another
+(via a rigid or affine transform).  This is to enable on-the-fly
+resampling
+of registered images. This would allow intra-subject images, collected
+with lots of different orientations or resolutions, to be treated as if
+they are all in register.
+</a></p>
+
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q15">
+<b>Q15. Is the default radiological or neurological orientation?</b> (John Ashburner)
+
+</a><p>
+<a name="Q15">Neurological and radiological conventions only relate to visualization
+of axial images.  They are unrelated to how the data are stored on disk,
+or even how the real-world coordinates are represented.
+</a></p>
+<p>
+<a name="Q15">It is more appropriate to consider whether the real-world coordinate
+system is left- or right-handed (see below). Talairach and Tournoux use
+a right-handed system, whereas the storage convention of ANALYZE files
+is usually considered as left-handed. These coordinate systems are
+mirror
+images of each other (if you are a psychologist, try explaining why
+mirror images appear to be left-right flipped, rather than flipped
+up-down, or back-front).  Transforming between left- and right-handed
+coordinate systems involves flipping, and can not be done by rotations
+alone.
+</a></p>
+
+<center>
+<a name="Q15"><img src="faq_files/faq_handedness.gif" width="481" height="219" align="middle">
+</a></center>
+
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q16">
+<b>Q16. What is a quaternion?</b> (Bob Cox)
+
+</a><p>
+<a name="Q16">A quaternion is a mathematical object that contains 4 real numbers.
+Historically, quaternions were discovered<sup>*</sup> by
+</a><a href="http://www-gap.dcs.st-and.ac.uk/%7Ehistory/Mathematicians/Hamilton.html">William Rowan Hamilton</a> in 1843.
+This antedates the discovery of vectors and matrices, which are more
+widely taught in modern times.
+</p>
+
+<p>
+Like real and complex numbers, quaternions can be added and multiplied.
+Unlike real and complex numbers, the order in which quaternions are
+multiplied makes a difference.  In Hamilton's notation, which is still
+used, a quaternion is represented as the sum of 4 real numbers times
+the basis symbols <b>1</b>, <b>i</b>, <b>j</b>, and&nbsp;<b>k</b>;
+for example:
+</p><pre>   <i>q</i> = a <b>1</b> + b <b>i</b> + c <b>j</b> + d <b>k</b>
+   <i>p</i> = u <b>1</b> + v <b>i</b> + w <b>j</b> + x <b>k</b>
+</pre>
+Quaterions are added component by component.  Multiplication is done
+via the following rules:
+<pre>  <b>1</b> * X =  X   [for any X]
+  <b>i</b> * <b>j</b> =  <b>k</b>
+  <b>j</b> * <b>i</b> = -<b>k</b>   [<i>anti</i>-commutative]
+  <b>j</b> * <b>k</b> =  <b>i</b>
+  <b>k</b> * <b>j</b> = -<b>i</b>   [<i>anti</i>-commutative]
+  <b>k</b> * <b>i</b> =  <b>j</b>
+  <b>i</b> * <b>k</b> = -<b>j</b>   [<i>anti</i>-commutative]
+
+  <b>i</b> * <b>i</b> = -1   [each of <b>i</b>, <b>j</b>, and <b>k</b>   ]
+  <b>j</b> * <b>j</b> = -1   [is a square root of -1]
+  <b>k</b> * <b>k</b> = -1
+</pre>
+So the example quaternions above multiply out to
+<pre>  <i>q</i>*<i>p</i> = (a*u-b*v-c*w-d*x) <b>1</b> + (a*v+b*u+c*x-d*w) <b>i</b>
+       +(a*w-b*x+c*u+d*v) <b>j</b> + (a*x+b*w-c*v+d*u) <b>k</b>
+</pre>
+A principal application of quaternions is to represent 3D rotations.
+How this is done is described in great detail in the
+<a href="http://nifti.nimh.nih.gov/dfwg/src/nifti1.h">NIfTI-1 C header</a>, and
+<a href="http://mathworld.wolfram.com/Quaternion.html">also here</a>.
+The reason this representation is used in NIfTI-1 is to save space
+in the 348-byte header; a&nbsp;quaternion only requires 4 floats (16 bytes)
+to specify, but a 3x3 matrix requires 9 floats (36 bytes).
+The <a href="http://nifti.nimh.nih.gov/dfwg/src/nifti1_io.c">nifti1_io.c</a> I/O library contains functions
+to convert quaternions to rotation matrices, and vice-versa.
+
+<hr noshade="noshade" width="40%" align="left">
+<sup>*</sup><small>I am a strict Platonic Idealist in these matters.</small>
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q17">
+<b>Q17. What alignment information is stored in the NIfTI-1 header?</b> (Christian Haselgrove)
+
+<!------------------------------------------------------------------------
+  <p>
+  [Temporary answer by RW Cox]<br />
+  The NIfTI-1 format allows the storage of two affine transformations from voxel index
+  <tt>(i,j,k)</tt> to spatial coordinates <tt>(x,y,z)</tt>.
+  (An important point is that the <tt>(x,y,z)</tt>
+  value assigned by the header transformations to a voxel 3D index <tt>(i,j,k)</tt>
+  refers to the center of the voxel.)
+  The first transformation ("qform") is intended to encode the orthogonal
+  orientation of the 3D volumes in the master coordinate space; this
+  transformation is encoded as a quaternion, to save space in the header.
+  The second transformation ("sform") is intended to encode a general
+  affine transformation to a standard space (i.e.,&nbsp;Talairach-Tournoux or MNI-152).
+  Each transform can be useful in different contexts: the "qform" for
+  displaying the data on its original grid (what the scanner reported),
+  and the "sform" for displaying the data scaled to a standard space.
+  For example, the "qform" can be constructed from the attributes from a
+  set of DICOM files; the "sform" can be computed and inserted into the
+  header later.
+  </p>
+--------------------------------------------------------------------------->
+
+</a><p>
+<a name="Q17">Volume orientation is given by a transformation that maps voxel indices
+<tt>(i,j,k)</tt> to spatial coordinates <tt>(x,y,z)</tt>, typically anatomical coordinates
+assigned by the scanner.  This transformation ("Method&nbsp;2" in the nifti1.h
+documentation) is generated using the voxel dimensions, a&nbsp;quaternion
+encoding a rotation matrix, and a 3D shift,
+all stored in the NIfTI-1 header; details can be found in the
+nifti1.h comments.
+</a></p>
+
+<p>
+<a name="Q17">The NIfTI-1 header also provides for a general affine transformation,
+separate from that described by Method&nbsp;2.  This transformation
+("Method&nbsp;3") also maps voxel indices <tt>(i,j,k)</tt> to <tt>(x,y,z)</tt>,
+which in this case are typically coordinates in a standard space such
+as the Talairach space.  
+The elements of this transformation matrix are stored in the NIfTI-1
+header.
+For example, the Method 2 transformation
+can be constructed from the attributes from a
+set of DICOM files; the Method 3 transform can be computed offline
+and inserted into the header later.
+</a></p>
+
+<p>
+<a name="Q17">The exact "meaning" of the coordinates given by the Method 2 and Method 3
+transformations is recorded in header fields <tt>qform_code</tt> and <tt>sform_code</tt>,
+ respectively.
+Code values can indicate if the <tt>(x,y,z)</tt> axes are
+</a></p><ul>
+<a name="Q17">  <li> Anatomical coordinaes from the scanner (e.g., the DICOM header)
+  </li><li> Aligned to some anatomical "truth" or standard
+  </li><li> Aligned and warped to Talairach-Tournoux coordinates
+  </li><li> Aligned and warped to MNI-152 coordinates
+</li></a></ul>
+<p></p>
+
+<p>
+<a name="Q17">It is possible that neither transformation is specified
+(i.e.,&nbsp;<tt>qform_code=sform_code=0</tt>), in which case
+we are left with the voxel size in <tt>pixdim[]</tt>, and no orientation is given
+or assumed.  This use ("Method&nbsp;1") is discouraged.
+</a></p>
+
+
+<!----------------------------------------->
+<hr noshade="noshade"><a name="Q18">
+<b>Q18. Does NIfTI-1 support a single file format for header and data?</b> (Bob Cox)
+
+</a><p>
+<a name="Q18"><b><i>Yes</i></b>.
+In this format, the 348 byte header comes first in the file.  The
+image data follows.  The image data offset in the file is specified by the
+<b><tt>vox_offset</tt></b> field in the header.  Note that the <b><tt>magic</tt></b>
+field for a single file is
+"<b><tt>n+1</tt></b>", whereas that for a double file is "<b><tt>ni1</tt></b>".
+This means that it is the contents of the header that determines if the
+data is stored in the same file as the header or a different file.  The
+filename itself (<tt>*.hdr</tt> or <tt>*.nii</tt>) does not necessarily
+specify the double or single storage format.
+</a></p>
+
+<p>
+<a name="Q18">In principle, one could put arbitrary information between the header and
+the image data, by making <b><tt>vox_offset</tt></b> be larger than 348.  This
+is <b>not</b> recommended.  Such a file would not be compatible or
+portable, which is the entire point of the NIfTI-1 effort.
+</a></p>
+
+<p>
+<a name="Q18">We recommend the use of the suffix <b><tt>.nii</tt></b> for a single header+data
+NIfTI-1 format file.
+This suffix does not have any previous meaning attached, unlike
+the more obvious <b><tt>.nif</tt></b> (Navy Image File).  For more information
+on connotations of various suffixes that start with&nbsp;"n", see
+</a><a href="http://www.icdatamaster.com/n.html">http://www.icdatamaster.com/n.html</a>.
+
+
+<!----------------------------------------->
+</p><hr noshade="noshade">
+
+</body></html>

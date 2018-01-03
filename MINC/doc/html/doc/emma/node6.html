@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Reading the Data</TITLE>
+<META NAME="description" CONTENT="Reading the Data">
+<META NAME="keywords" CONTENT="emma">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="emma.css">
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node5.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html103"
+ HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html100"
+ HREF="node5.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html94"
+ HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html102"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html104"
+ HREF="node7.html">Integrating Images</A>
+<B> Up:</B> <A NAME="tex2html101"
+ HREF="node5.html">Some Basic Examples: Masking</A>
+<B> Previous:</B> <A NAME="tex2html95"
+ HREF="node5.html">Some Basic Examples: Masking</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00051000000000000000">
+Reading the Data</A>
+</H2>
+
+<P>
+First, let us open the MINC file:
+<PRE>
+     handle = openimage ('yates_19445.mnc');
+</PRE>Now, we may wish to find out some basic data about the MINC file.  Try
+the following (note that we will need <code>nf</code>, the number of frames,
+below):
+<PRE>
+     ns = getimageinfo (handle, 'NumSlices')
+     nf = getimageinfo (handle, 'NumFrames')
+     getimageinfo (handle, 'ImageSize')
+</PRE>Note that for the study <code>yates_19445</code>, <code>nf</code> will be 21.
+However, it is a good idea to always use <code>getimageinfo</code> to find
+the number of frames rather than assuming that it will always stay the
+same for a particular type of study.
+
+<P>
+Now, let us read in the frame lengths and mid-frame times:
+<PRE>
+     FrameLengths = getimageinfo (handle, 'FrameLengths');
+     MidFTimes = getimageinfo (handle, 'MidFrameTimes');
+</PRE>Note that <code>FrameLengths</code> and <code>MidFTimes</code> are both column
+vectors.  This will be important when performing matrix arithmetic
+with them.
+
+<P>
+Now, we read in all frames for one slice--slice 8 in this case,
+although you can work with whatever slice you like:
+<PRE>
+     slice = 8;
+     PET = getimages (handle, slice, 1:nf);
+</PRE>Note that <EM>this</EM> is the step where MATLAB uses up large amounts of
+memory.  If you execute the MATLAB <code>whos</code> command now, you will
+see that MATLAB's variables alone are taking up nearly 3 megabytes of
+memory.  However, the entire MATLAB workspace generally takes up
+considerably more memory than is reported by <code>whos</code>, because of
+MATLAB's overhead and inefficient memory management scheme.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html103"
+ HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html100"
+ HREF="node5.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html94"
+ HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html102"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html104"
+ HREF="node7.html">Integrating Images</A>
+<B> Up:</B> <A NAME="tex2html101"
+ HREF="node5.html">Some Basic Examples: Masking</A>
+<B> Previous:</B> <A NAME="tex2html95"
+ HREF="node5.html">Some Basic Examples: Masking</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

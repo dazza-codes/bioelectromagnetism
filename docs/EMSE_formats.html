@@ -1,0 +1,302 @@
+<html><!-- #BeginTemplate "/Templates/standard2.dwt" -->
+<head>
+<!-- #BeginEditable "doctitle" --> 
+<title>Source Signal Imaging</title>
+<!-- #EndEditable -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="ssi.css" type="text/css">
+</head>
+
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" background="images/mainback2.gif" link="#336600" vlink="#669933">
+<table background="images/line.gif" width="800" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+     <td width="125"><img src="images/newbrain.gif" width="125" height="100"></td>
+      <td valign="top" background="images/line.gif"> 
+      <table width="500" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="370"><!-- #BeginEditable "top_right" -->
+          <img border="0" src="images/back_ab.gif" width="525" height="100"><!-- #EndEditable --></td>
+          <td width="2" valign="top"></td>
+          </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="8"><img src="images/lp_left.gif" width="139" height="8"></td>
+  </tr>
+</table>
+<table width="797" border="0" cellpadding="0" cellspacing="0"> <!-- big table --> 
+  <tr> 
+    <td width="150" valign="top"> <!-- menu table  -->
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td><img src="images/menu_back_top.gif" width="146" height="17"></td>
+        </tr>
+        <tr> 
+          <td> 
+            <table width="146" border="0" cellspacing="0" cellpadding="15" background="images/menu_back.gif">
+              <tr> 
+                <td><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#FFFFFF">
+                <b><a class="menutext" href="index.html">Home/News</a></b><br>
+                <br>
+                <b><a href="aboutus.html" class="menutext">About Us</a></b><br>
+                <br>
+                <b><a class="menutext" href="products.html">Products</a></b><br>
+                <a class="menutext" href="locator.html">&nbsp; Locator</a><br>
+                <a class="menutext" href="dataeditor.html">&nbsp; Data Editor</a><br>
+                <a class="menutext" href="sourceestimator.html">&nbsp; Source Estimator</a><br>
+                <a class="menutext" href="mrviewer.html">&nbsp; MR Viewer</a><br>
+ 				<a class="menutext" href="imageproc.html">&nbsp; Image Processor</a><br>
+                <a class="menutext" href="visualizer.html">&nbsp; Visualizer</a><br>
+                <br>
+                <b><a href="service.html" class="menutext">Data Analysis Service</a></b><br>
+                <br>
+                <b><a href="download.html" class="menutext">Downloads</a></b><br>
+                <br>
+                <b><a href="faq.html" class="menutext">FAQs</a></b><br>
+                <br>
+                <b>
+                <a class="menutext" style="color: #FFFF00" href="formats.html">Formats</a></b><br>
+                <br>
+                <b><a href="jobs.html" class="menutext">Jobs</a></b><br>
+                <br>
+                <b><a href="contactus.html" class="menutext">Contact Us</a></b><br>
+                <br>
+                <b><a href="papers.html" class="menutext">Papers</a></b><br>
+			 	<br>
+                <b><a href="links.html" class="menutext">Links</a></b><br>
+                <br>
+                <b><a href="forum.html" class="menutext">Forum</a></b><br></font></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr> 
+          <td><img src="images/menu_back_bottom.gif" width="146" height="18"></td>
+        </tr>
+      </table>
+      <table width="100%" border="0" cellspacing="0" cellpadding="12">
+        <tr> 
+          <td width="12" valign="top"><!-- #BeginEditable "below_menu" --> 
+            <p>
+            <img border="0" src="images/logo_small_transparent.gif" align="left" width="62" height="75"></p>
+            <!-- #EndEditable --></td>
+        </tr>
+      </table>
+      <br>
+    </td>
+    <td width="650" valign="top"> 
+      <table width="150%" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+      <!-- #BeginEditable "main" --> 
+      <b> 
+      <font size="4" face="Verdana">File Formats</font></b><font size="4" face="Verdana"></b></font><p>
+      <b>
+      <font face="Verdana" size="2">Overview</font></b><font face="Verdana" size="1"><br>
+      Many EMSE files are stored in ASCII format. This permits the data to be accessed 
+	  with any appropriate text editor or spreadsheet program. For EMSE to read the 
+ 	  files correctly, the file formats described below must be obeyed strictly.
+      <hr color="#9797B6" noshade><FONT face=Verdana></FONT>
+	  </FONT><font face="Verdana">
+	<P><b>File Structure</b></P></FONT><font face="Verdana" size="2">
+	
+	<P><b>File names</b></FONT><FONT face=Arial size=2><br>
+	</font><FONT face=Verdana size=1>
+	File and directory names must be consistent with operating system naming 
+	conventions, but are otherwise at the discretion of the user.</P></font><B>
+	
+	<P><font face="Arial" size="2"></font>
+	<FONT face=Verdana size=2>Extensions<br></font></B>
+    <FONT face=Verdana size=1>
+	File name extensions (.xxx) are mandatory. Extensions for different data 
+	types are shown in Table A-1.</font></P>
+	<FONT face=Verdana size=1>
+	<P>Each file has three parts: prolog, header, and data. Each part may contain 1 
+	or more fields.</P></font>
+	  <FONT face=Verdana size=1>
+	  <B>
+	<P>Prolog</B><br>
+	The first line of each file is the prolog. Forversion3files,it must contain 2 fields: the 
+	version number, and the file type. The version number must be '3'. The file type 
+	is defined in table A.1.Version4 prolog formats are described in the 
+    documention for each file type individually.</P>
+	      
+      <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; font-family:Verdana; font-size:8pt" bordercolor="#808080" width="100%" id="AutoNumber1">
+        <tr>
+          <td width="33%" align="left" bgcolor="#CCCCCC"><b><font size="1">File 
+          Type</font></b></td>
+          <td width="33%" align="center" bgcolor="#CCCCCC"><b><font size="1">
+          Type Code</font></b></td>
+          <td width="34%" align="center" bgcolor="#CCCCCC"><b><font size="1">
+          Extension</font></b></td>
+        </tr>
+	<FONT size=1>
+        <tr>
+          <td width="33%" align="left">
+          <a href="formats_time.html">Data Time 
+          Series</a><sup>*</sup> </td>
+          <td width="33%" align="center">1</td>
+          <td width="34%" align="center">
+          <p align="center">.avg</td>
+        </tr>
+        <tr>
+          <td width="33%" align="left">
+          <a href="formats_probe.html">Probe</a><sup>*</sup></td>
+          <td width="33%" align="center">2</td>
+          <td width="34%" align="center">.elp</td>
+        </tr>
+        <tr>
+          <td width="33%" align="left">Covariance**</font><FONT face=Verdana size=1>
+          </td>
+          </font>
+	<FONT face=Verdana size=2>
+	<FONT face=Verdana size=1>
+          <td width="33%" align="center">4</td>
+          <td width="34%" align="center">.cov</td>
+        </tr>
+        <tr>
+          <td width="33%" align="left">
+          <a href="formats_dipole.html">Dipole</a><sup>*</sup></td>
+          <td width="33%" align="center">8</td>
+          <td width="34%" align="center">.ecd</td>
+        </tr>
+        <tr>
+          <td width="33%" align="left">Source time series<sup>*</sup></td>
+          <td width="33%" align="center">40</td>
+          <td width="34%" align="center">.sts</td>
+        </tr>
+        </font>
+	<FONT size=1>
+        <tr>
+          <td width="33%" align="left">
+          <a href="formats_sourcemap.html">Source 
+          map</a></font></font>***<FONT face=Verdana size=1> </font>
+          </td>
+          <td width="33%" align="center">80</td>
+          <td width="34%" align="center">.smp</td>
+        </tr>
+        <tr>
+          <td width="33%" align="left">Simulation*</td>
+          <td width="33%" align="center">100</td>
+          <td width="34%" align="center">.sim</td>
+        </tr>
+        <tr>
+          <td width="33%" align="left">
+          <a href="formats_head.html">Head 
+          shape</a>*</td>
+          <td width="33%" align="center">200</td>
+          <td width="34%" align="center">.hsp</td>
+        </tr>
+        <tr>
+          <td width="33%" align="left">
+          <a href="formats_wireframe.html">Wireframe</a> 
+          (mesh)<sup>*</sup></td>
+          <td width="33%" align="center">4000</td>
+          <td width="34%" align="center">.wfr</td>
+        </tr>
+        <tr>
+	<FONT face=Verdana size=2>
+	<FONT size=1>
+          <td width="33%" align="left">
+          <a href="formats_montage.html">Montage</a>*</td>
+      </font></font>
+	<FONT face=Verdana size=2>
+	<FONT size=1>
+          <td width="33%" align="center">8000</td>
+      </font></font>
+	<FONT face=Verdana size=2>
+	<FONT size=1>
+          <td width="34%" align="center">.mon</td>
+      </font></font>
+        </tr>
+        <tr>
+          <td width="33%" align="left">
+          <a href="formats_spr.html">Simulation parameters</a>*</td>
+          <td width="33%" align="center">26</td>
+          <td width="34%" align="center">.spr</td>
+        </tr>
+        <tr>
+          <td width="33%" align="left">
+          <a href="formats_lut.html">Lookup Table</a>**</td>
+          <td width="33%" align="center">none</td>
+          <td width="34%" align="center">.lut</td>
+        </tr>
+        <tr>
+          <td width="33%" align="left">
+          <a href="formats_iwd.html">Inward continuation</a>**</td>
+          <td width="33%" align="center">10000(v3), 12(v4)</td>
+          <td width="34%" align="center">.iwd</td>
+        </tr>
+        <tr>
+          <td width="33%" align="left">
+          <a href="formats_inv.html">Inverse operator</a>**</td>
+          <td width="33%" align="center">20</td>
+          <td width="34%" align="center">.inv</td>
+        </tr>
+      </table>
+      <p align="center">Table A.1 <br></p>
+          <p align="left"><font face="Verdana" size="1">*&nbsp;&nbsp;&nbsp; = ASCII file</font><br>
+          **<font face="Verdana" size="1">&nbsp; = binary file</font><br>
+          ***
+          <font face="Verdana" size="1">= mixed ASCII/binary</font><b><p>Minor rev<br>
+      </b>
+      The second line of each file should be the minor revision number. At 
+      present, minor revision numbers are either '1', '2' or '3' depending on 
+      the file type.</p>
+      <b>
+      <p>Header<br>
+      </b>
+      The header field depends on the file type, and is described separately 
+      in the section for that file type.</p>
+      <b>
+      <p>Data<br>
+      </b>
+      The data field depends on the file type, and is described separately in 
+      the section for that file type.</p>
+      <b>
+      <p>Format Conventions<br>
+      </b>
+      In this section of the documentation, string formats are indicated by 
+      using the C language standard i/o formatting convention, e.g., '%f' should 
+      be replaced by a floating point decimal number. In this documentation, all 
+      such formatting strings have a lower case identifying letter. 
+      Unfortunately, the EMSE file interpreter uses the '%' character to denote 
+      optional lines, and these are shown in the documentation with a capital 
+      letter identifier. For example, '%N' is used to indicate that the 
+      immediately following string represents a sensor name.</p>
+      </font><FONT face=Arial size=2>
+	  <font face="Verdana" size="1">
+      <hr color="#9797B6" noshade>
+	  </FONT>
+      <table width="100%" border="0">
+        <tr> 
+          <!--<td><font face="Verdana, Arial, Helvetica, sans-serif" size="2"> <a href="archive.html">News 
+            Archive....</a></font></td>
+          <td><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="future.html">The 
+            Future...</a></font></td> -->
+        </tr>
+      </table>
+      <!-- #EndEditable --></td>
+    <td width="14" valign="top"> 
+      &nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="160" valign="top">&nbsp;</td>
+    <td width="615" valign="top"><font face="Verdana, Arial, Helvetica, sans-serif" size="1">&copy; 
+      2002 by Source Signal Imaging Inc.</font></td>
+    <td width="14" valign="top">&nbsp;</td>
+  </tr>
+</table>
+</body>
+<!-- #EndTemplate --></html>

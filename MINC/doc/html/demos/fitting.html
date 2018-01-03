@@ -1,0 +1,105 @@
+<HTML>
+
+<TITLE>MATLAB Fitting Demo</TITLE>
+
+<H1>MATLAB Fitting Demo</H1>
+
+There are many occasions where a non-linear function must be fitted to
+measured data, and MATLAB provides a very flexible platform for
+performing this analysis.  This document presents an example of
+performing a least squares fit to the standard two-compartment blood
+flow model:
+<p>
+<img src="ratequation.gif">
+<p>
+where K1 is the rate constant of flow from vasculature to tissue,
+k2 is the rat constant of flow from tissue to vasculature, A(t) is the
+activity in the brain, and Ca(t) is the activity in the blood.
+
+<p>
+The MATLAB <TT>leastsq</TT> function provided with the <I>Optimization Toolbox</I> is
+the obvious choice for solving this problem, since it performs a
+non-linear least squares fit to a multi-dimensional problem.  Please
+see the MATLAB documentation for a detailed description of how the
+<TT>leastsq</TT> function works, and what options it accepts.  For our
+purposes, its default tolerances and fitting algorithm
+(Levenberg-Marquardt) will be used.
+
+<p>
+There are several steps to performing a curve fit in MATLAB:
+
+<OL>
+
+<LI> Create a function that returns the values of the function.  In
+this example, we require a function that returns calculated values of
+A(t), based on a given K1 and k2, as well as the measured Ca(t) curve.
+In MATLAB, this is quite straight forward:
+
+<PRE>
+function sim = simrat (vars, times, Ca)
+
+   expfun = exp(-vars(2)*times);
+   conv = nconv(Ca, expfun, times(2)-times(1));
+   conv = conv (1:length(times));
+   sim = vars(1)*conv;
+</PRE>
+This short function returns the values of A(t) given the fitting
+variables (in this case, K1=<TT>vars(1)</TT>, and
+k2=<TT>vars(2)</TT>), a vector of times, and a vector of values for
+Ca.  The first line calculates the exponential part of the equation,
+the second line calculates the convolution, the third line clips the
+convolution to the length that we are interested in, and the fourth
+line sets the return value (K1 times the convolution).
+
+<p>
+<LI> Create a function that returns the values of the residuals (in
+practice, this could be combined with the previous function).  The
+following function gets the values of the function from the previous
+function, and returns the residuals:
+
+<PRE>
+function error = fitrat (vars, ts_even, plasma_even, brain_even)
+
+    sim = simrat (vars, ts_even, plasma_even);
+    error = brain_even - sim;
+</PRE>
+
+<p>
+<LI> Make a call to <TT>leastsq</TT>, passing the name of the function that
+returns the residuals:
+
+<PRE>
+[final, options, f, j] = leastsq ('fitrat', [K1 k2], [], [], ...
+                              ts_even, plasma_even, brain_even);
+</PRE>
+
+<TT>leastsq</TT> will call the function fitrat to get the residuals, and pass
+it [K1 k2] (which will be received in vars), ts_even, plasma_even, and
+brain_even in that order.  The <TT>leastsq</TT> function passes back the final
+parameters (the solution) in final, the options vector (giving such
+information as the number of iterations), and both the residuals and
+the Jacobians at the solution.
+
+<p>
+<LI> Get the 95% confidence interval through a call to the MATLAB
+<TT>confint</TT> function (also from the <I>Optimization Toolbox</I>).
+
+<PRE>
+[conf, var] = confint (final, f, j);
+</PRE>
+
+This function takes the solution to the least squares problem (final),
+the residuals at the solution (f), and the Jacobians at the solution
+(j).  It returns the 95% confidence interval and the variance (please
+see the MATLAB <I>Optimization Toolbox</I> documentation for further
+details, or type <TT>help confint</TT> in MATLAB).
+
+</OL>
+
+<hr>
+
+<ADDRESS>
+This page was created by Mark Wolforth (wolforth@bic.mni.mcgill.ca)
+</ADDRESS>
+
+</HTML>

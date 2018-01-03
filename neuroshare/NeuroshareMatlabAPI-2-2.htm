@@ -1,0 +1,2506 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="Generator" content="Microsoft Word 10 (filtered)"><title>Neuroshare Matlab API</title>
+
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h1
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:16.0pt;
+	font-family:Arial;}
+h2
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:14.0pt;
+	font-family:Arial;
+	font-style:italic;}
+h3
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:13.0pt;
+	font-family:Arial;}
+p.MsoToc1, li.MsoToc1, div.MsoToc1
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoToc2, li.MsoToc2, div.MsoToc2
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:12.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoToc3, li.MsoToc3, div.MsoToc3
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:24.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoNormalIndent, li.MsoNormalIndent, div.MsoNormalIndent
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoList, li.MsoList, div.MsoList
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.25in;
+	margin-bottom:.0001pt;
+	text-indent:-.25in;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoList2, li.MsoList2, div.MsoList2
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	text-indent:-.25in;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoList3, li.MsoList3, div.MsoList3
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.75in;
+	margin-bottom:.0001pt;
+	text-indent:-.25in;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoTitle, li.MsoTitle, div.MsoTitle
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	text-align:center;
+	font-size:28.0pt;
+	font-family:"Times New Roman";
+	font-weight:bold;}
+p.MsoSignature, li.MsoSignature, div.MsoSignature
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:3.0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoBodyText, li.MsoBodyText, div.MsoBodyText
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoBodyTextIndent, li.MsoBodyTextIndent, div.MsoBodyTextIndent
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:.25in;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoSubtitle, li.MsoSubtitle, div.MsoSubtitle
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	text-align:center;
+	font-size:16.0pt;
+	font-family:"Times New Roman";
+	font-weight:bold;}
+p.MsoDate, li.MsoDate, div.MsoDate
+	{margin-top:0in;
+	margin-right:0in;
+
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoBodyTextIndent3, li.MsoBodyTextIndent3, div.MsoBodyTextIndent3
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:.25in;
+	font-size:8.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.Heading1Char
+	{font-family:Arial;
+	font-weight:bold;}
+span.Heading3Char
+	{font-family:Arial;
+	font-weight:bold;}
+p.Byline, li.Byline, div.Byline
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.ShortReturnAddress, li.ShortReturnAddress, div.ShortReturnAddress
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.PPLine, li.PPLine, div.PPLine
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:3.0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.InsideAddressName, li.InsideAddressName, div.InsideAddressName
+	{margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.Code, li.Code, div.Code
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:9.0pt;
+	font-family:Arial;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.Section1
+	{page:Section1;}
+@page Section2
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.Section2
+	{page:Section2;}
+@page Section3
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.Section3
+	{page:Section3;}
+@page Section4
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.Section4
+	{page:Section4;}
+@page Section5
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.25in;}
+div.Section5
+	{page:Section5;}
+@page Section6
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.Section6
+	{page:Section6;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style></head>
+
+<body lang="EN-US" link="blue" vlink="purple">
+
+<div class="Section1">
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;</p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;</p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;</p>
+
+<p class="MsoDate">&nbsp;</p>
+
+<p class="MsoTitle"><a name="_Toc3630284"></a><a name="_Toc3630067"></a><a name="_Toc48446156"></a><a name="_Toc48442450"></a><a name="_Toc48383300">Neuroshare
+Matlab API</a></p>
+
+<p class="MsoTitle"><a name="_Toc48446157"></a><a name="_Toc48442451"></a><a name="_Toc48383301">Rev </a>2.2</p>
+
+<p class="MsoTitle">&nbsp;</p>
+
+<p class="MsoSubtitle"><a name="_Toc48446158"></a><a name="_Toc48442452"></a><a name="_Toc48383302"></a><a name="_Toc3630285">Application Programming Interface
+for<br>
+Accessing Neurophysiology Experiment Data Files</a></p>
+
+<p class="MsoSubtitle">&nbsp;</p>
+
+<p class="MsoSubtitle"><a name="_Toc48446159"></a><a name="_Toc48442453"></a><a name="_Toc48383303"></a><a name="_Toc3630069">December 200</a>3</p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;</p>
+
+</div>
+
+<b><span style="font-size: 16pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></b>
+
+<div class="Section2">
+
+<p class="MsoSubtitle" align="left" style="margin-bottom: 0.0001pt; text-align: left;"><a name="_Toc48446160"></a><a name="_Toc48442454"></a><a name="_Toc48383304"><span style="font-family: Arial;">Neuroshare Matlab Application
+Programming Interface</span></a></p>
+
+<p class="MsoNormal" style="margin-top: 0in;">&nbsp;</p>
+
+<p class="MsoNormal">The Neuroshare Matlab import functions allow users to easily
+import neural data files into Matlab for further analysis. These functions were
+developed as part of an SBIR program funded by the National Institute for
+Neural Disorders and Stroke and it is currently being administered by
+Cyberkinetics, Inc. (formerly Bionic Technologies, LLC).&nbsp; The goals of the SBIR
+program are to create open Application Programming Interface (API) library and
+format standards for neurophysiological experiment data and create a set of
+free, open-source software tools for low-level handling and processing of
+neurophysiological data.</p>
+
+<p class="MsoNormal">&nbsp;</p>
+
+</div>
+
+<span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><br clear="all" style="page-break-before: always;">
+</span>
+
+<div class="Section3">
+
+<p class="MsoNormal"><b><span style="font-size: 16pt; font-family: Arial;">Table of
+Contents</span></b></p>
+
+<p class="MsoNormal">&nbsp;</p>
+
+<p class="MsoToc1"><span class="MsoHyperlink"><a href="#_Toc61163395">Version
+History<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">1</span></a></span></p>
+
+<p class="MsoToc1"><span class="MsoHyperlink"><a href="#_Toc61163396">Installation
+of the Matlab API<span style="color: windowtext; display: none; text-decoration: none;"> </span><span style="color: windowtext; display: none; text-decoration: none;">2</span></a></span></p>
+
+<p class="MsoToc1"><span class="MsoHyperlink"><a href="#_Toc61163397">Representation
+of Data Types<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">3</span></a></span></p>
+
+<p class="MsoToc1"><span class="MsoHyperlink"><a href="#_Toc61163398">Structure of
+File Data<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">4</span></a></span></p>
+
+<p class="MsoToc1"><span class="MsoHyperlink"><a href="#_Toc61163399">Summary of
+Library Functions<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">5</span></a></span></p>
+
+<p class="MsoToc1"><span class="MsoHyperlink"><a href="#_Toc61163400">Library
+Function Returns<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">6</span></a></span></p>
+
+<p class="MsoToc1"><span class="MsoHyperlink"><a href="#_Toc61163401">Description
+of Library Functions<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">7</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163402">ns_SetLibrary
+– Assign the DLL to use for all function calls<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">7</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163403">ns_GetLibraryInfo
+- Get library version information<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">8</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163404">ns_OpenFile -
+Opens a neural data file<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">9</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163405">ns_GetFileInfo
+- Retrieves file information and entity counts<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">10</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163406">ns_CloseFile
+- Closes a neural data file<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">11</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163407">ns_GetEntityInfo
+- Retrieves general entity information and type<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">12</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163408">ns_GetEventInfo
+- Retrieves information specific to event entities<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">13</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163409">ns_GetEventData
+- Retrieves event data by index<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">14</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163410">ns_GetAnalogInfo
+- Retrieves information specific to analog entities<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">15</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163411">ns_GetAnalogData
+- Retrieves analog data by index<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">16</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163412">ns_GetSegmentInfo
+- Retrieves information specific to segment entities<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">17</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163413">ns_GetSegmentSourceInfo
+- Retrieves information about the sources that generated the segment data<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">18</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163414">ns_GetSegmentData
+- Retrieves segment data by index<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">19</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163415">ns_GetNeuralInfo
+- Retrieves information for neural event entities<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">20</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163416">ns_GetNeuralData
+- Retrieves neural event data by index<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">21</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163417">ns_GetIndexByTime
+- Retrieves an entity index by time<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">22</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163418">ns_GetTimeByIndex
+- Retrieves time range from entity indexes<span style="color: windowtext; display: none; text-decoration: none;">. </span><span style="color: windowtext; display: none; text-decoration: none;">23</span></a></span></p>
+
+<p class="MsoToc2"><span class="MsoHyperlink"><a href="#_Toc61163419">ns_GetLastErrorMsg
+- Retrieves the extended error message for the last error<span style="color: windowtext; display: none; text-decoration: none;"> </span><span style="color: windowtext; display: none; text-decoration: none;">24</span></a></span></p>
+
+<p class="MsoToc1"><span class="MsoHyperlink"><a href="#_Toc61163420">Example
+Matlab Program<span style="color: windowtext; display: none; text-decoration: none;">.. </span><span style="color: windowtext; display: none; text-decoration: none;">25</span></a></span></p>
+
+<p class="MsoNormal">&nbsp;</p>
+
+</div>
+
+<span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><br clear="all" style="page-break-before: always;">
+</span>
+
+<div class="Section4">
+
+<h1><a name="_Toc61163395">Version History</a></h1>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">Version 2.2:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Added:</p>
+
+<p class="MsoNormal" style="margin-left: 1in;">ns_SetLibrary: A function to
+specify which DLL to use for future commands</p>
+
+<p class="MsoNormal" style="margin-left: 1in;">&nbsp;</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">Version 2.1:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bug
+fixes:</p>
+
+<p class="MsoNormal" style="margin-left: 1.5in; text-indent: -0.25in;"><span style="font-family: Symbol;">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>ns_GetNeuralInfo &amp; ns_GetSegmentData: Units classified as
+‘noise’ are now loaded in with the right unit ID.</p>
+
+<p class="MsoNormal" style="margin-left: 1.5in; text-indent: -0.25in;"><span style="font-family: Symbol;">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>nsNEVLibrary.dll: The sample group packets are counted correctly
+(previously occasionally returned 0). Simultaneously saved NEV experimental
+data packets are read in the correct time order. Entities with no data are
+included with an ItemCount of zero.</p>
+
+<p class="MsoNormal" style="margin-left: 1in;">Software was compiled with Matlab
+Version 6.1.</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">Version 2.0:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bug
+fixes:</p>
+
+<p class="MsoNormal" style="margin-left: 1.5in; text-indent: -0.25in;"><span style="font-family: Symbol;">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>ns_GetLibraryInfo: Function returns the correct structure; some
+items were swapped before.</p>
+
+<p class="MsoNormal" style="margin-left: 1.5in; text-indent: -0.25in;"><span style="font-family: Symbol;">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>ns_GetNeuralData: Function does not return all zeros anymore as
+timestamps when one of the input arguments’ indices is invalid.</p>
+
+<p class="MsoNormal" style="margin-left: 1.5in; text-indent: -0.25in;"><span style="font-family: Symbol;">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>ns_GetSegmentData: Function now returns the correct values when
+data is imported for the second time.</p>
+
+<p class="MsoNormal" style="margin-left: 1.5in; text-indent: -0.25in;"><span style="font-family: Symbol;">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>Library now works with all Matlab versions 6.x and should not
+return the “Invalid mex-file” error message when loading the library.</p>
+
+<p class="MsoNormal" style="margin-left: 1in;">Returned structures do not use
+Hungarian notation anymore in variable / field names (e.g. changed from ‘szEntityLabel’
+to ‘EntityLabel’ and ‘dwItemCount’ to ‘ItemCount’). </p>
+
+<p class="MsoNormal" style="margin-left: 1in;">Continuous analog data files for
+sample groups of the Cerebus system (*.nsx files) can now be imported together
+with their *.nev files.</p>
+
+<p class="MsoNormal" style="margin-left: 1in;">Software was compiled with Matlab
+Version 6.1.</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">Version 1.1:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bug
+fixes:</p>
+
+<p class="MsoNormal" style="margin-left: 1.5in; text-indent: -0.25in;"><span style="font-family: Symbol;">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>ns_GetAnalogInfo does not cause a segmentation fault anymore.</p>
+
+<p class="MsoNormal" style="margin-left: 1in;">Software was compiled with Matlab
+Version 6.5.</p>
+
+<p class="MsoNormal" style="margin-left: 1in;">&nbsp;</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">Version 1.0:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This
+is the first implementation of the Matlab API that conforms to the Neuroshare
+API Specification 1.0.</p>
+
+<p class="MsoNormal" style="margin-left: 1in;">Software was compiled with Matlab
+Version 6.5.</p>
+
+<p class="MsoNormal">&nbsp;</p>
+
+<b><span style="font-size: 16pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></b>
+
+<h1><a name="_Toc61163396"></a><a name="Installation"></a>Installation of the
+Matlab API</h1>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">The API consists of the
+following files:</p>
+
+</div>
+
+<span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><br clear="all" style="page-break-before: auto;">
+</span>
+
+<div class="Section5">
+
+<p class="MsoNormal" style="margin-top: 0in;">mexprog.dll</p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_SetLibrary.m</p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_GetLibraryInfo.m</p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_OpenFile.m</p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_GetFileInfo.m</p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_CloseFile.m</p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_GetEntityInfo.m</p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_GetEventInfo.m</p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_GetEventData.m</p>
+
+<p class="MsoNormal" style="margin-top: 0in;"><span lang="DE">ns_GetAnalogInfo.m</span></p>
+
+<p class="MsoNormal" style="margin-top: 0in;"><span lang="DE">ns_GetAnalogData.m</span></p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_GetSegmentInfo.m</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 189.35pt; text-indent: -189.35pt;">ns_GetSegmentSourceInfo.m</p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_GetSegmentData.m</p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_GetNeuralInfo.m</p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_GetNeuralData.m</p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_GetIndexByTime.m</p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_GetTimeByIndex.m</p>
+
+<p class="MsoNormal" style="margin-top: 0in;">ns_GetLastErrorMsg.m</p>
+
+</div>
+
+<span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><br clear="all" style="page-break-before: auto;">
+</span>
+
+<div class="Section6">
+
+<p class="MsoNormal" style="margin: 12pt 0in 6pt 0.25in; text-indent: -0.25in;">There is no installation program
+but the files should be installed in the following locations:</p>
+
+<p class="MsoNormal" style="margin: 6pt 0in 6pt 0.25in;"><b>mexprog.dll</b> – The mexprog.dll file should either be
+in the same directory as the m&#8209;scripts or they should be on the Matlab
+path.</p>
+
+<p class="MsoNormal" style="margin: 6pt 0in 6pt 0.25in;"><b>m-scripts</b> – The m-scripts should be on the Matlab
+path or in the current working directory. </p>
+
+<p class="MsoNormal" style="margin: 6pt 0in 6pt 0.25in;">&nbsp;</p>
+
+<p class="MsoNormal" style="margin: 12pt 0in 6pt 0.25in; text-indent: -0.25in;">In addition to the aboved named
+files, you will also need to obtain a Neuroshare Library from your instrument
+vendor. This DLL can be placed anywhere on your system. It is easiest if you
+place the Vendor Neuroshare DLL in the same directory as the <i>m-scripts; </i>otherwise,
+you will need to know its location for the <i>ns_SetLibrary</i> function call.</p>
+
+<p class="MsoNormal" style="margin: 12pt 0in 6pt 0.25in; text-indent: -0.25in;">&nbsp;</p>
+
+<p class="MsoNormal" style="margin: 12pt 0in 6pt 0.25in; text-indent: -0.25in;">Many of the vendor Neuroshare DLLs
+can be obtained from <a href="http://www.neuroshare.org/DLLLinks.html">www.neuroshare.org/DLLLinks.html</a>.</p>
+
+<b><span style="font-size: 16pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></b>
+
+<h1><a name="_Toc61163397">Representation of Data Types</a></h1>
+
+<p class="MsoNormal">There are 17 different functions that allow the user to
+import certain parts of the data file or to search the data file for specific
+events. Neural data is divided into four basic categories or “Entity Types”: </p>
+
+<p class="MsoNormal" style="margin: 6pt 0.25in;"><b>Event Entities</b> – Discrete events that consist
+of small time-stamped text or binary data packets.&nbsp; These are used to represent
+data such as trial markers, experimental events, digital input values, and
+embedded user comments.</p>
+
+<p class="MsoNormal" style="margin: 6pt 0.25in;"><b>Analog Entities</b> – Continuous, sampled data that
+represent digitized analog signals such as position, force, and other
+experiment signals, as well as electrode signals such as EKG, EEG and
+extracellular microelectrode recordings.</p>
+
+<p class="MsoNormal" style="margin: 6pt 0.25in;"><b>Segment Entities</b> – Short, time-stamped segments
+of digitized analog signals in which the segments are separated by variable
+amounts of time.&nbsp; Segment Entities can contain data from more than one source.
+They are intended to represent discontinuous analog signals such as
+extracellular spike waveforms from electrodes or groups of electrodes.</p>
+
+<p class="MsoNormal" style="margin: 6pt 0.25in;"><b>Neural Event Entities</b> – Timestamps of event and
+segment entitities that are known to represent neural action potential firing
+times.&nbsp; For example, if a segment entity contains sorted neural spike
+waveforms, each sorted unit is also exported as a neural entity.</p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">The API definition also provides
+functions for querying information about data files and the entities contained
+in the data file.&nbsp; This information includes labels, metric units, timings,
+etc.</p>
+
+<b><span style="font-size: 16pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></b>
+
+<h1><a name="_Toc33344087"></a><a name="_Toc3630292"></a><a name="_Toc61163398">Structure
+of File Data</a></h1>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">Data entities in a data file are
+enumerated by the library from 1 to (total number of entities).&nbsp; This is
+different than the enumeration of the similar C++ Neuroshare API.&nbsp; The
+enumeration was changed because, in contrast to C++, all arrays in Matlab start
+at one.&nbsp; Each entity is one of the four types discussed in the <i>Representation
+of Dates Types</i> section above and there are no requirements for ordering
+entities by type.</p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;"><img border="0" width="603" height="171" src="NeuroshareMatlabAPI-2-2_files/image001.gif"></p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">Each entity contains one or more
+indexed data entries that are ordered by increasing time.&nbsp; The API provides
+functions for querying the characteristics of the file, the number of entities,
+and the characteristics of each entity, including the number of indexes for each
+entity.</p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">The structure of the indexed
+data entries for each entity depends on the entity type:</p>
+
+<p class="MsoNormal" style="margin: 6pt 0.25in;">Each index of an <b>event entity</b> refers to a
+timestamp and data combination. The number of indexes is equal to the number of
+event entries for that event entity in the data file.</p>
+
+<p class="MsoNormal" style="margin: 6pt 0.25in;">Each index of an <b>analog entity</b> refers to a
+specific digitized sample.&nbsp; Each analog entity contains samples from a single
+channel and the number of indexes is equal to the number of samples present for
+that channel.</p>
+
+<p class="MsoNormal" style="margin: 6pt 0.25in;">Each index of a <b>segment entity</b> refers to a
+short, time-stamped segment of analog data from one or more sources.&nbsp; The number
+of indexes is equal to the number of entries for that segment entity in the
+file.</p>
+
+<p class="MsoNormal" style="margin: 6pt 0.25in;">Each index of a <b>neural event entity</b> refers to a
+timestamp for each neural event.&nbsp; Each neural event entity contains event times
+for a single neural source.&nbsp; The number of indexes is equal to the number of
+entries for that neural event entity.</p>
+
+<b><span style="font-size: 16pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></b>
+
+<h1><a name="_Toc33344090"></a><a name="_Toc3630293"></a><a name="_Toc61163399">Summary
+of Library Functions</a></h1>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">The API library functions are
+organized in this document according to the following categories:</p>
+
+<p class="MsoNormal" style="margin: 3pt 0in 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>Managing DLLs</u></p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_SetLibrary</b>
+– assign the DLL to be used for future function calls</p>
+
+<p class="MsoNormal" style="margin: 3pt 0in 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>Library Version Information</u></p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetLibraryInfo</b>
+– get library version information</p>
+
+<p class="MsoNormal" style="margin: 3pt 0in 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>Managing Neural Data Files</u></p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_OpenFile</b> –
+opens a neural data file</p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetFileInfo </b>–
+retrieves file information and entity counts</p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_CloseFile </b>–
+closes a neural data file</p>
+
+<p class="MsoNormal" style="margin: 3pt 0in 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>General Entity Information</u></p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetEntityInfo </b>–
+retrieves general entity information and type</p>
+
+<p class="MsoNormal" style="margin: 3pt 0in 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>Accessing Event Entities</u></p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetEventInfo </b>–
+retrieves information specific to event entities</p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetEventData</b>
+– retrieves event data by index</p>
+
+<p class="MsoNormal" style="margin: 3pt 0in 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>Accessing Analog Entities</u></p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetAnalogInfo</b>
+– retrieves information specific to analog entities</p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetAnalogData</b>
+– retrieves analog data by index</p>
+
+<p class="MsoNormal" style="margin: 3pt 0in 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>Accessing Segment Entities</u></p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetSegmentInfo</b>
+– retrieves information specific to segment entities</p>
+
+<p class="MsoNormal" style="margin-left: 189.35pt; text-indent: -189.35pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetSegmentSourceInfo
+</b>– &nbsp; retrieves information about the sources that generated<br>
+the segment data</p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetSegmentData</b>
+– retrieves segment data by index</p>
+
+<p class="MsoNormal" style="margin: 3pt 0in 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>Accessing Neural Event Entities</u></p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetNeuralInfo</b>
+– retrieves information for neural event entities</p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetNeuralData</b>
+– retrieves neural event data by index</p>
+
+<p class="MsoNormal" style="margin: 3pt 0in 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>Searching Entity Indexes</u></p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetIndexByTime</b>
+– retrieves an entity index by time</p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetTimeByIndex</b>
+– retrieves time range from entity indexes</p>
+
+<p class="MsoNormal" style="margin: 3pt 0in 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>Searching Entity Indexes</u></p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>ns_GetLastErrorMsg</b>
+– retrieves the most recent text error message</p>
+
+<b><span style="font-size: 16pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></b>
+
+<h1><a name="_Toc33344092"></a><a name="_Toc61163400">Library Function Returns</a></h1>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">All of the Neuroshare API
+functions return a 32-bit integer declared as type ns_RETURN.&nbsp; This value is
+always zero (ns_OK) if the function succeeds.&nbsp; The complete enumeration of the
+return values are listed below: </p>
+
+<p class="MsoNormal" style="margin-bottom: 6pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>Return Code</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>Value</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>Description</u></p>
+
+<p class="MsoNormal" style="margin-bottom: 3pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ns_OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Function successful</p>
+
+<p class="MsoNormal" style="margin-bottom: 3pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ns_LIBERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Generic
+linked library error</p>
+
+<p class="MsoNormal" style="margin-bottom: 3pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ns_TYPEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Library
+unable to open file type</p>
+
+<p class="MsoNormal" style="margin-bottom: 3pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+File
+access or read error</p>
+
+<p class="MsoNormal" style="margin-bottom: 3pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ns_BADFILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Invalid
+file handle passed to function</p>
+
+<p class="MsoNormal" style="margin: 6pt 0in 3pt 3.5in; text-indent: -3.5in;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ns_BADENTITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Invalid
+or inappropriate entity identifier specified</p>
+
+<p class="MsoNormal" style="margin-bottom: 3pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ns_BADSOURCE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Invalid
+source identifier specified</p>
+
+<p class="MsoNormal" style="margin-bottom: 3pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ns_BADINDEX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Invalid
+entity index specified</p>
+
+<p class="MsoNormal">&nbsp;</p>
+
+<span class="Heading1Char"><span style="font-size: 16pt;"><br clear="all" style="page-break-before: always;">
+</span></span>
+
+<h1><a name="_Toc61163401">Description of Library Functions</a></h1>
+
+<p class="MsoNormal">&nbsp;</p>
+
+<h2><a name="_Toc61163402">ns_SetLibrary – </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Assign the
+DLL to use for all function calls</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT] = ns_SetLibrary(‘filename.dll’)</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Assign the DLL to use for all function names</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully found. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_LIBERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Library
+Error</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2><a name="_Toc61163403">ns_GetLibraryInfo - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Get library
+version information</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT, nsLibraryInfo] = ns_GetLibraryInfo</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Obtains information about the API library.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal">nsLibraryInfo&nbsp;&nbsp;&nbsp; ns_LIBRARYINFO structure to receive library
+
+version information.</p>
+
+<p class="MsoNormal" style="text-indent: 0.5in;"><span style="font-size: 10pt;">struct
+ns_LIBRARYINFO</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>LibVersionMaj;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Major
+version number of this library.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>LibVersionMin;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Minor
+version number of this library.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>APIVersionMaj;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Major
+version # of API specification that library complies with</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>APIVersionMin;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Minor
+version # of API specification that library complies with</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>Description</i><i>[64]</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Text
+description of the library.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>Creator</i><i>[64]</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Name
+of library creator.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>Time_Year;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Year
+of last modification date</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>Time_Month;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Month
+(0-11; January = 0) of last modification date</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>Time_Day;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Day
+of the month (1-31) of last modification date</span></p>
+
+<p class="MsoBodyTextIndent3" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>Flags</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Additional
+library flags.</span></p>
+
+<p class="MsoBodyTextIndent3" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>MaxFiles</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Maximum
+number of files library can simultaneously open.</span></p>
+
+<p class="MsoBodyTextIndent3" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>FileDescCount</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Number
+of valid description entries in the following array.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">ns_FILEDESC <i>FileDesc[16]</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Text
+descriptor of files that the DLL can interpret.</span></p>
+
+<p class="MsoNormal" style="margin-left: 171.35pt; text-indent: -135.35pt;"><span style="font-size: 10pt;">struct ns_FILEDESC</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>Description[32];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Text
+description of the file type or file family</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>Extension[8];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Extension
+used on PC, Linux, and Unix Platforms.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>MacCodes[8];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Application
+and Type Codes used on Mac Platforms.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>MagicCode[16];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>null-terminated
+code used at the file beginning.</span></p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_LIBERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Library
+Error</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2><a name="_Toc61163404">ns_OpenFile - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Opens a
+neural data file</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT, hFile] = ns_OpenFile(‘filename.ext’)</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Opens the file specified by filename and returns a file
+handle, hFile, that is used to access the opened file.</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">filename&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pointer to a null-terminated string that
+specifies the name of the file to open. </p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to the
+opened file.</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_TYPEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Library
+unable to open file type</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File
+access or read error </p>
+
+<h3>Remarks:</h3>
+
+<p class="MsoNormal">All files are opened for read-only, as no writing
+capabilities have been implemented.&nbsp; If the command succeeds in opening the
+file, the application should call ns_CloseFile for each open file before
+terminating.</p>
+
+<p class="MsoNormal">This function has to be called before any other Neuroshare
+function is called.</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2><a name="_Toc61163405">ns_GetFileInfo - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Retrieves
+file information and entity counts</span></h2>
+
+<h3><span lang="DE">Usage:</span></h3>
+
+<p class="MsoNormal"><span lang="DE">[ns_RESULT, nsFileInfo] =
+ns_GetFileInfo(hFile)</span></p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Provides general information about the data file referenced
+by hFile. This information is returned in the structure nsFileInfo.</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to an
+open file.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal">nsFileInfo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ns_FILEINFO structure that receives the
+file information.</p>
+
+<p class="MsoNormal" style="margin-left: 2.5in; text-indent: -2in;"><span style="font-size: 10pt;">struct ns_FILEINFO</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>FileType[32]</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Human
+readable manufacturer’s file type descriptor.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>EntityCount</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Number
+of entities in the data file.&nbsp; This number is used to<br>
+enumerate all the entities in the data file from 1 to dwEntityCount<br>
+and to identify each entity in function calls (dwEntityID).</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>TimeStampResolution</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Minimum
+timestamp resolution in seconds.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>TimeSpan;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Time
+span covered by the data file in seconds.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>AppName[64]</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Information
+about the application that created the file.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>Time_Year;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Year.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>Time_Month;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Month
+(0-11; January = 0).</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>Time_Day;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Day
+of the month (1-31).</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>Time_Hour;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Hour
+since </span><span style="font-size: 10pt;">midnight</span><span style="font-size: 10pt;"> (0-23).</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>Time_Min;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Minute
+after the hour (0-59).</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>Time_Sec;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Seconds
+after the minute (0-59).</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>Time_MilliSec;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Milliseconds
+after the second (0-1000).</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>FileComment[256]</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Comments
+embedded in the source file.</span></p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File
+access or read error</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADFILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+file handle passed to function</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2><a name="_Toc61163406">ns_CloseFile - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Closes a
+neural data file</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">ns_RESULT = ns_CloseFile(hFile)</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Closes a previously opened file specified by the file handle
+hFile.</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to an
+open file.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_BADFILE&nbsp;&nbsp; Invalid
+file handle passed to function.</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2><a name="_Toc61163407">ns_GetEntityInfo - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Retrieves
+general entity information and type</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT, nsEntityInfo] = ns_GetEntityInfo(hFile, EntityID)
+</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Retrieves general information about the entity, EntityID,
+from the file referenced by the file handle hFile.&nbsp; The information is passed
+in the structure nsEntityInfo.</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to an
+open file.</p>
+
+<p class="MsoNormal">EntityID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Identification number of the entity in
+the data file.</p>
+
+<p class="MsoNormal">The total number of entities in the data file is provided by
+the member EntityCount in the ns_FILEINFO structure.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal">nsEntityInfo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ns_ENTITYINFO structure to receive entity
+information</p>
+
+<p class="MsoNormal" style="margin-left: 2.75in; text-indent: -2.25in;"><span style="font-size: 10pt;">struct ns_ENTITYINFO</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>EntityLabel[32]</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Specifies
+the label or name of the entity.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>EntityType</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Flag
+specifying the type of entity data recorded on this channel.<br>
+It can be one of the following:</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in;"><span style="font-size: 10pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unknown
+entity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in;"><span style="font-size: 10pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Event
+entity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in;"><span style="font-size: 10pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Analog
+entity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+2</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in;"><span style="font-size: 10pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Segment
+entity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in;"><span style="font-size: 10pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Neural
+event entity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>ItemCount</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Number
+of data items for the specified entity in the file.&nbsp; </span></p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1.5in;">ns_BADFILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+file handle passed to function</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADENTITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+or inappropriate entity identifier specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File
+access or read error</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2><a name="_Toc61163408">ns_GetEventInfo - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Retrieves
+information specific to event entities</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT, nsEventInfo] = ns_GetEventInfo(hFile, EntityID)</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Retrieves information from the file referenced by hFile
+about the Event Entity, EntityID, in the structure nsEventInfo.</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to an
+open file.</p>
+
+<p class="MsoNormal">EntityID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Identification number of the entity in
+the data file.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal">nsEventInfo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ns_EVENTINFO structure to receive the Event
+Entity information.</p>
+
+<p class="MsoNormal" style="margin-left: 2.75in; text-indent: -2.25in;"><span style="font-size: 10pt;">struct ns_EVENTINFO</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>EventType</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+A
+type code describing the type of event data associated with<br>
+each indexed entry.&nbsp; The following information types are<br>
+allowed:</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 3in;"><span style="font-size: 10pt;">Text
+string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 3in;"><span style="font-size: 10pt;">Comma
+separated values&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 3in;"><span style="font-size: 10pt;">8-bit
+binary values&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 3in;"><span style="font-size: 10pt;">16-bit
+binary values&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 3in;"><span style="font-size: 10pt;">32-bit
+binary values&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>MinDataLength</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Minimum
+number of bytes that can be returned for an Event.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>MaxDataLength</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Maximum
+number of bytes that can be returned for an Event.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>CSVDesc[128]</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Provides
+descriptions of the data fields for CSV Event Entities.</span></p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1.5in;">ns_BADFILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+file handle passed to function</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADENTITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+or inappropriate entity identifier specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File
+access or read error</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2>&nbsp;<a name="_Toc61163409">ns_GetEventData - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Retrieves
+event data by index</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT, TimeStamp, Data, DataSize] = ns_GetEventData(hFile,
+EntityID, Index)</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Returns the data values from the file referenced by hFile
+and the Event Entity EntityID.&nbsp; The Event data entry specified by Index is
+written to Data and the timestamp of the entry is returned to TimeStamp.&nbsp; Upon
+return of the function, the value at DataSize contains the number of bytes
+actually written to Data.</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to an
+open file.</p>
+
+<p class="MsoNormal">EntityID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Identification number of the entity in
+the data file.</p>
+
+<p class="MsoNormal">Index&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The
+index number of the requested Event
+data item.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal">TimeStamp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Variable that receives the timestamp of the
+Event data item.</p>
+
+<p class="MsoNormal">Data&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Variable that receives the data for the
+Event entry.</p>
+
+<p class="MsoNormal" style="margin-left: 1in;">The format of data is specified by
+the member EventType in ns_EVENTINFO.</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">DataSize&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Variable
+that receives the actual number of bytes of data retrieved in the data buffer.</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_BADFILE&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+file handle passed to function</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADENTITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+or inappropriate entity identifier specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADINDEX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+entity index specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File
+access or read error</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2>&nbsp;<a name="_Toc61163410">ns_GetAnalogInfo - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Retrieves
+information specific to analog entities</span></h2>
+
+<h3><span lang="DE">Usage:</span></h3>
+
+<p class="MsoNormal"><span lang="DE">[ns_RESULT, nsAnalogInfo] =
+ns_GetAnalogInfo(hFile, EntityID)</span></p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Returns information about the Analog Entity associated with EntityID
+and the file hFile.&nbsp; The information is stored in nsAnalogInfo structure.</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to an
+open file.</p>
+
+<p class="MsoNormal">EntityID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Identification number of the entity in
+the data file.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal">nsAnalogInfo&nbsp;&nbsp;&nbsp; ns_ANALOGINFO structure to receive the
+Analog Entity information.</p>
+
+<p class="MsoNormal" style="margin-left: 0.5in;"><span style="font-size: 10pt;">struct
+ns_ANALOGINFO</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>SampleRate;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>The
+sampling rate in Hz used to digitize the analog values.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>MinVal</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Minimum
+possible value of the input signal.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>MaxVal;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Maximum
+possible value of the input signal.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>Units[16];</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Specifies
+the recording units of measurement.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>Resolution;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Minimum
+input step size that can be resolved.&nbsp; <br>
+(E.g. for a +/- 1 Volt 16-bit ADC this value is .0000305).</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>LocationX;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+X
+coordinate of source in meters.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>LocationY;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Y
+coordinate of source in meters.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>LocationZ;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Z
+coordinate of source in meters.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>LocationUser;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Additional
+manufacturer-specific position information <br>
+(e.g. electrode number in a tetrode).</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>HighFreqCorner;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i>High
+frequency cutoff<i> </i>in Hz of the source signal filtering.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>HighFreqOrder;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Order
+of the filter used for high frequency cutoff.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>HighFilterType[16];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i>Type
+of filter used for high frequency cutoff (text format).</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>LowFreqCorner;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Low
+frequency cutoff<i> </i>in Hz of the source signal filtering.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>LowFreqOrder;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Order
+of the filter used for low frequency cutoff.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>LowFilterType[16];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i>Type
+of filter used for low frequency cutoff (text format)..</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>ProbeInfo[128];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Additional
+text information about the signal source.</span></p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_BADFILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+file handle passed to function</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADENTITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+or inappropriate entity identifier specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File
+access or read error</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2><a name="_Toc61163411">ns_GetAnalogData - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Retrieves
+analog data by index</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT, ContCount, Data] = ns_GetAnalogData(hFile, EntityID,
+StartIndex, IndexCount)</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Returns the data values associated with the Analog Entity
+indexed EntityID in the file referenced by hFile.&nbsp; The index of the first data
+value is StartIndex and the requested number of data samples is given by IndexCount.&nbsp;
+The requested data values are returned in the variable Data.&nbsp; Although the
+samples in an analog entity are indexed, they are not guaranteed to be
+continuous in time and may contain gaps between some of the indexes.&nbsp; When the
+requested data is returned, ContCount contains the number of continuous data
+points present in the data (starting at StartIndex).&nbsp; If the index range
+specified by StartIndex and IndexCount contains invalid indexes, the function
+will return ns_BADINDEX.</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to an
+open file.</p>
+
+<p class="MsoNormal">EntityID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Identification number of the Analog
+Entity in the data file.</p>
+
+<p class="MsoNormal">StartIndex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Starting index number of the analog data
+item.</p>
+
+<p class="MsoNormal">IndexCount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Number of analog values to retrieve.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal">ContCount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Number of continuous data values starting
+with</p>
+
+<p class="MsoNormal">StartIndex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This field is ignored if the pointer is
+set to NULL.</p>
+
+<p class="MsoNormal">Data&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Array of double precision values to
+receive the analog data.</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_BADENTITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+or inappropriate entity identifier specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADINDEX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+entity index or range specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File
+access or read error</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2>&nbsp;<a name="_Toc61163412">ns_GetSegmentInfo - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Retrieves
+information specific to segment entities</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT, nsSegmentInfo] = ns_GetSegmentInfo(hFile, EntityID)</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Retrieves information on the Segment Entity, EntityID, in
+the file referenced by the handle hFile. The information is written to nsSegmentInfo.
+</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to an
+open file.</p>
+
+<p class="MsoNormal">EntityID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Identification number of the entity in
+the data file.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal" style="margin-left: 1.25in; text-indent: -1.25in;">nsSegmentInfo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ns_SEGMENTINFO
+structure that receives segment information for the requested Segment Entity.</p>
+
+<p class="MsoNormal" style="margin-left: 2.75in; text-indent: -2.25in;"><span style="font-size: 10pt;">struct ns_SEGMENTINFO</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>SourceCount;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Number
+of sources contributing to the Segment Entity data.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in;"><span style="font-size: 10pt;">For
+example, with tetrodes, this number would be 4.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>MinSampleCount</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Minimum
+number of samples in each Segment data item.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>MaxSampleCount</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Maximum
+number of samples in each Segment data item.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>SampleRate;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>The
+sampling rate in Hz used to digitize source signals.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>Units[32];</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Specifies
+the recording units of measurement.</span></p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_BADFILE&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+file handle passed to function</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADENTITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+or inappropriate entity identifier specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File
+access or read error</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2><a name="_Toc61163413">ns_GetSegmentSourceInfo - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Retrieves information about the sources that generated the
+segment data</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT, nsSegmentSourceInfo] = ns_GetSegmentSourceInfo(hFile,
+EntityID, SourceID)</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Retrieves information about the source entity, SourceID, for
+the Segment Entity identified by EntityID, from the file referenced by the
+handle hFile. The information is written to the nsSegmentSourceInfo.</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to an
+open file.</p>
+
+<p class="MsoNormal">EntityID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Identification number of the Segment
+Entity.</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">SourceID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Identification
+number of the Segment Entity source (integer from 0 to SourceCount – 1 which
+can be found in ns_SEGMENTINFO structure).</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal" style="margin-left: 1.75in; text-indent: -1.75in;">nsSegmentSourceInfo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ns_SEGSOURCEINFO
+structure that receives information about the source.</p>
+
+<p class="MsoNormal" style="margin-left: 2.75in; text-indent: -2.25in;"><span style="font-size: 10pt;">struct ns_SEGSOURCEINFO</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>MinVal</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Minimum
+possible value of the input signal.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>MaxVal;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Maximum
+possible value of the input signal.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>Resolution;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Minimum
+input step size that can be resolved.&nbsp; <br>
+(e.g. for a +/- 1 Volt 16-bit ADC this value is .0000305).</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>SubSampleShift</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time
+difference (in sec) between the nominal timestamp<br>
+and the actual sampling time of the source probe.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>LocationX;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+X
+coordinate of source in meters.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>LocationY;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Y
+coordinate of source in meters.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>LocationZ;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Z
+coordinate of source in meters.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>LocationUser;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Additional
+manufacturer-specific position information <br>
+(e.g. electrode number in a tetrode).</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>HighFreqCorner;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i>High
+frequency cutoff<i> </i>in Hz of the source signal filtering.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>HighFreqOrder;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Order
+of the filter used for high frequency cutoff.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>HighFilterType[16];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i>Type
+of filter used for high frequency cutoff (text format).</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>LowFreqCorner;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Low
+frequency cutoff<i> </i>in Hz of the source signal filtering.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double <i>LowFreqOrder;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Order
+of the filter used for low frequency cutoff.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>LowFilterType[16];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i>Type
+of filter used for low frequency cutoff (text format).</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>ProbeInfo[128];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Additional
+text information about the signal source.</span></p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_BADFILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+file handle passed to function</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADENTITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+or inappropriate entity identifier specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADSOURCE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+source identifier specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File
+access or read error</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2><a name="_Toc61163414">ns_GetSegmentData - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Retrieves
+segment data by index</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT, TimeStamp, Data, SampleCount, UnitID] = </p>
+
+<p class="MsoNormal" style="margin-left: 2.5in; text-indent: 0.5in;">ns_GetSegmentData(hFile,
+EntityID, Index)</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Returns the Segment data values in entry Index of the entity
+EntityID from the file referenced by hFile. The data values are returned in
+Data. The timestamp of the entry id returned in TimeStamp.&nbsp; The number of
+samples written to Data is returned in SampleCount.&nbsp; The data variable should
+be accessed as a 2-dimensional array for samples and sources.</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to an
+open file.</p>
+
+<p class="MsoNormal">EntityID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Identification number of the entity in
+the data file.</p>
+
+<p class="MsoNormal">Index&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Index number of the requested Segment
+data item.</p>
+
+<h3>Remarks:</h3>
+
+<p class="MsoNormal">A zero unit ID is unclassified, then follow unit 1, 2, 3,
+etc. Unit 255 is noise.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal">TimeStamp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time stamp of the requested Segment data
+item.</p>
+
+<p class="MsoNormal">Data&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Variable to receive the requested data.</p>
+
+<p class="MsoNormal">SampleCount&nbsp;&nbsp;&nbsp; Number of samples returned in the data
+variable.</p>
+
+<p class="MsoNormal">UnitID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unit classification code for the Segment
+Entity.</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_BADFILE&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+file handle passed to function</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADENTITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+or inappropriate entity identifier specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADINDEX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+entity index specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File
+access or read error</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2><a name="_Toc61163415">ns_GetNeuralInfo - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Retrieves
+information for neural event entities</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT, nsNeuralInfo] = ns_GetNeuralInfo(hFile, EntityID)</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Retrieves information on Neural Event entity EntityID from
+the file referenced by hFile.&nbsp; The information is returned in the nsNeuralInfo.</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to an
+open file.</p>
+
+<p class="MsoNormal">EntityID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Identification number of the entity in
+the data file.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal">nsNeuralInfo&nbsp;&nbsp;&nbsp;&nbsp; ns_NEURALINFO structure to receive the
+Neural Event information.</p>
+
+<p class="MsoNormal" style="margin-left: 2.75in; text-indent: -2.25in;"><span style="font-size: 10pt;">struct ns_NEURALINFO</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double<b> </b><i>SourceEntityID;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Optional
+ID number of a source entity.&nbsp; If the Neural Event is<br>
+derived from other entity sources, such as Segment Entities, this<br>
+value links the Neural Event back to the source.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">double<b> </b><i>SourceUnitID;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Optional
+sorted unit ID number used in the source Entity.</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 2.75in; text-indent: -2in;"><span style="font-size: 10pt;">char <i>ProbeInfo[128];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</i>Text
+information about the source probe or the label of a<br>
+source Segment Entity.</span></p>
+
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1.5in;">ns_BADFILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+file handle passed to function</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADENTITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+or inappropriate entity identifier specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File
+access or read error</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2><a name="_Toc61163416">ns_GetNeuralData - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Retrieves
+neural event data by index</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT, Data] = ns_GetNeuralData(hFile, EntityID, StartIndex,
+IndexCount)</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Returns an array of timestamps for the neural events of the
+entity specified by EntityID and referenced by the file handle hFile.&nbsp; The
+index of the first timestamp is StartIndex and the requested number of
+timestamps is given by IndexCount.&nbsp; The timestamps are returned in Data.</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to an
+open file.</p>
+
+<p class="MsoNormal">EntityID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Identification number of the entity in
+the data file.</p>
+
+<p class="MsoNormal">StartIndex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; First index number of the requested Neural
+Events timestamp.</p>
+
+<p class="MsoNormal">IndexCount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Number of timestamps to retrieve.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal">Data&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Array of double precision timestamps.</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_BADFILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+file handle passed to function</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADENTITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+or inappropriate entity identifier specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADINDEX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+entity index specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File
+access or read error</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2>&nbsp;<a name="_Toc61163417">ns_GetIndexByTime - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Retrieves
+an entity index by time</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT, Index] = ns_GetIndexByTime(hFile, EntityID,
+Time, Flag)</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Searches in the file referenced by hFile for the data item
+identified by the index EntityID.&nbsp; The flag specifies whether to locate the
+data item that starts before or after the time Time.&nbsp; The index of the
+requested data item is returned in Index.</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to an
+open file.</p>
+
+<p class="MsoNormal">EntityID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Identification number of the entity in
+the data file.</p>
+
+<p class="MsoNormal">Time&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Time of the data to search for</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">Flag&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Flag
+specifying whether the index to be retrieved belongs to the data item occurring
+before or after the specified time Time.&nbsp; The flags are defined:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">Return the data
+entry occurring before&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -1</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 3pt 1in; text-indent: 0.5in;"> and inclusive of the time dTime.</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">Return
+the data entry
+occurring at
+or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 3pt 1in; text-indent: 0.5in;">closest to the time dTime.</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">Return the data entry
+occurring after and&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +1</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">inclusive of the time
+dTime.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal">Index&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Variable to receive the entry index.</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_BADFILE&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+file handle passed to function</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADENTITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+or inappropriate entity identifier specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File
+access or read error</p>
+
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADINDEX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unable
+to find an valid index</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2><a name="_Toc61163418">ns_GetTimeByIndex - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Retrieves
+time range from entity indexes</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT, Time] = ns_GetTimeByIndex(hFile, EntityID,
+Index)</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Retrieves the timestamp for the entity identified by EntityID
+and numbered Index, from the data file referenced by hFile. The timestamp is
+returned in Time.</p>
+
+<h3>Parameters:</h3>
+
+<p class="MsoNormal">hFile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Handle/Identification number to an
+open file.</p>
+
+<p class="MsoNormal">EntityID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Identification number of the entity in
+the data file.</p>
+
+<p class="MsoNormal">Index&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Index of the requested data.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal">Time&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Variable to receive the timestamp.</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_BADFILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+file handle passed to function</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADENTITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+or inappropriate entity identifier specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_BADINDEX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Invalid
+entity index specified</p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 1in; text-indent: 0.5in;">ns_FILEERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File
+access or read error</p>
+
+<b><i><span style="font-size: 14pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></i></b>
+
+<h2><a name="_Toc61163419">ns_GetLastErrorMsg - </a><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; font-weight: normal; font-style: normal;">Retrieves
+the extended error message for the last error</span></h2>
+
+<h3>Usage:</h3>
+
+<p class="MsoNormal">[ns_RESULT, LastError] = ns_GetLastErrorMsg</p>
+
+<h3>Description:</h3>
+
+<p class="MsoNormal">Returns the last error message in text form to LastError.
+This function should be called immediately following a function whose return
+value indicates that an error occurred. The maximum size of the error message
+text is 256 characters.</p>
+
+<h3>Return Values:</h3>
+
+<p class="MsoNormal">LastError&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Variable to receive the extended last
+error message.</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: -1in;">ns_RESULT&nbsp;&nbsp;&nbsp;&nbsp; This
+function returns ns_OK if the file is successfully opened. Otherwise one of the
+following error codes is generated:</p>
+
+<p class="MsoNormal" style="margin-left: 1in; text-indent: 0.5in;">ns_LIBERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Library
+error</p>
+
+<b><span style="font-size: 16pt; font-family: Arial;"><br clear="all" style="page-break-before: always;">
+</span></b>
+
+<h1><a name="_Toc61163420">Example Matlab Program</a></h1>
+
+<p class="Code">function Example()</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">% Prompt for the correct DLL</p>
+
+<p class="Code">disp(' ');&nbsp; % Blank line</p>
+
+<p class="Code">DLLName = input('DLL Name: ', 's');</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">% Load the appropriate DLL</p>
+
+<p class="Code">[nsresult] = ns_SetLibrary(DLLName);</p>
+
+<p class="Code">if (nsresult ~= 0)</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; disp('DLL was not found!');</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; return</p>
+
+<p class="Code">end</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">% Find out the data file from user</p>
+
+<p class="Code">disp(' ');&nbsp; % Blank line</p>
+
+<p class="Code">filename = input('Data file: ', 's');</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">% Load data file and display some info about the file</p>
+
+<p class="Code">% Open data file</p>
+
+<p class="Code">[nsresult, hfile] = ns_OpenFile(filename);</p>
+
+<p class="Code">if (nsresult ~= 0)</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; disp('Data file did not open!');</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; return</p>
+
+<p class="Code">end</p>
+
+<p class="Code">clear filename;</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">% Get file information</p>
+
+<p class="Code">[nsresult, FileInfo] = ns_GetFileInfo(hfile);</p>
+
+<p class="Code">% Gives you EntityCount, TimeStampResolution and TimeSpan</p>
+
+<p class="Code">if (nsresult ~= 0)</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; disp('Data file information did not load!');</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; return</p>
+
+<p class="Code">end</p>
+
+<p class="Code">&nbsp;&nbsp; </p>
+
+<p class="Code">% Define some variables needed for firing rates</p>
+
+<p class="Code">stepsize = 0.02; % seconds</p>
+
+<p class="Code">stepsize1 = 0.1; % seconds</p>
+
+<p class="Code">if FileInfo.TimeSpan &gt; 150&nbsp; % Limit the timespan shown in the
+graphs to 150 seconds</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; totaltime = 150;</p>
+
+<p class="Code">else</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; totaltime = FileInfo.TimeSpan; % seconds</p>
+
+<p class="Code">end</p>
+
+<p class="Code">time = 0 : stepsize : totaltime;&nbsp;&nbsp; % Initialize time axis for gaussian
+plot</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">% Build catalogue of entities</p>
+
+<p class="Code">[nsresult, EntityInfo] = ns_GetEntityInfo(hfile, [1 : 1 : FileInfo.EntityCount]);</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">NeuralList = find([EntityInfo.EntityType] == 4);&nbsp;&nbsp;&nbsp; % List of EntityIDs
+needed to retrieve the information and data</p>
+
+<p class="Code">SegmentList = find([EntityInfo.EntityType] == 3);</p>
+
+<p class="Code">AnalogList = find([EntityInfo.EntityType] == 2);</p>
+
+<p class="Code">EventList = find([EntityInfo.EntityType] == 1);</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">% How many of a particular entity do we have</p>
+
+<p class="Code">cNeural = length(NeuralList);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">cSegment = length(SegmentList);</p>
+
+<p class="Code">cAnalog = length(AnalogList);</p>
+
+<p class="Code">cEvent = length(EventList);</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">clear FileInfo;</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">if (cNeural == 0)</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; disp('No neural events available!');</p>
+
+<p class="Code">end</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">if (cSegment == 0)</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; disp('No segment entities available!');</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; return;&nbsp;&nbsp;&nbsp;&nbsp; % It does not make sense to continue in this
+particular analysis</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % if there are no segment entities.</p>
+
+<p class="Code">end</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">if (cAnalog == 0)</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; disp('No analog entities available!');</p>
+
+<p class="Code">end</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">if (cEvent == 0)</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; disp('No event entities available!');</p>
+
+<p class="Code">end</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">% Have user pick a channels or channels for further analysis</p>
+
+<p class="Code">% Show the user how many channels are available</p>
+
+<p class="Code">disp(' ');</p>
+
+<p class="Code">disp(['There are ' num2str(cSegment) ' channels.']);</p>
+
+<p class="Code">disp(' ');</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">channel = input('Which data channels would you like to display?
+(e.g. 1 or [1 2 3])');</p>
+
+<p class="Code">if (channel &gt; cSegment)&nbsp; % Have to check that the selected
+channel actually exists</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; disp('Channel does not exist');</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; return</p>
+
+<p class="Code">end</p>
+
+<p class="Code">clear cNeural cSegment;</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">% Throw away entity infos we don't need to save memory</p>
+
+<p class="Code">EntityInfo = rmfield(EntityInfo, 'EntityType');</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">%</p>
+
+<p class="Code">% Load the waveform data and do the analysis</p>
+
+<p class="Code">%</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">% These three functions are for demonstration purposes</p>
+
+<p class="Code">[nsresult, nsSegmentInfo] = ns_GetSegmentInfo(hfile, SegmentList(channel));</p>
+
+<p class="Code">[nsresult, nsSegmentSourceInfo] = ns_GetSegmentSourceInfo(hfile, SegmentList(channel),
+1);</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">% Load the first 100 waveforms on each selected channel</p>
+
+<p class="Code">[nsresult, timestamps_wf, waveforms, sampleCount, unitIDs] = ns_GetSegmentData(hfile,
+SegmentList(channel), [1 : 1 : 100]);</p>
+
+<p class="Code">clear timestamps_wf sampleCount;</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">clear nsSegmentInfo;</p>
+
+<p class="Code">clear nsSegmentSourceInfo;</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">%</p>
+
+<p class="Code">% Reduce the data set to only the first 150 seconds of data</p>
+
+<p class="Code">%</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">NeuralLabels = strvcat(EntityInfo(NeuralList).EntityLabel);</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">for cChannel = 1 : 1 : length(channel),</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % Have to figure out which Neural entities correspond with
+the selected segment entities</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; list = strmatch(EntityInfo(SegmentList(channel(cChannel))).EntityLabel,
+NeuralLabels, 'exact');</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % Retrieve the data</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; [nsresult, NeuralInfo] = ns_GetNeuralInfo(hfile, NeuralList(list));</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; [nsresult, NeuralData] = ns_GetNeuralData(hfile, NeuralList(list),
+1, max([EntityInfo(NeuralList(list)).ItemCount]));</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; if (totaltime == 150)</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ind = find(NeuralData &lt;= 150);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; else</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ind = [1:1:size(NeuralData, 1) * size(NeuralData, 2)];</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; end</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % Get the neural timestamps</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; NeuralData = reshape(NeuralData, size(NeuralData, 1) * size(NeuralData,
+2), 1);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; timestamps(cChannel) = {NeuralData(ind)};</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % Match the neural events with their unit ID</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; temp = ones(length(ind) / length(list), 1) * [NeuralInfo(:).SourceUnitID];</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; units(cChannel) = {temp(:)};</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % Remember how many neural events were found</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; ItemCount(cChannel) = length(timestamps{cChannel});</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; NeuralData(:) = [];</p>
+
+<p class="Code">end</p>
+
+<p class="Code">clear NeuralData SegmentLabels NeuralLabels NeuralInfo;</p>
+
+<p class="Code">EntityInfo = rmfield(EntityInfo, 'ItemCount');</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">% Close data file. Should be done by the library but just in
+case. </p>
+
+<p class="Code">ns_CloseFile(hfile);</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">% Unload DLL</p>
+
+<p class="Code">clear mexprog;</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">for cChannel = 1 : 1 : length(channel),&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % Plot neural activity on that channel</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; figure;</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; subplot(4, 1, 1);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % Plot the first 100 waveforms on that channel and apply
+different</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % colors for different unitIDs</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % Unclassified units</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; ind = find(unitIDs(:, cChannel) == 0);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; if (~isempty(ind))</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; plot(waveforms(:, ind, cChannel), 'Color', [.8 .8 .8]); %
+in grey</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hold on;</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; end</p>
+
+<p class="Code">&nbsp; &nbsp;&nbsp;% Classified Units</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; Colors = ['y' 'm' 'c' 'r' 'g'];</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; for cUnit = 1 : 1 : 5,</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ind = find(unitIDs(:, cChannel) == cUnit);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (~isempty(ind))</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; plot(waveforms(:, ind, cChannel), Colors(cUnit));</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hold on;</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;end</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; end</p>
+
+<p class="Code">&nbsp;</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; axis tight;</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; title(['Waveforms - ' EntityInfo(SegmentList(channel(cChannel))).EntityLabel]);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; ylabel('Voltage (uV)');</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; subplot(4, 1, 2);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % This creates lines for the unit </p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; a = repmat(timestamps{cChannel}', 2, 1);&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% X Values
+don't change so just two rows with the same values</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; b = repmat([0.6; 1.4], 1, ItemCount(cChannel));&nbsp;&nbsp; % Start and
+end points of each line</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % This plots the lines for each unit</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % Unclassified units</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; ind = find(units{cChannel} == 0);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; hold on;</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; if (~isempty(ind))</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; plot(a(:, ind), b(:, ind), 'Color', [.8 .8 .8]); % in
+grey</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; end</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % Classified Units</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; for cUnit = 1 : 1 : 5,</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ind = find(unitIDs(:, cChannel) == cUnit);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (~isempty(ind))</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;plot(a(:, ind), b(:, ind), Colors(cUnit));</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; end</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; title(['Raster plot - ' EntityInfo(SegmentList(channel(cChannel))).EntityLabel]);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; xlabel('Time [s]');</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; set(gca, 'ytick', []);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; xlim([0 round(totaltime)]);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; clear a b;</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % Use a sliding window 100 ms (delta t) long (equivalent to
+linear kernel)</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; dt = 0.1; % ms</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; for i = totaltime : -stepsize : 0,</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gaussdata(round(i / stepsize + 1)) = sum(exp(-(i -
+timestamps{cChannel}(find((timestamps{cChannel} &gt; i - 4 * dt) &amp;
+(timestamps{cChannel} &lt; i + 4 * dt)))').^2 / (2 * dt^2))) / sqrt(2 * 3.1415)
+/ dt;</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; end</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; % Throw away firing rates higher than 200 because they are
+not real and show up at the beginning</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; gaussdata(find(gaussdata &gt; 200)) = 0;</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; subplot(4, 1, 3);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; plot(time, gaussdata(1 : length(time)));</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; title(['Approximated firing rate (Gaussian) - ' EntityInfo(SegmentList(channel(cChannel))).EntityLabel]);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; xlabel('Time [s]');</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; ylabel('Rate [Hz]');</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; clear gaussdata;</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">&nbsp;&nbsp; &nbsp;% Interspike Interval Distribution (1 ms resolution)</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; if (length(timestamps{cChannel}) &gt; 1)&nbsp; % Have to make sure
+that we have at least two data points</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nbins = 500; % ms</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dtime = (timestamps{cChannel}(2 : end) - timestamps{cChannel}(1
+: end - 1)) * 1000;</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; subplot(4, 1, 4);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bar(histc(dtime, 1 : 1 : nbins));</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; axis tight;</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+title(['Interspike Interval Histogram - '
+EntityInfo(SegmentList(channel(cChannel))).EntityLabel]);</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xlabel('Time [ms]');</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;ylabel('# Spikes');</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; clear dtime;</p>
+
+<p class="Code">&nbsp;&nbsp;&nbsp; end&nbsp;&nbsp;&nbsp; </p>
+
+<p class="Code">end</p>
+
+</div>
+
+</body></html>

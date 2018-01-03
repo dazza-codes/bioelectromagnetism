@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0066)http://neuro.psychologie.uni-oldenburg.de/~rutschmann/mosaic_html/ -->
+<HTML><HEAD><TITLE></TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2715.400" name=GENERATOR>
+<META content="Roland Marcus Rutschmann" name=AUTHOR>
+<META content=20020419;18534200 name=CREATED>
+<META content="Roland Marcus Rutschmann" name=CHANGEDBY>
+<META content=20020419;20210100 name=CHANGED></HEAD>
+<BODY>
+<H1>Converting Siemens' "Mosaic" files with medcon</H1>
+<P>(Sorry for the poor layout)</P>
+<H3>What is the mosaic format</H3>
+<P>From what a Philipps engineer told me DICOM is supposed to be able to handle 
+3 and 4dimensional data eventually (xmedcon can handle 3 dim data in several 
+slices in one file). But there is no conformance statement out (which I think is 
+not a real reason since none of the producers feel too obligated to any 
+standard) so at the moment only one slice per file is DICOM standard.</P>
+<P>Siemens built a format formally complying to the standard by setting the 
+slices together in one plane.</P>
+<H3>Why this web page</H3>
+<P>Even though the Siemens' idea was/is good, it was problematic converting the 
+data into other formats. While (X)medcon did a great job in converting normal 
+1slice/1file data it couldn't handle mosaic data. So I took the libmdc from 
+medcon put a hack around it and could convert mosaic files. This wild hack was 
+put proberly into medcon by Eric Nolf (thanks a lot) around April 2001. 
+Everything was fine.</P>
+<P>After a discussion in the spm-mailing list I couldn't be nice and quiet 
+(having a solution for my own data) but had to write to everybody why they 
+didn't use the solution medcon gave them. They sent me some data. Needles to say 
+Siemens created a whole new version of their mosaic DICOM files :-((((</P>
+<H3>Patches that might work</H3>
+<P>I created a patch which is a diff to the sources of xmedcon-0.7.5. just unzip 
+it in your source-directory with</P>
+<P>"patch -p1 <A 
+href="http://neuro.psychologie.uni-oldenburg.de/~rutschmann/mosaic_html/xmedcon-mosaic.diff.gz">xmedcon-mosaic.diff</A>" 
+do and recompile. If you don't like the compiler I have a <A 
+href="http://neuro.psychologie.uni-oldenburg.de/~rutschmann/mosaic_html/medcon">static 
+linux binary</A> of medcon here. Please test and give me some feedback (I don't 
+expect everything to work right now)</P>
+<P>While for my dicom-files (Vision, SPI Rel.1) the “-mosaic” option does 
+automaticly find the number of slices and if the recording was ascending, 
+descending or interlaced, I haven't found a tag in the new example I got (Sonata 
+Numaris 4). I hope I found the right thing for getting the dimensions but 
+haven't got a clue about where the information of how many slices where recorded 
+and if they were interlaced is hidden. You have to correct manually with the 
+"-e" option. (e.g. for the example I got there were 21 slices in a 5x5 matrix so 
+you would convert to analize like this “medcon -c anlz -e '1...21' -f 
+myfile.ima” for interlaced files do something like '-e 1 5 2 6 3 ....' depending 
+on the number and order of slices)</P>
+<H3>How can I help (and get an easy solution with the next patch)</H3>
+<OL>
+  <LI>
+  <P>If you want to convert your mosaic files in one step with medcon do the 
+  following:</P>
+  <LI>
+  <P>Download and install xmedcon from <A 
+  href="http://xmedcon.sourceforge.net/">http://xmedcon.sourceforge.net/</A> and 
+  install:</P>
+  <LI>
+  <P>Convert your files using medcon and the "-mosaic" version. If that worked 
+  continue at 5.</P>
+  <LI>
+  <P>If it didn't work get the <A 
+  href="http://neuro.psychologie.uni-oldenburg.de/~rutschmann/mosaic_html/xmedcon-mosaic.diff.gz">patch</A> 
+  or the patched <A 
+  href="http://neuro.psychologie.uni-oldenburg.de/~rutschmann/mosaic_html/medcon">medcon 
+  binary</A> and try again.</P>
+  <LI>
+  <P>Do medcon -f myfile. You get something like:</P></LI></OL>
+<P>FILE 001 : dic3.ima FORMAT: DICOM </P>
+<P 
+style="MARGIN-BOTTOM: 0cm">*******************************************************************************</P>
+<P style="MARGIN-BOTTOM: 0cm">***************************************</P>
+<P style="MARGIN-BOTTOM: 0cm">Pass #1: through DICOM reader</P>
+<P style="MARGIN-BOTTOM: 0cm">***************************************</P>
+<P style="MARGIN-BOTTOM: 0cm">(0002,0000) UL[1] MetaElementGroupLength: 208 (4 
+bytes)</P>
+<P style="MARGIN-BOTTOM: 0cm">(0002,0001) OB[1] FileMetaInformationVersion: (2 
+bytes)</P>
+<P style="MARGIN-BOTTOM: 0cm">(0002,0002) UI[1] MediaStorageSOPClassUID: 
+[1.2.840.10008.5.1.4.1.1.4] (26 bytes)</P>
+<P style="MARGIN-BOTTOM: 0cm"><BR></P>
+<OL>
+  <LI>
+  <P>If conversion didn't work or it did work but some of the relevant tags are 
+  different from the one's listed below, please send me an email with the 
+  following information (please don't send any examples unless I ask for them. I 
+  want my email to stay functional)</P>
+  <P style="MARGIN-BOTTOM: 0cm">I could convert my data with original/patched 
+  medcon</P>
+  <P style="MARGIN-BOTTOM: 0cm">my mosaic files have the following 
+tags.</P></LI></OL>
+<P><BR><BR></P>
+<P>My files (16x16 matrix with 16 slices and a 64x64 pixelres) have the 
+following tags:</P>
+<P style="MARGIN-BOTTOM: 0cm">(0008,0008) CS[3] ImageType: [ORIGINAL] [PRIMARY] 
+[OTHER] (22 bytes)</P>
+<P style="MARGIN-BOTTOM: 0cm">(0008,1090) LO[1] ManufacturersModelName: 
+[MAGNETOM VISION] (16 bytes)</P>
+<P style="MARGIN-BOTTOM: 0cm">(0009,0010) LO[1] PrivateCreator: [SPI RELEASE 1] 
+(14 bytes)</P>
+<P style="MARGIN-BOTTOM: 0cm">(0018,1020) LO[1] SoftwareVersions: [VB33D] (6 
+bytes)</P>
+<P style="MARGIN-BOTTOM: 0cm">(0018,1310) US[4] AcquisitionMatrix: 64 0 0 64 (8 
+bytes)</P>
+<P style="MARGIN-BOTTOM: 0cm">(0019,1230) LO[1] ImageFileName: [ 64] (6 bytes) 
+(really mosaic width resol.)</P>
+<P style="MARGIN-BOTTOM: 0cm">(0019,1231) IS[1] DefSpaFltFamily: [ 64] (6 bytes) 
+(really mosaic height resol.)</P>
+<P style="MARGIN-BOTTOM: 0cm">The mosaic number and Interlace info are stored in 
+</P>
+<P style="MARGIN-BOTTOM: 0cm">(0021,1331) and (0021,134f) (only visible in the 
+ACR part at the end of the medcon output)</P>
+<P style="MARGIN-BOTTOM: 0cm"><BR></P>
+<P style="MARGIN-BOTTOM: 0cm">The example file I got (5x5 matrix 21 slices , 
+64x64 pixel in one mosaic slice)</P>
+<P style="MARGIN-BOTTOM: 0cm">(0008,0008) CS[4] ImageType: [ORIGINAL] [PRIMARY] 
+[M] [MOSAIC] (26 bytes)</P>
+<P style="MARGIN-BOTTOM: 0cm">(0008,1090) LO[1] ManufacturersModelName: [Sonata] 
+(6 bytes)</P>
+<P style="MARGIN-BOTTOM: 0cm">(0018,1020) LO[1] SoftwareVersions: [4VA15A] (6 
+bytes)</P>
+<P style="MARGIN-BOTTOM: 0cm">(0018,1310) US[4] AcquisitionMatrix: 64 0 0 64 (8 
+bytes)</P>
+<P style="MARGIN-BOTTOM: 0cm">(0029,1008) CS[1] Unknown: [IMAGE NUM 4] (12 
+bytes)</P>
+<P style="MARGIN-BOTTOM: 0cm"><BR></P>
+<P style="MARGIN-BOTTOM: 0cm"><BR></P></BODY></HTML>

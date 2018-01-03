@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0053)http://www.mrc-cbu.cam.ac.uk/Imaging/analyze_fmt.html -->
+<HTML><HEAD><TITLE>CAMBRIDGE IMAGERS - Analyze data format</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY text=#000000 vLink=#800080 aLink=#ff0000 link=#0000ff bgColor=#ffffff 
+background="CAMBRIDGE IMAGERS - Analyze data format_files/lashley.jpg">
+<CENTER>
+<H1>The Analyze data format</H1></CENTER>
+<P>This page gives some information and links about the the Analyze image data 
+format. Analyze images are the primary image format used in SPM. SPM also uses 
+some extensions to the basic format, which are described below. 
+<P>
+<H2>What is Analyze?</H2><A 
+href="http://www.mrc-cbu.cam.ac.uk/Imaging/analyze.html" 
+target=display_area>Analyze</A> is an image processing program, written by The 
+Biomedical Imaging Resource at the Mayo Foundation. The Analyze data format is 
+used by the Analyze program, and now by a wide variety of other software, 
+including SPM. 
+<P>
+<H2>The basic Analyze (7.5) format</H2>There are two Analyze formats. One, by 
+much the more common, is Analyze 7.5. This is the format used by SPM, and 
+discussed on this page. The other is <A 
+href="http://www.mayo.edu/bir/Software/Analyze/Analyze1.html">Analyze AVW</A>, 
+the format used in the latest version of the Analyze program. We won't discuss 
+AVW format any further, as it not yet used by many programs other than Analyze 
+AVW itself. 
+<P>An Analyze (7.5) format image consists of two files, and image and a header 
+file. If the image is for example named "brain", then the files for that image 
+will be called "brain.img" and "brain.hdr". The .img file contains the numbers 
+that make up the information in the image. The .hdr file contains information 
+about the img file, such as the volume represented by each number in the image 
+(voxel size) and the number of pixels in the X, Y and Z directions. This header 
+contains fields of text, floating point, integer and other information. 
+<P>The SPM99 help system describes the SPM / Analyze image format - see <A 
+href="http://www.mrc-cbu.cam.ac.uk/Imaging/spm_format.html" 
+target=display_area>an html version of the SPM99 help on image format</A>. 
+<P>These links also describe the Analyze format in more detail:
+<UL>
+  <LI><A href="http://www.mayo.edu/bir/PDF/ANALYZE75.pdf">Mayo/Analyze 
+  description of file format</A>. 
+  <LI><A href="http://www.fil.ion.ucl.ac.uk/spm/distrib.html#AzeFmt">SPM/FIL 
+  description of format</A> (this is a less detailed description that the SPM99 
+  help system provides - see above). 
+  <P>However, note that the SPM version of the Analyze format uses a couple of 
+  the header fields in an unconventional way (see below) </P></LI></UL>
+<P>
+<H2>SPM modifications of the basic analyze format</H2>SPM uses the basic Analyze 
+7.5 format, but with three modifications / extensions. These are: 
+<P>
+<UL>
+  <LI>
+  <H3>The scalefactor</H3>SPM extends the Analyze format by using a scaling 
+  factor for the image from the header.<BR>The purpose of the scale factor is to 
+  allow values in images that cannot be stored using the data type of the .img 
+  file. For example, with an 8 bit image (.img file), all the values in the file 
+  have to be between 0 and 255. SPM extends this, by using the scale factor to 
+  'scale' the values in the img file. Thus, to get actual voxel values for the 
+  image, you read in the numbers from the .img file (0-255 in an 8 bit image), 
+  then multiply these values by the value from the scale factor, from the 
+  header.<BR>The field in the header that SPM uses for the scale factor is 
+  image_dimension.funused1 (see the header field definitions at the <A 
+  href="http://www.mayo.edu/bir/PDF/ANALYZE75.pdf">Mayo/Analyze 
+  site</A>).<BR>The scale factor is useful if the voxel values in the individual 
+  images have meaning either relative to other images, or in some physiological 
+  sense. For example, water activation PET images may have voxel values in 
+  counts per voxel per second, and binding maps calculated for ligands may be 
+  physiological values. These numbers are unlikely to range from 0-255 (which is 
+  the range of an image with values stored in 8 bit), but can be rescaled to 
+  this range by using the scale factor. An alternative would be floating point 
+  images, but these are a) larger and b) not displayable in the earlier (pre 
+  AVW) versions of Analyze. 
+  <P></P>
+  <LI>
+  <H3>The image origin</H3>SPM uses one of the Analyze header fields in an 
+  unorthodox way. This is the Originator field (data_history.originator - see <A 
+  href="http://www.mayo.edu/bir/PDF/ANALYZE75.pdf">Mayo/Analyze site</A>). In 
+  the basic format, this is meant to be 10 bytes of text. In SPM, this space is 
+  used to contain three short (two byte) integers. These numbers describe the 
+  current centre or 'Origin' of the image. Specifically, they give the 
+  coordinate of the central voxel, in voxels, in X, then Y then Z. For example, 
+  for images that are aligned to the templates, this Origin field would contain 
+  the coordinates of the voxel nearest to the midline of the Anterior Commisure. 
+  Note that if the Origin is set to 0 0 0, then SPM routines will assume that 
+  the origin is in fact the central voxel of the image. 
+  <P></P>
+  <LI>
+  <H3>The .mat file</H3>This is an addition to the Analyze format. It is another 
+  file to add to the imagename.hdr / imagename.img pair - a imagename.mat file. 
+  The file is in matlab .mat file format, and contains information on the 
+  orientation of the image, generated by realignments, coregistration etc. See 
+  the <A href="http://www.mrc-cbu.cam.ac.uk/Imaging/spm_format.html">SPM99 help 
+  on file format</A>, or in rather less detail, see the <A 
+  href="http://www.fil.ion.ucl.ac.uk/spm/distrib.html#AzeFmt">SPM/FIL Analyze 
+  format description</A>, under the heading "The *.mat file". </LI></UL>
+<P><I>
+<P>Matthew Brett, Chris Rorden 17/6/99</P></I>
+<P>
+<P>
+<CENTER><IMG height=21 
+src="CAMBRIDGE IMAGERS - Analyze data format_files/timecourse.gif" 
+width="95%"></CENTER>
+<P><B><A href="http://www.mrc-cbu.cam.ac.uk/Imaging/index.html" target=_top><IMG 
+height=37 alt=HOME 
+src="CAMBRIDGE IMAGERS - Analyze data format_files/cbuihome.gif" width=37></A> 
+Cambridge Imagers Home Page.</B></P>
+<P>© Copyright MRC Cognition and Brain Sciences Unit 1999.<BR>
+<ADDRESS>Page maintained by: <A 
+href="mailto:matthew.brett@mrc-cbu.cam.ac.uk">matthew.brett@mrc-cbu.cam.ac.uk</A></ADDRESS><!-- hhmts start -->Last 
+Refreshed: Fri Aug 24 15:50:44 GMT Daylight Time 2001 
+<!-- hhmts end --></BODY></HTML>

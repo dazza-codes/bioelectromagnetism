@@ -1,0 +1,106 @@
+<HTML>
+<TITLE>RCBF Analysis using MATLAB and EMMA</TITLE>
+<H1>RCBF Analysis using MATLAB and EMMA</H1>
+
+Two-compartment regional cerebral blood flow (RCBF) analysis is very
+easy to perform using MATLAB and the EMMA toolkit.  The
+<TT>rcbfanalysis</TT> function allows the specification of the MINC
+file containing the study to analyze, the name of the MINC file to
+write the K1 images to, the name of the MINC file to write the V0
+image to, and the slices to analyze.  <I>Warning: if the K1 file or V0
+file already exist, they will be overwritten, destroying any data that
+they may contain.</I>  Therefore, to analyze the dynamic PET data
+stored in the file
+<TT>/local/matlab/toolbox/emma/examples/yates_19445.mnc</TT>, and
+produce both a K1 image and a V0 image for all 15 slices, we would
+specify:
+
+<PRE>
+rcbfanalysis('/local/matlab/toolbox/emma/examples/yates_19445.mnc',...
+             'yates_K1.mnc', 'yates_V0.mnc', 1:15);
+</PRE>
+
+The resulting files <TT>yates_K1.mnc</TT> and <TT>yates_V0.mnc</TT>
+will be written in the current directory.
+
+<P>If only a K1 image is desired, we can specify an empty matrix for
+the name of the V0 file:
+
+<PRE>
+rcbfanalysis('/local/matlab/toolbox/emma/examples/yates_19445.mnc',...
+             'yates_K1.mnc', [], 1:15);
+</PRE>
+
+The same is true if we only want a V0 image file produced:
+
+<PRE>
+rcbfanalysis('/local/matlab/toolbox/emma/examples/yates_19445.mnc',...
+             [], 'yates_V0.mnc', 1:15);
+</PRE>
+
+
+<H3>Layers of the Onion</H3>
+
+The <TT>rcbfanalysis</TT> function performs its analysis by calling
+the EMMA <TT>rcbf2</TT> function.  This function may also be called by
+the user, if it is more convenient to get the K1, k2, or V0 images
+without having to produce MINC files for them.  The <TT>rcbf2</TT>
+function is very easy to use.  Simply specify the name of the MINC
+file containing the study to analyze, and the slice numbers to
+analyze.  The function returns the K1, k2, and V0 images, as well as
+the blood delay correction for each slice analyzed:
+
+<PRE>
+[K1,k2,V0,delta] = rcbf2(...
+          '/local/matlab/toolbox/emma/examples/yates_19445.mnc',8);
+</PRE>
+
+This call to <TT>rcbf2</TT> will analyze slice eight of the
+<TT>yates_19445</TT> study, producing K1, k2, and V0 images, as well
+as the calculated delta for this slice.  The images returned are
+stored as EMMA standard vector images, and may be manipulated in the
+same way as any EMMA image.
+
+<H3>Study Preparation</H3>
+
+One final point to consider.  The study being analyzed <I>must</I>
+contain the blood data as well as the PET images.  There are several
+programs that are capable of doing this, the most important of which
+is <TT>scxtominc</TT>, which creates MINC files from the Scanditronix
+format files produced by the PET scanner.  This program has a
+<TT>-bloodfile</TT> option which allows the specification of a blood
+file whose data should be included in the final MINC file.  The blood
+file specified <I>must</I> be in BNC (Blood netCDF) format, and is
+produced by the blood lab computer and written to $PC_BLOOD.  A BNC
+file may also be created from a CNT file using the <TT>bloodtonc</TT>
+program.  Assuming that we wish to create a MINC file from the raw
+images and the BNC file, we might specify a command line to
+<TT>scxtominc</TT> that looks like:
+
+<PRE>
+scxtominc -bloodfile $PC_BLOOD/soos_034157.bnc $PC_IMAGE/pcsoos______-dynamic___034157*.ima soos_34157.mnc
+</PRE>
+
+This creates a MINC file called <TT>soos_34157.mnc</TT> from the raw
+images and the BNC file.
+
+<P>It is also possible to include blood data in an existing MINC file
+using the <TT>includeblood</TT> program.  Simply specify the name of
+the MINC file, and the name of the BNC file to include within it.
+
+<hr>
+
+For more information on RCBF analysis, please see the <A
+HREF="../doc/rcbf/"> documentation</A>.
+
+<P>For more information on the EMMA toolkit, please see the <A
+HREF="../doc/emma/"> documentation</A>.
+
+<hr>
+
+<ADDRESS>
+This page was created by Mark Wolforth
+(wolforth@pet.mni.mcgill.ca)
+</ADDRESS>
+
+</HTML>

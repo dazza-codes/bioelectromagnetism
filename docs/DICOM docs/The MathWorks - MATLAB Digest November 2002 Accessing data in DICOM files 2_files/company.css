@@ -1,0 +1,81 @@
+.company H1 {
+	COLOR: #533b80
+}
+.company H2 {
+	COLOR: #533b80
+}
+.company .head1 {
+	COLOR: #533b80
+}
+.company .head2 {
+	COLOR: #533b80
+}
+.company .head3 {
+	COLOR: #533b80
+}
+.company DIV.mainbody A:link {
+	COLOR: #000099; TEXT-DECORATION: none
+}
+.company DIV.mainbody A:visited {
+	COLOR: #333366; TEXT-DECORATION: none
+}
+.company DIV.mainbody A:hover {
+	COLOR: #660033; TEXT-DECORATION: underline
+}
+.company DIV.head2bm {
+	FONT-WEIGHT: bold; FONT-SIZE: 12pt; MARGIN-BOTTOM: 5px; COLOR: #533b80; BORDER-BOTTOM: gray 1px solid
+}
+.company DIV.rightnav A:link {
+	COLOR: #533b80
+}
+.company DIV.rightnav A:visited {
+	COLOR: #533b80
+}
+.company DIV.rightnav A:hover {
+	COLOR: #660033
+}
+.company DIV.rightnav DIV.activemenu {
+	BACKGROUND-COLOR: #d5cfe0
+}
+.company DIV.rightnav DIV.activesubmenu {
+	BACKGROUND-COLOR: #d5cfe0
+}
+.company .ebhead {
+	BACKGROUND-COLOR: #533b80
+}
+.company TH {
+	BORDER-LEFT-COLOR: #533b80; BORDER-BOTTOM-COLOR: #533b80; COLOR: #ffffff; BORDER-TOP-COLOR: #533b80; BACKGROUND-COLOR: #533b80; BORDER-RIGHT-COLOR: #533b80
+}
+.company .colheader {
+	COLOR: #000000; BACKGROUND-COLOR: #ffffff
+}
+.company .darkback {
+	BACKGROUND-COLOR: #666699
+}
+.company .lightback {
+	BACKGROUND-COLOR: #ffffff
+}
+.company .step {
+	BACKGROUND-COLOR: #666699
+}
+.company .appnavbar .tabbody .selectedmenu {
+	COLOR: #ffffff; BACKGROUND-COLOR: #666699
+}
+.company .oddrow {
+	BACKGROUND-COLOR: #d5cfe0
+}
+.company .appnavbar {
+	BACKGROUND-COLOR: #ffffff
+}
+.company .button {
+	COLOR: #000000; BACKGROUND-COLOR: #c0c0c0
+}
+.company .tab {
+	BACKGROUND-COLOR: #d5cfe0
+}
+.company .acttab {
+	BACKGROUND-COLOR: #666699
+}
+.company .tabbody {
+	BORDER-LEFT-COLOR: #666699; BORDER-BOTTOM-COLOR: #666699; COLOR: #000000; BORDER-TOP-COLOR: #666699; BACKGROUND-COLOR: #ffffff; BORDER-RIGHT-COLOR: #666699
+}

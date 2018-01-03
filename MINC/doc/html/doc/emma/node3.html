@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Basic Concepts</TITLE>
+<META NAME="description" CONTENT="Basic Concepts">
+<META NAME="keywords" CONTENT="emma">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="emma.css">
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="emma.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html65"
+ HREF="node4.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html62"
+ HREF="emma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html56"
+ HREF="node2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html64"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html66"
+ HREF="node4.html">Basic EMMA MATLAB Functions</A>
+<B> Up:</B> <A NAME="tex2html63"
+ HREF="emma.html">EMMA: Extensible MATLAB Medical</A>
+<B> Previous:</B> <A NAME="tex2html57"
+ HREF="node2.html">Introduction</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000">
+Basic Concepts</A>
+</H1>
+
+<P>
+To a programmer, the interface to EMMA should be very familiar.
+Simply open a data set contained in a MINC file by calling the
+<TT><B>openimage</B></TT> function.  This returns a handle which is used in all
+subsequent calls to EMMA functions.  The user does not need to worry
+about the underlying mechanisms.  For example, to open an image file,
+read in the the first frame of the second slice, and then close the
+image file, you could type:
+
+<P>
+<PRE>
+     data_handle = openimage ('arnaud_20547.mnc');
+     image = getimages (data_handle, 2, 1); 
+     closeimage (data_handle);
+</PRE>
+<P>
+In this example, <code>data_handle</code> is a handle to the data contained
+in the MINC file <code>arnaud_20547.mnc</code>.  After the data file has
+been opened with <TT><B>openimage</B></TT>, the name of the MINC file is not
+needed by the user of EMMA; only the handle for the data is used.
+Therefore, <TT><B>getimages</B></TT> is passed the handle for the data, as well
+as the slice number and frame number.  Once you have finished working
+with the image, always remember to call <TT><B>closeimage</B></TT>.  This
+cleans up global variables created in the MATLAB workspace.
+
+<P>
+Because EMMA uses handles, the user never needs to worry about the
+interface between MATLAB and the MINC file.  You simply call EMMA
+functions with the handle, and the underlying structure takes care of
+the details.
+
+<P>
+However, the user <EM>does</EM> need to have some familiarity with
+MATLAB, and a good understanding of how EMMA functions deal with
+images.  In particular, the inherent two-dimensionality of MATLAB
+means that a full four-dimensional MINC file is ``flattened'' in some
+way when read into MATLAB.
+
+<P>
+Generally, EMMA functions deal with images transformed from their
+natural two-dimensional form (well-suited to a matrix representation)
+to a one-dimensional vector form.  For example, a single 128 <IMG
+ WIDTH="18" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.gif"
+ ALT="$\times$">128 image will become a <EM>column</EM> vector of dimension 16384
+<IMG
+ WIDTH="18" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.gif"
+ ALT="$\times$">
+1.  We can put several such vectors together in a matrix.
+For example, we can form a 16384 <IMG
+ WIDTH="18" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.gif"
+ ALT="$\times$">
+15 matrix from 15 slices.
+Thus, in an ``image matrix''--which is a two-dimensional MATLAB
+matrix representing three-dimensional image data--the individual
+columns correspond to whole images.  MATLAB functions that use EMMA to
+perform analysis should always expect image data in this format, as
+shown in Section
+<A HREF="node5.html#simple_example">4</A> and the document ``rCBF Analysis Using MATLAB.''
+
+<P>
+Also, keep in mind that EMMA makes it deliberately difficult to deal
+simultaneously with the full four dimensions allowed in a MINC image
+variable.  The reasoning for this is two-fold: first, collapsing three
+dimensions into two via the ``image matrix'' concept is fairly
+convenient and easy to work with; however, attempting to similarly
+collapse four dimensions would add another layer of complications,
+making both the implementation and use of EMMA functions more
+difficult.  Second is the question of memory usage: MATLAB is capable
+of using up enormous amounts of memory if care is not taken, and
+restricting the user of EMMA to three image dimensions at a time means
+that it is somewhat more difficult to blindly read in massive amounts
+of image data with a single MATLAB command.
+
+<P>
+
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html65"
+ HREF="node4.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/latex2html/next_motif.gif"></A> 
+<A NAME="tex2html62"
+ HREF="emma.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/latex2html/up_motif.gif"></A> 
+<A NAME="tex2html56"
+ HREF="node2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/latex2html/previous_motif.gif"></A> 
+<A NAME="tex2html64"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/latex2html/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html66"
+ HREF="node4.html">Basic EMMA MATLAB Functions</A>
+<B> Up:</B> <A NAME="tex2html63"
+ HREF="emma.html">EMMA: Extensible MATLAB Medical</A>
+<B> Previous:</B> <A NAME="tex2html57"
+ HREF="node2.html">Introduction</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<a href="/users/wolforth/">Mark Wolforth</a>
+<a href="mailto:wolforth@bic.mni.mcgill.ca">&lt;wolforth@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/greg/">Greg Ward</a>
+<a href="mailto:greg@bic.mni.mcgill.ca">&lt;greg@bic.mni.mcgill.ca&gt;</a>
+<br>
+<a href="/users/sean/">Sean Marrett</a>
+<a href="mailto:sean@bic.mni.mcgill.ca">&lt;sean@bic.mni.mcgill.ca&gt;</a>
+
+</ADDRESS>
+</BODY>
+</HTML>

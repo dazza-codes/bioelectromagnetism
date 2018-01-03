@@ -1,0 +1,92 @@
+Dear All,
+
+First of all, I will like to stress that whatever the programmers for
+SPM do is entirely up to them and I respect that. And as someone who has
+to write conversion routines from SPM to other software, I will have to
+accommodate whatever changes you made to the format. However, I feel
+that it is my responsibility to highlight possible implication of your
+customization. As a user of SPM, I would like to suggest some
+modification to it.
+
+(1) The most serious implication is copyright. Analyze format is created
+by Mayo Clinic and I therefore assumes that they are the copyright
+holder. I am not aware they renounce any copyright or patent on the
+format. I am only aware that they published information on how to use
+their fileformat. Even this is restricted to Analyze 7.5 and not Analyze
+AVW. At present, they may not be demanding any royalties from anyone. It
+is also important to note that there is nothing at present to indicate
+that they will change this policy. The popularity of SPM is in such a
+way that I am sure they are aware of its existance and could actually
+see their relationship with SPM as a mutually beneficial one.
+
+However, it is my opinion that they value this relationship provided
+that SPM, or any other software, *does not significantly modify the file
+format in such a way that the derivative will create problems with thier
+own Analyze software, past, present and future*. (Pardon me for using
+technical jargon here). SPM99's modification of analyze format is small
+and inconsequential. However, based on my observation on spm_read_vol.m,
+it is my humble opinion that the same cannot be said to be true with
+spm2b and that it can be in conflict with Mayo Clinic's vision for
+Analyze format and they may not take it lightly.
+
+In SPM2B, as I read it, the header file is extended by multiples of 516
+bytes (512 bytes? see (4)). The key to accessing them is to check
+(i)hdr file is > 348 bytes
+(ii)First 4 bytes after the 348 bytes should give an int32 value of 20020417
+(iii)Read in hdr.dime.dim[5] to deduces number of blocks available and
+read in the block.
+
+The contentious point is (i) which may cause friction with Mayo Clinic:
+Imagine the situation that Mayo Clinic extended the header file in a way
+that conflict with what spm2b did. Then, it is easy to envisage that
+that Mayo Clinic is going to experience a flood of support call
+complaining that Analyze program cannot read SPM-generated Analyze
+format. This failure could be as simple as Analyze program reporting
+error in reading the file, Analyze program crashing or in worst case,
+their program simply give the wrong results. Now, put yourself in Mayo
+Clinic's shoe, what would you do? Would you  (1) rewrite your file
+accessing routines, forgoing all your investment in the file format, or
+just simply, (2) send a so-called "cease and decease" letter to the
+creator/programmer of the "offending program", threatening them with
+legal action on copyright infringement should they continue to use the
+unauthorized modified format? Mayo Clinic knows that you will want to
+avoid the problem of litigation because of the effort and cost involved
+so they might exercise this trumph card.
+
+The fact that Mayo Clinic does not publish details of AVW should be
+viewed as their declaration want to keep analyze format proprietory. On
+this account, I advise caution on modifying their file format.
+
+
+(2) The values in hdr.dime.dim[6] and [7] are set to 1
+(spm_write_vol.m). I think this is better set at 0 instead: (1)0 is the
+de-facto computing standard for saying a field is not-in-use, (2) in
+future, you can use non-zero values to indicate whatever things you want.
+
+(3) (very minor point) setting spmf(j).mat as a string of 16 'double'
+value to store orentation looks like a over-kill because we don't need
+that precision. Using 'float' should be sufficient.
+
+(4)I am not sure whether the magic number will be repeated every block.
+I intuition is it is not since this leave every block in 512 bytes (516
+bytes with magic number repeated). If so, can I suggest changing the
+magic number into majic string? To save "20020417" as a string do mean
+an extra 4 bytes of disk space but it also mean it is unlikely that any
+other software generate the number by chance. I am actually going a bit
+further to suggest prefixing the number by the string "spm" to indicate,
+clearly and proudly, that this is SPM modification of the Analyze
+format. Moreover, it means that if I am not sure whether the file is
+SPM-customized version or not, I only need to fire up my Hex editor and
+look for the string "spm20020417" or equivalent. It is not possible to
+do so if the number is stored as integer.
+
+(5) According to 2(iii), dime.dim[5] is used to indicate how many blocks
+to read in read_spmf. I suggest that, assuming the magic number is not
+repeated every block, declare a short int after the magic number to
+store this value instead. The increase in diskspace is negligible, and
+it preserves Mayo Clinic's original intention for using the field to
+store the 5th dimension. Although I have to say, I do not see a real
+need for the fifth dimension in imaging.
+
+Best regards,
+Cinly

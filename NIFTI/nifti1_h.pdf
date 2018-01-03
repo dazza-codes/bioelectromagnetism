@@ -1,0 +1,2889 @@
+%PDF-1.3
+%‚„œ”
+2 0 obj
+<<
+/Length 8142
+>>
+stream
+0 G
+0 J 0 j 0.1 w 10 M []0 d
+/GS1 gs
+1 i 
+571 421 m
+60 421 l
+60 818 511 -794 re
+S
+0.95 g
+42 818 18 -794 re
+f
+0.7 g
+24 96 36 -72 re
+f
+BT
+/TT2 1 Tf
+0 12 -12 0 40 38.666 Tm
+0 g
+0 Tc
+0 Tw
+(03/04/04)Tj
+-0.0552 -1.0667 TD
+(16:29:15)Tj
+ET
+0.7 g
+24 818 36 -72 re
+f
+BT
+/TT4 1 Tf
+0 28.8 -28.8 0 52.8 773.9915 Tm
+1 g
+(1)Tj
+/TT6 1 Tf
+0 14 -14 0 55.5 400.5845 Tm
+0 g
+(nifti1.h)Tj
+/TT8 1 Tf
+0 7 -7 0 70 29 Tm
+(#ifndef _NIFTI_HEADER_)Tj
+0 -1.1429 TD
+(#define _NIFTI_HEADER_)Tj
+0 -2.2857 TD
+(/*****************************************************************************)Tj
+0 -1.1429 TD
+(      ** This file defines the "NIFTI-1" header format.               **)Tj
+T*
+(      ** It is derived from 2 meetings at the NIH \(31 Mar 2003 and    **)Tj
+T*
+(      ** 02 Sep 2003\) of the Data Format Working Group \(DFWG\),        **)Tj
+T*
+(      ** chartered by the NIfTI \(Neuroimaging Informatics Technology  **)Tj
+T*
+(      ** Initiative\) at the National Institutes of Health \(NIH\).      **)Tj
+T*
+(      **--------------------------------------------------------------**)Tj
+T*
+(      ** Neither the National Institutes of Health \(NIH\), the DFWG,   **)Tj
+T*
+(      ** nor any of the members or employees of these institutions    **)Tj
+T*
+(      ** imply any warranty of usefulness of this material for any    **)Tj
+T*
+(      ** purpose, and do not assume any liability for damages,        **)Tj
+T*
+(      ** incidental or otherwise, caused by any use of this document. **)Tj
+T*
+(      ** If these conditions are not acceptable, do not use this!     **)Tj
+T*
+(      **--------------------------------------------------------------**)Tj
+T*
+(      ** Author:   Robert W Cox \(NIMH, Bethesda\)                      **)Tj
+T*
+(      ** Advisors: John Ashburner \(FIL, London\),                      **)Tj
+T*
+(      **           Stephen Smith \(FMRIB, Oxford\),                     **)Tj
+T*
+(      **           Mark Jenkinson \(FMRIB, Oxford\)                     **)Tj
+T*
+(******************************************************************************/)Tj
+0 -2.2857 TD
+(/*---------------------------------------------------------------------------*/)Tj
+0 -1.1429 TD
+(/* Note that the ANALYZE 7.5 file header \(dbh.h\) is)Tj
+T*
+(         \(c\) Copyright 1986-1995)Tj
+T*
+(         Biomedical Imaging Resource)Tj
+T*
+(         Mayo Foundation)Tj
+T*
+(   Incorporation of components of dbh.h are by permission of the)Tj
+T*
+(   Mayo Foundation.)Tj
+0 -2.2857 TD
+(   Changes from the ANALYZE 7.5 file header in this file are released to the)Tj
+0 -1.1429 TD
+(   public domain, including the functional comments and any amusing asides.)Tj
+T*
+(-----------------------------------------------------------------------------*/)Tj
+0 -2.2857 TD
+(/*---------------------------------------------------------------------------*/)Tj
+0 -1.1429 TD
+(/*! INTRODUCTION TO NIFTI-1:)Tj
+T*
+(   ------------------------)Tj
+T*
+(   The twin \(and somewhat conflicting\) goals of this modified ANALYZE 7.5)Tj
+T*
+(   format are:)Tj
+T*
+(    \(a\) To add information to the header that will be useful for functional)Tj
+T*
+(        neuroimaging data analysis and display.  These additions include:)Tj
+T*
+(        - More basic data types.)Tj
+T*
+(        - Two affine transformations to specify voxel coordinates.)Tj
+T*
+(        - "Intent" codes and parameters to describe the meaning of the data.)Tj
+T*
+(        - Affine scaling of the stored data values to their "true" values.)Tj
+T*
+(        - Optional storage of the header and image data in one file \(.nii\).)Tj
+T*
+(    \(b\) To maintain compatibility with non-NIFTI-aware ANALYZE 7.5 compatible)Tj
+T*
+(        software \(i.e., such a program should be able to do something useful)Tj
+T*
+(        with a NIFTI-1 dataset -- at least, with one stored in a traditional)Tj
+T*
+(        .img/.hdr file pair\).)Tj
+0 -2.2857 TD
+(   Most of the unused fields in the ANALYZE 7.5 header have been taken,)Tj
+0 -1.1429 TD
+(   and some of the lesser-used fields have been co-opted for other purposes.)Tj
+T*
+(   Notably, most of the data_history substructure has been co-opted for)Tj
+T*
+(   other purposes, since the ANALYZE 7.5 format describes this substructure)Tj
+T*
+(   as "not required".)Tj
+0 -2.2857 TD
+(   NIFTI-1 FLAG \(MAGIC STRINGS\):)Tj
+0 -1.1429 TD
+(   ----------------------------)Tj
+T*
+(   To flag such a struct as being conformant to the NIFTI-1 spec, the last 4)Tj
+T*
+(   bytes of the header must be either the C String "ni1" or "n+1";)Tj
+T*
+(   in hexadecimal, the 4 bytes)Tj
+56.7143 70.8571 TD
+(     6E 69 31 00   or   6E 2B 31 00)Tj
+0 -1.1429 TD
+(   \(in any future version of this format, the í1í will be upgraded to í2í,)Tj
+T*
+(   etc.\).  Normally, such a "magic number" or flag goes at the start of the)Tj
+T*
+(   file, but trying to avoid clobbering widely-used ANALYZE 7.5 fields led to)Tj
+T*
+(   putting this marker last.  However, recall that "the last shall be first")Tj
+T*
+(   \(Matthew 20:16\).)Tj
+0 -2.2857 TD
+(   If a NIFTI-aware program reads a header file that is NOT marked with a)Tj
+0 -1.1429 TD
+(   NIFTI magic string, then it should treat the header as an ANALYZE 7.5)Tj
+T*
+(   structure.)Tj
+0 -2.2857 TD
+(   NIFTI-1 FILE STORAGE:)Tj
+0 -1.1429 TD
+(   --------------------)Tj
+T*
+(   "ni1" means that the image data is stored in the ".img" file corresponding)Tj
+T*
+(   to the header file \(starting at file offset 0\).)Tj
+0 -2.2857 TD
+(   "n+1" means that the image data is stored in the same file as the header)Tj
+0 -1.1429 TD
+(   information.  We recommend that the combined header+data filename suffix)Tj
+T*
+(   be ".nii".  When the dataset is stored in one file, the first byte of image)Tj
+T*
+(   data is stored at byte location \(int\)vox_offset in this combined file.)Tj
+0 -2.2857 TD
+(   GRACE UNDER FIRE:)Tj
+0 -1.1429 TD
+(   ----------------)Tj
+T*
+(   Most NIFTI-aware programs will only be able to handle a subset of the full)Tj
+T*
+(   range of datasets possible with this format.  All NIFTI-aware programs)Tj
+T*
+(   should take care to check if an input dataset conforms to the programís)Tj
+T*
+(   needs and expectations \(e.g., check datatype, intent_code, etc.\).  If the)Tj
+T*
+(   input dataset canít be handled by the program, the program should fail)Tj
+T*
+(   gracefully \(e.g., print a useful warning; not crash\).)Tj
+0 -2.2857 TD
+(   SAMPLE CODES:)Tj
+0 -1.1429 TD
+(   ------------)Tj
+T*
+(   The associated files nifti1_io.h and nifti1_io.c provide a sample)Tj
+T*
+(   implementation in C of a set of functions to read, write, and manipulate)Tj
+T*
+(   NIFTI-1 files.  The file nifti1_test.c is a sample program that uses)Tj
+T*
+(   the nifti1_io.c functions.)Tj
+T*
+(-----------------------------------------------------------------------------*/)Tj
+0 -2.2857 TD
+(/*---------------------------------------------------------------------------*/)Tj
+0 -1.1429 TD
+(/* HEADER STRUCT DECLARATION:)Tj
+T*
+(   -------------------------)Tj
+T*
+(   In the comments below for each field, only NIFTI-1 specific requirements)Tj
+T*
+(   or changes from the ANALYZE 7.5 format are described.  For convenience,)Tj
+T*
+(   the 348 byte header is described as a single struct, rather than as the)Tj
+T*
+(   ANALYZE 7.5 group of 3 substructs.)Tj
+0 -2.2857 TD
+(   Further comments about the interpretation of various elements of this)Tj
+0 -1.1429 TD
+(   header are after the data type definition itself.  Fields that are)Tj
+T*
+(   marked as ++UNUSED++ have no particular interpretation in this standard.)Tj
+T*
+(   \(Also see the UNUSED FIELDS comment section, far below.\))Tj
+0 -2.2857 TD
+(   The presumption below is that the various C types have particular sizes:)Tj
+0 -1.1429 TD
+(     sizeof\(int\) = sizeof\(float\) = 4 ;  sizeof\(short\) = 2)Tj
+T*
+(-----------------------------------------------------------------------------*/)Tj
+0 -2.2857 TD
+(/*=================*/)Tj
+0 -1.1429 TD
+(#ifdef  __cplusplus)Tj
+T*
+(extern "C" {)Tj
+T*
+(#endif)Tj
+T*
+(/*=================*/)Tj
+T*
+(                        /*************************/  /************************/)Tj
+T*
+(struct nifti_1_header { /* NIFTI-1 usage         */  /* ANALYZE 7.5 field\(s\) */)Tj
+T*
+(                        /*************************/  /************************/)Tj
+ET
+endstream
+endobj
+3 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 6 0 R
+/TT8 7 0 R
+>>
+/ExtGState <<
+/GS1 8 0 R
+>>
+>>
+endobj
+11 0 obj
+<<
+/Length 8342
+>>
+stream
+0 G
+0 J 0 j 0.1 w 10 M []0 d
+/GS1 gs
+1 i 
+571 421 m
+60 421 l
+60 818 511 -794 re
+S
+0.95 g
+42 818 18 -794 re
+f
+0.7 g
+24 96 36 -72 re
+f
+BT
+/TT2 1 Tf
+0 12 -12 0 40 38.666 Tm
+0 g
+0 Tc
+0 Tw
+(03/04/04)Tj
+-0.0552 -1.0667 TD
+(16:29:15)Tj
+ET
+0.7 g
+24 818 36 -72 re
+f
+BT
+/TT4 1 Tf
+0 28.8 -28.8 0 52.8 773.9915 Tm
+1 g
+(2)Tj
+/TT6 1 Tf
+0 14 -14 0 55.5 400.5845 Tm
+0 g
+(nifti1.h)Tj
+/TT8 1 Tf
+0 7 -7 0 78 29 Tm
+(                                           /*--- was header_key substruct ---*/)Tj
+0 -1.1429 TD
+( int   sizeof_hdr;    /*!< MUST be 348           */  /* int sizeof_hdr;      */)Tj
+T*
+( char  data_type[10]; /*!< ++UNUSED++            */  /* char data_type[10];  */)Tj
+T*
+( char  db_name[18];   /*!< ++UNUSED++            */  /* char db_name[18];    */)Tj
+T*
+( int   extents;       /*!< ++UNUSED++            */  /* int extents;         */)Tj
+T*
+( short session_error; /*!< ++UNUSED++            */  /* short session_error; */)Tj
+T*
+( char  regular;       /*!< ++UNUSED++            */  /* char regular;        */)Tj
+T*
+( char  dim_info;      /*!< MRI slice ordering.   */  /* char hkey_un0;       */)Tj
+0 -2.2857 TD
+(                                      /*--- was image_dimension substruct ---*/)Tj
+0 -1.1429 TD
+( short dim[8];        /*!< Data array dimensions.*/  /* short dim[8];        */)Tj
+T*
+( float intent_p1 ;    /*!< 1st intent parameter. */  /* short unused8;       */)Tj
+T*
+(                                                     /* short unused9;       */)Tj
+T*
+( float intent_p2 ;    /*!< 2nd intent parameter. */  /* short unused10;      */)Tj
+T*
+(                                                     /* short unused11;      */)Tj
+T*
+( float intent_p3 ;    /*!< 3rd intent parameter. */  /* short unused12;      */)Tj
+T*
+(                                                     /* short unused13;      */)Tj
+T*
+( short intent_code ;  /*!< NIFTI_INTENT_* code.  */  /* short unused14;      */)Tj
+T*
+( short datatype;      /*!< Defines data type!    */  /* short datatype;      */)Tj
+T*
+( short bitpix;        /*!< Number bits/voxel.    */  /* short bitpix;        */)Tj
+T*
+( short slice_start;   /*!< First slice index.    */  /* short dim_un0;       */)Tj
+T*
+( float pixdim[8];     /*!< Grid spacings.        */  /* float pixdim[8];     */)Tj
+T*
+( float vox_offset;    /*!< Offset into .nii file */  /* float vox_offset;    */)Tj
+T*
+( float scl_slope ;    /*!< Data scaling: slope.  */  /* float funused1;      */)Tj
+T*
+( float scl_inter ;    /*!< Data scaling: offset. */  /* float funused2;      */)Tj
+T*
+( short slice_end;     /*!< Last slice index.     */  /* float funused3;      */)Tj
+T*
+( char  slice_code ;   /*!< Slice timing order.   */)Tj
+T*
+( char  xyzt_units ;   /*!< Units of pixdim[1..4] */)Tj
+T*
+( float cal_max;       /*!< Max display intensity */  /* float cal_max;       */)Tj
+T*
+( float cal_min;       /*!< Min display intensity */  /* float cal_min;       */)Tj
+T*
+( float slice_duration;/*!< Time for 1 slice.     */  /* float compressed;    */)Tj
+T*
+( float toffset;       /*!< Time axis shift.      */  /* float verified;      */)Tj
+T*
+( int   glmax;         /*!< ++UNUSED++            */  /* int glmax;           */)Tj
+T*
+( int   glmin;         /*!< ++UNUSED++            */  /* int glmin;           */)Tj
+0 -2.2857 TD
+(                                         /*--- was data_history substruct ---*/)Tj
+0 -1.1429 TD
+( char  descrip[80];   /*!< any text you like.    */  /* char descrip[80];    */)Tj
+T*
+( char  aux_file[24];  /*!< auxiliary filename.   */  /* char aux_file[24];   */)Tj
+0 -2.2857 TD
+( short qform_code ;   /*!< NIFTI_XFORM_* code.   */  /*-- all ANALYZE 7.5 ---*/)Tj
+0 -1.1429 TD
+( short sform_code ;   /*!< NIFTI_XFORM_* code.   */  /*   fields below here  */)Tj
+T*
+(                                                     /*   are replaced       */)Tj
+T*
+( float quatern_b ;    /*!< Quaternion b param.   */)Tj
+T*
+( float quatern_c ;    /*!< Quaternion c param.   */)Tj
+T*
+( float quatern_d ;    /*!< Quaternion d param.   */)Tj
+T*
+( float qoffset_x ;    /*!< Quaternion x shift.   */)Tj
+T*
+( float qoffset_y ;    /*!< Quaternion y shift.   */)Tj
+T*
+( float qoffset_z ;    /*!< Quaternion z shift.   */)Tj
+0 -2.2857 TD
+( float srow_x[4] ;    /*!< 1st row affine transform.   */)Tj
+0 -1.1429 TD
+( float srow_y[4] ;    /*!< 2nd row affine transform.   */)Tj
+T*
+( float srow_z[4] ;    /*!< 3rd row affine transform.   */)Tj
+0 -2.2857 TD
+( char intent_name[16];/*!< ínameí or meaning of data.  */)Tj
+T*
+( char magic[4] ;      /*!< MUST be "ni1\\0" or "n+1\\0". */)Tj
+T*
+(} ;                   /**** 348 bytes total ****/)Tj
+T*
+(typedef struct nifti_1_header nifti_1_header ;)Tj
+T*
+(/*---------------------------------------------------------------------------*/)Tj
+56.7143 70.8571 TD
+(/* DATA DIMENSIONALITY \(as in ANALYZE 7.5\):)Tj
+0 -1.1429 TD
+(   ---------------------------------------)Tj
+T*
+(     dim[0] = number of dimensions;)Tj
+T*
+(              - if dim[0] is outside range 1..7, then the header information)Tj
+T*
+(                needs to be byte swapped appropriately)Tj
+T*
+(              - ANALYZE supports dim[0] up to 7, but NIFTI-1 reserves)Tj
+T*
+(                dimensions 1,2,3 for space \(x,y,z\), 4 for time \(t\), and)Tj
+T*
+(                5,6,7 for anything else needed.)Tj
+0 -2.2857 TD
+(     dim[i] = length of dimension #i, for i=1..dim[0]  \(must be positive\))Tj
+0 -1.1429 TD
+(              - also see the discussion of intent_code, far below)Tj
+0 -2.2857 TD
+(     pixdim[i] = voxel width along dimension #i, i=1..dim[0] \(positive\))Tj
+0 -1.1429 TD
+(                 - cf. ORIENTATION section below for use of pixdim[0])Tj
+T*
+(                 - the units of pixdim can be specified with the xyzt_units)Tj
+T*
+(                   field \(also described far below\).)Tj
+0 -2.2857 TD
+(   Number of bits per voxel value is in bitpix, which MUST correspond with)Tj
+0 -1.1429 TD
+(   the datatype field.  The total number of bytes in the image data is)Tj
+T*
+(     dim[1] * ... * dim[dim[0]] * bitpix / 8)Tj
+0 -2.2857 TD
+(   In NIFTI-1 files, dimensions 1,2,3 are for space, dimension 4 is for time,)Tj
+0 -1.1429 TD
+(   and dimension 5 is for storing multiple values at each spatiotemporal)Tj
+T*
+(   voxel.  Some examples:)Tj
+T*
+(     - A typical whole-brain FMRI experimentís time series:)Tj
+T*
+(        - dim[0] = 4)Tj
+T*
+(        - dim[1] = 64   pixdim[1] = 3.75 xyzt_units =  NIFTI_UNITS_MM)Tj
+T*
+(        - dim[2] = 64   pixdim[2] = 3.75             | NIFTI_UNITS_SEC)Tj
+T*
+(        - dim[3] = 20   pixdim[3] = 5.0)Tj
+T*
+(        - dim[4] = 120  pixdim[4] = 2.0)Tj
+T*
+(     - A typical T1-weighted anatomical volume:)Tj
+T*
+(        - dim[0] = 3)Tj
+T*
+(        - dim[1] = 256  pixdim[1] = 1.0  xyzt_units = NIFTI_UNITS_MM)Tj
+T*
+(        - dim[2] = 256  pixdim[2] = 1.0)Tj
+T*
+(        - dim[3] = 128  pixdim[3] = 1.1)Tj
+T*
+(     - A single slice EPI time series:)Tj
+T*
+(        - dim[0] = 4)Tj
+T*
+(        - dim[1] = 64   pixdim[1] = 3.75 xyzt_units =  NIFTI_UNITS_MM)Tj
+T*
+(        - dim[2] = 64   pixdim[2] = 3.75             | NIFTI_UNITS_SEC)Tj
+T*
+(        - dim[3] = 1    pixdim[3] = 5.0)Tj
+T*
+(        - dim[4] = 1200 pixdim[4] = 0.2)Tj
+T*
+(     - A 3-vector stored at each point in a 3D volume:)Tj
+T*
+(        - dim[0] = 5)Tj
+T*
+(        - dim[1] = 256  pixdim[1] = 1.0  xyzt_units = NIFTI_UNITS_MM)Tj
+T*
+(        - dim[2] = 256  pixdim[2] = 1.0)Tj
+T*
+(        - dim[3] = 128  pixdim[3] = 1.1)Tj
+T*
+(        - dim[4] = 1    pixdim[4] = 0.0)Tj
+T*
+(        - dim[5] = 3                     intent_code = NIFTI_INTENT_VECTOR)Tj
+T*
+(     - A single time series with a 3x3 matrix at each point:)Tj
+T*
+(        - dim[0] = 5)Tj
+T*
+(        - dim[1] = 1                     xyzt_units = NIFTI_UNITS_SEC)Tj
+T*
+(        - dim[2] = 1)Tj
+T*
+(        - dim[3] = 1)Tj
+T*
+(        - dim[4] = 1200 pixdim[4] = 0.2)Tj
+T*
+(        - dim[5] = 9                     intent_code = NIFTI_INTENT_GENMATRIX)Tj
+T*
+(        - intent_p1 = intent_p2 = 3.0    \(indicates matrix dimensions\))Tj
+T*
+(-----------------------------------------------------------------------------*/)Tj
+0 -2.2857 TD
+(/*---------------------------------------------------------------------------*/)Tj
+0 -1.1429 TD
+(/* DATA STORAGE:)Tj
+T*
+(   ------------)Tj
+T*
+(   If the magic field is "n+1", then the voxel data is stored in the)Tj
+T*
+(   same file as the header.  In this case, the voxel data starts at offset)Tj
+ET
+endstream
+endobj
+12 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 6 0 R
+/TT8 7 0 R
+>>
+/ExtGState <<
+/GS1 8 0 R
+>>
+>>
+endobj
+14 0 obj
+<<
+/Length 8186
+>>
+stream
+0 G
+0 J 0 j 0.1 w 10 M []0 d
+/GS1 gs
+1 i 
+571 421 m
+60 421 l
+60 818 511 -794 re
+S
+0.95 g
+42 818 18 -794 re
+f
+0.7 g
+24 96 36 -72 re
+f
+BT
+/TT2 1 Tf
+0 12 -12 0 40 38.666 Tm
+0 g
+0 Tc
+0 Tw
+(03/04/04)Tj
+-0.0552 -1.0667 TD
+(16:29:15)Tj
+ET
+0.7 g
+24 818 36 -72 re
+f
+BT
+/TT4 1 Tf
+0 28.8 -28.8 0 52.8 773.9915 Tm
+1 g
+(3)Tj
+/TT6 1 Tf
+0 14 -14 0 55.5 400.5845 Tm
+0 g
+(nifti1.h)Tj
+/TT8 1 Tf
+0 7 -7 0 70 29 Tm
+(   \(int\)vox_offset into the header file.  Thus, vox_offset=348.0 means that)Tj
+0 -1.1429 TD
+(   the data starts immediately after the NIFTI-1 header.  If vox_offset is)Tj
+T*
+(   greater than 348, the NIFTI-1 format does not say anything about the)Tj
+T*
+(   contents of the dataset file between the end of the header and the)Tj
+T*
+(   start of the data.)Tj
+0 -2.2857 TD
+(   FILES:)Tj
+0 -1.1429 TD
+(   -----)Tj
+T*
+(   If the magic field is "ni1", then the voxel data is stored in the)Tj
+T*
+(   associated ".img" file, starting at offset 0 \(i.e., vox_offset is not)Tj
+T*
+(   used in this case, and should be set to 0.0\).)Tj
+0 -2.2857 TD
+(   When storing NIFTI-1 datasets in pairs of files, it is customary to name)Tj
+0 -1.1429 TD
+(   the files in the pattern "name.hdr" and "name.img", as in ANALYZE 7.5.)Tj
+T*
+(   When storing in a single file \("n+1"\), the file name should be in)Tj
+T*
+(   the form "name.nii" \(the ".nft" and ".nif" suffixes are already taken;)Tj
+T*
+(   cf. http://www.icdatamaster.com/n.html \).)Tj
+0 -2.2857 TD
+(   BYTE ORDERING:)Tj
+0 -1.1429 TD
+(   -------------)Tj
+T*
+(   The byte order of the data arrays is presumed to be the same as the byte)Tj
+T*
+(   order of the header \(which is determined by examining dim[0]\).)Tj
+0 -2.2857 TD
+(   Floating point types are presumed to be stored in IEEE-754 format.)Tj
+0 -1.1429 TD
+(-----------------------------------------------------------------------------*/)Tj
+0 -2.2857 TD
+(/*---------------------------------------------------------------------------*/)Tj
+0 -1.1429 TD
+(/* DATA SCALING:)Tj
+T*
+(   ------------)Tj
+T*
+(   If the scl_slope field is nonzero, then each voxel value in the dataset)Tj
+T*
+(   should be scaled as)Tj
+T*
+(      y = scl_slope * x + scl_inter)Tj
+T*
+(   where x = voxel value stored)Tj
+T*
+(         y = "true" voxel value)Tj
+T*
+(   Normally, we would expect this scaling to be used to store "true" floating)Tj
+T*
+(   values in a smaller integer datatype, but that is not required.  That is,)Tj
+T*
+(   it is legal to use scaling even if the datatype is a float type \(crazy,)Tj
+T*
+(   perhaps, but legal\).)Tj
+T*
+(    - However, the scaling is to be ignored if datatype is DT_RGB24.)Tj
+T*
+(    - If datatype is a complex type, then the scaling is to be)Tj
+T*
+(      applied to both the real and imaginary parts.)Tj
+0 -2.2857 TD
+(   The cal_min and cal_max fields \(if nonzero\) are used for mapping \(possibly)Tj
+0 -1.1429 TD
+(   scaled\) dataset values to display colors:)Tj
+T*
+(    - Minimum display intensity \(black\) corresponds to dataset value cal_min.)Tj
+T*
+(    - Maximum display intensity \(white\) corresponds to dataset value cal_max.)Tj
+T*
+(    - Dataset values below cal_min should display as black also, and values)Tj
+T*
+(      above cal_max as white.)Tj
+T*
+(    - Colors "black" and "white", of course, may refer to any scalar display)Tj
+T*
+(      scheme \(e.g., a color lookup table specified via aux_file\).)Tj
+T*
+(    - cal_min and cal_max only make sense when applied to scalar-valued)Tj
+T*
+(      datasets \(i.e., dim[0] < 5 or dim[5] = 1\).)Tj
+T*
+(-----------------------------------------------------------------------------*/)Tj
+0 -2.2857 TD
+(/*---------------------------------------------------------------------------*/)Tj
+0 -1.1429 TD
+(/* TYPE OF DATA \(acceptable values for datatype field\):)Tj
+T*
+(   ---------------------------------------------------)Tj
+T*
+(   Values of datatype smaller than 256 are ANALYZE 7.5 compatible.)Tj
+T*
+(   Larger values are NIFTI-1 additions.  These are all multiples of 256, so)Tj
+T*
+(   that no bits below position 8 are set in datatype.  But there is no need)Tj
+T*
+(   to use only powers-of-2, as the original ANALYZE 7.5 datatype codes do.)Tj
+0 -2.2857 TD
+(   The additional codes are intended to include a complete list of basic)Tj
+56.7143 70.8571 TD
+(   scalar types, including signed and unsigned integers from 8 to 64 bits,)Tj
+0 -1.1429 TD
+(   floats from 32 to 128 bits, and complex \(float pairs\) from 64 to 256 bits.)Tj
+0 -2.2857 TD
+(   Note that most programs will support only a few of these datatypes!)Tj
+0 -1.1429 TD
+(   A NIFTI-1 program should fail gracefully \(e.g., print a warning message\))Tj
+T*
+(   when it encounters a dataset with a type it doesnít like.)Tj
+T*
+(-----------------------------------------------------------------------------*/)Tj
+0 -2.2857 TD
+(#undef DT_UNKNOWN  /* defined in dirent.h on some Unix systems */)Tj
+T*
+(                            /*--- the original ANALYZE 7.5 type codes ---*/)Tj
+0 -1.1429 TD
+(#define DT_NONE                    0)Tj
+T*
+(#define DT_UNKNOWN                 0     /* what it says, dude           */)Tj
+T*
+(#define DT_BINARY                  1     /* binary \(1 bit/voxel\)         */)Tj
+T*
+(#define DT_UNSIGNED_CHAR           2     /* unsigned char \(8 bits/voxel\) */)Tj
+T*
+(#define DT_SIGNED_SHORT            4     /* signed short \(16 bits/voxel\) */)Tj
+T*
+(#define DT_SIGNED_INT              8     /* signed int \(32 bits/voxel\)   */)Tj
+T*
+(#define DT_FLOAT                  16     /* float \(32 bits/voxel\)        */)Tj
+T*
+(#define DT_COMPLEX                32     /* complex \(64 bits/voxel\)      */)Tj
+T*
+(#define DT_DOUBLE                 64     /* double \(64 bits/voxel\)       */)Tj
+T*
+(#define DT_RGB                   128     /* RGB triple \(24 bits/voxel\)   */)Tj
+T*
+(#define DT_ALL                   255     /* not very useful \(?\)          */)Tj
+0 -2.2857 TD
+(                            /*----- another set of names for the same ---*/)Tj
+0 -1.1429 TD
+(#define DT_UINT8                   2)Tj
+T*
+(#define DT_INT16                   4)Tj
+T*
+(#define DT_INT32                   8)Tj
+T*
+(#define DT_FLOAT32                16)Tj
+T*
+(#define DT_COMPLEX64              32)Tj
+T*
+(#define DT_FLOAT64                64)Tj
+T*
+(#define DT_RGB24                 128)Tj
+0 -2.2857 TD
+(                            /*------------------- new codes for NIFTI ---*/)Tj
+0 -1.1429 TD
+(#define DT_INT8                  256     /* signed char \(8 bits\)         */)Tj
+T*
+(#define DT_UINT16                512     /* unsigned short \(16 bits\)     */)Tj
+T*
+(#define DT_UINT32                768     /* unsigned int \(32 bits\)       */)Tj
+T*
+(#define DT_INT64                1024     /* long long \(64 bits\)          */)Tj
+T*
+(#define DT_UINT64               1280     /* unsigned long long \(64 bits\) */)Tj
+T*
+(#define DT_FLOAT128             1536     /* long double \(128 bits\)       */)Tj
+T*
+(#define DT_COMPLEX128           1792     /* double pair \(128 bits\)       */)Tj
+T*
+(#define DT_COMPLEX256           2048     /* long double pair \(256 bits\)  */)Tj
+0 -2.2857 TD
+(                            /*------- aliases for all the above codes ---*/)Tj
+T*
+(                                       /*! unsigned char. */)Tj
+0 -1.1429 TD
+(#define NIFTI_TYPE_UINT8           2)Tj
+T*
+(                                       /*! signed short. */)Tj
+T*
+(#define NIFTI_TYPE_INT16           4)Tj
+T*
+(                                       /*! signed int. */)Tj
+T*
+(#define NIFTI_TYPE_INT32           8)Tj
+T*
+(                                       /*! 32 bit float. */)Tj
+T*
+(#define NIFTI_TYPE_FLOAT32        16)Tj
+T*
+(                                       /*! 64 bit complex = 2 32 bit floats. */)Tj
+T*
+(#define NIFTI_TYPE_COMPLEX64      32)Tj
+T*
+(                                       /*! 64 bit float = double. */)Tj
+T*
+(#define NIFTI_TYPE_FLOAT64        64)Tj
+T*
+(                                       /*! 3 8 bit bytes. */)Tj
+T*
+(#define NIFTI_TYPE_RGB24         128)Tj
+T*
+(                                       /*! signed char. */)Tj
+T*
+(#define NIFTI_TYPE_INT8          256)Tj
+T*
+(                                       /*! unsigned short. */)Tj
+T*
+(#define NIFTI_TYPE_UINT16        512)Tj
+T*
+(                                       /*! unsigned int. */)Tj
+ET
+endstream
+endobj
+15 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 6 0 R
+/TT8 7 0 R
+>>
+/ExtGState <<
+/GS1 8 0 R
+>>
+>>
+endobj
+17 0 obj
+<<
+/Length 7415
+>>
+stream
+0 G
+0 J 0 j 0.1 w 10 M []0 d
+/GS1 gs
+1 i 
+571 421 m
+60 421 l
+60 818 511 -794 re
+S
+0.95 g
+42 818 18 -794 re
+f
+0.7 g
+24 96 36 -72 re
+f
+BT
+/TT2 1 Tf
+0 12 -12 0 40 38.666 Tm
+0 g
+0 Tc
+0 Tw
+(03/04/04)Tj
+-0.0552 -1.0667 TD
+(16:29:15)Tj
+ET
+0.7 g
+24 818 36 -72 re
+f
+BT
+/TT4 1 Tf
+0 28.8 -28.8 0 52.8 773.9915 Tm
+1 g
+(4)Tj
+/TT6 1 Tf
+0 14 -14 0 55.5 400.5845 Tm
+0 g
+(nifti1.h)Tj
+/TT8 1 Tf
+0 7 -7 0 70 29 Tm
+(#define NIFTI_TYPE_UINT32        768)Tj
+0 -1.1429 TD
+(                                       /*! signed long long. */)Tj
+T*
+(#define NIFTI_TYPE_INT64        1024)Tj
+T*
+(                                       /*! unsigned long long. */)Tj
+T*
+(#define NIFTI_TYPE_UINT64       1280)Tj
+T*
+(                                       /*! 128 bit float = long double. */)Tj
+T*
+(#define NIFTI_TYPE_FLOAT128     1536)Tj
+T*
+(                                       /*! 128 bit complex = 2 64 bit floats. */)Tj
+T*
+(#define NIFTI_TYPE_COMPLEX128   1792)Tj
+T*
+(                                       /*! 256 bit complex = 2 128 bit floats */)Tj
+T*
+(#define NIFTI_TYPE_COMPLEX256   2048)Tj
+0 -2.2857 TD
+(                     /*-------- sample typedefs for complicated types ---*/)Tj
+0 -1.1429 TD
+(#if 0)Tj
+T*
+(typedef struct { float       r,i;     } complex_float ;)Tj
+T*
+(typedef struct { double      r,i;     } complex_double ;)Tj
+T*
+(typedef struct { long double r,i;     } complex_longdouble ;)Tj
+T*
+(typedef struct { unsigned char r,g,b; } rgb_byte ;)Tj
+T*
+(#endif)Tj
+0 -2.2857 TD
+(/*---------------------------------------------------------------------------*/)Tj
+0 -1.1429 TD
+(/* INTERPRETATION OF VOXEL DATA:)Tj
+T*
+(   ----------------------------)Tj
+T*
+(   The intent_code field can be used to indicate that the voxel data has)Tj
+T*
+(   some particular meaning.  In particular, a large number of codes is)Tj
+T*
+(   given to indicate that the the voxel data should be interpreted as)Tj
+T*
+(   being drawn from a given probability distribution.)Tj
+0 -2.2857 TD
+(   VECTOR-VALUED DATASETS:)Tj
+0 -1.1429 TD
+(   ----------------------)Tj
+T*
+(   The 5th dimension of the dataset, if present \(i.e., dim[0]=5 and)Tj
+T*
+(   dim[5] > 1\), contains multiple values \(e.g., a vector\) to be stored)Tj
+T*
+(   at each spatiotemporal location.  For example, the header values)Tj
+T*
+(    - dim[0] = 5)Tj
+T*
+(    - dim[1] = 64)Tj
+T*
+(    - dim[2] = 64)Tj
+T*
+(    - dim[3] = 20)Tj
+T*
+(    - dim[4] = 1     \(indicates no time axis\))Tj
+T*
+(    - dim[5] = 3)Tj
+T*
+(    - datatype = DT_FLOAT)Tj
+T*
+(    - intent_code = NIFTI_INTENT_VECTOR)Tj
+T*
+(   mean that this dataset should be interpreted as a 3D volume \(64x64x20\),)Tj
+T*
+(   with a 3-vector of floats defined at each point in the 3D grid.)Tj
+0 -2.2857 TD
+(   A program reading a dataset with a 5th dimension may want to reformat)Tj
+0 -1.1429 TD
+(   the image data to store each voxelsí set of values together in a struct)Tj
+T*
+(   or array.  This programming detail, however, is beyond the scope of the)Tj
+T*
+(   NIFTI-1 file specification!  Uses of dimensions 6 and 7 are also not)Tj
+T*
+(   specified here.)Tj
+0 -2.2857 TD
+(   STATISTICAL PARAMETRIC DATASETS \(i.e., SPMs\):)Tj
+0 -1.1429 TD
+(   --------------------------------------------)Tj
+T*
+(   Values of intent_code from NIFTI_FIRST_STATCODE to NIFTI_LAST_STATCODE)Tj
+T*
+(   \(inclusive\) indicate that the numbers in the dataset should be interpreted)Tj
+T*
+(   as being drawn from a given distribution.  Most such distributions have)Tj
+T*
+(   auxiliary parameters \(e.g., NIFTI_INTENT_TTEST has 1 DOF parameter\).)Tj
+0 -2.2857 TD
+(   If the dataset DOES NOT have a 5th dimension, then the auxiliary parameters)Tj
+0 -1.1429 TD
+(   are the same for each voxel, and are given in header fields intent_p1,)Tj
+T*
+(   intent_p2, and intent_p3.)Tj
+0 -2.2857 TD
+(   If the dataset DOES have a 5th dimension, then the auxiliary parameters)Tj
+0 -1.1429 TD
+(   are different for each voxel.  For example, the header values)Tj
+56.7143 70.8571 TD
+(    - dim[0] = 5)Tj
+0 -1.1429 TD
+(    - dim[1] = 128)Tj
+T*
+(    - dim[2] = 128)Tj
+T*
+(    - dim[3] = 1      \(indicates a single slice\))Tj
+T*
+(    - dim[4] = 1      \(indicates no time axis\))Tj
+T*
+(    - dim[5] = 2)Tj
+T*
+(    - datatype = DT_FLOAT)Tj
+T*
+(    - intent_code = NIFTI_INTENT_TTEST)Tj
+T*
+(   mean that this is a 2D dataset \(128x128\) of t-statistics, with the)Tj
+T*
+(   t-statistic being in the first "plane" of data and the degrees-of-freedom)Tj
+T*
+(   parameter being in the second "plane" of data.)Tj
+0 -2.2857 TD
+(   If the dataset 5th dimension is used to store the voxel-wise statistical)Tj
+0 -1.1429 TD
+(   parameters, then dim[5] must be 1 plus the number of parameters required)Tj
+T*
+(   by that distribution \(e.g., intent_code=NIFTI_INTENT_TTEST implies dim[5])Tj
+T*
+(   must be 2, as in the example just above\).)Tj
+0 -2.2857 TD
+(   Note: intent_code values 2..10 are compatible with AFNI 1.5x \(which is)Tj
+0 -1.1429 TD
+(   why there is no code with value=1, which is obsolescent in AFNI\).)Tj
+0 -2.2857 TD
+(   OTHER INTENTIONS:)Tj
+0 -1.1429 TD
+(   ----------------)Tj
+T*
+(   The purpose of the intent_* fields is to help interpret the values)Tj
+T*
+(   stored in the dataset.  Some non-statistical values for intent_code)Tj
+T*
+(   and conventions are provided for storing other complex data types.)Tj
+0 -2.2857 TD
+(   The intent_name field provides space for a 15 character \(plus 0 byte\))Tj
+0 -1.1429 TD
+(   ínameí string for the type of data stored. Examples:)Tj
+T*
+(    - intent_code = NIFTI_INTENT_ESTIMATE; intent_name = "T1";)Tj
+T*
+(       could be used to signify that the voxel values are estimates of the)Tj
+T*
+(       NMR parameter T1.)Tj
+T*
+(    - intent_code = NIFTI_INTENT_TTEST; intent_name = "House";)Tj
+T*
+(       could be used to signify that the voxel values are t-statistics)Tj
+T*
+(       for the significance of íactivationí response to a House stimulus.)Tj
+T*
+(    - intent_code = NIFTI_INTENT_DISPVECT; intent_name = "ToMNI152";)Tj
+T*
+(       could be used to signify that the voxel values are a displacement)Tj
+T*
+(       vector that transforms each voxel \(x,y,z\) location to the)Tj
+T*
+(       corresponding location in the MNI152 standard brain.)Tj
+T*
+(    - intent_code = NIFTI_INTENT_SYMMATRIX; intent_name = "DTI";)Tj
+T*
+(       could be used to signify that the voxel values comprise a diffusion)Tj
+T*
+(       tensor image.)Tj
+0 -2.2857 TD
+(   If no data name is implied or needed, intent_name[0] should be set to 0.)Tj
+0 -1.1429 TD
+(-----------------------------------------------------------------------------*/)Tj
+0 -2.2857 TD
+( /*! default: no intention is indicated in the header. */)Tj
+T*
+(#define NIFTI_INTENT_NONE        0)Tj
+T*
+(    /*-------- These codes are for probability distributions ---------------*/)Tj
+0 -1.1429 TD
+(    /* Most distributions have a number of parameters,)Tj
+T*
+(       below denoted by p1, p2, and p3, and stored in)Tj
+T*
+(        - intent_p1, intent_p2, intent_p3 if dataset doesnít have 5th dimension)Tj
+T*
+(        - image data array                if dataset does have 5th dimension)Tj
+0 -2.2857 TD
+(       Functions to compute with many of the distributions below can be found)Tj
+0 -1.1429 TD
+(       in the CDF library from U Texas.)Tj
+0 -2.2857 TD
+(       Formulas for and discussions of these distributions can be found in the)Tj
+0 -1.1429 TD
+(       following books:)Tj
+0 -2.2857 TD
+(        [U] Univariate Discrete Distributions,)Tj
+0 -1.1429 TD
+(            NL Johnson, S Kotz, AW Kemp.)Tj
+ET
+endstream
+endobj
+18 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 6 0 R
+/TT8 7 0 R
+>>
+/ExtGState <<
+/GS1 8 0 R
+>>
+>>
+endobj
+20 0 obj
+<<
+/Length 5336
+>>
+stream
+0 G
+0 J 0 j 0.1 w 10 M []0 d
+/GS1 gs
+1 i 
+571 421 m
+60 421 l
+60 818 511 -794 re
+S
+0.95 g
+42 818 18 -794 re
+f
+0.7 g
+24 96 36 -72 re
+f
+BT
+/TT2 1 Tf
+0 12 -12 0 40 38.666 Tm
+0 g
+0 Tc
+0 Tw
+(03/04/04)Tj
+-0.0552 -1.0667 TD
+(16:29:15)Tj
+ET
+0.7 g
+24 818 36 -72 re
+f
+BT
+/TT4 1 Tf
+0 28.8 -28.8 0 52.8 773.9915 Tm
+1 g
+(5)Tj
+/TT6 1 Tf
+0 14 -14 0 55.5 400.5845 Tm
+0 g
+(nifti1.h)Tj
+/TT8 1 Tf
+0 7 -7 0 78 29 Tm
+(        [C1] Continuous Univariate Distributions, vol. 1,)Tj
+0 -1.1429 TD
+(             NL Johnson, S Kotz, N Balakrishnan.)Tj
+0 -2.2857 TD
+(        [C2] Continuous Univariate Distributions, vol. 2,)Tj
+0 -1.1429 TD
+(             NL Johnson, S Kotz, N Balakrishnan.                            */)Tj
+T*
+(    /*----------------------------------------------------------------------*/)Tj
+0 -2.2857 TD
+(  /*! [C2, chap 32] Correlation coefficient R \(1 param\):)Tj
+0 -1.1429 TD
+(       p1 = degrees of freedom)Tj
+T*
+(       R/sqrt\(1-R*R\) is t-distributed with p1 DOF. */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_CORREL      2)Tj
+T*
+(  /*! [C2, chap 28] Student t statistic \(1 param\): p1 = DOF. */)Tj
+T*
+(#define NIFTI_INTENT_TTEST       3)Tj
+T*
+(  /*! [C2, chap 27] Fisher F statistic \(2 params\):)Tj
+0 -1.1429 TD
+(       p1 = numerator DOF, p2 = denominator DOF. */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_FTEST       4)Tj
+T*
+(  /*! [C1, chap 13] Standard normal \(0 params\): Density = N\(0,1\). */)Tj
+T*
+(#define NIFTI_INTENT_ZSCORE      5)Tj
+T*
+(  /*! [C1, chap 18] Chi-squared \(1 param\): p1 = DOF.)Tj
+0 -1.1429 TD
+(      Density\(x\) proportional to exp\(-x/2\) * x^\(p1/2-1\). */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_CHISQ       6)Tj
+T*
+(  /*! [C2, chap 25] Beta distribution \(2 params\): p1=a, p2=b.)Tj
+0 -1.1429 TD
+(      Density\(x\) proportional to x^\(a-1\) * \(1-x\)^\(b-1\). */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_BETA        7)Tj
+T*
+(  /*! [U, chap 3] Binomial distribution \(2 params\):)Tj
+0 -1.1429 TD
+(       p1 = number of trials, p2 = probability per trial.)Tj
+T*
+(      Prob\(x\) = \(p1 choose x\) * p2^x * \(1-p2\)^\(p1-x\), for x=0,1,...,p1. */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_BINOM       8)Tj
+T*
+(  /*! [C1, chap 17] Gamma distribution \(2 params\):)Tj
+0 -1.1429 TD
+(       p1 = shape, p2 = scale.)Tj
+T*
+(      Density\(x\) proportional to x^\(p1-1\) * exp\(-p2*x\). */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_GAMMA       9)Tj
+T*
+(  /*! [U, chap 4] Poisson distribution \(1 param\): p1 = mean.)Tj
+0 -1.1429 TD
+(      Prob\(x\) = exp\(-p1\) * p1^x / x! , for x=0,1,2,.... */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_POISSON    10)Tj
+T*
+(  /*! [C1, chap 13] Normal distribution \(2 params\):)Tj
+0 -1.1429 TD
+(       p1 = mean, p2 = standard deviation. */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_NORMAL     11)Tj
+T*
+(  /*! [C2, chap 30] Noncentral F statistic \(3 params\):)Tj
+0 -1.1429 TD
+(       p1 = numerator DOF, p2 = denominator DOF,)Tj
+T*
+(       p3 = numerator noncentrality parameter.  */)Tj
+56.7143 69.7143 TD
+(#define NIFTI_INTENT_FTEST_NONC 12)Tj
+0 -2.2857 TD
+(  /*! [C2, chap 29] Noncentral chi-squared statistic \(2 params\):)Tj
+0 -1.1429 TD
+(       p1 = DOF, p2 = noncentrality parameter.     */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_CHISQ_NONC 13)Tj
+T*
+(  /*! [C2, chap 23] Logistic distribution \(2 params\):)Tj
+0 -1.1429 TD
+(       p1 = location, p2 = scale.)Tj
+T*
+(      Density\(x\) proportional to sech^2\(\(x-p1\)/\(2*p2\)\). */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_LOGISTIC   14)Tj
+T*
+(  /*! [C2, chap 24] Laplace distribution \(2 params\):)Tj
+0 -1.1429 TD
+(       p1 = location, p2 = scale.)Tj
+T*
+(      Density\(x\) proportional to exp\(-abs\(x-p1\)/p2\). */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_LAPLACE    15)Tj
+T*
+(  /*! [C2, chap 26] Uniform distribution: p1 = lower end, p2 = upper end. */)Tj
+T*
+(#define NIFTI_INTENT_UNIFORM    16)Tj
+T*
+(  /*! [C2, chap 31] Noncentral t statistic \(2 params\):)Tj
+0 -1.1429 TD
+(       p1 = DOF, p2 = noncentrality parameter. */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_TTEST_NONC 17)Tj
+T*
+(  /*! [C1, chap 21] Weibull distribution \(3 params\):)Tj
+0 -1.1429 TD
+(       p1 = location, p2 = scale, p3 = power.)Tj
+T*
+(      Density\(x\) proportional to)Tj
+T*
+(       \(\(x-p1\)/p2\)^\(p3-1\) * exp\(-\(\(x-p1\)/p2\)^p3\) for x > p1. */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_WEIBULL    18)Tj
+T*
+(  /*! [C1, chap 18] Chi distribution \(1 param\): p1 = DOF.)Tj
+0 -1.1429 TD
+(      Density\(x\) proportional to x^\(p1-1\) * exp\(-x^2/2\) for x > 0.)Tj
+T*
+(       p1 = 1 = íhalf normalí distribution)Tj
+T*
+(       p1 = 2 = Rayleigh distribution)Tj
+T*
+(       p1 = 3 = Maxwell-Boltzmann distribution.                  */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_CHI        19)Tj
+T*
+(  /*! [C1, chap 15] Inverse Gaussian \(2 params\):)Tj
+0 -1.1429 TD
+(       p1 = mu, p2 = lambda)Tj
+T*
+(      Density\(x\) proportional to)Tj
+T*
+(       exp\(-p2*\(x-p1\)^2/\(2*p1^2*x\)\) / x^3  for x > 0. */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_INVGAUSS   20)Tj
+T*
+(  /*! [C2, chap 22] Extreme value type I \(2 params\):)Tj
+0 -1.1429 TD
+(       p1 = location, p2 = scale)Tj
+T*
+(      cdf\(x\) = exp\(-exp\(-\(x-p1\)/p2\)\). */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_EXTVAL     21)Tj
+T*
+(  /*! Data is a íp-valueí \(no params\). */)Tj
+T*
+(#define NIFTI_INTENT_PVAL       22)Tj
+T*
+(  /*! Smallest intent_code that indicates a statistic. */)Tj
+T*
+(#define NIFTI_FIRST_STATCODE     2)Tj
+ET
+endstream
+endobj
+21 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 6 0 R
+/TT8 7 0 R
+>>
+/ExtGState <<
+/GS1 8 0 R
+>>
+>>
+endobj
+23 0 obj
+<<
+/Length 6620
+>>
+stream
+0 G
+0 J 0 j 0.1 w 10 M []0 d
+/GS1 gs
+1 i 
+571 421 m
+60 421 l
+60 818 511 -794 re
+S
+0.95 g
+42 818 18 -794 re
+f
+0.7 g
+24 96 36 -72 re
+f
+BT
+/TT2 1 Tf
+0 12 -12 0 40 38.666 Tm
+0 g
+0 Tc
+0 Tw
+(03/04/04)Tj
+-0.0552 -1.0667 TD
+(16:29:15)Tj
+ET
+0.7 g
+24 818 36 -72 re
+f
+BT
+/TT4 1 Tf
+0 28.8 -28.8 0 52.8 773.9915 Tm
+1 g
+(6)Tj
+/TT6 1 Tf
+0 14 -14 0 55.5 400.5845 Tm
+0 g
+(nifti1.h)Tj
+/TT8 1 Tf
+0 7 -7 0 78 29 Tm
+(  /*! Largest intent_code that indicates a statistic. */)Tj
+0 -2.2857 TD
+(#define NIFTI_LAST_STATCODE     22)Tj
+T*
+( /*---------- these values for intent_code arenít for statistics ----------*/)Tj
+T*
+( /*! To signify that the value at each voxel is an estimate)Tj
+0 -1.1429 TD
+(     of some parameter, set intent_code = NIFTI_INTENT_ESTIMATE.)Tj
+T*
+(     The name of the parameter may be stored in intent_name.     */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_ESTIMATE  1001)Tj
+T*
+( /*! To signify that the value at each voxel is an index into)Tj
+0 -1.1429 TD
+(     some set of labels, set intent_code = NIFTI_INTENT_LABEL.)Tj
+T*
+(     The filename with the labels may stored in aux_file.        */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_LABEL     1002)Tj
+T*
+( /*! To signify that the value at each voxel is an index into the)Tj
+0 -1.1429 TD
+(     NeuroNames labels set, set intent_code = NIFTI_INTENT_NEURONAME. */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_NEURONAME 1003)Tj
+T*
+( /*! To store an M x N matrix at each voxel:)Tj
+0 -1.1429 TD
+(       - dataset must have a 5th dimension \(dim[0]=5 and dim[5]>1\))Tj
+T*
+(       - intent_code must be NIFTI_INTENT_GENMATRIX)Tj
+T*
+(       - dim[5] must be M*N)Tj
+T*
+(       - intent_p1 must be M \(in float format\))Tj
+T*
+(       - intent_p2 must be N \(ditto\))Tj
+T*
+(       - the matrix values A[i][[j] are stored in row-order:)Tj
+T*
+(         - A[0][0] A[0][1] ... A[0][N-1])Tj
+T*
+(         - A[1][0] A[1][1] ... A[1][N-1])Tj
+T*
+(         - etc., until)Tj
+T*
+(         - A[M-1][0] A[M-1][1] ... A[M-1][N-1]        */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_GENMATRIX 1004)Tj
+T*
+( /*! To store an NxN symmetric matrix at each voxel:)Tj
+0 -1.1429 TD
+(       - dataset must have a 5th dimension)Tj
+T*
+(       - intent_code must be NIFTI_INTENT_SYMMATRIX)Tj
+T*
+(       - dim[5] must be N*\(N+1\)/2)Tj
+T*
+(       - intent_p1 must be N \(in float format\))Tj
+T*
+(       - the matrix values A[i][[j] are stored in row-order:)Tj
+T*
+(         - A[0][0])Tj
+T*
+(         - A[1][0] A[1][1])Tj
+T*
+(         - A[2][0] A[2][1] A[2][2])Tj
+T*
+(         - etc.: row-by-row                           */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_SYMMATRIX 1005)Tj
+T*
+( /*! To signify that the vector value at each voxel is to be taken)Tj
+0 -1.1429 TD
+(     as a displacement field or vector:)Tj
+T*
+(       - dataset must have a 5th dimension)Tj
+T*
+(       - intent_code must be NIFTI_INTENT_DISPVECT)Tj
+T*
+(       - dim[5] must be the dimensionality of the displacment)Tj
+T*
+(         vector \(e.g., 3 for spatial displacement, 2 for in-plane\) */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_DISPVECT  1006   /* specifically for displacements */)Tj
+0 -1.1429 TD
+(#define NIFTI_INTENT_VECTOR    1007   /* for any other type of vector */)Tj
+0 -2.2857 TD
+( /*! To signify that the vector value at each voxel is really a)Tj
+0 -1.1429 TD
+(     spatial coordinate \(e.g., the vertices or nodes of a surface mesh\):)Tj
+56.7143 70.8571 TD
+(       - dataset must have a 5th dimension)Tj
+0 -1.1429 TD
+(       - intent_code must be NIFTI_INTENT_POINTSET)Tj
+T*
+(       - dim[0] = 5)Tj
+T*
+(       - dim[1] = number of points)Tj
+T*
+(       - dim[2] = dim[3] = dim[4] = 1)Tj
+T*
+(       - dim[5] must be the dimensionality of space \(e.g., 3 => 3D space\).)Tj
+T*
+(       - intent_name may describe the object these points come from)Tj
+T*
+(         \(e.g., "pial", "gray/white" , "EEG", "MEG"\).                   */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_POINTSET  1008)Tj
+T*
+( /*! To signify that the vector value at each voxel is really a triple)Tj
+0 -1.1429 TD
+(     of indexes \(e.g., forming a triangle\) from a pointset dataset:)Tj
+T*
+(       - dataset must have a 5th dimension)Tj
+T*
+(       - intent_code must be NIFTI_INTENT_TRIANGLE)Tj
+T*
+(       - dim[0] = 5)Tj
+T*
+(       - dim[1] = number of triangles)Tj
+T*
+(       - dim[2] = dim[3] = dim[4] = 1)Tj
+T*
+(       - dim[5] = 3)Tj
+T*
+(       - datatype should be an integer type \(preferably DT_INT32\))Tj
+T*
+(       - the data values are indexes \(0,1,...\) into a pointset dataset. */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_TRIANGLE  1009)Tj
+T*
+( /*! To signify that the vector value at each voxel is a quaternion:)Tj
+0 -1.1429 TD
+(       - dataset must have a 5th dimension)Tj
+T*
+(       - intent_code must be NIFTI_INTENT_QUATERNION)Tj
+T*
+(       - dim[0] = 5)Tj
+T*
+(       - dim[5] = 4)Tj
+T*
+(       - datatype should be a floating point type     */)Tj
+0 -2.2857 TD
+(#define NIFTI_INTENT_QUATERNION 1010)Tj
+T*
+(/*---------------------------------------------------------------------------*/)Tj
+0 -1.1429 TD
+(/* 3D IMAGE \(VOLUME\) ORIENTATION AND LOCATION IN SPACE:)Tj
+T*
+(   ---------------------------------------------------)Tj
+T*
+(   There are 3 different methods by which continuous coordinates can)Tj
+T*
+(   attached to voxels.  The discussion below emphasizes 3D volumes, and)Tj
+T*
+(   the continuous coordinates are referred to as \(x,y,z\).  The voxel)Tj
+T*
+(   index coordinates \(i.e., the array indexes\) are referred to as \(i,j,k\),)Tj
+T*
+(   with valid ranges:)Tj
+T*
+(     i = 0 .. dim[1]-1)Tj
+T*
+(     j = 0 .. dim[2]-1  \(if dim[0] >= 2\))Tj
+T*
+(     k = 0 .. dim[3]-1  \(if dim[0] >= 3\))Tj
+T*
+(   The \(x,y,z\) coordinates refer to the CENTER of a voxel.  In methods)Tj
+T*
+(   2 and 3, the \(x,y,z\) axes refer to a subject-based coordinate system,)Tj
+T*
+(   with)Tj
+T*
+(     +x = Right  +y = Anterior  +z = Superior.)Tj
+T*
+(   This is a right-handed coordinate system.  However, the exact direction)Tj
+T*
+(   these axes point with respect to the subject depends on qform_code)Tj
+T*
+(   \(Method 2\) and sform_code \(Method 3\).)Tj
+0 -2.2857 TD
+(   N.B.: The i index varies most rapidly, j index next, k index slowest.)Tj
+0 -1.1429 TD
+(    Thus, voxel \(i,j,k\) is stored starting at location)Tj
+T*
+(      \(i + j*dim[1] + k*dim[1]*dim[2]\) * \(bitpix/8\))Tj
+T*
+(    into the dataset array.)Tj
+0 -2.2857 TD
+(   N.B.: The ANALYZE 7.5 coordinate system is)Tj
+0 -1.1429 TD
+(      +x = Left  +y = Anterior  +z = Superior)Tj
+T*
+(    which is a left-handed coordinate system.  This backwardness is)Tj
+T*
+(    too difficult to tolerate, so this NIFTI-1 standard specifies the)Tj
+T*
+(    coordinate order which is most common in functional neuroimaging.)Tj
+ET
+endstream
+endobj
+24 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 6 0 R
+/TT8 7 0 R
+>>
+/ExtGState <<
+/GS1 8 0 R
+>>
+>>
+endobj
+26 0 obj
+<<
+/Length 7699
+>>
+stream
+0 G
+0 J 0 j 0.1 w 10 M []0 d
+/GS1 gs
+1 i 
+571 421 m
+60 421 l
+60 818 511 -794 re
+S
+0.95 g
+42 818 18 -794 re
+f
+0.7 g
+24 96 36 -72 re
+f
+BT
+/TT2 1 Tf
+0 12 -12 0 40 38.666 Tm
+0 g
+0 Tc
+0 Tw
+(03/04/04)Tj
+-0.0552 -1.0667 TD
+(16:29:15)Tj
+ET
+0.7 g
+24 818 36 -72 re
+f
+BT
+/TT4 1 Tf
+0 28.8 -28.8 0 52.8 773.9915 Tm
+1 g
+(7)Tj
+/TT6 1 Tf
+0 14 -14 0 55.5 400.5845 Tm
+0 g
+(nifti1.h)Tj
+/TT8 1 Tf
+0 7 -7 0 70 29 Tm
+(   N.B.: The 3 methods below all give the locations of the voxel centers)Tj
+0 -1.1429 TD
+(    in the \(x,y,z\) coordinate system.  In many cases, programs will wish)Tj
+T*
+(    to display image data on some other grid.  In such a case, the program)Tj
+T*
+(    will need to convert its desired \(x,y,z\) values into \(i,j,k\) values)Tj
+T*
+(    in order to extract \(or interpolate\) the image data.  This operation)Tj
+T*
+(    would be done with the inverse transformation to those described below.)Tj
+0 -2.2857 TD
+(   N.B.: Method 2 uses a factor íqfací which is either -1 or 1; qfac is)Tj
+0 -1.1429 TD
+(    stored in the otherwise unused pixdim[0].  If pixdim[0]=0.0 \(which)Tj
+T*
+(    should not occur\), we take qfac=1.  Of course, pixdim[0] is only used)Tj
+T*
+(    when reading a NIFTI-1 header, not when reading an ANALYZE 7.5 header.)Tj
+0 -2.2857 TD
+(   N.B.: The units of \(x,y,z\) can be specified using the xyzt_units field.)Tj
+T*
+(   METHOD 1 \(the "old" way, used only when qform_code = 0\):)Tj
+0 -1.1429 TD
+(   -------------------------------------------------------)Tj
+T*
+(   The coordinate mapping from \(i,j,k\) to \(x,y,z\) is the ANALYZE)Tj
+T*
+(   7.5 way.  This is a simple scaling relationship:)Tj
+0 -2.2857 TD
+(     x = pixdim[1] * i)Tj
+0 -1.1429 TD
+(     y = pixdim[2] * j)Tj
+T*
+(     z = pixdim[3] * k)Tj
+0 -2.2857 TD
+(   No particular spatial orientation is attached to these \(x,y,z\))Tj
+0 -1.1429 TD
+(   coordinates.  \(NIFTI-1 does not have the ANALYZE 7.5 orient field,)Tj
+T*
+(   which is not general and is often not set properly.\)  This method)Tj
+T*
+(   is not recommended, and is present mainly for compatibility with)Tj
+T*
+(   ANALYZE 7.5 files.)Tj
+0 -2.2857 TD
+(   METHOD 2 \(used when qform_code > 0, which should be the "normal case\):)Tj
+0 -1.1429 TD
+(   ---------------------------------------------------------------------)Tj
+T*
+(   The \(x,y,z\) coordinates are given by the pixdim[] scales, a rotation)Tj
+T*
+(   matrix, and a shift.  This method is intended to represent)Tj
+T*
+(   "scanner-anatomical" coordinates, which are often embedded in the)Tj
+T*
+(   image header \(e.g., DICOM fields \(0020,0032\), \(0020,0037\), \(0028,0030\),)Tj
+T*
+(   and \(0018,0050\)\), and represent the nominal orientation and location of)Tj
+T*
+(   the data.  This method can also be used to represent "aligned")Tj
+T*
+(   coordinates, which would typically result from some post-acquisition)Tj
+T*
+(   alignment of the volume to a standard orientation \(e.g., the same)Tj
+T*
+(   subject on another day, or a rigid rotation to true anatomical)Tj
+T*
+(   orientation from the tilted position of the subject in the scanner\).)Tj
+T*
+(   The formula for \(x,y,z\) in terms of header parameters and \(i,j,k\) is:)Tj
+0 -2.2857 TD
+(     [ x ]   [ R11 R12 R13 ] [        pixdim[1] * i ]   [ qoffset_x ])Tj
+0 -1.1429 TD
+(     [ y ] = [ R21 R22 R23 ] [        pixdim[2] * j ] + [ qoffset_y ])Tj
+T*
+(     [ z ]   [ R31 R32 R33 ] [ qfac * pixdim[3] * k ]   [ qoffset_z ])Tj
+0 -2.2857 TD
+(   The qoffset_* shifts are in the NIFTI-1 header.  Note that the center)Tj
+0 -1.1429 TD
+(   of the \(i,j,k\)=\(0,0,0\) voxel \(first value in the dataset array\) is)Tj
+T*
+(   just \(x,y,z\)=\(qoffset_x,qoffset_y,qoffset_z\).)Tj
+0 -2.2857 TD
+(   The rotation matrix R is calculated from the quatern_* parameters.)Tj
+0 -1.1429 TD
+(   This calculation is described below.)Tj
+0 -2.2857 TD
+(   The scaling factor qfac is either 1 or -1.  The rotation matrix R)Tj
+0 -1.1429 TD
+(   defined by the quaternion parameters is "proper" \(has determinant 1\).)Tj
+T*
+(   This may not fit the needs of the data; for example, if the image)Tj
+T*
+(   grid is)Tj
+T*
+(     i increases from Left-to-Right)Tj
+T*
+(     j increases from Anterior-to-Posterior)Tj
+T*
+(     k increases from Inferior-to-Superior)Tj
+T*
+(   Then \(i,j,k\) is a left-handed triple.  In this example, if qfac=1,)Tj
+T*
+(   the R matrix would have to be)Tj
+56.7143 69.7143 TD
+(     [  1   0   0 ])Tj
+0 -1.1429 TD
+(     [  0  -1   0 ]  which is "improper" \(determinant = -1\).)Tj
+T*
+(     [  0   0   1 ])Tj
+0 -2.2857 TD
+(   If we set qfac=-1, then the R matrix would be)Tj
+T*
+(     [  1   0   0 ])Tj
+0 -1.1429 TD
+(     [  0  -1   0 ]  which is proper.)Tj
+T*
+(     [  0   0  -1 ])Tj
+0 -2.2857 TD
+(   This R matrix is represented by quaternion [a,b,c,d] = [0,1,0,0])Tj
+0 -1.1429 TD
+(   \(which encodes a 180 degree rotation about the x-axis\).)Tj
+0 -2.2857 TD
+(   METHOD 3 \(used when sform_code > 0\):)Tj
+0 -1.1429 TD
+(   -----------------------------------)Tj
+T*
+(   The \(x,y,z\) coordinates are given by a general affine transformation)Tj
+T*
+(   of the \(i,j,k\) indexes:)Tj
+0 -2.2857 TD
+(     x = srow_x[0] * i + srow_x[1] * j + srow_x[2] * k + srow_x[3])Tj
+0 -1.1429 TD
+(     y = srow_y[0] * i + srow_y[1] * j + srow_y[2] * k + srow_y[3])Tj
+T*
+(     z = srow_z[0] * i + srow_z[1] * j + srow_z[2] * k + srow_z[3])Tj
+0 -2.2857 TD
+(   The srow_* vectors are in the NIFTI_1 header.  Note that no use is)Tj
+0 -1.1429 TD
+(   made of pixdim[] in this method.)Tj
+0 -2.2857 TD
+(   WHY 3 METHODS?)Tj
+0 -1.1429 TD
+(   --------------)Tj
+T*
+(   Method 1 is provided only for backwards compatibility.  The intention)Tj
+T*
+(   is that Method 2 \(qform_code > 0\) represents the nominal voxel locations)Tj
+T*
+(   as reported by the scanner, or as rotated to some fiducial orientation and)Tj
+T*
+(   location.  Method 3, if present \(sform_code > 0\), is to be used to give)Tj
+T*
+(   the location of the voxels in some standard space.  The sform_code)Tj
+T*
+(   indicates which standard space is present.  Both methods 2 and 3 can be)Tj
+T*
+(   present, and be useful in different contexts \(method 2 for displaying the)Tj
+T*
+(   data on its original grid; method 3 for displaying it on a standard grid\).)Tj
+0 -2.2857 TD
+(   In this scheme, a dataset would originally be set up so that the)Tj
+0 -1.1429 TD
+(   Method 2 coordinates represent what the scanner reported.  Later,)Tj
+T*
+(   a registration to some standard space can be computed and inserted)Tj
+T*
+(   in the header.  Image display software can use either transform,)Tj
+T*
+(   depending on its purposes and needs.)Tj
+0 -2.2857 TD
+(   In Method 2, the origin of coordinates would generally be whatever)Tj
+0 -1.1429 TD
+(   the scanner origin is; for example, in MRI, \(0,0,0\) is the center)Tj
+T*
+(   of the gradient coil.)Tj
+0 -2.2857 TD
+(   In Method 3, the origin of coordinates would depend on the value)Tj
+0 -1.1429 TD
+(   of sform_code; for example, for the Talairach coordinate system,)Tj
+T*
+(   \(0,0,0\) corresponds to the Anterior Commissure.)Tj
+0 -2.2857 TD
+(   QUATERNION REPRESENTATION OF ROTATION MATRIX \(METHOD 2\))Tj
+0 -1.1429 TD
+(   -------------------------------------------------------)Tj
+T*
+(   The orientation of the \(x,y,z\) axes relative to the \(i,j,k\) axes)Tj
+T*
+(   in 3D space is specified using a unit quaternion [a,b,c,d], where)Tj
+T*
+(   a*a+b*b+c*c+d*d=1.  The \(b,c,d\) values are all that is needed, since)Tj
+T*
+(   we require that a = sqrt\(1.0-b*b+c*c+d*d\) be nonnegative.  The \(b,c,d\))Tj
+T*
+(   values are stored in the \(quatern_b,quatern_c,quatern_d\) fields.)Tj
+0 -2.2857 TD
+(   The quaternion representation is chosen for its compactness in)Tj
+0 -1.1429 TD
+(   representing rotations. The \(proper\) 3x3 rotation matrix that)Tj
+T*
+(   corresponds to [a,b,c,d] is)Tj
+ET
+endstream
+endobj
+27 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 6 0 R
+/TT8 7 0 R
+>>
+/ExtGState <<
+/GS1 8 0 R
+>>
+>>
+endobj
+29 0 obj
+<<
+/Length 7312
+>>
+stream
+0 G
+0 J 0 j 0.1 w 10 M []0 d
+/GS1 gs
+1 i 
+571 421 m
+60 421 l
+60 818 511 -794 re
+S
+0.95 g
+42 818 18 -794 re
+f
+0.7 g
+24 96 36 -72 re
+f
+BT
+/TT2 1 Tf
+0 12 -12 0 40 38.666 Tm
+0 g
+0 Tc
+0 Tw
+(03/04/04)Tj
+-0.0552 -1.0667 TD
+(16:29:15)Tj
+ET
+0.7 g
+24 818 36 -72 re
+f
+BT
+/TT4 1 Tf
+0 28.8 -28.8 0 52.8 773.9915 Tm
+1 g
+(8)Tj
+/TT6 1 Tf
+0 14 -14 0 55.5 400.5845 Tm
+0 g
+(nifti1.h)Tj
+/TT8 1 Tf
+0 7 -7 0 70 29 Tm
+(         [ a*a+b*b-c*c-d*d   2*b*c-2*a*d       2*b*d+2*a*c     ])Tj
+0 -1.1429 TD
+(     R = [ 2*b*c+2*a*d       a*a+c*c-b*b-d*d   2*c*d-2*a*b     ])Tj
+T*
+(         [ 2*b*d-2*a*c       2*c*d+2*a*b       a*a+d*d-c*c-b*b ])Tj
+0 -2.2857 TD
+(         [ R11               R12               R13             ])Tj
+0 -1.1429 TD
+(       = [ R21               R22               R23             ])Tj
+T*
+(         [ R31               R32               R33             ])Tj
+0 -2.2857 TD
+(   If \(p,q,r\) is a unit 3-vector, then rotation of angle h about that)Tj
+0 -1.1429 TD
+(   direction is represented by the quaternion)Tj
+0 -2.2857 TD
+(     [a,b,c,d] = [cos\(h/2\), p*sin\(h/2\), q*sin\(h/2\), r*sin\(h/2\)].)Tj
+T*
+(   Requiring a >= 0 is equivalent to requiring -Pi <= h <= Pi.  \(Note that)Tj
+0 -1.1429 TD
+(   [-a,-b,-c,-d] represents the same rotation as [a,b,c,d]; there are 2)Tj
+T*
+(   quaternions that can be used to represent a given rotation matrix R.\))Tj
+T*
+(   To rotate a 3-vector \(x,y,z\) using quaternions, we compute the)Tj
+T*
+(   quaternion product)Tj
+0 -2.2857 TD
+(     [0,xí,yí,zí] = [a,b,c,d] * [0,x,y,z] * [a,-b,-c,-d])Tj
+T*
+(   which is equivalent to the matrix-vector multiply)Tj
+T*
+(     [ xí ]     [ x ])Tj
+0 -1.1429 TD
+(     [ yí ] = R [ y ]   \(equivalence depends on a*a+b*b+c*c+d*d=1\))Tj
+T*
+(     [ zí ]     [ z ])Tj
+0 -2.2857 TD
+(   Multiplication of 2 quaternions is defined by the following:)Tj
+T*
+(     [a,b,c,d] = a*1 + b*I + c*J + d*K)Tj
+0 -1.1429 TD
+(     where)Tj
+T*
+(       I*I = J*J = K*K = -1 \(I,J,K are square roots of -1\))Tj
+T*
+(       I*J =  K  J*K =  I  K*I =  J)Tj
+T*
+(       J*I = -K  K*J = -I  I*K = -J  \(not commutative!\))Tj
+T*
+(     For example)Tj
+T*
+(       [a,b,0,0] * [0,0,0,1] = [0,-b,0,a])Tj
+T*
+(     since this expands to)Tj
+T*
+(       \(a+b*I\)*\(K\) = \(a*K+b*I*K\) = \(a*K-b*J\).)Tj
+0 -2.2857 TD
+(   The above formula shows how to go from quaternion \(b,c,d\) to)Tj
+0 -1.1429 TD
+(   rotation matrix and direction cosines.  Conversely, given R,)Tj
+T*
+(   we can compute the fields for the NIFTI-1 header by)Tj
+0 -2.2857 TD
+(     a = 0.5  * sqrt\(1+R11+R22+R33\)    \(not stored\))Tj
+0 -1.1429 TD
+(     b = 0.25 * \(R32-R23\) / a       => quatern_b)Tj
+T*
+(     c = 0.25 * \(R13-R31\) / a       => quatern_c)Tj
+T*
+(     d = 0.25 * \(R21-R12\) / a       => quatern_d)Tj
+0 -2.2857 TD
+(   If a=0 \(a 180 degree rotation\), alternative formulas are needed.)Tj
+0 -1.1429 TD
+(   See the nifti1_io.c function mat44_to_quatern\(\) for an implementation)Tj
+T*
+(   of the various cases in converting R to [a,b,c,d].)Tj
+0 -2.2857 TD
+(   Note that R-transpose \(= R-inverse\) would lead to the quaternion)Tj
+0 -1.1429 TD
+(   [a,-b,-c,-d].)Tj
+0 -2.2857 TD
+(   The choice to specify the qoffset_x \(etc.\) values in the final)Tj
+0 -1.1429 TD
+(   coordinate system is partly to make it easy to convert DICOM images to)Tj
+T*
+(   this format.  The DICOM attribute "Image Position \(Patient\)" \(0020,0032\))Tj
+T*
+(   stores the \(Xd,Yd,Zd\) coordinates of the center of the first voxel.)Tj
+T*
+(   Here, \(Xd,Yd,Zd\) refer to DICOM coordinates, and Xd=-x, Yd=-y, Zd=z,)Tj
+T*
+(   where \(x,y,z\) refers to the NIFTI coordinate system discussed above.)Tj
+T*
+(   \(i.e., DICOM +Xd is Left, +Yd is Posterior, +Zd is Superior,)Tj
+T*
+(        whereas +x is Right, +y is Anterior  , +z is Superior. \))Tj
+56.7143 70.8571 TD
+(   Thus, if the \(0020,0032\) DICOM attribute is extracted into \(px,py,pz\), then)Tj
+0 -1.1429 TD
+(     qoffset_x = -px   qoffset_y = -py   qoffset_z = pz)Tj
+T*
+(   is a reasonable setting when qform_code=NIFTI_XFORM_SCANNER_ANAT.)Tj
+0 -2.2857 TD
+(   That is, DICOMís coordinate system is 180 degrees rotated about the z-axis)Tj
+0 -1.1429 TD
+(   from the neuroscience/NIFTI coordinate system.  To transform between DICOM)Tj
+T*
+(   and NIFTI, you just have to negate the x- and y-coordinates.)Tj
+0 -2.2857 TD
+(   The DICOM attribute \(0020,0037\) "Image Orientation \(Patient\)" gives the)Tj
+0 -1.1429 TD
+(   orientation of the x- and y-axes of the image data in terms of 2 3-vectors.)Tj
+T*
+(   The first vector is a unit vector along the x-axis, and the second is)Tj
+T*
+(   along the y-axis.  If the \(0020,0037\) attribute is extracted into the)Tj
+T*
+(   value \(xa,xb,xc,ya,yb,yc\), then the first two columns of the R matrix)Tj
+T*
+(   would be)Tj
+T*
+(              [ -xa  -ya ])Tj
+T*
+(              [ -xb  -yb ])Tj
+T*
+(              [  xc   yc ])Tj
+T*
+(   The negations are because DICOMís x- and y-axes are reversed relative)Tj
+T*
+(   to NIFTIís.  The third column of the R matrix gives the direction of)Tj
+T*
+(   displacement \(relative to the subject\) along the slice-wise direction.)Tj
+T*
+(   This orientation is not encoded in the DICOM standard in a simple way;)Tj
+T*
+(   DICOM is mostly concerned with 2D images.  The third column of R will be)Tj
+T*
+(   either the cross-product of the first 2 columns or its negative.  It is)Tj
+T*
+(   possible to infer the sign of the 3rd column by examining the coordinates)Tj
+T*
+(   in DICOM attribute \(0020,0032\) "Image Position \(Patient\)" for successive)Tj
+T*
+(   slices.  However, this method occasionally fails for reasons that I)Tj
+T*
+(   \(RW Cox\) do not understand.)Tj
+T*
+(-----------------------------------------------------------------------------*/)Tj
+0 -2.2857 TD
+(   /* [qs]form_code value:  */      /* x,y,z coordinate system refers to:    */)Tj
+0 -1.1429 TD
+(   /*-----------------------*/      /*---------------------------------------*/)Tj
+0 -2.2857 TD
+(                                    /*! Arbitrary coordinates \(Method 1\). */)Tj
+T*
+(#define NIFTI_XFORM_UNKNOWN      0)Tj
+T*
+(                                    /*! Scanner-based anatomical coordinates */)Tj
+T*
+(#define NIFTI_XFORM_SCANNER_ANAT 1)Tj
+T*
+(                                    /*! Coordinates aligned to another fileís,)Tj
+0 -1.1429 TD
+(                                        or to anatomical "truth".            */)Tj
+0 -2.2857 TD
+(#define NIFTI_XFORM_ALIGNED_ANAT 2)Tj
+T*
+(                                    /*! Coordinates aligned to Talairach-)Tj
+0 -1.1429 TD
+(                                        Tournoux Atlas; \(0,0,0\)=AC, etc. */)Tj
+0 -2.2857 TD
+(#define NIFTI_XFORM_TALAIRACH    3)Tj
+T*
+(                                    /*! MNI 152 normalized coordinates. */)Tj
+T*
+(#define NIFTI_XFORM_MNI_152      4)Tj
+T*
+(/*---------------------------------------------------------------------------*/)Tj
+0 -1.1429 TD
+(/* UNITS OF SPATIAL AND TEMPORAL DIMENSIONS:)Tj
+T*
+(   ----------------------------------------)Tj
+T*
+(   The codes below can be used in xyzt_units to indicate the units of pixdim.)Tj
+T*
+(   As noted earlier, dimensions 1,2,3 are for x,y,z; dimension 4 is for)Tj
+T*
+(   time \(t\).)Tj
+T*
+(    - If dim[4]=1 or dim[0] < 4, there is no time axis.)Tj
+T*
+(    - A single time series \(no space\) would be specified with)Tj
+T*
+(      - dim[0] = 4 \(for scalar data\) or dim[0] = 5 \(for vector data\))Tj
+ET
+endstream
+endobj
+30 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 6 0 R
+/TT8 7 0 R
+>>
+/ExtGState <<
+/GS1 8 0 R
+>>
+>>
+endobj
+32 0 obj
+<<
+/Length 7606
+>>
+stream
+0 G
+0 J 0 j 0.1 w 10 M []0 d
+/GS1 gs
+1 i 
+571 421 m
+60 421 l
+60 818 511 -794 re
+S
+0.95 g
+42 818 18 -794 re
+f
+0.7 g
+24 96 36 -72 re
+f
+BT
+/TT2 1 Tf
+0 12 -12 0 40 38.666 Tm
+0 g
+0 Tc
+0 Tw
+(03/04/04)Tj
+-0.0552 -1.0667 TD
+(16:29:15)Tj
+ET
+0.7 g
+24 818 36 -72 re
+f
+BT
+/TT4 1 Tf
+0 28.8 -28.8 0 52.8 773.9915 Tm
+1 g
+(9)Tj
+/TT6 1 Tf
+0 14 -14 0 55.5 400.5845 Tm
+0 g
+(nifti1.h)Tj
+/TT8 1 Tf
+0 7 -7 0 70 29 Tm
+(      - dim[1] = dim[2] = dim[3] = 1)Tj
+0 -1.1429 TD
+(      - dim[4] = number of time points)Tj
+T*
+(      - pixdim[4] = time step)Tj
+T*
+(      - xyzt_units indicates units of pixdim[4])Tj
+T*
+(      - dim[5] = number of values stored at each time point)Tj
+0 -2.2857 TD
+(   Bits 0..2 of xyzt_units specify the units of pixdim[1..3])Tj
+0 -1.1429 TD
+(    \(e.g., spatial units are values 1..7\).)Tj
+T*
+(   Bits 3..5 of xyzt_units specify the units of pixdim[4])Tj
+T*
+(    \(e.g., temporal units are multiples of 8\).)Tj
+0 -2.2857 TD
+(   This compression of 2 distinct concepts into 1 byte is due to the)Tj
+0 -1.1429 TD
+(   limited space available in the 348 byte ANALYZE 7.5 header.  The)Tj
+T*
+(   macros XYZT_TO_SPACE and XYZT_TO_TIME can be used to mask off the)Tj
+T*
+(   undesired bits from the xyzt_units fields, leaving "pure" space)Tj
+T*
+(   and time codes.  Inversely, the macro SPACE_TIME_TO_XYZT can be)Tj
+T*
+(   used to assemble a space code \(0,1,2,...,7\) with a time code)Tj
+T*
+(   \(0,8,16,32,...,56\) into the combined value for xyzt_units.)Tj
+0 -2.2857 TD
+(   Note that codes are provided to indicate the "time" axis units are)Tj
+0 -1.1429 TD
+(   actually frequency in Hertz \(_HZ\) or in part-per-million \(_PPM\).)Tj
+0 -2.2857 TD
+(   The toffset field can be used to indicate a nonzero start point for)Tj
+0 -1.1429 TD
+(   the time axis.  That is, time point #m is at t=toffset+m*pixdim[4])Tj
+T*
+(   for m=0..dim[4]-1.)Tj
+T*
+(-----------------------------------------------------------------------------*/)Tj
+0 -2.2857 TD
+(                               /*! NIFTI code for unspecified units. */)Tj
+0 -1.1429 TD
+(#define NIFTI_UNITS_UNKNOWN 0)Tj
+0 -2.2857 TD
+(                               /** Space codes are multiples of 1. **/)Tj
+0 -1.1429 TD
+(                               /*! NIFTI code for meters. */)Tj
+T*
+(#define NIFTI_UNITS_METER   1)Tj
+T*
+(                               /*! NIFTI code for millimeters. */)Tj
+T*
+(#define NIFTI_UNITS_MM      2)Tj
+T*
+(                               /*! NIFTI code for micrometers. */)Tj
+T*
+(#define NIFTI_UNITS_MICRON  3)Tj
+0 -2.2857 TD
+(                               /** Time codes are multiples of 8. **/)Tj
+0 -1.1429 TD
+(                               /*! NIFTI code for seconds. */)Tj
+T*
+(#define NIFTI_UNITS_SEC     8)Tj
+T*
+(                               /*! NIFTI code for milliseconds. */)Tj
+T*
+(#define NIFTI_UNITS_MSEC   16)Tj
+T*
+(                               /*! NIFTI code for microseconds. */)Tj
+T*
+(#define NIFTI_UNITS_USEC   24)Tj
+0 -2.2857 TD
+(                               /*** These units are for spectral data: ***/)Tj
+0 -1.1429 TD
+(                               /*! NIFTI code for Hertz. */)Tj
+T*
+(#define NIFTI_UNITS_HZ     32)Tj
+T*
+(                               /*! NIFTI code for ppm. */)Tj
+T*
+(#define NIFTI_UNITS_PPM    40)Tj
+0 -2.2857 TD
+(#undef  XYZT_TO_SPACE)Tj
+0 -1.1429 TD
+(#undef  XYZT_TO_TIME)Tj
+T*
+(#define XYZT_TO_SPACE\(xyzt\)       \( \(xyzt\) & 0x07 \))Tj
+T*
+(#define XYZT_TO_TIME\(xyzt\)        \( \(xyzt\) & 0x38 \))Tj
+0 -2.2857 TD
+(#undef  SPACE_TIME_TO_XYZT)Tj
+0 -1.1429 TD
+(#define SPACE_TIME_TO_XYZT\(ss,tt\) \(  \(\(\(char\)\(ss\)\) & 0x07\)   \\)Tj
+T*
+(                                   | \(\(\(char\)\(tt\)\) & 0x38\) \))Tj
+0 -2.2857 TD
+(/*---------------------------------------------------------------------------*/)Tj
+0 -1.1429 TD
+(/* MRI-SPECIFIC SPATIAL AND TEMPORAL INFORMATION:)Tj
+56.7143 70.8571 TD
+(   ---------------------------------------------)Tj
+0 -1.1429 TD
+(   A few fields are provided to store some extra information)Tj
+T*
+(   that is sometimes important when storing the image data)Tj
+T*
+(   from an FMRI time series experiment.  \(After processing such)Tj
+T*
+(   data into statistical images, these fields are not likely)Tj
+T*
+(   to be useful.\))Tj
+0 -2.2857 TD
+(  { freq_dim  } = These fields encode which spatial dimension \(1,2, or 3\))Tj
+0 -1.1429 TD
+(  { phase_dim } = corresponds to which acquisition dimension for MRI data.)Tj
+T*
+(  { slice_dim } =)Tj
+T*
+(    Examples:)Tj
+T*
+(      Rectangular scan multi-slice EPI:)Tj
+T*
+(        freq_dim = 1  phase_dim = 2  slice_dim = 3  \(or some permutation\))Tj
+T*
+(      Spiral scan multi-slice EPI:)Tj
+T*
+(        freq_dim = phase_dim = 0  slice_dim = 3)Tj
+T*
+(        since the concepts of frequency- and phase-encoding directions)Tj
+T*
+(        donít apply to spiral scan)Tj
+0 -2.2857 TD
+(    slice_duration = If this is positive, AND if slice_dim is nonzero,)Tj
+0 -1.1429 TD
+(                     indicates the amount of time used to acquire 1 slice.)Tj
+T*
+(                     slice_duration*dim[slice_dim] can be less than pixdim[4])Tj
+T*
+(                     with a clustered acquisition method, for example.)Tj
+0 -2.2857 TD
+(    slice_code = If this is nonzero, AND if slice_dim is nonzero, AND)Tj
+0 -1.1429 TD
+(                 if slice_duration is positive, indicates the timing)Tj
+T*
+(                 pattern of the slice acquisition.  The following codes)Tj
+T*
+(                 are defined:)Tj
+T*
+(                   NIFTI_SLICE_SEQ_INC)Tj
+T*
+(                   NIFTI_SLICE_SEQ_DEC)Tj
+T*
+(                   NIFTI_SLICE_ALT_INC)Tj
+T*
+(                   NIFTI_SLICE_ALT_DEC)Tj
+T*
+(  { slice_start } = Indicates the start and end of the slice acquisition)Tj
+T*
+(  { slice_end   } = pattern, when slice_code is nonzero.  These values)Tj
+T*
+(                    are present to allow for the possible addition of)Tj
+T*
+(                    "padded" slices at either end of the volume, which)Tj
+T*
+(                    donít fit into the slice timing pattern.  If there)Tj
+T*
+(                    are no padding slices, then slice_start=0 and)Tj
+T*
+(                    slice_end=dim[slice_dim]-1 are the correct values.)Tj
+T*
+(                    For these values to be meaningful, slice_start must)Tj
+T*
+(                    be non-negative and slice_end must be greater than)Tj
+T*
+(                    slice_start.)Tj
+0 -2.2857 TD
+(  The following table indicates the slice timing pattern, relative to)Tj
+0 -1.1429 TD
+(  time=0 for the first slice acquired, for some sample cases.  Here,)Tj
+T*
+(  dim[slice_dim]=7 \(there are 7 slices, labeled 0..6\), slice_duration=0.1,)Tj
+T*
+(  and slice_start=1, slice_end=5 \(1 padded slice on each end\).)Tj
+0 -2.2857 TD
+(    slice)Tj
+0 -1.1429 TD
+(    index   SEQ_INC SEQ_DEC ALT_INC ALT_DEC)Tj
+T*
+(      6  --   n/a     n/a     n/a     n/a     n/a = not applicable)Tj
+T*
+(      5  --   0.4     0.0     0.2     0.0           \(slice time offset)Tj
+T*
+(      4  --   0.3     0.1     0.4     0.3            doesnít apply to)Tj
+T*
+(      3  --   0.2     0.2     0.1     0.1            slices outside range)Tj
+T*
+(      2  --   0.1     0.3     0.3     0.4            slice_start..slice_end\))Tj
+T*
+(      1  --   0.0     0.4     0.0     0.2)Tj
+T*
+(      0  --   n/a     n/a     n/a     n/a)Tj
+0 -2.2857 TD
+(  The fields freq_dim, phase_dim, slice_dim are all squished into the single)Tj
+0 -1.1429 TD
+(  byte field dim_info \(2 bits each, since the values for each field are)Tj
+T*
+(  limited to the range 0..3\).  This unpleasantness is due to lack of space)Tj
+T*
+(  in the 348 byte allowance.)Tj
+0 -2.2857 TD
+(  The macros DIM_INFO_TO_FREQ_DIM, DIM_INFO_TO_PHASE_DIM, and)Tj
+ET
+endstream
+endobj
+33 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 6 0 R
+/TT8 7 0 R
+>>
+/ExtGState <<
+/GS1 8 0 R
+>>
+>>
+endobj
+35 0 obj
+<<
+/Length 4778
+>>
+stream
+0 G
+0 J 0 j 0.1 w 10 M []0 d
+/GS1 gs
+1 i 
+571 421 m
+60 421 l
+60 818 511 -794 re
+S
+0.95 g
+42 818 18 -794 re
+f
+0.7 g
+24 96 36 -72 re
+f
+BT
+/TT2 1 Tf
+0 12 -12 0 40 38.666 Tm
+0 g
+0 Tc
+0 Tw
+(03/04/04)Tj
+-0.0552 -1.0667 TD
+(16:29:15)Tj
+ET
+0.7 g
+24 818 36 -72 re
+f
+BT
+/TT4 1 Tf
+0 28.8 -28.8 0 52.8 765.9828 Tm
+1 g
+(10)Tj
+/TT6 1 Tf
+0 14 -14 0 55.5 400.5845 Tm
+0 g
+(nifti1.h)Tj
+/TT8 1 Tf
+0 7 -7 0 70 29 Tm
+(  DIM_INFO_TO_SLICE_DIM can be used to extract these values from the)Tj
+0 -1.1429 TD
+(  dim_info byte.)Tj
+0 -2.2857 TD
+(  The macro FPS_INTO_DIM_INFO can be used to put these 3 values)Tj
+0 -1.1429 TD
+(  into the dim_info byte.)Tj
+T*
+(-----------------------------------------------------------------------------*/)Tj
+0 -2.2857 TD
+(#undef  DIM_INFO_TO_FREQ_DIM)Tj
+0 -1.1429 TD
+(#undef  DIM_INFO_TO_PHASE_DIM)Tj
+T*
+(#undef  DIM_INFO_TO_SLICE_DIM)Tj
+0 -2.2857 TD
+(#define DIM_INFO_TO_FREQ_DIM\(di\)   \( \(\(di\)     \) & 0x03 \))Tj
+0 -1.1429 TD
+(#define DIM_INFO_TO_PHASE_DIM\(di\)  \( \(\(di\) >> 2\) & 0x03 \))Tj
+T*
+(#define DIM_INFO_TO_SLICE_DIM\(di\)  \( \(\(di\) >> 4\) & 0x03 \))Tj
+0 -2.2857 TD
+(#undef  FPS_INTO_DIM_INFO)Tj
+0 -1.1429 TD
+(#define FPS_INTO_DIM_INFO\(fd,pd,sd\) \( \( \( \(\(char\)\(fd\)\) & 0x03\)      \) |  \\)Tj
+T*
+(                                      \( \( \(\(char\)\(pd\)\) & 0x03\) << 2 \) |  \\)Tj
+T*
+(                                      \( \( \(\(char\)\(sd\)\) & 0x03\) << 4 \)  \))Tj
+0 -2.2857 TD
+(#define NIFTI_SLICE_SEQ_INC  1)Tj
+0 -1.1429 TD
+(#define NIFTI_SLICE_SEQ_DEC  2)Tj
+T*
+(#define NIFTI_SLICE_ALT_INC  3)Tj
+T*
+(#define NIFTI_SLICE_ALT_DEC  4)Tj
+0 -2.2857 TD
+(/*---------------------------------------------------------------------------*/)Tj
+0 -1.1429 TD
+(/* UNUSED FIELDS:)Tj
+T*
+(   -------------)Tj
+T*
+(   Some of the ANALYZE 7.5 fields marked as ++UNUSED++ may need to be set)Tj
+T*
+(   to particular values for compatibility with other programs.  The issue)Tj
+T*
+(   of interoperability of ANALYZE 7.5 files is a murky one -- not all)Tj
+T*
+(   programs require exactly the same set of fields.  \(Unobscuring this)Tj
+T*
+(   murkiness is a principal motivation behind NIFTI-1.\))Tj
+0 -2.2857 TD
+(   Some of the fields that may need to be set for other \(non-NIFTI aware\))Tj
+0 -1.1429 TD
+(   software to be happy are:)Tj
+0 -2.2857 TD
+(     extents    dbh.h says this should be 16384)Tj
+0 -1.1429 TD
+(     regular    dbh.h says this should be the character írí)Tj
+T*
+(     glmin,   } dbh.h says these values should be the min and max voxel)Tj
+T*
+(      glmax   }  values for the entire dataset)Tj
+0 -2.2857 TD
+(   It is best to initialize ALL fields in the NIFTI-1 header to 0)Tj
+0 -1.1429 TD
+(   \(e.g., with calloc\(\)\), then fill in what is needed.)Tj
+T*
+(-----------------------------------------------------------------------------*/)Tj
+0 -2.2857 TD
+(/*---------------------------------------------------------------------------*/)Tj
+0 -1.1429 TD
+(/* MISCELLANEOUS C MACROS)Tj
+T*
+(-----------------------------------------------------------------------------*/)Tj
+0 -2.2857 TD
+(/*.................*/)Tj
+0 -1.1429 TD
+(/*! Given a nifti_1_header struct, check if it has a good magic number.)Tj
+T*
+(    Returns NIFTI version number \(1..9\) if magic is good, 0 if it is not. */)Tj
+0 -2.2857 TD
+(#define NIFTI_VERSION\(h\)                               \\)Tj
+0 -1.1429 TD
+( \( \( \(h\).magic[0]==íní && \(h\).magic[3]==í\\0í    &&     \\)Tj
+T*
+(     \( \(h\).magic[1]==íií || \(h\).magic[1]==í+í \) &&     \\)Tj
+T*
+(     \( \(h\).magic[2]>=í1í && \(h\).magic[2]<=í9í \)   \)    \\)Tj
+T*
+( ? \(h\).magic[2]-í0í : 0 \))Tj
+0 -2.2857 TD
+(/*.................*/)Tj
+0 -1.1429 TD
+(/*! Check if a nifti_1_header struct says if the data is stored in the)Tj
+T*
+(    same file or in a separate file.  Returns 1 if the data is in the same)Tj
+56.7143 70.8571 TD
+(    file as the header, 0 if it is not.                                   */)Tj
+0 -2.2857 TD
+(#define NIFTI_ONEFILE\(h\) \( \(h\).magic[1] == í+í \))Tj
+T*
+(/*.................*/)Tj
+0 -1.1429 TD
+(/*! Check if a nifti_1_header struct needs to be byte swapped.)Tj
+T*
+(    Returns 1 if it needs to be swapped, 0 if it does not.     */)Tj
+0 -2.2857 TD
+(#define NIFTI_NEEDS_SWAP\(h\) \( \(h\).dim[0] < 0 || \(h\).dim[0] > 7 \))Tj
+T*
+(/*.................*/)Tj
+0 -1.1429 TD
+(/*! Check if a nifti_1_header struct contains a 5th \(vector\) dimension.)Tj
+T*
+(    Returns size of 5th dimension if > 1, returns 0 otherwise.         */)Tj
+0 -2.2857 TD
+(#define NIFTI_5TH_DIM\(h\) \( \(\(h\).dim[0]>4 && \(h\).dim[5]>1\) ? \(h\).dim[5] : 0 \))Tj
+T*
+(/*****************************************************************************/)Tj
+T*
+(/*=================*/)Tj
+0 -1.1429 TD
+(#ifdef  __cplusplus)Tj
+T*
+(})Tj
+T*
+(#endif)Tj
+T*
+(/*=================*/)Tj
+0 -2.2857 TD
+(#endif /* _NIFTI_HEADER_ */)Tj
+ET
+endstream
+endobj
+36 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 6 0 R
+/TT8 7 0 R
+>>
+/ExtGState <<
+/GS1 8 0 R
+>>
+>>
+endobj
+8 0 obj
+<<
+/Type /ExtGState
+/SA false
+/SM 0.02
+/OP false
+/op false
+/OPM 1
+/BG2 /Default
+/UCR2 /Default
+/HT /Default
+/TR2 /Default
+>>
+endobj
+37 0 obj
+<<
+/Type /FontDescriptor
+/Ascent 750
+/CapHeight 676
+/Descent -250
+/Flags 262178
+/FontBBox [-168 -218 1000 935]
+/FontName /Times-Bold
+/ItalicAngle 0
+/StemV 133
+/XHeight 461
+/StemH 139
+>>
+endobj
+38 0 obj
+<<
+/Type /FontDescriptor
+/Ascent 770
+/CapHeight 718
+/Descent -229
+/Flags 262176
+/FontBBox [-170 -228 1003 962]
+/FontName /Helvetica-Bold
+/ItalicAngle 0
+/StemV 133
+/XHeight 532
+/StemH 140
+>>
+endobj
+39 0 obj
+<<
+/Type /FontDescriptor
+/Ascent 750
+/CapHeight 662
+/Descent -250
+/Flags 34
+/FontBBox [-168 -218 1000 898]
+/FontName /Times-Roman
+/ItalicAngle 0
+/StemV 84
+/XHeight 450
+/StemH 84
+>>
+endobj
+40 0 obj
+<<
+/Type /FontDescriptor
+/Ascent 753
+/CapHeight 562
+/Descent -246
+/Flags 35
+/FontBBox [-28 -250 628 805]
+/FontName /Courier
+/ItalicAngle 0
+/StemV 51
+/XHeight 426
+/StemH 51
+>>
+endobj
+4 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/FirstChar 47
+/LastChar 58
+/Widths [278 500 500 500 500 500 500 500 0 0 500 333 ]
+/Encoding /WinAnsiEncoding
+/BaseFont /Times-Bold
+/FontDescriptor 37 0 R
+>>
+endobj
+5 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/FirstChar 48
+/LastChar 57
+/Widths [556 556 556 556 556 556 556 556 556 556 ]
+/Encoding /WinAnsiEncoding
+/BaseFont /Helvetica-Bold
+/FontDescriptor 38 0 R
+>>
+endobj
+6 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/FirstChar 46
+/LastChar 116
+/Widths [250 0 0 500 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 333 0 500 278 0 0 0 0 
+500 0 0 0 0 0 278 ]
+/Encoding /WinAnsiEncoding
+/BaseFont /Times-Roman
+/FontDescriptor 39 0 R
+>>
+endobj
+7 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/FirstChar 32
+/LastChar 146
+/Widths [600 600 600 600 0 0 600 0 600 600 600 600 600 600 600 600 
+600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 
+0 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 
+600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 
+0 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 
+600 600 600 600 600 600 600 600 600 600 600 600 600 600 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 600 ]
+/Encoding /WinAnsiEncoding
+/BaseFont /Courier
+/FontDescriptor 40 0 R
+>>
+endobj
+1 0 obj
+<<
+/Type /Page
+/Parent 9 0 R
+/Resources 3 0 R
+/Contents 2 0 R
+>>
+endobj
+10 0 obj
+<<
+/Type /Page
+/Parent 9 0 R
+/Resources 12 0 R
+/Contents 11 0 R
+>>
+endobj
+13 0 obj
+<<
+/Type /Page
+/Parent 9 0 R
+/Resources 15 0 R
+/Contents 14 0 R
+>>
+endobj
+16 0 obj
+<<
+/Type /Page
+/Parent 9 0 R
+/Resources 18 0 R
+/Contents 17 0 R
+>>
+endobj
+19 0 obj
+<<
+/Type /Page
+/Parent 9 0 R
+/Resources 21 0 R
+/Contents 20 0 R
+>>
+endobj
+22 0 obj
+<<
+/Type /Page
+/Parent 9 0 R
+/Resources 24 0 R
+/Contents 23 0 R
+>>
+endobj
+25 0 obj
+<<
+/Type /Page
+/Parent 9 0 R
+/Resources 27 0 R
+/Contents 26 0 R
+>>
+endobj
+28 0 obj
+<<
+/Type /Page
+/Parent 9 0 R
+/Resources 30 0 R
+/Contents 29 0 R
+>>
+endobj
+31 0 obj
+<<
+/Type /Page
+/Parent 9 0 R
+/Resources 33 0 R
+/Contents 32 0 R
+>>
+endobj
+34 0 obj
+<<
+/Type /Page
+/Parent 9 0 R
+/Resources 36 0 R
+/Contents 35 0 R
+>>
+endobj
+41 0 obj
+<<
+/S /D
+>>
+endobj
+42 0 obj
+<<
+/Nums [0 41 0 R ]
+>>
+endobj
+9 0 obj
+<<
+/Type /Pages
+/Kids [1 0 R 10 0 R 13 0 R 16 0 R 19 0 R 22 0 R 25 0 R 28 0 R 31 0 R 34 0 R]
+/Count 10
+/Rotate 90
+/MediaBox [0 0 595 842]
+>>
+endobj
+43 0 obj
+<<
+/CreationDate (D:20040304164746-05'00')
+/ModDate (D:20040304164746-05'00')
+/Producer (Apple pstopdf)
+>>
+endobj
+44 0 obj
+<<
+/Type /Catalog
+/Pages 9 0 R
+/PageLabels 42 0 R
+>>
+endobj
+xref
+0 45
+0000000000 65535 f 
+0000075519 00000 n 
+0000000016 00000 n 
+0000008210 00000 n 
+0000074206 00000 n 
+0000074412 00000 n 
+0000074618 00000 n 
+0000074942 00000 n 
+0000073270 00000 n 
+0000076414 00000 n 
+0000075599 00000 n 
+0000008338 00000 n 
+0000016733 00000 n 
+0000075682 00000 n 
+0000016862 00000 n 
+0000025101 00000 n 
+0000075765 00000 n 
+0000025230 00000 n 
+0000032698 00000 n 
+0000075848 00000 n 
+0000032827 00000 n 
+0000038216 00000 n 
+0000075931 00000 n 
+0000038345 00000 n 
+0000045018 00000 n 
+0000076014 00000 n 
+0000045147 00000 n 
+0000052899 00000 n 
+0000076097 00000 n 
+0000053028 00000 n 
+0000060393 00000 n 
+0000076180 00000 n 
+0000060522 00000 n 
+0000068181 00000 n 
+0000076263 00000 n 
+0000068310 00000 n 
+0000073141 00000 n 
+0000073410 00000 n 
+0000073612 00000 n 
+0000073818 00000 n 
+0000074015 00000 n 
+0000076346 00000 n 
+0000076374 00000 n 
+0000076570 00000 n 
+0000076693 00000 n 
+trailer
+<<
+/Size 45
+/Root 44 0 R
+/Info 43 0 R
+/ID [<889a38f3a523dbf8f9dc13a6e86f3d4a><889a38f3a523dbf8f9dc13a6e86f3d4a>]
+>>
+startxref
+76762
+%%EOF
